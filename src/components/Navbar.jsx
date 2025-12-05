@@ -1,10 +1,10 @@
 import logo from "../assets/rzbLogo.png";
-import { FaLinkedin, FaGithub, FaInstagram, FaWhatsapp, FaFacebook } from "react-icons/fa";
-// 1. Import Icon Matahari & Bulan
-import { FiSun, FiMoon } from "react-icons/fi"; 
+import { FaLinkedin, FaGithub, FaInstagram, FaWhatsapp, FaFacebook, FaTiktok } from "react-icons/fa";
+import { FiSun, FiMoon } from "react-icons/fi";
+// Opsional: Import icon bendera atau globe jika ingin icon, tapi text ID/EN lebih jelas
+// import { MdLanguage } from "react-icons/md"; 
 
-// 2. Terima props 'toggleTheme' dan 'theme' dari App.jsx
-const Navbar = ({ toggleTheme, theme }) => {
+const Navbar = ({ toggleTheme, theme, toggleLanguage, language }) => {
   return (
     <nav className="mb-20 flex items-center justify-between py-6">
         <div className="flex flex-shrink-0 items-center">
@@ -13,21 +13,32 @@ const Navbar = ({ toggleTheme, theme }) => {
         
         <div className="flex m-8 items-center justify-center gap-4 text-2xl">
             
-            {/* --- 3. TOMBOL GANTI TEMA (BARU) --- */}
+            {/* --- TOMBOL GANTI BAHASA (BARU) --- */}
+            <button 
+                onClick={toggleLanguage} 
+                className="mr-2 flex items-center justify-center rounded-full p-2 w-10 h-10 border border-neutral-300 dark:border-neutral-700 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
+                title="Switch Language"
+            >
+                {/* Menampilkan teks ID atau EN sesuai state */}
+                <span className="text-sm font-bold text-neutral-600 dark:text-neutral-300">
+                    {language === "id" ? "ID" : "EN"}
+                </span>
+            </button>
+
+            {/* --- TOMBOL GANTI TEMA --- */}
             <button 
                 onClick={toggleTheme} 
                 className="mr-2 rounded-full p-2 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
                 title="Toggle Theme"
             >
                 {theme === "dark" ? (
-                    <FiSun className="text-amber-400" /> // Icon Matahari (kuning) saat Dark Mode
+                    <FiSun className="text-amber-400" /> 
                 ) : (
-                    <FiMoon className="text-slate-600" /> // Icon Bulan (gelap) saat Light Mode
+                    <FiMoon className="text-slate-600" /> 
                 )}
             </button>
 
             {/* --- SOCIAL MEDIA LINKS --- */}
-            {/* Saya update className-nya agar warnanya berubah otomatis (Hitam di Light Mode, Putih di Dark Mode) */}
             
             <a 
                 href="https://www.linkedin.com/in/ronald-zuni-bachtiar-a52990345/" 
@@ -54,6 +65,16 @@ const Navbar = ({ toggleTheme, theme }) => {
                 className="text-neutral-600 transition-colors hover:text-pink-600 dark:text-neutral-300 dark:hover:text-pink-400"
             >
                 <FaInstagram />   
+            </a>
+
+            {/* --- TIKTOK --- */}
+            <a 
+                href="https://www.tiktok.com/@ronald_rzb?is_from_webapp=1&sender_device=pc" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-neutral-600 transition-colors hover:text-black dark:text-neutral-300 dark:hover:text-white"
+            >
+                <FaTiktok />   
             </a>
 
             <a 

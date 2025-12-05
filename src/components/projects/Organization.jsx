@@ -62,18 +62,29 @@ const Organization = () => {
               whileInView={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: -50 }}
               transition={{ duration: 1 }}
-              className="w-full lg:w-1/3"
+              className="w-full lg:w-1/3 z-10" // Tambah z-10 agar di depan blur
             >
-              <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg border border-neutral-300 dark:border-neutral-600 bg-black">
-                <iframe 
-                  className="absolute top-0 left-0 w-full h-full"
-                  src={org.videoUrl} 
-                  title={org.title}
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  allowFullScreen>
-                </iframe>
+              {/* --- UBAH STRUKTUR VIDEO --- */}
+              <div className="relative group">
+                  {/* 1. Layer Blur di Belakang */}
+                  {/* Light Mode: bg-neutral-950 (Gelap). Dark Mode: dark:bg-white (Cerah) */}
+                  <div className="absolute -inset-3 rounded-xl blur-2xl opacity-50 dark:opacity-40 -z-10 transition duration-500 bg-neutral-950 dark:bg-white"></div>
+                  
+                  {/* 2. Container Video Asli */}
+                  {/* Hapus shadow-lg bawaan agar tidak tabrakan dengan efek blur */}
+                  <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black">
+                    <iframe 
+                      className="absolute top-0 left-0 w-full h-full"
+                      src={org.videoUrl} 
+                      title={org.title}
+                      frameBorder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowFullScreen>
+                    </iframe>
+                  </div>
               </div>
+               {/* --- AKHIR UBAH STRUKTUR VIDEO --- */}
+
             </motion.div>
 
             <motion.div 
@@ -96,9 +107,6 @@ const Organization = () => {
                   <span 
                     key={index} 
                     // UBAH SKILL BADGES: 
-                    // Bg: Amber-100 (Light) / Sky-950 (Dark)
-                    // Border: Amber-300 (Light) / Sky-500 (Dark)
-                    // Text: Amber-900 (Light) / Neutral-100 (Dark)
                     className="rounded bg-amber-100 dark:bg-sky-950 border border-amber-300 dark:border-sky-500 px-3 py-1 text-sm font-medium text-amber-900 dark:text-neutral-100"
                   >
                     {skill}
@@ -129,18 +137,27 @@ const Organization = () => {
               whileInView={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: -50 }}
               transition={{ duration: 1 }}
-              className="w-full lg:w-1/3"
+              className="w-full lg:w-1/3 z-10" // Tambah z-10
             >
-              <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden shadow-lg border border-neutral-300 dark:border-neutral-600 bg-black">
-                <iframe 
-                  className="absolute top-0 left-0 w-full h-full"
-                  src={qc.videoUrl} 
-                  title={qc.title}
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  allowFullScreen>
-                </iframe>
+               {/* --- UBAH STRUKTUR VIDEO (Sama seperti di atas) --- */}
+               <div className="relative group">
+                  {/* 1. Layer Blur di Belakang */}
+                  <div className="absolute -inset-3 rounded-xl blur-2xl opacity-50 dark:opacity-40 -z-10 transition duration-500 bg-neutral-950 dark:bg-white"></div>
+                  
+                  {/* 2. Container Video Asli */}
+                  <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black">
+                    <iframe 
+                      className="absolute top-0 left-0 w-full h-full"
+                      src={qc.videoUrl} 
+                      title={qc.title}
+                      frameBorder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowFullScreen>
+                    </iframe>
+                  </div>
               </div>
+              {/* --- AKHIR UBAH STRUKTUR VIDEO --- */}
+
             </motion.div>
 
             <motion.div 
