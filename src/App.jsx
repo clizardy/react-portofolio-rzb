@@ -17,7 +17,7 @@ import CustomCursor from "./components/CustomCursor";
 import MusicPlayer from "./components/MusicPlayer";
 import BackToTop from "./components/BackToTop";
 import ScrollProgress from "./components/ScrollProgress";
-import Preloader from "./components/Preloader";
+import Preloader from "./components/LoadingScreen";
 
 const App = () => {
   // State Tema
