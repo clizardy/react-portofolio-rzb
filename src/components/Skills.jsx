@@ -1,113 +1,130 @@
 import { motion } from "framer-motion";
 import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode } from "react-icons/fa";
-import { SiAdobelightroom } from "react-icons/si";
+import { SiAdobelightroom, SiAdobepremierepro } from "react-icons/si";
 import { MdPiano } from "react-icons/md";
+import SpotlightCard from "./SpotlightCard"; 
 
 const iconVariants = (duration) => ({
-    initial: { y: -10 },
+    initial: { y: -3 }, // Kurangi jarak lompatan (sebelumnya -5)
     animate: {
-        y: [10, -10],
+        y: [3, -3],
         transition: {
             duration: duration,
             repeat: Infinity,
             repeatType: "reverse",
-            ease: "linear",
+            ease: "easeInOut", 
         },
     },
 });
 
-const Skills = () => {
+const SKILLS_LIST = [
+    {
+        id: "photography",
+        // UBAH UKURAN ICON JADI text-4xl
+        icon: <FaCamera className="text-4xl text-cyan-500" />,
+        label: { en: "Photography", id: "Fotografi" },
+        duration: 3
+    },
+    {
+        id: "videography",
+        icon: <FaVideo className="text-4xl text-red-500" />,
+        label: { en: "Videography", id: "Videografi" },
+        duration: 2.5
+    },
+    {
+        id: "editing_photo",
+        icon: <SiAdobelightroom className="text-4xl text-blue-500" />,
+        label: { en: "Photo Editing", id: "Editing Foto" },
+        duration: 4
+    },
+    {
+        id: "editing_video",
+        icon: <SiAdobepremierepro className="text-4xl text-purple-500" />, // Ganti warna biar beda dikit
+        label: { en: "Video Editing", id: "Editing Video" },
+        duration: 4
+    },
+    {
+        id: "piano",
+        icon: <MdPiano className="text-4xl text-neutral-200" />,
+        label: { en: "Piano", id: "Piano" },
+        duration: 3.5
+    },
+    {
+        id: "guitar",
+        icon: <FaGuitar className="text-4xl text-orange-500" />,
+        label: { en: "Guitar", id: "Gitar" },
+        duration: 5
+    },
+    {
+        id: "pm",
+        icon: <FaClipboardList className="text-4xl text-emerald-500" />,
+        label: { en: "Project Manager", id: "Manajer Proyek" },
+        duration: 4.5
+    },
+    {
+        id: "webdev",
+        icon: <FaLaptopCode className="text-4xl text-indigo-500" />,
+        label: { en: "Web Developer", id: "Pengembang Web" },
+        duration: 3
+    },
+];
+
+const Skills = ({ lang }) => {
   return (
-    <div className="border-b border-neutral-800 dark:border-neutral-200 pb-16">
-        <motion.h2
-        whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: -100 }}
-        transition={{ duration: 0.5 }}
-        className="my-10 text-center text-4xl font-bold text-amber-600 dark:text-amber-200">
-            Skills & Expertise
-        </motion.h2>
+    <div id="skills" className="border-b border-neutral-800 dark:border-neutral-200 py-20 relative">
         
-        <motion.div 
-        whileInView={{opacity: 1, y: 0}}
-        initial={{ opacity: 0, y: -100 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="flex flex-wrap items-center justify-center gap-4">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-[80px] -z-10"></div>
 
-            {/* Fotografi */}
-            <motion.div
-            variants={iconVariants(2.5)}
-            initial="initial"
-            animate="animate"
-            // PERBAIKAN BORDER:
-            // Light Mode: border-neutral-800 (Gelap)
-            // Dark Mode: dark:border-neutral-200 (Terang)
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Photography">
-                <FaCamera className="text-5xl text-cyan-600 dark:text-cyan-400" />
-            </motion.div>
-
-            {/* Videografi */}
-            <motion.div
-            variants={iconVariants(3)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Videography">
-                <FaVideo className="text-5xl text-red-600" />
-            </motion.div>
-
-            {/* Editing */}
-            <motion.div
-            variants={iconVariants(5)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Video Editing">
-                <SiAdobelightroom className="text-5xl text-blue-700 dark:text-blue-300" />
-            </motion.div>
-
-            {/* Piano */}
-            <motion.div 
-            variants={iconVariants(2)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Piano">
-                <MdPiano className="text-5xl text-neutral-800 dark:text-neutral-100" />
-            </motion.div>
-
-            {/* Gitar */}
-            <motion.div
-            variants={iconVariants(6)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Guitar">
-                <FaGuitar className="text-5xl text-orange-600" />
-            </motion.div>
-
-            {/* Project Manager */}
-            <motion.div
-            variants={iconVariants(4)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Project Manager">
-                <FaClipboardList className="text-5xl text-blue-600 dark:text-slate-200" />
-            </motion.div>
-
-             {/* Website Developer */}
-             <motion.div
-            variants={iconVariants(2.5)}
-            initial="initial"
-            animate="animate"
-            className="rounded-2xl border-4 border-neutral-800 dark:border-neutral-200 bg-teal-100 dark:bg-transparent p-4 shadow-sm"
-            title="Web Developer">
-                <FaLaptopCode className="text-5xl text-cyan-600 dark:text-cyan-500" />
-            </motion.div>
+        {/* JUDUL */}
+        <motion.div
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12" // Kurangi margin bottom
+        >
+            <h2 className="text-3xl md:text-4xl font-bold text-amber-600 dark:text-amber-200">
+                {lang === 'id' ? "Keahlian & Keterampilan" : "Skills & Expertise"}
+            </h2>
+            <p className="text-neutral-500 mt-3 text-sm max-w-lg mx-auto">
+                {lang === 'id' 
+                 ? "Kumpulan alat dan teknologi yang saya gunakan untuk berkarya." 
+                 : "A collection of tools and technologies I use to create."}
+            </p>
         </motion.div>
+        
+        {/* GRID CONTAINER */}
+        <div className="container mx-auto px-4 md:px-16 lg:px-32"> {/* Tambah padding X agar lebih memusat */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4"> {/* Kurangi gap jadi gap-4 */}
+                
+                {SKILLS_LIST.map((skill, index) => (
+                    <SpotlightCard 
+                        key={index} 
+                        className="h-full bg-white/5 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 backdrop-blur-sm hover:border-amber-500/50 transition-colors"
+                    >
+                        {/* Padding Card diperkecil jadi p-6 */}
+                        <div className="p-6 flex flex-col items-center justify-center gap-4 h-full text-center">
+                            
+                            <motion.div
+                                variants={iconVariants(skill.duration)}
+                                initial="initial"
+                                animate="animate"
+                                className="filter drop-shadow-lg"
+                            >
+                                {skill.icon}
+                            </motion.div>
+
+                            {/* Font size diperkecil jadi text-sm atau text-base */}
+                            <h3 className="text-neutral-800 dark:text-neutral-200 font-semibold text-sm md:text-base tracking-wide leading-tight">
+                                {skill.label[lang]}
+                            </h3>
+                        </div>
+                    </SpotlightCard>
+                ))}
+
+            </div>
+        </div>
     </div>
   )
 }
 
-export default Skills
+export default Skills;

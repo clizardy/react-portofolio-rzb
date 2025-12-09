@@ -1,33 +1,37 @@
 import { useState, useEffect } from "react"; 
-import { Toaster } from "react-hot-toast"; // PENTING: Import Toaster
-import { AnimatePresence } from "framer-motion"; // PENTING: Import AnimatePresence
+import { Toaster } from "react-hot-toast"; 
+import { AnimatePresence } from "framer-motion"; 
+import Lenis from 'lenis';
 
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Education from './components/Education';
-import Dedication from './components/Dedication';
-import Projects from './components/projects/Projects'; 
-import Services from './components/Services';
-import Testimonials from './components/projects/Testimonials'; 
-import Contact from './components/Contact';
-import Organization from './components/projects/Organization'; 
+// IMPORT KOMPONEN UI TAMBAHAN
 import CustomCursor from "./components/CustomCursor";
 import MusicPlayer from "./components/MusicPlayer";
 import BackToTop from "./components/BackToTop";
 import ScrollProgress from "./components/ScrollProgress";
 import Preloader from "./components/LoadingScreen";
+import SidebarMenu from "./components/SidebarMenu";
+
+// IMPORT KOMPONEN HALAMAN
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Marquee from "./components/Marquee";
+import About from './components/About';
+import Skills from './components/Skills';
+import Education from './components/Education';
+import Projects from './components/projects/Projects'; 
+import Services from './components/Services';
+import TimelineGallery from "./components/TimelineGallery";
+import Organization from './components/projects/Organization'; 
+import Dedication from './components/Dedication';
+import Testimonials from './components/projects/Testimonials'; 
+import Contact from './components/Contact';
 
 const App = () => {
-  // State Tema
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-  // State Bahasa (Default Inggris 'en')
   const [lang, setLang] = useState("en");
-  // State Loading
   const [isLoading, setIsLoading] = useState(true);
 
-  // Efek Tema
+  // --- EFEK TEMA ---
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === "dark") {
@@ -38,32 +42,35 @@ const App = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // Fungsi Toggle Tema
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  // Fungsi Toggle Bahasa
-  const toggleLanguage = () => {
-    setLang((prevLang) => (prevLang === "en" ? "id" : "en"));
-  };
-
-  // Handler saat Preloader selesai animasi
-  const handleLoadComplete = () => {
-    setIsLoading(false);
-  };
-
-  // Fallback timer (jaga-jaga jika animasi macet, loading stop di 2.5 detik)
+  // --- EFEK SMOOTH SCROLL (LENIS) ---
   useEffect(() => {
-     const timer = setTimeout(() => {
-        setIsLoading(false);
-     }, 2500); 
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  const toggleLanguage = () => setLang((prevLang) => (prevLang === "en" ? "id" : "en"));
+  const handleLoadComplete = () => setIsLoading(false);
+
+  // Fallback Timer Loading
+  useEffect(() => {
+     const timer = setTimeout(() => setIsLoading(false), 2500); 
      return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
-      {/* 1. WADAH TOAST NOTIFICATION */}
       <Toaster 
         position="bottom-right"
         toastOptions={{
@@ -86,50 +93,55 @@ const App = () => {
           ? 'text-neutral-100 selection:bg-cyan-400 selection:text-cyan-600' 
           : 'text-neutral-900 selection:bg-cyan-200 selection:text-cyan-900'}`}>
         
-        {/* 2. PRELOADER (Muncul saat isLoading true) */}
+        {/* PRELOADER */}
         <AnimatePresence mode="wait">
             {isLoading && <Preloader key="preloader" onComplete={handleLoadComplete} />}
         </AnimatePresence>
 
-        {/* 3. KONTEN UTAMA (Muncul setelah loading selesai) */}
+        {/* KONTEN UTAMA (Hanya Muncul Setelah Loading) */}
         {!isLoading && (
             <>
-                {/* Fitur Global */}
+                {/* GLOBAL WIDGETS */}
                 <ScrollProgress />
                 <CustomCursor theme={theme} />
+                <SidebarMenu lang={lang} /> {/* Sidebar dipindah ke sini */}
 
                 {/* BACKGROUND */}
                 <div className="fixed top-0 -z-10 h-full w-full">
                     {theme === 'dark' ? (
                         <div className="absolute top-0 z-[-2] h-screen w-screen bg-cyan-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
                     ) : (
-                        // Saya kembalikan ke neutral-200 agar konsisten dengan desain awal, atau gunakan teal-100 jika memang ingin hijau
                         <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-200 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,1),rgba(255,255,255,0))]"></div>
                     )}
                 </div>
 
-                {/* Container Konten */}
-                <div className="container mx-auto px-8 relative">
+                {/* --- 1. HERO SECTION --- */}
+                <div id="hero" className="container mx-auto px-8 relative">
                     <Navbar 
-                        toggleTheme={toggleTheme} 
-                        theme={theme} 
-                        toggleLanguage={toggleLanguage} 
-                        language={lang} 
+                        toggleTheme={toggleTheme} theme={theme} 
+                        toggleLanguage={toggleLanguage} lang={lang} 
                     />
-                    
-                    {/* Komponen Halaman */}
                     <Hero lang={lang} /> 
-                    <About lang={lang} />
-                    <Skills /> 
-                    <Services lang={lang} />
-                    <Education />
-                    <Projects />
-                    <Organization />
-                    <Dedication />
-                    <Testimonials />
-                    <Contact /> 
+                </div>
 
-                    {/* Widget Tetap */}
+                {/* --- 2. MARQUEE --- */}
+                <div className="w-full">
+                    <Marquee />
+                </div>
+
+                {/* --- 3. KONTEN LAIN --- */}
+                <div className="container mx-auto px-8 relative">
+                    <div id="about"><About lang={lang}/></div>
+                    <div id="skills"><Skills lang={lang}/></div> 
+                    <div id="education"><Education lang={lang}/></div>
+                    <div id="projects"><Projects lang={lang}/></div>
+                    <div id="services"><Services lang={lang}/></div>
+                    <div id="timeline"><TimelineGallery lang={lang}/></div>
+                    <div id="organization"><Organization lang={lang}/></div>
+                    <div id="dedication"><Dedication lang={lang}/></div>
+                    <div id="testimonials"><Testimonials lang={lang}/></div>
+                    <div id="contact"><Contact lang={lang} /></div> 
+
                     <MusicPlayer theme={theme} />
                     <BackToTop theme={theme} />
                 </div>

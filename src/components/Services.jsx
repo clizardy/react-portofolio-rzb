@@ -69,7 +69,7 @@ const SERVICES_DATA = [
   }
 ];
 
-const Services = () => {
+const Services = ({ lang }) => {
   const [activeId, setActiveId] = useState(null);
 
   const toggleAccordion = (id) => {
@@ -77,15 +77,15 @@ const Services = () => {
   };
 
   return (
-    <div className="border-b border-neutral-800 dark:border-neutral-200 pb-8">
-      {/* JUDUL */}
+    <div id="services" className="border-b border-neutral-800 dark:border-neutral-200 pb-8">
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
         className="my-10 text-center text-4xl font-bold text-amber-600 dark:text-amber-200"
       >
-        My Services
+        {/* LOGIKA BAHASA */}
+        {lang === 'id' ? "Layanan Saya" : "My Services"}
       </motion.h2>
 
       <div className="max-w-4xl mx-auto px-4">
