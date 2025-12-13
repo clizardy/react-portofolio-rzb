@@ -28,6 +28,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
   return (
     <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
         
+        
+
         {/* --- BAGIAN KIRI: LOGO + STATUS --- */}
         <div className="flex flex-shrink-0 items-center gap-4">
             <img className="mx-2 w-10" src={logo} alt="Logo" />
