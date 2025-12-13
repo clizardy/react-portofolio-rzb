@@ -5,6 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { FaDownload } from "react-icons/fa"; 
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
+import cvFile from "../assets/CV.pdf";
 
 const container = (delay) => ({
   hidden: { x: -100, opacity: 0 },
@@ -109,7 +110,7 @@ const Hero = ({ lang }) => {
               </a>
 
               {/* 3. Tombol Download CV (Magnetic + Shine) */}
-              <a href="public/CV.pdf" download="CV.pdf">
+              <a href={cvFile} download="Ronald_Zuni_CV.pdf"> 
                   <MagneticButton className="group relative px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2">
                     {/* Efek Kilatan Cahaya */}
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
