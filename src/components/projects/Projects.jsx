@@ -53,7 +53,7 @@ const Projects = ({ lang }) => {
               px-6 py-2 rounded-full font-medium transition-all duration-300 border
               ${activeCategory === cat 
                 ? "bg-amber-600 dark:bg-cyan-600 text-white border-amber-600 dark:border-cyan-600 shadow-lg scale-105" 
-                : "bg-transparent text-neutral-600 dark:text-neutral-400 border-neutral-400 dark:border-neutral-700 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"
+                : "bg-transparent text-neutral-900 dark:text-amber-100 border-neutral-900 dark:border-neutral-100 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"
               }
             `}
           >
@@ -135,7 +135,7 @@ const Projects = ({ lang }) => {
                     <h6 className="font-bold text-xl text-neutral-900 dark:text-white">
                         {project.title}
                     </h6>
-                    <span className="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400 border border-neutral-300 dark:border-neutral-700 px-2 py-1 rounded">
+                    <span className="text-xs font-mono uppercase tracking-widest text-neutral-900 dark:text-neutral-100 border border-neutral-900 dark:border-neutral-100 px-2 py-1 rounded">
                         {CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
                     </span>
                 </div>

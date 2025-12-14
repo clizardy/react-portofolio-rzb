@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FaMusic, FaPlay, FaPause, FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import songFile from "../assets/juicy-sialan.mp3";
+import songFile from "../assets/juicy-tampar.mp3";
 
 const MUSIC_URL = songFile; // Ganti dengan path ke file musik Anda
 
@@ -106,7 +106,7 @@ const MusicPlayer = ({ theme }) => {
                      animate={{ x: isPlaying ? ["0%", "-100%"] : "0%" }}
                      transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
                    >
-                     Juicy Luicy - Sialan
+                     Juicy Luicy - Tampar
                    </motion.p>
                 </div>
             </motion.div>

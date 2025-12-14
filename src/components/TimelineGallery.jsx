@@ -19,7 +19,7 @@ const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
 
   return {
     id: id,
-    url: `/assets/timeline/timeline (${id}).jpg`, 
+    url: `/assets/timeline/memories (${id}).jpg`, 
     year: year,
     desc: desc
   };

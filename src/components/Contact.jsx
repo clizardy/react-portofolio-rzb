@@ -45,11 +45,34 @@ const Contact = ({ lang }) => {
   };
 
   return (
-    <div id="contact" className='border-b border-neutral-800 dark:border-neutral-200 pb-20 pt-20 relative overflow-hidden'>
+    <div id="contact" className='border-b border-neutral-800 dark:border-neutral-800 pb-20 pt-20 relative overflow-hidden'>
         
         {/* Dekorasi Background Halus */}
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/20 dark:bg-cyan-500/20 rounded-full blur-[100px] -z-10"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -z-10"></div>
+        {/* 1. Cyber Grid Pattern (Jaring Halus) */}
+        <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+
+      {/* 2. Glowing Orb Kiri (Ungu) */}
+      <motion.div 
+        animate={{ 
+            scale: [1, 1.2, 1], 
+            opacity: [0.3, 0.5, 0.3] 
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-24 -left-24 w-96 h-96 bg-purple-600/30 rounded-full blur-[100px] pointer-events-none"
+      />
+
+      {/* 3. Glowing Orb Kanan (Cyan/Biru) */}
+      <motion.div 
+        animate={{ 
+            scale: [1, 1.3, 1], 
+            opacity: [0.2, 0.4, 0.2],
+            x: [0, 30, 0]
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-0 -right-20 w-80 h-80 bg-cyan-600/30 rounded-full blur-[100px] pointer-events-none"
+      />
 
         {/* JUDUL */}
         <motion.div 
@@ -57,7 +80,7 @@ const Contact = ({ lang }) => {
             initial={{ opacity: 0, y: -30 }}
             className="text-center mb-16"
         >
-            <h2 className='text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4'>
+            <h2 className='text-4xl md:text-5xl font-bold text-neutral-100 dark:text-white mb-4'>
                 {lang === 'id' ? "Mari Terhubung" : "Let's Connect"}
             </h2>
             <p className="text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto">

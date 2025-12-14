@@ -71,7 +71,7 @@ const TESTIMONIALS = [
 // 2. TERIMA PROPS 'lang' DISINI
 const Testimonials = ({ lang }) => {
   return (
-    <div id="testimonials" className="border-b border-neutral-800 dark:border-neutral-200 pb-16">
+    <div id="testimonials">
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}

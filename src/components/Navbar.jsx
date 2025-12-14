@@ -27,12 +27,15 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
 
   return (
     <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
-        
-        
-
-        {/* --- BAGIAN KIRI: LOGO + STATUS --- */}
         <div className="flex flex-shrink-0 items-center gap-4">
-            <img className="mx-2 w-10" src={logo} alt="Logo" />
+            <img 
+                className="mx-2 w-10 
+                           drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] 
+                           dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] 
+                           transition-all duration-300 hover:scale-110" 
+                src={logo} 
+                alt="Logo" 
+            />
             
             {/* LOGIKA STATUS DINAMIS & BILINGUAL */}
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm">
@@ -82,14 +85,6 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
 
             {/* SOCIAL MEDIA LINKS */}
             <div className="flex gap-4">
-                <SocialLink href="https://www.linkedin.com/in/ronald-zuni-bachtiar-a52990345/" color="hover:text-blue-600 dark:hover:text-blue-400">
-                    <FaLinkedin />
-                </SocialLink>
-
-                <SocialLink href="https://github.com/clizardy" color="hover:text-black dark:hover:text-white">
-                    <FaGithub />
-                </SocialLink>
-
                 <SocialLink href="https://wa.me/6281281954366" color="hover:text-green-600 dark:hover:text-green-400">
                     <FaWhatsapp />
                 </SocialLink>
