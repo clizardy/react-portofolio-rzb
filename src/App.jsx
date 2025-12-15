@@ -168,33 +168,32 @@ const App = () => {
                         <GiscusComments theme={theme} />
                       </div>
                       
-                      {/* --- WIDGET AREA (MODULAR BENTO GRID) --- */}
-                      <div className="w-full max-w-5xl mx-auto z-10 mb-24 px-4">
-                        <motion.h3 
-                            initial={{ opacity: 0, y: -10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-2xl font-bold text-center mb-10 text-neutral-200"
-                        >
-                            My <span className="text-amber-600 dark:text-cyan-400">Digital</span> Space
-                        </motion.h3>
+                      {/* --- WIDGET AREA (BENTO GRID LAYOUT) --- */}
+                      <div className="w-full max-w-5xl mx-auto z-10 mb-24 px-4 md:px-8">
+                          <motion.div 
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[400px]" // Tinggi fix di desktop biar rapi
+                          >
+                              
+                              {/* Kolom Kiri: Media Stack (Spotify & YouTube) */}
+                              {/* Menggunakan h-full agar mengisi ruang vertikal secara fleksibel */}
+                              <div className="md:col-span-5 flex flex-col gap-6 h-full">
+                                  <div className="flex-1 min-h-[180px]"> 
+                                      <SpotifyCard />
+                                  </div>
+                                  <div className="flex-1 min-h-[180px]">
+                                      <YouTubeCard />
+                                  </div>
+                              </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                            {/* Kolom Kiri: Spotify & YouTube */}
-                            <div className="md:col-span-5 flex flex-col gap-6">
-                                <div className="h-[180px]">
-                                    <SpotifyCard />
-                                </div>
-                                <div className="h-[160px]">
-                                    <YouTubeCard />
-                                </div>
-                            </div>
+                              {/* Kolom Kanan: AI Canvas (Besar) */}
+                              <div className="md:col-span-7 h-[400px] md:h-full">
+                                  <AiArtCard />
+                              </div>
 
-                            {/* Kolom Kanan: AI Art Generator */}
-                            <div className="md:col-span-7 min-h-[360px]">
-                                <AiArtCard />
-                            </div>
-                        </div>
+                          </motion.div>
                       </div>
                       
                       {/* Footer (Copyright) */}

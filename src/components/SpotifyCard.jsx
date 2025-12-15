@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaSpotify, FaMusic } from "react-icons/fa";
+import { FaSpotify, FaPlay, FaPause, FaMusic } from "react-icons/fa";
+import { SiSpotify } from "react-icons/si"; // Icon brand lebih akurat
 import { motion } from "framer-motion";
 
 const SpotifyCard = () => {
@@ -16,96 +17,93 @@ const SpotifyCard = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  // --- SKELETON LOADING (Tampil saat data belum siap) ---
+  const isPlaying = data?.isPlaying;
+  const defaultImage = "https://i.scdn.co/image/ab67616d0000b27350185c875035e2be130f5199";
+
+  // State Loading Skeleton
   if (loading) {
-     return (
-        <div className="flex items-center gap-4 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 p-4 rounded-2xl w-full max-w-sm h-[88px] animate-pulse">
-            <div className="w-14 h-14 bg-neutral-300 dark:bg-neutral-800 rounded-full"></div>
-            <div className="flex-1 space-y-2">
-                <div className="h-3 bg-neutral-300 dark:bg-neutral-800 rounded w-20"></div>
-                <div className="h-4 bg-neutral-300 dark:bg-neutral-800 rounded w-32"></div>
-            </div>
-        </div>
-     );
+    return (
+      <div className="w-full h-full bg-neutral-100 dark:bg-neutral-900/50 rounded-3xl p-5 border border-neutral-200 dark:border-white/5 animate-pulse flex flex-col justify-between">
+         <div className="h-6 w-8 bg-neutral-200 dark:bg-neutral-800 rounded-full mb-4"></div>
+         <div className="flex gap-4">
+             <div className="w-16 h-16 bg-neutral-200 dark:bg-neutral-800 rounded-xl"></div>
+             <div className="space-y-2 flex-1 pt-2">
+                 <div className="h-4 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+                 <div className="h-3 w-1/2 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+             </div>
+         </div>
+      </div>
+    );
   }
 
-  // Default Image jika API error total
-  const defaultImage = "https://i.scdn.co/image/ab67616d0000b27350185c875035e2be130f5199"; 
-  const isPlaying = data?.isPlaying;
-
   return (
-    <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.3 }}
-        className="relative overflow-hidden flex items-center gap-4 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 p-4 rounded-3xl shadow-lg dark:shadow-black/50 w-full max-w-sm group"
+    <motion.a
+      href={data?.songUrl || "#"}
+      target="_blank"
+      rel="noreferrer"
+      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+      className="relative group w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl p-5
+        bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10
+        shadow-lg dark:shadow-none hover:shadow-green-500/20 dark:hover:shadow-green-900/20 transition-all duration-300"
     >
-        {/* Background Glow Halus */}
-        <div className={`absolute -left-4 top-1/2 -translate-y-1/2 w-20 h-20 blur-2xl rounded-full pointer-events-none transition-colors duration-500 ${isPlaying ? 'bg-green-500/20' : 'bg-neutral-500/10'}`}></div>
+      {/* Background Blur Image (Ambient Mode) */}
+      <div 
+        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.15] group-hover:opacity-20 transition-opacity duration-700 pointer-events-none"
+        style={{
+            backgroundImage: `url(${data?.albumImageUrl || defaultImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'blur(20px)'
+        }}
+      ></div>
 
-        {/* Album Art Container */}
-        <div className="relative w-14 h-14 flex-shrink-0 z-10">
-            {/* Piringan Hitam Berputar (Jika Play), Diam (Jika Offline) */}
-            <motion.div 
-                animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className={`w-full h-full rounded-full overflow-hidden border-2 shadow-md ${isPlaying ? 'border-green-500/50' : 'border-neutral-500/20 grayscale'}`}
-            >
-                <img 
-                    src={data?.albumImageUrl || defaultImage} 
-                    alt="Album Art" 
-                    className="w-full h-full object-cover"
-                />
-            </motion.div>
-            
-            {/* Logo Spotify Kecil */}
-            <div className="absolute -bottom-1 -right-1 bg-black text-green-500 text-xs p-1 rounded-full border border-neutral-800 z-20">
-                <FaSpotify />
-            </div>
+      {/* Header: Icon & Visualizer */}
+      <div className="relative z-10 flex justify-between items-start">
+        <div className="bg-green-100 dark:bg-green-500/20 p-2 rounded-full text-green-600 dark:text-green-400">
+            <SiSpotify className="text-xl" />
         </div>
-
-        {/* Info Text */}
-        <div className="flex flex-col text-left z-10 flex-grow min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-                {/* Status Indicator */}
-                <span className={`flex w-2 h-2 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-neutral-400'}`}></span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-                    {isPlaying ? "Now Playing" : "Last Played"}
-                </span>
+        {isPlaying && (
+            <div className="flex items-end gap-1 h-4">
+                {[1, 2, 3, 4].map((bar) => (
+                    <motion.div
+                        key={bar}
+                        animate={{ height: [4, 16, 4] }}
+                        transition={{ duration: 0.5 + bar * 0.1, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-1 bg-green-500 rounded-full"
+                    />
+                ))}
             </div>
+        )}
+      </div>
 
-            <a 
-                href={data?.songUrl || "#"} 
-                target="_blank" 
-                rel="noreferrer"
-                className="text-sm font-bold text-neutral-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 truncate transition-colors font-sans"
-            >
-                {data?.title || "Not Playing"}
-            </a>
-            <span className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
-                {data?.artist || "Spotify"}
-            </span>
-        </div>
-
-        {/* Visualizer / Offline Icon */}
-        <div className="z-10 ml-2">
-            {isPlaying ? (
-                <div className="flex items-end gap-[2px] h-4">
-                    {[1,2,3,4].map((bar) => (
-                        <motion.div
-                            key={bar}
-                            animate={{ height: [4, 12, 4] }}
-                            transition={{ duration: 0.4 + (bar * 0.1), repeat: Infinity }}
-                            className="w-[3px] bg-green-500 rounded-full"
-                        />
-                    ))}
+      {/* Content: Album & Text */}
+      <div className="relative z-10 flex items-center gap-4 mt-4">
+        <div className="relative w-16 h-16 flex-shrink-0">
+            <img 
+                src={data?.albumImageUrl || defaultImage} 
+                alt="Album" 
+                className={`w-full h-full object-cover rounded-xl shadow-md transition-all duration-500 ${isPlaying ? 'group-hover:scale-105' : 'grayscale opacity-60'}`} 
+            />
+            {isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    <FaPlay className="text-white text-xs" />
                 </div>
-            ) : (
-                <FaMusic className="text-neutral-300 dark:text-neutral-700 text-lg" />
             )}
         </div>
-    </motion.div>
+        
+        <div className="flex flex-col min-w-0">
+            <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-400 mb-0.5">
+                {isPlaying ? "Now Playing" : "Last Played"}
+            </span>
+            <h3 className="text-sm font-bold text-neutral-900 dark:text-white truncate pr-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                {data?.title || "Not Playing"}
+            </h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
+                {data?.artist || "Spotify"}
+            </p>
+        </div>
+      </div>
+    </motion.a>
   );
 };
 
