@@ -1,32 +1,39 @@
 import logo from "../assets/rzbLogo.png";
-import { FaLinkedin, FaGithub, FaInstagram, FaWhatsapp, FaFacebook, FaTiktok} from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { FaHashtag } from "react-icons/fa"; // Icon untuk tombol pengganti sosmed
 
 const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
   
-  // --- KONFIGURASI STATUS ---
   const IS_AVAILABLE = true;
 
-  // --- DATA TERJEMAHAN NAVBAR ---
   const NAVBAR_TEXT = {
     en: {
       available: "Available for Work",
       busy: "Currently Busy",
-      langCode: "EN"
+      langCode: "EN",
+      follow: "Follow"
     },
     id: {
       available: "Tersedia untuk Proyek",
       busy: "Sedang Sibuk",
-      langCode: "ID"
+      langCode: "ID",
+      follow: "Follow"
     }
   };
 
-  // Ambil teks sesuai bahasa aktif
   const t = NAVBAR_TEXT[lang] || NAVBAR_TEXT.en;
+
+  // FUNGSI UNTUK MEMBUKA SIDEBAR DARI NAVBAR
+  const handleOpenSidebar = () => {
+    // Kirim sinyal event custom yang didengarkan oleh SidebarMenu.jsx
+    const event = new Event('open-sidebar');
+    window.dispatchEvent(event);
+  };
 
   return (
     <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
+        
+        {/* --- BAGIAN KIRI: LOGO & STATUS --- */}
         <div className="flex flex-shrink-0 items-center gap-4">
             <img 
                 className="mx-2 w-10 
@@ -37,7 +44,6 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
                 alt="Logo" 
             />
             
-            {/* LOGIKA STATUS DINAMIS & BILINGUAL */}
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm">
                 <span className="relative flex h-2.5 w-2.5">
                   {IS_AVAILABLE && (
@@ -47,19 +53,18 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
                 </span>
                 
                 <span className="text-[10px] md:text-xs font-medium text-neutral-900 dark:text-neutral-100 tracking-wide uppercase">
-                    {/* Gunakan teks dari variabel 't' */}
                     {IS_AVAILABLE ? t.available : t.busy}
                 </span>
             </div>
         </div>
         
-        {/* --- BAGIAN KANAN: TOOLS & SOSMED --- */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-xl md:text-2xl">
+        {/* --- BAGIAN KANAN: TOOLS & TOMBOL PENGGANTI --- */}
+        <div className="flex flex-wrap items-center justify-center gap-3 text-xl md:text-2xl">
             
             {/* TOMBOL BAHASA */}
             <button 
                 onClick={toggleLanguage} 
-                className="flex items-center justify-center rounded-full w-8 h-8 md:w-10 md:h-10 border border-neutral-300 dark:border-neutral-700 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
+                className="flex items-center justify-center rounded-full w-10 h-10 border border-neutral-300 dark:border-neutral-700 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
                 title="Switch Language"
             >
                 <span className="text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-300">
@@ -70,56 +75,33 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
             {/* TOMBOL TEMA */}
             <button 
                 onClick={toggleTheme} 
-                className="rounded-full p-2 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors focus:outline-none"
                 title="Toggle Theme"
             >
                 {theme === "dark" ? (
-                    <FiSun className="text-amber-400" /> 
+                    <FiSun className="text-amber-400 text-xl" /> 
                 ) : (
-                    <FiMoon className="text-slate-600" /> 
+                    <FiMoon className="text-slate-600 text-xl" /> 
                 )}
             </button>
 
             {/* DIVIDER */}
-            <div className="w-[1px] h-6 bg-neutral-300 dark:bg-neutral-700 mx-2 hidden md:block"></div>
+            <div className="w-[1px] h-6 bg-neutral-300 dark:bg-neutral-700 mx-1 hidden md:block"></div>
 
-            {/* SOCIAL MEDIA LINKS */}
-            <div className="flex gap-4">
-                <SocialLink href="https://wa.me/6281281954366" color="hover:text-green-600 dark:hover:text-green-400">
-                    <FaWhatsapp />
-                </SocialLink>
-
-                <SocialLink href="https://www.instagram.com/ronald_rzb/" color="hover:text-pink-600 dark:hover:text-pink-400">
-                    <FaInstagram />
-                </SocialLink>
-
-                <div className="hidden sm:flex gap-4">
-                    <SocialLink href="https://www.facebook.com/ronald.bachtiar.73" color="hover:text-blue-700 dark:hover:text-blue-500">
-                        <FaFacebook />
-                    </SocialLink>
-                    <SocialLink href="https://www.tiktok.com/@ronald_rzb" color="hover:text-black dark:hover:text-white">
-                        <FaTiktok />
-                    </SocialLink>
-                    <SocialLink href="https://x.com/ronald_rzb" color="hover:text-blue-400 dark:hover:text-blue-400">
-                        <FaXTwitter />
-                    </SocialLink>
-                </div>
-            </div>
+            {/* TOMBOL PENGGANTI SOSMED (TRIGGER SIDEBAR) */}
+            <button
+                onClick={handleOpenSidebar}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 dark:bg-cyan-800 border border-neutral-200 dark:border-neutral-700 hover:bg-amber-100 dark:hover:bg-neutral-700 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
+            >
+                <span className="text-xs font-bold tracking-wide uppercase group-hover:text-amber-600 dark:group-hover:text-cyan-400">
+                    {t.follow}
+                </span>
+                <FaHashtag className="text-sm group-hover:rotate-12 transition-transform text-amber-600 dark:text-cyan-400" />
+            </button>
 
         </div>
     </nav>
   );
 };
-
-const SocialLink = ({ href, children, color }) => (
-    <a 
-        href={href} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className={`text-neutral-600 dark:text-neutral-300 transition-colors ${color} hover:scale-110 transform duration-200`}
-    >
-        {children}
-    </a>
-);
 
 export default Navbar;

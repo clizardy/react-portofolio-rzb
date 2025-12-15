@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast"; 
 import { AnimatePresence, motion } from "framer-motion"; 
 import Lenis from 'lenis';
+import ReactGA from "react-ga4"; // IMPORT GOOGLE ANALYTICS
 
 // IMPORT KOMPONEN UI
 import CustomCursor from "./components/CustomCursor";
@@ -11,6 +12,9 @@ import ScrollProgress from "./components/ScrollProgress";
 import Preloader from "./components/LoadingScreen";
 import SidebarMenu from "./components/SidebarMenu";
 import Footer from "./components/Footer"; 
+
+import GiscusComments from "./components/GiscusComments"; // Import Giscus
+import SpotifyCard from "./components/SpotifyCard.jsx";       // Import Spotify
 
 // IMPORT HALAMAN
 import Navbar from './components/Navbar';
@@ -34,10 +38,7 @@ const AnimatedWave = ({ theme }) => {
 
   return (
     <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 z-20 pointer-events-none">
-       {/* PERBAIKAN: 
-          h-[80px] di HP, h-[150px] di Laptop. 
-          Agar di HP tidak terlalu memakan tempat tapi tetap menutup celah.
-       */}
+       {/* PERBAIKAN: h-[80px] di HP, h-[150px] di Laptop. */}
        <svg className="relative block w-[200%] h-[80px] md:h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <motion.path
             animate={{ x: ["0%", "-50%"] }}
@@ -55,6 +56,20 @@ const App = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [lang, setLang] = useState("en");
   const [isLoading, setIsLoading] = useState(true);
+
+  // --- SETUP GOOGLE ANALYTICS ---
+  // GANTI 'G-XXXXXXXXXX' DENGAN MEASUREMENT ID ANDA DARI GOOGLE ANALYTICS
+  const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
+
+  useEffect(() => {
+    // Inisialisasi GA4
+    if (GA_MEASUREMENT_ID !== "G-N4E8H7CL0G") {
+        ReactGA.initialize(GA_MEASUREMENT_ID);
+        // Kirim Pageview saat pertama kali load
+        ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+    }
+  }, []);
+  // ------------------------------
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -108,13 +123,8 @@ const App = () => {
                 <CustomCursor theme={theme} />
                 <SidebarMenu lang={lang} />
 
-                {/* === KARTU ATAS (KONTEN UTAMA) === */}
-                {/* PERBAIKAN LAYOUT HP:
-                    1. pb-28 (HP) & pb-40 (Laptop): Memberi ruang agar konten paling bawah tidak ketutup gelombang.
-                */}
                 <div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-neutral-950 shadow-2xl overflow-hidden pb-28 md:pb-40 rounded-b-[30px] md:rounded-b-[60px]">
                     
-                    {/* Background Gradient */}
                     <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none">
                         {theme === 'dark' ? (
                             <div className="h-full w-full bg-cyan-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
@@ -136,6 +146,7 @@ const App = () => {
                         <div id="about"><About lang={lang}/></div>
                         <div id="skills"><Skills lang={lang}/></div> 
                         <div id="education"><Education lang={lang}/></div>
+                        {/* Projects sudah terintegrasi dengan Event Like GA4 */}
                         <div id="projects"><Projects lang={lang}/></div>
                         <div id="services"><Services lang={lang}/></div>
                         <div id="timeline"><TimelineGallery lang={lang}/></div>
@@ -144,28 +155,35 @@ const App = () => {
                         <div id="testimonials"><Testimonials lang={lang}/></div>
                     </div>
 
-                    {/* Gelombang Animasi Penutup */}
+                    
                     <AnimatedWave theme={theme} />
                 </div>
 
                 {/* === FOOTER WRAPPER === */}
-                {/* PERBAIKAN POSISI:
-                    1. -mt-20 (HP & Laptop): Saya tarik footer ke atas lebih ekstrem (80px) agar menutupi celah putih di HP.
-                    2. pt-24: Padding top ditambah agar isi konten (Form) turun ke bawah dan tidak ketutup gelombang.
-                */}
                 <div className="relative z-0 -mt-20 pt-24 pb-0 w-full bg-neutral-900 text-white flex flex-col items-center justify-center">
-                     
-                     <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
+                      
+                      <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
-                     {/* Contact Form */}
-                     <div className="w-full px-4 md:px-0 z-10">
-                        <Contact lang={lang} />
-                     </div>
-                     
-                     {/* Footer (Copyright) */}
-                     <div className="w-full z-10">
-                        <Footer lang={lang} />
-                     </div>
+                      {/* Contact Form */}
+                      <div className="w-full px-4 md:px-0 z-10">
+                         <Contact lang={lang} />
+                      </div>
+
+                      {/* --- FITUR BARU 1: GISCUS KOMENTAR --- */}
+                      {/* Kita oper props 'theme' agar giscus ikut mode gelap/terang */}
+                      <div className="w-full z-10 mt-10 mb-10">
+                        <GiscusComments theme={theme} />
+                      </div>
+                      
+                      {/* --- FITUR BARU 2: SPOTIFY WIDGET --- */}
+                      <div className="w-full z-10 flex justify-center mb-12">
+                         <SpotifyCard />
+                      </div>
+                      
+                      {/* Footer (Copyright) */}
+                      <div className="w-full z-10">
+                         <Footer lang={lang} />
+                      </div>
                 </div>
 
                 <div className="relative z-50">
