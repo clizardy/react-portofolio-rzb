@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaSpotify } from "react-icons/fa";
+import { FaSpotify, FaMusic } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const SpotifyCard = () => {
@@ -7,7 +7,6 @@ const SpotifyCard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch ke API buatan kita sendiri
     fetch('/api/now-playing')
       .then((res) => res.json())
       .then((data) => {
@@ -17,71 +16,95 @@ const SpotifyCard = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  // Default data jika sedang tidak memutar lagu
+  // --- SKELETON LOADING (Tampil saat data belum siap) ---
+  if (loading) {
+     return (
+        <div className="flex items-center gap-4 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 p-4 rounded-2xl w-full max-w-sm h-[88px] animate-pulse">
+            <div className="w-14 h-14 bg-neutral-300 dark:bg-neutral-800 rounded-full"></div>
+            <div className="flex-1 space-y-2">
+                <div className="h-3 bg-neutral-300 dark:bg-neutral-800 rounded w-20"></div>
+                <div className="h-4 bg-neutral-300 dark:bg-neutral-800 rounded w-32"></div>
+            </div>
+        </div>
+     );
+  }
+
+  // Default Image jika API error total
   const defaultImage = "https://i.scdn.co/image/ab67616d0000b27350185c875035e2be130f5199"; 
-  
-  // Jika loading atau error, tampilkan state kosong/offline
-  if (!data) return null; 
+  const isPlaying = data?.isPlaying;
 
   return (
     <motion.div 
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
-        className="relative overflow-hidden flex items-center gap-4 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-lg border border-neutral-200 dark:border-neutral-800 p-4 rounded-2xl shadow-xl dark:shadow-neutral-900/50 max-w-sm w-full"
+        transition={{ duration: 0.3 }}
+        className="relative overflow-hidden flex items-center gap-4 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 p-4 rounded-3xl shadow-lg dark:shadow-black/50 w-full max-w-sm group"
     >
-        {/* Glow Effect - Hijau kalau play, Abu kalau offline */}
-        <div className={`absolute -left-4 top-1/2 -translate-y-1/2 w-24 h-24 blur-xl rounded-full pointer-events-none ${data.isPlaying ? 'bg-green-500/30' : 'bg-neutral-500/10'}`}></div>
-        
-        {/* Album Art */}
+        {/* Background Glow Halus */}
+        <div className={`absolute -left-4 top-1/2 -translate-y-1/2 w-20 h-20 blur-2xl rounded-full pointer-events-none transition-colors duration-500 ${isPlaying ? 'bg-green-500/20' : 'bg-neutral-500/10'}`}></div>
+
+        {/* Album Art Container */}
         <div className="relative w-14 h-14 flex-shrink-0 z-10">
+            {/* Piringan Hitam Berputar (Jika Play), Diam (Jika Offline) */}
             <motion.div 
-                animate={data.isPlaying ? { rotate: 360 } : { rotate: 0 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="w-full h-full rounded-full overflow-hidden border-[3px] border-neutral-100 dark:border-neutral-800 shadow-sm"
+                animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className={`w-full h-full rounded-full overflow-hidden border-2 shadow-md ${isPlaying ? 'border-green-500/50' : 'border-neutral-500/20 grayscale'}`}
             >
                 <img 
-                    src={data.albumImageUrl || defaultImage} 
+                    src={data?.albumImageUrl || defaultImage} 
                     alt="Album Art" 
-                    className={`w-full h-full object-cover ${!data.isPlaying && "grayscale"}`} // Hitam putih kalau offline
+                    className="w-full h-full object-cover"
                 />
             </motion.div>
-            <div className="absolute bottom-0 right-0 bg-white dark:bg-neutral-900 rounded-full text-green-500 text-[10px] p-1 border border-neutral-100 dark:border-neutral-800 shadow-sm">
+            
+            {/* Logo Spotify Kecil */}
+            <div className="absolute -bottom-1 -right-1 bg-black text-green-500 text-xs p-1 rounded-full border border-neutral-800 z-20">
                 <FaSpotify />
             </div>
         </div>
 
-        {/* Info Lagu */}
-        <div className="flex flex-col text-left z-10 flex-grow overflow-hidden">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-green-600 dark:text-green-400 mb-1">
-                {data.isPlaying ? "Listening To" : "Offline / Last Played"}
-            </span>
+        {/* Info Text */}
+        <div className="flex flex-col text-left z-10 flex-grow min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+                {/* Status Indicator */}
+                <span className={`flex w-2 h-2 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-neutral-400'}`}></span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                    {isPlaying ? "Now Playing" : "Last Played"}
+                </span>
+            </div>
+
             <a 
-                href={data.songUrl || "#"} 
+                href={data?.songUrl || "#"} 
                 target="_blank" 
                 rel="noreferrer"
-                className="text-base font-bold text-neutral-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 truncate transition-colors leading-tight"
+                className="text-sm font-bold text-neutral-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 truncate transition-colors font-sans"
             >
-                {data.title || "Not Playing"}
+                {data?.title || "Not Playing"}
             </a>
-            <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 truncate leading-tight">
-                {data.artist || "Spotify"}
+            <span className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
+                {data?.artist || "Spotify"}
             </span>
         </div>
 
-        {/* Visualizer (Hanya gerak kalau play) */}
-        {data.isPlaying && (
-            <div className="flex items-end gap-[3px] h-6 ml-2 z-10">
-                {[1,2,3,4,5].map((bar) => (
-                    <motion.div
-                        key={bar}
-                        animate={{ height: [6, Math.random() * 16 + 6, 6] }}
-                        transition={{ duration: 0.4 + bar * 0.1, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-[3px] bg-green-500 dark:bg-green-400 rounded-full"
-                    />
-                ))}
-            </div>
-        )}
+        {/* Visualizer / Offline Icon */}
+        <div className="z-10 ml-2">
+            {isPlaying ? (
+                <div className="flex items-end gap-[2px] h-4">
+                    {[1,2,3,4].map((bar) => (
+                        <motion.div
+                            key={bar}
+                            animate={{ height: [4, 12, 4] }}
+                            transition={{ duration: 0.4 + (bar * 0.1), repeat: Infinity }}
+                            className="w-[3px] bg-green-500 rounded-full"
+                        />
+                    ))}
+                </div>
+            ) : (
+                <FaMusic className="text-neutral-300 dark:text-neutral-700 text-lg" />
+            )}
+        </div>
     </motion.div>
   );
 };

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast"; 
 import { AnimatePresence, motion } from "framer-motion"; 
 import Lenis from 'lenis';
-import ReactGA from "react-ga4"; // IMPORT GOOGLE ANALYTICS
+import ReactGA from "react-ga4"; 
 
 // IMPORT KOMPONEN UI
 import CustomCursor from "./components/CustomCursor";
@@ -13,8 +13,11 @@ import Preloader from "./components/LoadingScreen";
 import SidebarMenu from "./components/SidebarMenu";
 import Footer from "./components/Footer"; 
 
-import GiscusComments from "./components/GiscusComments"; // Import Giscus
-import SpotifyCard from "./components/SpotifyCard.jsx";       // Import Spotify
+// IMPORT WIDGETS
+import GiscusComments from "./components/GiscusComments"; 
+import SpotifyCard from "./components/SpotifyCard";       
+import YouTubeCard from "./components/YouTubeCard";
+import AiArtCard from "./components/AiArtCard";
 
 // IMPORT HALAMAN
 import Navbar from './components/Navbar';
@@ -31,14 +34,12 @@ import Dedication from './components/Dedication';
 import Testimonials from './components/projects/Testimonials'; 
 import Contact from './components/Contact';
 
-// --- KOMPONEN GELOMBANG (DIPERBAIKI UNTUK HP) ---
+// --- KOMPONEN GELOMBANG ---
 const AnimatedWave = ({ theme }) => {
-  // Warna gelombang SAMA PERSIS dengan bg-neutral-900 (footer)
   const waveColor = '#171717'; 
 
   return (
     <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 z-20 pointer-events-none">
-       {/* PERBAIKAN: h-[80px] di HP, h-[150px] di Laptop. */}
        <svg className="relative block w-[200%] h-[80px] md:h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <motion.path
             animate={{ x: ["0%", "-50%"] }}
@@ -58,18 +59,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // --- SETUP GOOGLE ANALYTICS ---
-  // GANTI 'G-XXXXXXXXXX' DENGAN MEASUREMENT ID ANDA DARI GOOGLE ANALYTICS
   const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
 
   useEffect(() => {
-    // Inisialisasi GA4
     if (GA_MEASUREMENT_ID !== "G-N4E8H7CL0G") {
         ReactGA.initialize(GA_MEASUREMENT_ID);
-        // Kirim Pageview saat pertama kali load
         ReactGA.send({ hitType: "pageview", page: window.location.pathname });
     }
   }, []);
-  // ------------------------------
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -107,7 +104,6 @@ const App = () => {
     <>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
 
-      {/* BACKGROUND GLOBAL: Diset ke GELAP (neutral-900) agar jika ada celah, warnanya hitam, bukan putih */}
       <div className={`antialiased transition-colors duration-300 min-h-screen bg-neutral-900 
         ${theme === 'dark' 
           ? 'text-neutral-100 selection:bg-cyan-500 selection:text-white' 
@@ -146,7 +142,6 @@ const App = () => {
                         <div id="about"><About lang={lang}/></div>
                         <div id="skills"><Skills lang={lang}/></div> 
                         <div id="education"><Education lang={lang}/></div>
-                        {/* Projects sudah terintegrasi dengan Event Like GA4 */}
                         <div id="projects"><Projects lang={lang}/></div>
                         <div id="services"><Services lang={lang}/></div>
                         <div id="timeline"><TimelineGallery lang={lang}/></div>
@@ -154,7 +149,6 @@ const App = () => {
                         <div id="dedication"><Dedication lang={lang}/></div>
                         <div id="testimonials"><Testimonials lang={lang}/></div>
                     </div>
-
                     
                     <AnimatedWave theme={theme} />
                 </div>
@@ -169,15 +163,38 @@ const App = () => {
                          <Contact lang={lang} />
                       </div>
 
-                      {/* --- FITUR BARU 1: GISCUS KOMENTAR --- */}
-                      {/* Kita oper props 'theme' agar giscus ikut mode gelap/terang */}
+                      {/* GISCUS KOMENTAR */}
                       <div className="w-full z-10 mt-10 mb-10">
                         <GiscusComments theme={theme} />
                       </div>
                       
-                      {/* --- FITUR BARU 2: SPOTIFY WIDGET --- */}
-                      <div className="w-full z-10 flex justify-center mb-12">
-                         <SpotifyCard />
+                      {/* --- WIDGET AREA (MODULAR BENTO GRID) --- */}
+                      <div className="w-full max-w-5xl mx-auto z-10 mb-24 px-4">
+                        <motion.h3 
+                            initial={{ opacity: 0, y: -10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-2xl font-bold text-center mb-10 text-neutral-200"
+                        >
+                            My <span className="text-amber-600 dark:text-cyan-400">Digital</span> Space
+                        </motion.h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            {/* Kolom Kiri: Spotify & YouTube */}
+                            <div className="md:col-span-5 flex flex-col gap-6">
+                                <div className="h-[180px]">
+                                    <SpotifyCard />
+                                </div>
+                                <div className="h-[160px]">
+                                    <YouTubeCard />
+                                </div>
+                            </div>
+
+                            {/* Kolom Kanan: AI Art Generator */}
+                            <div className="md:col-span-7 min-h-[360px]">
+                                <AiArtCard />
+                            </div>
+                        </div>
                       </div>
                       
                       {/* Footer (Copyright) */}
