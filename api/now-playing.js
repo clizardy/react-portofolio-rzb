@@ -1,14 +1,18 @@
 import querystring from 'querystring';
 
+// 1. Ambil data dari Environment Variable & Ubah nama variabelnya agar sesuai logika bawah
 const {
-  SPOTIFY_CLIENT_ID:cb6234c185d94285a8ce4de3c58f4b99,
-  SPOTIFY_CLIENT_SECRET:9fb4d4d6332a4625b85c6f6291bd8cc5,
-  SPOTIFY_REFRESH_TOKEN:AQBrLokmTzdPQtcrQ0o53Buv3sAg1suQXIyYigfF2Hyt8ZuCZcxAfhNbz74cbq08N2L3NiZ1Dj5Zw1pQ-6uPUi3x4Daov9_TpsXDXhjCxIPzRlszsMpX4H38lWz_F6MN98I,
+  SPOTIFY_CLIENT_ID: client_id,
+  SPOTIFY_CLIENT_SECRET: client_secret,
+  SPOTIFY_REFRESH_TOKEN: refresh_token,
 } = process.env;
 
+// 2. Encode Basic Auth
 const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
+
+// 3. Gunakan Endpoint Resmi Spotify
 const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
-const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played?limit=1`; // Endpoint baru
+const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played?limit=1`; 
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
 const getAccessToken = async () => {
@@ -28,7 +32,16 @@ const getAccessToken = async () => {
 };
 
 export default async function handler(req, res) {
+  // Cek apakah token tersedia di env
+  if (!client_id || !client_secret || !refresh_token) {
+      return res.status(500).json({ error: 'Environment variables are missing' });
+  }
+
   const { access_token } = await getAccessToken();
+
+  if (!access_token) {
+      return res.status(500).json({ error: 'Failed to get access token' });
+  }
 
   // 1. Cek lagu yang sedang diputar
   const nowPlayingResponse = await fetch(NOW_PLAYING_ENDPOINT, {

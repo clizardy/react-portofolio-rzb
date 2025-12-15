@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaSpotify, FaPlay, FaPause, FaMusic } from "react-icons/fa";
-import { SiSpotify } from "react-icons/si"; // Icon brand lebih akurat
+import { FaPlay, FaPause } from "react-icons/fa";
+import { SiSpotify } from "react-icons/si"; 
 import { motion } from "framer-motion";
 
 const SpotifyCard = () => {
@@ -8,19 +8,30 @@ const SpotifyCard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/now-playing')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    const fetchNowPlaying = () => {
+        fetch('/api/now-playing')
+          .then((res) => res.json())
+          .then((data) => {
+            setData(data);
+            setLoading(false);
+          })
+          .catch(() => setLoading(false));
+    };
+
+    // 1. Ambil data saat pertama kali load
+    fetchNowPlaying();
+
+    // 2. Auto-refresh setiap 5 detik (Real-time update)
+    const intervalId = setInterval(fetchNowPlaying, 5000);
+
+    // 3. Bersihkan timer saat pindah halaman
+    return () => clearInterval(intervalId);
   }, []);
 
   const isPlaying = data?.isPlaying;
   const defaultImage = "https://i.scdn.co/image/ab67616d0000b27350185c875035e2be130f5199";
 
-  // State Loading Skeleton
+  // Skeleton Loading
   if (loading) {
     return (
       <div className="w-full h-full bg-neutral-100 dark:bg-neutral-900/50 rounded-3xl p-5 border border-neutral-200 dark:border-white/5 animate-pulse flex flex-col justify-between">
@@ -46,7 +57,7 @@ const SpotifyCard = () => {
         bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10
         shadow-lg dark:shadow-none hover:shadow-green-500/20 dark:hover:shadow-green-900/20 transition-all duration-300"
     >
-      {/* Background Blur Image (Ambient Mode) */}
+      {/* Background Blur */}
       <div 
         className="absolute inset-0 opacity-[0.05] dark:opacity-[0.15] group-hover:opacity-20 transition-opacity duration-700 pointer-events-none"
         style={{
@@ -57,7 +68,7 @@ const SpotifyCard = () => {
         }}
       ></div>
 
-      {/* Header: Icon & Visualizer */}
+      {/* Header */}
       <div className="relative z-10 flex justify-between items-start">
         <div className="bg-green-100 dark:bg-green-500/20 p-2 rounded-full text-green-600 dark:text-green-400">
             <SiSpotify className="text-xl" />
@@ -76,7 +87,7 @@ const SpotifyCard = () => {
         )}
       </div>
 
-      {/* Content: Album & Text */}
+      {/* Content */}
       <div className="relative z-10 flex items-center gap-4 mt-4">
         <div className="relative w-16 h-16 flex-shrink-0">
             <img 

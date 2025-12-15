@@ -24,7 +24,7 @@ const YouTubeCard = () => {
         bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10
         shadow-lg dark:shadow-none hover:shadow-red-500/20 dark:hover:shadow-red-900/20 transition-all duration-300"
     >
-       {/* Background Blur Image */}
+       {/* Background Blur */}
        <div 
         className="absolute inset-0 opacity-[0.05] dark:opacity-[0.15] group-hover:opacity-20 transition-opacity duration-700 pointer-events-none"
         style={{
@@ -35,6 +35,7 @@ const YouTubeCard = () => {
         }}
       ></div>
 
+      {/* Header */}
       <div className="relative z-10 flex justify-between items-start">
          <div className="bg-red-100 dark:bg-red-500/20 p-2 rounded-full text-red-600 dark:text-red-400">
             <FaYoutube className="text-xl" />
@@ -44,6 +45,7 @@ const YouTubeCard = () => {
          </span>
       </div>
 
+      {/* Content */}
       <div className="relative z-10 flex items-center gap-4 mt-2">
          <div className="relative w-20 h-[45px] flex-shrink-0 rounded-lg overflow-hidden shadow-sm">
              <img src={data.thumbnail} alt="Thumb" className="w-full h-full object-cover" />
