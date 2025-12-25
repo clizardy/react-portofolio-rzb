@@ -66,18 +66,22 @@ const Organization = ({ lang }) => {
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
-        className="mt-20 mb-4 text-center text-4xl font-bold text-amber-600 dark:text-amber-200">
+        className="mt-20 mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         {lang === 'id' ? "Pengalaman Organisasi" : "Organization Experience"}
       </motion.h2>
 
       {/* ================= SEKSI 1: SISPALA ================= */}
       
-      {/* Subjudul 1 */}
+{/* Subjudul 1 */}
       <motion.p
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-center text-lg text-amber-600 dark:text-amber-200 mb-20 tracking-wide italic"
+        className="text-center text-lg mb-20 tracking-wide italic
+                   text-slate-700 
+                   dark:text-cyan-200 
+                   dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]
+                   dark:shadow-cyan-500/50"
       >
         STIGMAPA: SMA Negeri 3 Magelang Pecinta Alam
       </motion.p>
@@ -148,7 +152,11 @@ const Organization = ({ lang }) => {
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-center text-lg text-amber-600 dark:text-amber-200 mt-10 mb-20 tracking-wide italic"
+        className="text-center text-lg mb-20 tracking-wide italic
+                   text-slate-700 
+                   dark:text-cyan-200 
+                   dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]
+                   dark:shadow-cyan-500/50"
       >
         Quinta Chamber:  Band & Choir
       </motion.p>

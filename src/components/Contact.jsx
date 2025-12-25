@@ -51,7 +51,6 @@ const Contact = ({ lang }) => {
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/20 dark:bg-cyan-500/20 rounded-full blur-[100px] -z-10"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -z-10"></div>
         {/* 1. Cyber Grid Pattern (Jaring Halus) */}
-        <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
       {/* 2. Glowing Orb Kiri (Ungu) */}
       <motion.div 
@@ -83,7 +82,7 @@ const Contact = ({ lang }) => {
             <h2 className='text-4xl md:text-5xl font-bold text-neutral-100 dark:text-white mb-4'>
                 {lang === 'id' ? "Mari Terhubung" : "Let's Connect"}
             </h2>
-            <p className="text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto">
+            <p className="text-neutral-400 dark:text-neutral-400 max-w-xl mx-auto">
                 {lang === 'id' 
                  ? "Punya ide proyek atau ingin sekadar menyapa? Saya selalu terbuka untuk diskusi baru." 
                  : "Have a project in mind or just want to say hi? I'm always open to discussing new ideas."}
@@ -181,7 +180,7 @@ const Contact = ({ lang }) => {
                         whileTap={{ scale: 0.98 }}
                         type="submit" 
                         disabled={isSending}
-                        className="mt-2 py-4 px-8 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold text-lg shadow-lg hover:shadow-amber-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="mt-2 py-4 px-8 rounded-xl bg-gradient-to-r from-amber-500 to-orange-700 dark:from-cyan-400 to-blue-500 text-white font-bold text-lg shadow-lg hover:shadow-amber-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                         {isSending ? (
                             <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -200,9 +199,7 @@ const Contact = ({ lang }) => {
   )
 }
 
-// --- KOMPONEN KECIL (HELPER COMPONENTS) ---
-
-// 1. Kartu Info Kontak (Agar kodingan rapi)
+// Kartu Info Kontak (Agar kodingan rapi)
 const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction }) => (
     <motion.div 
         whileHover={{ y: -5 }}
@@ -237,7 +234,7 @@ const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction 
     </motion.div>
 );
 
-// 2. Input Group (Label + Input)
+// Input Group (Label + Input)
 const InputGroup = ({ label, name, type, value, onChange, placeholder }) => (
     <div className="flex flex-col gap-2">
         <label className="text-sm font-bold text-neutral-600 dark:text-neutral-400 ml-1">

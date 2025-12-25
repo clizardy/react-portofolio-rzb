@@ -196,14 +196,14 @@ const Projects = ({ lang }) => {
 
   return (
     <div id="projects" className="border-b border-neutral-800 dark:border-neutral-200 py-16 relative">
-      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-10 text-center text-4xl font-bold text-amber-600 dark:text-amber-200">
+      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         {lang === 'id' ? "Proyek" : "Projects"}
       </motion.h2>
 
       {/* FILTER BUTTONS */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         {CATEGORIES.map((cat) => (
-          <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 border ${activeCategory === cat ? "bg-amber-600 dark:bg-cyan-600 text-white border-amber-600 dark:border-cyan-600 shadow-lg scale-105" : "bg-transparent text-neutral-900 dark:text-amber-100 border-neutral-900 dark:border-neutral-100 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"}`}>
+          <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 border ${activeCategory === cat ? "bg-amber-600 dark:bg-cyan-600 text-white border-amber-600 dark:border-cyan-600 shadow-lg scale-105" : "bg-transparent text-neutral-900 dark:text-neutral-100 border-neutral-900 dark:border-neutral-100 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"}`}>
             {CATEGORY_TRANSLATIONS[cat][lang]}
           </button>
         ))}

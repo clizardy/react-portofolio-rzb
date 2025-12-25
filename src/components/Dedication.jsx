@@ -31,7 +31,7 @@ const Dedication = ({ lang }) => {
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
-        className="my-12 text-center text-4xl font-bold text-amber-600 dark:text-amber-200"
+        className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
         {t.title}
       </motion.h2>
@@ -84,7 +84,7 @@ const Dedication = ({ lang }) => {
                 </p>
             </div>
 
-            <p className="mt-8 text-cyan-600 dark:text-cyan-300 font-script text-xl font-semibold">
+            <p className="mt-8 bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-600 dark:from-cyan-200 dark:to-blue-600 font-script text-md font-semibold">
                 - Ronald Zuni Bachtiar
             </p>
         </motion.div>

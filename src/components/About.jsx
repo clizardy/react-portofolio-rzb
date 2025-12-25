@@ -63,8 +63,8 @@ const About = ({ lang }) => {
   };
 
   return (
-    <div id="about" className="border-b border-neutral-800 dark:border-neutral-200 pb-4">
-      <h2 className="my-10 text-center text-4xl font-bold text-amber-600 dark:text-amber-200">
+    <div id="about">
+      <h2 className="my-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         {t.title}
       </h2>
       
@@ -135,7 +135,7 @@ const About = ({ lang }) => {
                         <FaGraduationCap className="text-amber-500 dark:text-cyan-400 text-xl" />
                         <h4 className="font-bold text-neutral-900 dark:text-white">{t.eduTitle}</h4>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-700 dark:text-slate-300">
                         {t.eduDesc} <span className="text-amber-600 dark:text-cyan-400">{t.eduSchool}</span>
                     </p>
                     <p className="text-xs text-neutral-500 mt-1">
@@ -149,7 +149,7 @@ const About = ({ lang }) => {
                         <FaCode className="text-amber-500 dark:text-cyan-400 text-xl" />
                         <h4 className="font-bold text-neutral-900 dark:text-white">{t.techTitle}</h4>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-700 dark:text-slate-300">
                         {t.techDesc}
                     </p>
                     <p className="text-xs text-neutral-500 mt-1">
@@ -163,7 +163,7 @@ const About = ({ lang }) => {
                         <FaHiking className="text-amber-500 dark:text-cyan-400 text-xl" />
                         <h4 className="font-bold text-neutral-900 dark:text-white">{t.hobbyTitle}</h4>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-700 dark:text-slate-300">
                         {t.hobbyDesc}
                     </p>
                 </div>
@@ -174,7 +174,7 @@ const About = ({ lang }) => {
                         <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                         <h4 className="font-bold text-neutral-900 dark:text-white">{t.statusTitle}</h4>
                     </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-neutral-700 dark:text-slate-300">
                         {t.statusDesc}
                     </p>
                 </div>

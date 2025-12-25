@@ -8,11 +8,11 @@ import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
 
 const container = (delay) => ({
-  hidden: { x: -100, opacity: 0 },
+  hidden: { x: -50, opacity: 0 },
   visible: {
     x: 0,
     opacity: 1,
-    transition: { duration: 1, delay },
+    transition: { duration: 0.5, delay },
   },
 });
 
@@ -20,17 +20,17 @@ const Hero = ({ lang }) => {
   const t = TRANSLATIONS[lang ? lang : 'en']?.hero || TRANSLATIONS['en'].hero;
 
   const sequenceEn = [
-    'Freelancer', 1500,
-    'Digital Creator', 1500,
-    'Musician', 1500,
-    'Professional Project Manager', 1500
+    'Freelancer', 1000,
+    'Digital Creator', 1000,
+    'Musician', 1000,
+    'Professional Project Manager', 1000
   ];
 
   const sequenceId = [
-    'Pekerja Lepas', 1500,
-    'Kreator Digital', 1500,
-    'Musisi', 1500,
-    'Manajer Proyek Profesional', 1500
+    'Pekerja Lepas', 1000,
+    'Kreator Digital', 1000,
+    'Musisi', 1000,
+    'Manajer Proyek Profesional', 1000
   ];
 
   return (
@@ -63,7 +63,7 @@ const Hero = ({ lang }) => {
             </RevealText>
 
             <motion.div
-              variants={container(0.5)}
+              variants={container(0.2)}
               initial="hidden"
               animate="visible"
               className="h-16 lg:h-20"
@@ -80,7 +80,7 @@ const Hero = ({ lang }) => {
             </motion.div>
 
             <motion.p
-              variants={container(1)}
+              variants={container(0.4)}
               initial="hidden"
               animate="visible"
               className="my-2 py-6 max-w-xl font-light tracking-tighter text-center lg:text-left text-neutral-700 dark:text-neutral-300"
@@ -88,44 +88,35 @@ const Hero = ({ lang }) => {
               {t.desc}
             </motion.p>
 
-            {/* --- GROUP TOMBOL MAGNETIK --- */}
+            {/* --- GROUP TOMBOL --- */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.4 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-wrap gap-4 mt-6 justify-center lg:justify-start items-center"
             >
-              {/* 1. Tombol Portfolio (Magnetic) */}
               <a href="#projects">
                   <MagneticButton className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-600 to-blue-700 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
                     {t.btnPortfolio}
                   </MagneticButton>
               </a>
-              
-              {/* 2. Tombol Kontak (Magnetic) */}
               <a href="#contact">
                   <MagneticButton className="px-6 py-3 rounded-full border border-neutral-400 dark:border-neutral-500 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
                     {t.btnContact}
                   </MagneticButton>
               </a>
-
-              {/* 3. Tombol Download CV (Magnetic + Shine) */}
               <a href={cvFile} download="Ronald_Zuni_CV.pdf"> 
                   <MagneticButton className="group relative px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2">
-                    {/* Efek Kilatan Cahaya */}
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
-                    
-                    {/* Teks & Icon */}
                     <span>{t.btnCv}</span>
                     <FaDownload className="transition-transform group-hover:translate-y-1" />
                   </MagneticButton>
               </a>
-
             </motion.div>
           </div>
         </div>
 
-        {/* BAGIAN KANAN (GAMBAR + GLOW) - Tidak Berubah */}
+        {/* BAGIAN KANAN - Perbaikan Render Berat */}
         <div className="w-full lg:w-1/2 lg:p-8 mt-16 lg:mt-0">
           <div className="flex justify-center relative group z-10"> 
             
@@ -133,7 +124,8 @@ const Hero = ({ lang }) => {
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    className={`w-[200%] h-[200%] absolute top-[-50%] left-[-50%]
+                    // HAPUS CLASS 'gpu-optimized' AGAR TIDAK BERAT
+                    className={`w-[200%] h-[200%] absolute top-[-50%] left-[-50%] 
                       bg-[conic-gradient(from_0deg_at_50%_50%,#f59e0b_0deg,#ea580c_90deg,#fbbf24_180deg,#f59e0b_360deg)]
                       dark:bg-[conic-gradient(from_0deg_at_50%_50%,#06b6d4_0deg,#3b82f6_90deg,#67e8f9_180deg,#06b6d4_360deg)]
                     `}
@@ -143,16 +135,23 @@ const Hero = ({ lang }) => {
             <div className="absolute inset-1 rounded-3xl z-[-2] blur-xl bg-gradient-to-tr from-amber-100 via-orange-300 to-amber-500 dark:from-cyan-900 dark:via-blue-800 dark:to-purple-900 opacity-40"></div>
 
             <motion.div
-              initial={{ x: 100, opacity: 0 }}
+              initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl p-2 lg:p-3"
+              transition={{ duration: 0.8 }}
+              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl p-2 lg:p-3 w-full"
             >
-              <img
-                src={profilePic}
-                alt="Ronald Zuni Bachtiar"
-                className="w-full h-auto object-cover rounded-2xl"
-              />
+              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                  <img
+                    src={profilePic}
+                    alt="Ronald Zuni Bachtiar"
+                    width="600" 
+                    height="800"
+                    // TAMBAHAN PENTING:
+                    loading="eager"        // Load SEKARANG JUGA
+                    fetchPriority="high"   // Prioritas TERTINGGI
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+              </div>
             </motion.div>
           </div>
         </div>

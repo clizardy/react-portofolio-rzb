@@ -1,3 +1,6 @@
+import collage from "../assets/collage.jpg";
+import senior from "../assets/senior.jpg";
+import junior from "../assets/junior.jpg";
 import project1 from "../assets/projects/project-1.jpg";
 import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
@@ -15,8 +18,32 @@ If you really want to contact me, you can contact on the number bellow!
 Nice to meet you! :)`;
 
 export const EXPERIENCES = [
+
+  {
+    year: { en: "2018 - 2021", id: "2018 - 2021" }, 
+    image: junior,
+    role: { en: "Student", id: "Pelajar" },
+    company: { en: "Junior High School 2 Magelang City", id: "SMP Negeri 2 Kota Magelang" },
+    description: { 
+      en: "Actively explored various fields, ranging from music performance with keyboards to introduction to robotics using Arduino. Built strong administrative and presentation skills through Microsoft applications.", 
+      id: "Secara aktif mengeksplorasi berbagai bidang, mulai dari pertunjukan musik dengan keyboard hingga pengenalan robotika menggunakan Arduino. Membangun keterampilan administrasi dan presentasi yang kuat melalui aplikasi Microsoft."
+    },
+    technologies: ["Drone", "Keyboard", "Microsoft", "Arduino"],
+  },
+  {
+    year: { en: "2021 - 2024", id: "2021 - 2024" }, 
+    image: senior,
+    role: { en: "Science Department", id: "Jurusan IPA" },
+    company: { en: "Senior High School 3 Magelang City", id: "SMA Negeri 3 Kota Magelang" },
+    description: { 
+      en: "I learned about many things from the world of music, but I also upgrade my videography and photography skils.", 
+      id: "Saya belajar banyak hal dari dunia musik, tetapi saya juga meningkatkan keterampilan videografi dan fotografi saya." 
+    },
+    technologies: ["Mirrorless", "Guitar", "Adobe Lightroom", "Canva", "Filmora"],
+  },
   {
     year: { en: "2024 - Present", id: "2024 - Sekarang" },
+    image: collage,
     role: { en: "Information Technology", id: "Teknologi Informasi" },
     company: { en: "Tidar University", id: "Universitas Tidar" },
     description: { 
@@ -24,19 +51,6 @@ export const EXPERIENCES = [
       id: "Saya sedang belajar menjadi programmer/pengembang yang baik dari dasar-dasarnya, dan juga meningkatkan keterampilan saya sebelumnya."
     },
     technologies: ["Adobe Premier Pro", "Adobe Photoshop", "Davinci Resolve", "Bass", "Drum"],
-  },
-  {
-    // --- PERBAIKAN DISINI ---
-    // Ubah dari string biasa menjadi object { en: "...", id: "..." }
-    year: { en: "2021 - 2024", id: "2021 - 2024" }, 
-    
-    role: { en: "Science Department", id: "Jurusan IPA" },
-    company: { en: "High School 3 Magelang City", id: "SMA Negeri 3 Kota Magelang" },
-    description: { 
-      en: "I learned about many things from the world of music, but I also upgrade my videography and photography skils.", 
-      id: "Saya belajar banyak hal dari dunia musik, tetapi saya juga meningkatkan keterampilan videografi dan fotografi saya." 
-    },
-    technologies: ["Keyboard", "Guitar", "Adobe Lightroom", "Canva", "Filmora", "Arduino"],
   },
   // {
   //   year: "2021 - 2022",

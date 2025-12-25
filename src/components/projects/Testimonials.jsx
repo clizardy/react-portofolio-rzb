@@ -76,7 +76,7 @@ const Testimonials = ({ lang }) => {
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
-        className="my-12 text-center text-4xl font-bold text-amber-600 dark:text-amber-200"
+        className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
         {/* Opsional: Judul juga bisa diganti bahasanya */}
         {lang === 'id' ? "Apa Kata Mereka?" : "What Did They Say?"}

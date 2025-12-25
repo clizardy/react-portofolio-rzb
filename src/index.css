@@ -4,10 +4,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* BASE STYLES */
 :root {
-    font-family:  'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
+  --sb-track: #f8fafc;
+  --sb-thumb: #cbd5e1;
+  --sb-border: #f8fafc;
+  --sb-hover: #d97706;
+}
+
+.dark {
+  --sb-track: #020617;
+  --sb-thumb: #334155;
+  --sb-border: #020617;
+  --sb-hover: #06b6d4;
 }
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sb-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--sb-thumb);
+  border-radius: 10px;
+  border: 2px solid var(--sb-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--sb-hover);
+}
+
+/* ANIMASI */
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(100%) skewX(-12deg); }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite linear;
 }

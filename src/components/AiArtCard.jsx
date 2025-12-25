@@ -28,10 +28,13 @@ const AiArtCard = () => {
   };
 
   return (
+    
     <motion.div 
         whileHover={{ scale: 1.005 }}
         className="relative h-full w-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 flex flex-col justify-between overflow-hidden shadow-lg dark:shadow-none hover:border-purple-500/30 transition-all duration-300 group"
     >
+
+        
         {/* Glow Background Ungu */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-purple-500/20 transition-colors duration-500"></div>
 
@@ -49,7 +52,7 @@ const AiArtCard = () => {
         </div>
 
         {/* Canvas Area */}
-        <div className="relative flex-1 bg-neutral-50 dark:bg-black/40 rounded-2xl border border-neutral-200 dark:border-white/5 overflow-hidden flex items-center justify-center mb-5 group-hover:shadow-inner transition-all">
+        <div className="relative flex-1 h-32 min-h-[128px] bg-neutral-50 dark:bg-black/40 rounded-2xl border border-neutral-200 dark:border-white/5 overflow-hidden flex items-center justify-center mb-5 group-hover:shadow-inner transition-all">
             {loading ? (
                 <div className="flex flex-col items-center gap-3 text-purple-500">
                     <motion.div 

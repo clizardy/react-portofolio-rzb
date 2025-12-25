@@ -68,7 +68,7 @@ const SidebarMenu = ({ lang }) => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className="fixed top-6 right-6 z-50 p-3 rounded-full bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md shadow-lg border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-white cursor-pointer transition-colors hover:bg-amber-500 hover:text-white dark:hover:bg-cyan-600"
+        className="fixed top-6 right-6 z-50 p-2 text-neutral-900 dark:text-white cursor-pointer transition-colors hover:text-amber-600 dark:hover:text-cyan-400 drop-shadow-md"
       >
         <HiMenuAlt3 size={28} />
       </motion.button>
@@ -95,7 +95,7 @@ const SidebarMenu = ({ lang }) => {
               
               {/* HEADER */}
               <div className="flex items-center justify-between mb-6 border-b border-neutral-200 dark:border-neutral-800 pb-4">
-                <h3 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-cyan-400 dark:to-blue-600 bg-clip-text text-transparent">
+                <h3 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-cyan-200 dark:to-blue-500 bg-clip-text text-transparent">
                     {lang === 'id' ? "Menu Cepat" : "Quick Access"}
                 </h3>
                 <button
@@ -117,7 +117,7 @@ const SidebarMenu = ({ lang }) => {
                     onClick={() => scrollToSection(item.id)}
                     className="flex items-center gap-4 p-3 rounded-xl text-left text-neutral-600 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-cyan-900/30 hover:text-amber-700 dark:hover:text-cyan-400 transition-all duration-300 group"
                   >
-                    <span className="text-xl text-amber-500 dark:text-cyan-500 group-hover:scale-110 transition-transform">
+                    <span className="text-xl text-amber-500 dark:text-cyan-300 group-hover:scale-110 transition-transform">
                         {item.icon}
                     </span>
                     <span className="font-medium text-sm">
@@ -157,13 +157,13 @@ const SidebarMenu = ({ lang }) => {
   );
 };
 
-// Komponen Kecil untuk Tombol Sosmed
+// Tombol Sosmed
 const SocialBtn = ({ icon, href, color }) => (
     <a 
         href={href} 
         target="_blank" 
         rel="noreferrer"
-        className={`p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 ${color} hover:scale-110 hover:bg-white dark:hover:bg-neutral-700 shadow-sm transition-all duration-300 text-lg`}
+        className={`p-3 rounded-full bg-neutral-200 dark:bg-neutral-800 ${color} hover:scale-110 hover:bg-white dark:hover:bg-neutral-700 shadow-sm transition-all duration-300 text-lg`}
     >
         {icon}
     </a>
