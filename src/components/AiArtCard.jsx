@@ -34,7 +34,6 @@ const AiArtCard = () => {
         className="relative h-full w-full bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 flex flex-col justify-between overflow-hidden shadow-lg dark:shadow-none hover:border-purple-500/30 transition-all duration-300 group"
     >
 
-        
         {/* Glow Background Ungu */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-purple-500/20 transition-colors duration-500"></div>
 

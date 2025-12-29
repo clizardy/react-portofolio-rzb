@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from "react"; 
 import { Toaster } from "react-hot-toast"; 
-import { AnimatePresence } from "framer-motion"; // Import motion HANYA untuk AnimatePresence Preloader
+import { AnimatePresence } from "framer-motion"; 
 import Lenis from 'lenis';
 import ReactGA from "react-ga4"; 
 
@@ -18,9 +18,12 @@ import GiscusComments from "./components/GiscusComments";
 import SpotifyCard from "./components/SpotifyCard";       
 import YouTubeCard from "./components/YouTubeCard";
 import AiArtCard from "./components/AiArtCard";
+import MagicCard from "./components/MagicCard";
 
 // IMPORT HALAMAN
+import ParticleBackground from './components/ParticleBackground';
 import Navbar from './components/Navbar';
+import CommandPalette from "./components/CommandPalette";
 import Hero from './components/Hero';
 import Marquee from "./components/Marquee";
 import About from './components/About';
@@ -32,9 +35,8 @@ import Organization from './components/projects/Organization';
 import Dedication from './components/Dedication';
 import Testimonials from './components/projects/Testimonials'; 
 import Contact from './components/Contact';
+import Terminal from "./components/Terminal";
 
-// --- KOMPONEN GELOMBANG (VERSI CSS MURNI - ANTI CRASH) ---
-// Kita HAPUS dependency ke 'framer-motion' di dalam komponen ini
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
 
 const AnimatedWave = ({ theme }) => {
@@ -42,7 +44,6 @@ const AnimatedWave = ({ theme }) => {
 
   return (
     <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 z-20 pointer-events-none">
-       {/* CSS Animasi Manual */}
        <style>{`
          @keyframes waveMove {
            0% { transform: translateX(0); }
@@ -54,7 +55,6 @@ const AnimatedWave = ({ theme }) => {
        `}</style>
 
        <svg className="relative block w-[200%] h-[80px] md:h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          {/* PERBAIKAN: Gunakan tag <path> biasa (HTML), bukan motion.path */}
           <path
             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
             fill={waveColor}
@@ -97,7 +97,6 @@ const App = () => {
       touchMultiplier: 2,
     });
     
-    // Matikan scroll saat loading agar user tidak scroll ke bawah saat layar masih hitam
     if (isLoading) lenis.stop();
     else lenis.start();
 
@@ -109,24 +108,94 @@ const App = () => {
     return () => lenis.destroy();
   }, [isLoading]); 
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+// --- LOGIC VIEW TRANSITION YANG BENAR ---
+  const toggleTheme = (e) => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+
+    // 1. Cek dukungan browser. Kalau tidak dukung (Firefox/Safari), ganti biasa.
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    // 2. Mulai Transisi
+    document.startViewTransition(() => {
+      // A. Update State React
+      setTheme(newTheme);
+      
+      // B. PAKSA UPDATE CLASS DOM DISINI (JANGAN TUNGGU USEEFFECT)
+      // Ini kuncinya supaya animasi jalan!
+      const root = window.document.documentElement;
+      if (newTheme === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    });
+  };
+  
   const toggleLanguage = () => setLang((prevLang) => (prevLang === "en" ? "id" : "en"));
   const handleLoadComplete = () => setIsLoading(false);
 
   useEffect(() => {
-     // Timer loading 2.5 detik
      const timer = setTimeout(() => setIsLoading(false), 2500); 
      return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
+<style>{`
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.4s; /* Harus cepat biar efek glitch dapet */
+        animation-timing-function: steps(4); /* Gerakan patah-patah ala glitch */
+        mix-blend-mode: normal;
+      }
 
-      {/* 1. PRELOADER */}
+      /* TEMA LAMA: Diam saja */
+      ::view-transition-old(root) {
+        z-index: 1;
+        animation: none;
+      }
+
+      /* TEMA BARU: Muncul dengan efek rusak */
+      ::view-transition-new(root) {
+        z-index: 2;
+        animation-name: glitchIntro;
+      }
+
+      @keyframes glitchIntro {
+        0% {
+          clip-path: inset(100% 0 0 0); /* Belum muncul */
+        }
+        20% {
+          clip-path: inset(20% 0 60% 0); /* Potongan atas */
+        }
+        40% {
+          clip-path: inset(60% 0 10% 0); /* Potongan bawah */
+        }
+        60% {
+          clip-path: inset(0 0 40% 0); /* Setengah atas */
+        }
+        80% {
+          clip-path: inset(20% 0 0 0); /* Hampir full */
+        }
+        100% {
+          clip-path: inset(0 0 0 0); /* Full layar */
+        }
+      }
+    `}</style>
+      <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
       <AnimatePresence mode="wait">
         {isLoading && <Preloader key="preloader" onComplete={handleLoadComplete} />}
       </AnimatePresence>
+
+      <CommandPalette 
+      theme={theme} 
+      toggleTheme={toggleTheme} 
+      lang={lang}                
+      toggleLanguage={toggleLanguage} 
+      />
 
       {/* 2. WEBSITE UTAMA */}
       <div 
@@ -135,16 +204,12 @@ const App = () => {
           ? 'text-neutral-100 selection:bg-cyan-500 selection:text-white' 
           : 'text-neutral-900 selection:bg-amber-500 selection:text-white'}`}
         
-        // --- LOGIC CLS FIX ---
-        // Opacity 0: User tidak lihat isinya (karena tertutup preloader).
-        // Tapi elemennya SUDAH RENDER (ada di DOM).
-        // Saat isLoading jadi false, Opacity jadi 1 (Fade In). Posisi tidak bergeser sama sekali.
         style={{ 
             opacity: isLoading ? 0 : 1, 
             transition: 'opacity 0.5s ease-in-out'
         }}
       >
-        
+        <Terminal />    
         <ScrollProgress />
         <CustomCursor theme={theme} />
         <SidebarMenu lang={lang} />
@@ -153,16 +218,19 @@ const App = () => {
             
             <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none">
                 {theme === 'dark' ? (
-                    <div className="h-full w-full bg-cyan-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
+                    <div className="h-full w-full bg-sky-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
                 ) : (
                     <div className="h-full w-full bg-neutral-200 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
                 )}
             </div>
 
-            <div id="hero" className="container mx-auto px-4 md:px-8 relative">
-                <Navbar toggleTheme={toggleTheme} theme={theme} toggleLanguage={toggleLanguage} lang={lang} />
-                <Hero lang={lang} /> 
-            </div>
+        <ParticleBackground theme={theme} />
+
+        {/* 3. KONTEN WEBSITE */}
+        <div id="hero" className="container mx-auto px-4 md:px-8 relative z-10">
+            <Navbar toggleTheme={toggleTheme} theme={theme} toggleLanguage={toggleLanguage} lang={lang} />
+            <Hero lang={lang} />
+        </div>
 
             <div className="w-full">
                 <Marquee />
@@ -184,7 +252,6 @@ const App = () => {
                 <div id="testimonials"><Testimonials lang={lang}/></div>
             </div>
             
-            {/* WAVE VERSI BARU (CSS MURNI) */}
             <AnimatedWave theme={theme} />
         </div>
 
@@ -194,9 +261,12 @@ const App = () => {
               <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
               <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-16">
+                <MagicCard>
                   <Contact lang={lang} />
+                </MagicCard> 
               </div>
 
+            
               <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
@@ -207,25 +277,32 @@ const App = () => {
                                 {lang === 'id' ? "Diskusi & Komentar" : "Discussion"}
                             </h3>
                             <div className="min-h-[300px]">
+                                <MagicCard>
                                 <GiscusComments theme={theme} />
+                                </MagicCard>
                             </div>
                         </div>
                     </div>
 
                     <div className="lg:col-span-5 flex flex-col gap-6">
                         <div className="w-full">
+                            <MagicCard>
                             <AiArtCard />
+                            </MagicCard>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="h-full min-h-[160px]">
+                                <MagicCard>
                                 <SpotifyCard />
+                                </MagicCard>
                             </div>
                             <div className="h-full min-h-[160px]">
+                                <MagicCard>
                                 <YouTubeCard />
+                                </MagicCard>
                             </div>
                         </div>
-
                     </div>
 
                 </div>

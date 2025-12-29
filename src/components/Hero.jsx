@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import { TRANSLATIONS } from "../constants/translations";
 import profilePic from "../assets/ronald-rzb-Profile.jpg";
 import { motion } from "framer-motion";
 import { TypeAnimation } from 'react-type-animation';
 import { FaDownload } from "react-icons/fa"; 
+import OklchGradientText from "../components/OklchGradientText";
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
@@ -15,6 +17,37 @@ const container = (delay) => ({
     transition: { duration: 0.5, delay },
   },
 });
+
+const ClockWidget = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      {/* Import Font Orbitron dari Google Fonts */}
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');`}
+      </style>
+
+      {/* Jam Besar */}
+      <span 
+        style={{ fontFamily: "'Orbitron'" }} 
+        className="text-2xl lg:text-3xl font-bold tracking-widest text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]"
+      >
+        {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
+      </span>
+      
+      {/* Tanggal Kecil */}
+      <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
+        {time.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' })}
+      </span>
+    </div>
+  );
+};
 
 const Hero = ({ lang }) => {
   const t = TRANSLATIONS[lang ? lang : 'en']?.hero || TRANSLATIONS['en'].hero;
@@ -58,7 +91,7 @@ const Hero = ({ lang }) => {
                 animate="visible"
                 className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
                 >
-                Ronald Zuni Bachtiar
+                <OklchGradientText>Ronald Zuni Bachtiar</OklchGradientText>
                 </motion.h1>
             </RevealText>
 
@@ -116,15 +149,15 @@ const Hero = ({ lang }) => {
           </div>
         </div>
 
-        {/* BAGIAN KANAN - Perbaikan Render Berat */}
+        {/* BAGIAN KANAN */}
         <div className="w-full lg:w-1/2 lg:p-8 mt-16 lg:mt-0">
           <div className="flex justify-center relative group z-10"> 
             
+            {/* Background Glow Berputar */}
             <div className="absolute -inset-1 lg:-inset-2 rounded-3xl z-[-1] blur-2xl opacity-70 group-hover:opacity-100 group-hover:blur-3xl transition-all duration-500 overflow-hidden">
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    // HAPUS CLASS 'gpu-optimized' AGAR TIDAK BERAT
                     className={`w-[200%] h-[200%] absolute top-[-50%] left-[-50%] 
                       bg-[conic-gradient(from_0deg_at_50%_50%,#f59e0b_0deg,#ea580c_90deg,#fbbf24_180deg,#f59e0b_360deg)]
                       dark:bg-[conic-gradient(from_0deg_at_50%_50%,#06b6d4_0deg,#3b82f6_90deg,#67e8f9_180deg,#06b6d4_360deg)]
@@ -146,11 +179,17 @@ const Hero = ({ lang }) => {
                     alt="Ronald Zuni Bachtiar"
                     width="600" 
                     height="800"
-                    // TAMBAHAN PENTING:
-                    loading="eager"        // Load SEKARANG JUGA
-                    fetchPriority="high"   // Prioritas TERTINGGI
+                    loading="eager"
+                    fetchPriority="high"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
+
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
+                                  bg-transparent border border-white/0 
+                                  px-4 shadow-lg min-w-[120px]">
+                      <ClockWidget />
+                  </div>
+
               </div>
             </motion.div>
           </div>

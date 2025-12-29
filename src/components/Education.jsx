@@ -1,5 +1,6 @@
 import { EXPERIENCES } from "../constants"; 
 import { motion } from "framer-motion";
+import OklchGradientText from "../components/OklchGradientText";
 
 const Education = ({ lang }) => {
   const containerVariants = {
@@ -42,7 +43,7 @@ const Education = ({ lang }) => {
             className="my-16 text-center relative z-10"
         >
             <h2 className="text-4xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 mb-4">
-                {lang === 'id' ? "Pendidikan" : "Education"}
+                <OklchGradientText>{lang === 'id' ? "Pendidikan" : "Education"}</OklchGradientText>
             </h2>
             <p className="text-slate-700 dark:text-slate-300 italic max-w-xl mx-auto">
                 {lang === 'id' 

@@ -50,8 +50,8 @@ const BackToTop = ({ theme }) => {
           onClick={scrollToTop}
           className={`fixed bottom-6 right-6 z-40 p-3.5 rounded-full shadow-xl border backdrop-blur-sm transition-all duration-300 group ${
             theme === "dark"
-              ? "bg-neutral-900/80 text-cyan-400 border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-              : "bg-white/80 text-amber-600 border-amber-500/30 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+              ? "bg-sky-950/80 text-cyan-100 border-sky-950/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
+              : "bg-neutral-200/80 text-amber-600 border-neutral-200/30 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
           }`}
         >
           {/* Bungkus Icon dengan motion.div agar bisa dianimasikan terpisah */}

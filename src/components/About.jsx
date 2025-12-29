@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGraduationCap, FaCode, FaHiking, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import OklchGradientText from "./OklchGradientText";
 
 // Import gambar
 import aboutImg1 from "../assets/about-me.jpg";
@@ -63,9 +64,9 @@ const About = ({ lang }) => {
   };
 
   return (
-    <div id="about">
+    <div id="about" className="border-b border-neutral-800 dark:border-neutral-200 pb-4">
       <h2 className="my-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-        {t.title}
+        <OklchGradientText>{t.title}</OklchGradientText>
       </h2>
       
       <div className="flex flex-wrap items-center">

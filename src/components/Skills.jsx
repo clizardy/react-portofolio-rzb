@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode } from "react-icons/fa";
 import { SiAdobelightroom, SiAdobepremierepro } from "react-icons/si";
 import { MdPiano } from "react-icons/md";
+import OklchGradientText from "../components/OklchGradientText";
 
 const iconVariants = (duration) => ({
   initial: { y: -2 },
@@ -97,9 +98,9 @@ const Skills = ({ lang }) => {
             className="text-center mb-8"
         >
             <h2 className="text-3xl md:text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-                {lang === 'id' ? "Keahlian & Keterampilan" : "Skills & Expertise"}
+                <OklchGradientText>{lang === 'id' ? "Keahlian & Keterampilan" : "Skills & Expertise"}</OklchGradientText>
             </h2>
-            <p className="text-slate-700 dark:text-slate-300 mt-2 text-sm max-w-lg mx-auto px-4">
+            <p className="text-slate-700 dark:text-slate-300 mt-2 text-sm max-w-lg mx-auto px-4 underline">
                 {lang === 'id' 
                   ? "Klik kartu untuk melihat detail" 
                   : "Click card to view details"}
@@ -130,8 +131,8 @@ const Skills = ({ lang }) => {
                                 {/* --- BAGIAN DEPAN (FRONT) --- */}
                                 <div 
                                     className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center gap-1.5 p-2 text-center
-                                               bg-white/5 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 
-                                               backdrop-blur-sm group-hover:border-amber-500/50 transition-colors rounded-xl overflow-hidden"
+                                               bg-white/5 dark:bg-sky-950/50 border border-neutral-200 dark:border-neutral-400 
+                                               backdrop-blur-sm group-hover:border-cyan-300/50 transition-colors rounded-xl overflow-hidden"
                                     style={{ backfaceVisibility: "hidden" }}
                                 >
                                     <motion.div
@@ -151,14 +152,14 @@ const Skills = ({ lang }) => {
                                 {/* --- BAGIAN BELAKANG (BACK) --- */}
                                 <div 
                                     className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center p-3 text-center
-                                               bg-neutral-100 dark:bg-neutral-800 border border-amber-500/30 rounded-xl overflow-hidden shadow-inner"
+                                               bg-neutral-100 dark:bg-sky-950 border border-cyan-300/30 rounded-xl overflow-hidden shadow-inner"
                                     style={{ 
                                         backfaceVisibility: "hidden", 
                                         transform: "rotateY(180deg)" 
                                     }}
                                 >
                                     {/* Text Description lebih kecil (text-[10px] sm:text-xs) agar muat */}
-                                    <p className="text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-300 leading-tight font-medium">
+                                    <p className="text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-300 leading-tight font-serif">
                                         {skill.desc[lang]}
                                     </p>
                                 </div>

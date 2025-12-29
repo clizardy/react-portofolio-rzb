@@ -4,7 +4,8 @@ import { PROJECTS } from "../../constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
-import { toast } from "react-hot-toast"; // PENTING: Import Toast
+import { toast } from "react-hot-toast";
+import OklchGradientText from "../OklchGradientText";
 
 // --- FUNGSI PEMBANTU ---
 const getYouTubeID = (url) => {
@@ -197,7 +198,7 @@ const Projects = ({ lang }) => {
   return (
     <div id="projects" className="border-b border-neutral-800 dark:border-neutral-200 py-16 relative">
       <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-        {lang === 'id' ? "Proyek" : "Projects"}
+        <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
 
       {/* FILTER BUTTONS */}

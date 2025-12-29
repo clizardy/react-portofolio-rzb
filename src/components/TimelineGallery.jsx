@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaDownload, FaShareAlt, FaArrowDown } from "react-icons/fa";
+import OklchGradientText from "../components/OklchGradientText";
 
 // --- 1. DATA GAMBAR ---
 const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
@@ -133,7 +134,7 @@ const TimelineGallery = ({ lang }) => {
       {/* HEADER */}
       <div className="text-center mb-12 px-4">
         <h2 className="text-4xl md:text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-            {lang === 'en' ? "Journey Gallery" : "Galeri Perjalanan"}
+            <OklchGradientText>{lang === 'en' ? "Journey Gallery" : "Galeri Perjalanan"}</OklchGradientText>
         </h2>
         <p className="text-slate-700 dark:text-slate-300 italic mt-4">
             {lang === 'en' ? "100+ Precious moments of my life." : "100+ Momen berharga dalam hidup saya."}

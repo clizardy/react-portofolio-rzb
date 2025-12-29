@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
-// Pastikan path import ini sudah benar
 import parentsImg from "../assets/parents.jpg"; 
+import OklchGradientText from "../components/OklchGradientText";
 
 // 1. DATA KONTEN 2 BAHASA
 const CONTENT = {
@@ -21,7 +21,7 @@ const CONTENT = {
 
 // 2. TERIMA PROPS 'lang'
 const Dedication = ({ lang }) => {
-  // Ambil konten berdasarkan bahasa, default ke 'en' jika error
+
   const t = CONTENT[lang] || CONTENT['en'];
 
   return (
@@ -33,7 +33,7 @@ const Dedication = ({ lang }) => {
         transition={{ duration: 0.5 }}
         className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
-        {t.title}
+        <OklchGradientText>{t.title}</OklchGradientText>
       </motion.h2>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24">

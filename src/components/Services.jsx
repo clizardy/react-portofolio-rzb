@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, FaWhatsapp, FaArrowRight } from "react-icons/fa";
+import OklchGradientText from "../components/OklchGradientText";
 
 // DATA SERVICE (TETAP SAMA)
 const SERVICES_DATA = [
@@ -71,7 +72,7 @@ const Services = ({ lang }) => {
 
   return (
     // UBAH 1: py-16 jadi py-10 (Lebih pendek atas bawah)
-    <div id="services" className="py-10 bg-neutral-200 dark:bg-cyan-950 transition-colors duration-500">
+    <div id="services" className="py-10 bg-neutral-200 dark:bg-sky-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto px-4">
         
         {/* HEADER SECTION */}
@@ -82,7 +83,7 @@ const Services = ({ lang }) => {
             transition={{ duration: 0.5 }}
             className="text-3xl md:text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 mb-2 text-transparent bg-clip-text bg-gradient-to-r"
           >
-            {lang === 'id' ? "Keahlian & Layanan" : "Expertise & Services"}
+            <OklchGradientText>{lang === 'id' ? "Keahlian & Layanan" : "Expertise & Services"}</OklchGradientText>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -91,8 +92,8 @@ const Services = ({ lang }) => {
             className=" text-slate-600 dark:text-slate-300 italic max-w-2xl mx-auto text-base md:text-lg"
           >
             {lang === 'id' 
-                ? "Solusi kreatif dan manajerial terintegrasi untuk mewujudkan visi Anda." 
-                : "Integrated creative and managerial solutions to bring your vision to life."}
+                ? "Solusi kreatif dan manajerial terintegrasi untuk mewujudkan visi Kamu!" 
+                : "Integrated creative and managerial solutions to bring your vision to life!"}
           </motion.p>
         </div>
 

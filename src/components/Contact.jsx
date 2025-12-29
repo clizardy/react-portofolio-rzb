@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CONTACT } from '../constants'; 
 import { motion } from "framer-motion";
+import OklchGradientText from "../components/OklchGradientText";
 import { 
     RiMapPinLine, RiPhoneLine, RiMailLine, 
     RiSendPlaneFill, RiWhatsappLine, RiFileCopyLine 
@@ -80,7 +81,7 @@ const Contact = ({ lang }) => {
             className="text-center mb-16"
         >
             <h2 className='text-4xl md:text-5xl font-bold text-neutral-100 dark:text-white mb-4'>
-                {lang === 'id' ? "Mari Terhubung" : "Let's Connect"}
+                <OklchGradientText>{lang === 'id' ? "Mari Terhubung" : "Let's Connect"}</OklchGradientText>
             </h2>
             <p className="text-neutral-400 dark:text-neutral-400 max-w-xl mx-auto">
                 {lang === 'id' 

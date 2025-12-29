@@ -1,6 +1,7 @@
 import { Tilt } from 'react-tilt';
 import { motion } from "framer-motion";
 import { RiDoubleQuotesL } from "react-icons/ri"; 
+import OklchGradientText from '../OklchGradientText';
 import testi1 from "../../assets/testi1.jpg";
 import testi2 from "../../assets/testi2.jpg";
 import testi3 from "../../assets/testi3.jpg";
@@ -79,7 +80,7 @@ const Testimonials = ({ lang }) => {
         className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
         {/* Opsional: Judul juga bisa diganti bahasanya */}
-        {lang === 'id' ? "Apa Kata Mereka?" : "What Did They Say?"}
+        <OklchGradientText>{lang === 'id' ? "Apa Kata Mereka?" : "What Did They Say?"}</OklchGradientText>
       </motion.h2>
 
       <div className="flex flex-wrap justify-center gap-6 lg:gap-8 px-4">

@@ -137,8 +137,8 @@ const MusicPlayer = ({ theme }) => {
                 onClick={() => setIsOpen(true)}
                 className={`flex items-center justify-center w-12 h-12 rounded-full shadow-lg border backdrop-blur-md relative ${
                     theme === 'dark' 
-                    ? 'bg-neutral-900/80 border-cyan-500/30 text-cyan-400' 
-                    : 'bg-white/80 border-amber-500/30 text-amber-500'
+                    ? 'bg-sky-950/80 border-sky-300/30 text-cyan-400' 
+                    : 'bg-neutral-200/80 border-neutral-200/30 text-amber-500'
                 }`}
             >
                 {/* Indikator "Playing" (Ping Effect) */}

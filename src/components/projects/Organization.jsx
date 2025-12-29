@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import OklchGradientText from "../OklchGradientText";
 
 // --- BAGIAN 1: DATA SISPALA ---
 const SISPALA_DATA = [
@@ -67,7 +68,7 @@ const Organization = ({ lang }) => {
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
         className="mt-20 mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-        {lang === 'id' ? "Pengalaman Organisasi" : "Organization Experience"}
+        <OklchGradientText>{lang === 'id' ? "Pengalaman Organisasi" : "Organization Experience"}</OklchGradientText>
       </motion.h2>
 
       {/* ================= SEKSI 1: SISPALA ================= */}

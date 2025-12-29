@@ -5,10 +5,8 @@ import logo from "../assets/rzbLogo.png";
 // KATA-KATA YANG MUNCUL BERGANTIAN SELAMA LOADING
 const GREETINGS = [
   "Initializing...",
-  "Photography",
-  "Videography",
-  "Web Development",
-  "Creative Design",
+  "Welcome To",
+  "My Website",
   "Ronald Zuni Bachtiar" // Teks terakhir harus Nama
 ];
 
@@ -124,7 +122,7 @@ const Preloader = ({ onComplete }) => {
       {/* 3. BAGIAN BAWAH: ANGKA RAKSASA (Di Pojok) */}
       <div className="w-full flex justify-between items-end">
          {/* Garis Progress */}
-         <div className="w-full md:w-1/3 h-[1px] bg-neutral-800 relative overflow-hidden rounded-full mb-4 md:mb-0">
+         <div className="w-full h-[1px] bg-neutral-800 relative overflow-hidden rounded-full mb-4 md:mb-0">
             <motion.div 
                 className="absolute top-0 left-0 h-full bg-cyan-500 shadow-[0_0_10px_#22d3ee]"
                 initial={{ width: "0%" }}
@@ -133,7 +131,7 @@ const Preloader = ({ onComplete }) => {
          </div>
 
          {/* Angka Besar */}
-         <div className="absolute bottom-0 right-4 md:right-10 leading-none pointer-events-none select-none">
+         <div className="absolute bottom-30 right-4 md:right-10 leading-none pointer-events-none select-none">
              <h1 className="text-[6rem] md:text-[12rem] font-black text-neutral-600 opacity-60">
                 {count}%
              </h1>

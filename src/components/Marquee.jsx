@@ -19,7 +19,7 @@ const MARQUEE_TEXT = [
 const Marquee = () => {
   return (
     // UBAH 1: Background & Border Adaptif (Terang di Light Mode, Gelap di Dark Mode)
-    <div className="w-full py-8 bg-neutral-100 dark:bg-neutral-900 border-y border-neutral-300 dark:border-neutral-800 overflow-hidden relative z-20">
+    <div className="w-full py-6 bg-neutral-100 dark:bg-neutral-900 border-y border-neutral-300 dark:border-neutral-800 overflow-hidden relative z-20">
       
       <div className="flex whitespace-nowrap">
         

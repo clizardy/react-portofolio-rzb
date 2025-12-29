@@ -1,5 +1,6 @@
 import Giscus from "@giscus/react";
 import { motion } from "framer-motion";
+import OklchGradientText from "../components/OklchGradientText";
 
 const GiscusComments = ({ theme }) => {
   return (
@@ -13,7 +14,7 @@ const GiscusComments = ({ theme }) => {
         transition={{ duration: 0.5 }}
         className="text-3xl font-bold text-center mb-10 bg-clip-text text-transparent bg-gradient-to-r from-neutral-50 to-neutral-600 dark:from-white dark:to-neutral-400"
       >
-        Join the <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-500 dark:from-cyan-400 dark:to-blue-500">Discussion</span>
+        Join the <OklchGradientText>Discussion</OklchGradientText>
       </motion.h3>
       
       <motion.div 
