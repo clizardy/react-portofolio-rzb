@@ -87,7 +87,7 @@ const Preloader = ({ onComplete }) => {
         >
              {/* Efek Glow di belakang logo */}
              <div className="absolute inset-0 bg-cyan-500 blur-3xl opacity-20 rounded-full animate-pulse"></div>
-             <img 
+             <img decoding="async" loading="lazy" 
                 src={logo} 
                 alt="Logo" 
                 className="w-20 md:w-24 relative z-10 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]" 

@@ -100,7 +100,6 @@ const SidebarMenu = ({ lang }) => {
 
   // Logic Warna (Light & Dark)
   const isHighLatency = parseInt(networkInfo.rtt) > 200;
-  // Status Color: Light (Emerald-600) vs Dark (Emerald-400 + Glow)
   const statusColor = networkInfo.online 
       ? "text-emerald-600 dark:text-emerald-400 dark:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" 
       : "text-red-600 dark:text-red-500";
@@ -121,34 +120,45 @@ const SidebarMenu = ({ lang }) => {
       <AnimatePresence>
         {isOpen && (
           <>
+            {/* BACKDROP DIMMER */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 z-[998] backdrop-blur-sm"
+              className="fixed inset-0 bg-black/60 dark:bg-black/40 z-[998] backdrop-blur-[2px]"
             />
 
+            {/* SIDEBAR CONTAINER UTAMA */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-80 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-2xl border-l border-neutral-200 dark:border-neutral-800 shadow-2xl z-[999] flex flex-col overflow-hidden"
+              // --- UPDATE BACKGROUND DISINI ---
+              // Light: Putih bersih dengan sedikit transparansi
+              // Dark: Hitam Pekat (Neutral-950) dengan transparansi 90% + Blur Kuat + Border halus
+              className="
+                fixed top-0 right-0 h-full w-80 
+                bg-white/60 
+                dark:bg-neutral-950/60 
+                backdrop-blur-xl 
+                border-l border-white/20 dark:border-white/5 
+                shadow-2xl z-[999] flex flex-col overflow-hidden
+              "
             >
               
               {/* --- HEADER --- */}
-              <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-200 dark:border-neutral-800">
+              <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-700 dark:border-neutral-300">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                         <h3 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-cyan-200 dark:to-blue-500 bg-clip-text text-transparent">
                             {lang === 'id' ? "Menu Cepat" : "Quick Access"}
                         </h3>
                         
-                        {/* TOMBOL TOGGLE NETWORK */}
                         <button 
                             onClick={() => setShowNetInfo(!showNetInfo)}
-                            className={`p-1.5 rounded-lg transition-all duration-300 ${showNetInfo ? 'bg-neutral-200 dark:bg-cyan-500/20' : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'}`}
+                            className={`p-1.5 rounded-lg transition-all duration-300 ${showNetInfo ? 'bg-neutral-200 dark:bg-cyan-500/20' : 'hover:bg-neutral-100 dark:hover:bg-neutral-900'}`}
                         >
                             <FaSignal className={`${statusColor} ${networkInfo.online ? "animate-pulse" : ""}`} />
                         </button>
@@ -162,34 +172,29 @@ const SidebarMenu = ({ lang }) => {
                     </button>
                   </div>
 
-                  {/* === NETWORK PANEL (LIGHT & DARK MODE READY) === */}
+                  {/* === NETWORK PANEL === */}
                   <AnimatePresence>
                     {showNetInfo && (
                         <motion.div
                             initial={{ height: 0, opacity: 0, marginTop: 0 }}
                             animate={{ height: "auto", opacity: 1, marginTop: 8 }}
                             exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                            // Container: Light (Abu Cerah + Border) vs Dark (Gradient Hitam + Border Pudar)
                             className="overflow-hidden rounded-xl 
-                                       bg-neutral-50 border border-neutral-200 shadow-inner
-                                       dark:bg-gradient-to-br dark:from-slate-900 dark:to-black dark:border-slate-700/50"
+                                    bg-neutral-50 border border-neutral-200 shadow-inner
+                                    dark:bg-black/50 dark:border-white/10"
                         >
                             <div className="p-4 space-y-3 text-xs font-mono">
-                                {/* IP Address */}
                                 <div className="flex items-center justify-between">
                                     <span className="text-neutral-500 dark:text-slate-400 flex items-center gap-2">
                                         <FaGlobe className="text-cyan-600 dark:text-cyan-500"/> IP_ADDR
                                     </span>
-                                    {/* IP Text: Dark/Neutral-800 vs White */}
                                     <span className="font-bold tracking-wider text-neutral-800 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
                                         {networkInfo.ip}
                                     </span>
                                 </div>
                                 
-                                {/* Divider Line */}
-                                <div className="w-full h-[1px] bg-neutral-200 dark:bg-slate-800"></div>
+                                <div className="w-full h-[1px] bg-neutral-200 dark:bg-white/10"></div>
 
-                                {/* Speed & Latency */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-neutral-500 dark:text-slate-500 flex items-center gap-1"><FaWifi/> Speed</span>
@@ -220,7 +225,7 @@ const SidebarMenu = ({ lang }) => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }} 
                     onClick={() => scrollToSection(item.id)}
-                    className="flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-200 hover:bg-amber-100 dark:hover:bg-cyan-900/20 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
+                    className="flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
                   >
                     <span className="text-xl text-amber-600 dark:text-cyan-300/80 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all">
                         {item.icon}
@@ -233,7 +238,7 @@ const SidebarMenu = ({ lang }) => {
               </div>
 
               {/* FOOTER */}
-              <div className="flex-shrink-0 p-6 pt-4 border-t border-neutral-900 dark:border-neutral-800">
+              <div className="flex-shrink-0 pt-4 border-t border-neutral-700 dark:border-neutral-300 mx-6">
                 <p className="text-xs font-bold text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-4 text-center">
                     {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
                 </p>
@@ -244,7 +249,7 @@ const SidebarMenu = ({ lang }) => {
                     <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />
                     <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
                 </div>
-                <div className="mt-4 text-center text-[10px] text-neutral-400 font-medium">
+                <div className="mt-0 p-4 text-center text-[10px] text-neutral-600 dark:text-neutral-400 font-medium">
                    <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
                 </div>
               </div>
@@ -258,7 +263,7 @@ const SidebarMenu = ({ lang }) => {
 };
 
 const SocialBtn = ({ icon, href, color }) => (
-    <a href={href} target="_blank" rel="noreferrer" className={`p-3 rounded-full bg-neutral-200 dark:bg-neutral-800 ${color} hover:scale-110 hover:bg-white dark:hover:bg-neutral-700 shadow-sm transition-all duration-300 text-lg`}>
+    <a href={href} target="_blank" rel="noreferrer" className={`p-3 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 ${color} hover:scale-110 hover:bg-white dark:hover:bg-white/10 shadow-sm transition-all duration-300 text-lg`}>
         {icon}
     </a>
 );

@@ -71,14 +71,37 @@ const App = () => {
   const [lang, setLang] = useState("en");
   const [isLoading, setIsLoading] = useState(true);
 
-  // --- SETUP GOOGLE ANALYTICS ---
-  const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
+const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
 
   useEffect(() => {
-    if (GA_MEASUREMENT_ID !== "G-N4E8H7CL0G") {
+      let isScrolling;
+      const handleScroll = () => {
+        // Tambahkan class 'is-scrolling' ke body
+        document.body.classList.add('is-scrolling');
+        
+        // Clear timeout sebelumnya
+        window.clearTimeout(isScrolling);
+        
+        // Set timeout baru: Hapus class setelah berhenti scroll 150ms
+        isScrolling = setTimeout(() => {
+          document.body.classList.remove('is-scrolling');
+        }, 150);
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Pastikan ID valid sebelum inisialisasi
+      if (GA_MEASUREMENT_ID !== "G-N4E8H7CL0G") {
         ReactGA.initialize(GA_MEASUREMENT_ID);
         ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-    }
+      }
+    }, 4000); // Delay 4000ms
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -145,46 +168,71 @@ const App = () => {
   return (
     <>
 <style>{`
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation-duration: 0.4s; /* Harus cepat biar efek glitch dapet */
-        animation-timing-function: steps(4); /* Gerakan patah-patah ala glitch */
-        mix-blend-mode: normal;
-      }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    /* DURASI DIPERLAMBAT BIAR BLUR KERASA */
+    animation-duration: 1.2s;
+    /* Easing halus ala sinematik */
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    mix-blend-mode: normal;
+  }
 
-      /* TEMA LAMA: Diam saja */
-      ::view-transition-old(root) {
-        z-index: 1;
-        animation: none;
-      }
+  /* TEMA LAMA: Blur & Mundur Perlahan */
+  ::view-transition-old(root) {
+    z-index: 1;
+    animation-name: slowBlurOut;
+  }
 
-      /* TEMA BARU: Muncul dengan efek rusak */
-      ::view-transition-new(root) {
-        z-index: 2;
-        animation-name: glitchIntro;
-      }
+  /* TEMA BARU: Slash Masuk dengan Efek Fokus */
+  ::view-transition-new(root) {
+    z-index: 2;
+    animation-name: cinematicSlash;
+  }
 
-      @keyframes glitchIntro {
-        0% {
-          clip-path: inset(100% 0 0 0); /* Belum muncul */
-        }
-        20% {
-          clip-path: inset(20% 0 60% 0); /* Potongan atas */
-        }
-        40% {
-          clip-path: inset(60% 0 10% 0); /* Potongan bawah */
-        }
-        60% {
-          clip-path: inset(0 0 40% 0); /* Setengah atas */
-        }
-        80% {
-          clip-path: inset(20% 0 0 0); /* Hampir full */
-        }
-        100% {
-          clip-path: inset(0 0 0 0); /* Full layar */
-        }
-      }
-    `}</style>
+  @keyframes cinematicSlash {
+    0% {
+      /* POSISI AWAL: Terbuka */
+      clip-path: polygon(
+        -50% 0%, -10% 0%, -30% 100%, -70% 100%,
+        40% 0%, 40% 0%, 20% 100%, 20% 100%,
+        110% 0%, 150% 0%, 130% 100%, 90% 100%
+      );
+      /* EFEK BLUR KUAT DISINI */
+      filter: blur(15px) brightness(1.2);
+      transform: scale(1.05);
+    }
+    
+    /* Di tengah animasi, blur mulai berkurang tapi masih ada */
+    50% {
+      filter: blur(5px) brightness(1.1);
+    }
+
+    100% {
+      /* POSISI AKHIR: Menutup Rapat (Overlap) */
+      clip-path: polygon(
+        -20% 0%, 70% 0%, 50% 100%, -40% 100%,
+        30% 0%, 110% 0%, 90% 100%, 10% 100%,
+        80% 0%, 150% 0%, 130% 100%, 60% 100%
+      );
+      /* GAMBAR JADI TAJAM (FOCUS) */
+      filter: blur(0px) brightness(1);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slowBlurOut {
+    0% {
+      opacity: 1;
+      filter: blur(0px);
+    }
+    100% { 
+      opacity: 0;
+      /* Background lama jadi ngeblur parah saat menghilang */
+      filter: blur(20px);
+      transform: scale(0.95);
+    }
+  }
+`}</style>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
       <AnimatePresence mode="wait">
         {isLoading && <Preloader key="preloader" onComplete={handleLoadComplete} />}
@@ -237,19 +285,42 @@ const App = () => {
             </div>
 
             <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
-                <div id="about"><About lang={lang}/></div>
-                <div id="skills"><Skills lang={lang}/></div> 
-                <div id="education"><Education lang={lang}/></div>
-                <div id="projects"><Projects lang={lang}/></div>
-                <div id="services"><Services lang={lang}/></div>
-                
+                <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
+                <div id="about" className="render-lazy">
+                  <About lang={lang}/></div>
+                </Suspense>
+                <Suspense fallback={<div className="text-center py-20">Loading Skills...</div>}>
+                <div id="skills">
+                  <Skills lang={lang}/></div> 
+                </Suspense>
+                <Suspense fallback={<div className="text-center py-20">Loading Education...</div>}>
+                <div id="education" className="render-lazy"> 
+                  <Education lang={lang}/></div>
+                </Suspense>
+                <Suspense fallback={<div className="text-center py-20">Loading Projects...</div>}>
+                <div id="projects">
+                  <Projects lang={lang}/></div>
+                </Suspense>
+                <Suspense fallback={<div className="text-center py-20">Loading Services...</div>}>
+                <div id="services" className="render-lazy">
+                  <Services lang={lang}/></div>
+                </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Gallery...</div>}>
-                    <TimelineGallery lang={lang} />
+                <div id="timeline" className="render-lazy">
+                  <TimelineGallery lang={lang} />
+                </div>
                 </Suspense>
 
-                <div id="organization"><Organization lang={lang}/></div>
-                <div id="dedication"><Dedication lang={lang}/></div>
-                <div id="testimonials"><Testimonials lang={lang}/></div>
+                <div id="organization">
+                  <Organization lang={lang}/></div>
+                <Suspense fallback={<div className="text-center py-20">Loading Dedication...</div>}>
+                <div id="dedication">
+                  <Dedication lang={lang}/></div>
+                </Suspense>
+                <Suspense fallback={<div className="text-center py-20">Loading Testimonials...</div>}>
+                <div id="testimonials" className="render-lazy">
+                  <Testimonials lang={lang}/></div>
+                </Suspense>
             </div>
             
             <AnimatedWave theme={theme} />
@@ -261,12 +332,13 @@ const App = () => {
               <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
               <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-16">
+                <Suspense fallback={<div className="text-center py-20">Loading Contact...</div>}>
                 <MagicCard>
                   <Contact lang={lang} />
-                </MagicCard> 
+                </MagicCard>
+                </Suspense>
               </div>
 
-            
               <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
@@ -277,30 +349,38 @@ const App = () => {
                                 {lang === 'id' ? "Diskusi & Komentar" : "Discussion"}
                             </h3>
                             <div className="min-h-[300px]">
+                                <Suspense fallback={<div className="text-center py-20">Loading Comments...</div>}>
                                 <MagicCard>
                                 <GiscusComments theme={theme} />
                                 </MagicCard>
+                                </Suspense>
                             </div>
                         </div>
                     </div>
 
                     <div className="lg:col-span-5 flex flex-col gap-6">
                         <div className="w-full">
+                            <Suspense fallback={<div className="text-center py-20">Loading AI Art...</div>}>
                             <MagicCard>
                             <AiArtCard />
                             </MagicCard>
+                            </Suspense>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="h-full min-h-[160px]">
+                                <Suspense fallback={<div className="text-center py-20">Loading Spotify...</div>}>
                                 <MagicCard>
                                 <SpotifyCard />
                                 </MagicCard>
+                                </Suspense>
                             </div>
                             <div className="h-full min-h-[160px]">
+                                <Suspense fallback={<div className="text-center py-20">Loading YouTube...</div>}>
                                 <MagicCard>
                                 <YouTubeCard />
                                 </MagicCard>
+                                </Suspense>
                             </div>
                         </div>
                     </div>
@@ -309,7 +389,9 @@ const App = () => {
               </div>
               
               <div className="w-full z-10">
+                  <Suspense fallback={<div className="text-center py-20">Loading Footer...</div>}>
                   <Footer lang={lang} />
+                  </Suspense>
               </div>
         </div>
 

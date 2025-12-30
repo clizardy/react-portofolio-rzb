@@ -1,4 +1,5 @@
-import { Tilt } from 'react-tilt';
+// 1. IMPORT LIBRARY BARU YANG BENAR
+import Tilt from 'react-parallax-tilt';
 import { motion } from "framer-motion";
 import { RiDoubleQuotesL } from "react-icons/ri"; 
 import OklchGradientText from '../OklchGradientText';
@@ -8,19 +9,8 @@ import testi3 from "../../assets/testi3.jpg";
 import testi4 from "../../assets/testi4.jpg";
 import testi5 from "../../assets/testi5.jpg";
 
-const defaultOptions = {
-  reverse:        false,
-  max:            15,    
-  perspective:    1000,
-  scale:          1.02,  
-  speed:          1000,
-  transition:     true,
-  axis:           null,
-  reset:          true,
-  easing:         "cubic-bezier(.03,.98,.52,.99)",
-}
+// HAPUS const defaultOptions lama (tidak dipakai lagi di library baru)
 
-// 1. UPDATE DATA MENJADI 2 BAHASA
 const TESTIMONIALS = [
   {
     name: "Henryawan Sigit, S.M, M.M",
@@ -69,7 +59,6 @@ const TESTIMONIALS = [
   }
 ];
 
-// 2. TERIMA PROPS 'lang' DISINI
 const Testimonials = ({ lang }) => {
   return (
     <div id="testimonials">
@@ -79,7 +68,6 @@ const Testimonials = ({ lang }) => {
         transition={{ duration: 0.5 }}
         className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
-        {/* Opsional: Judul juga bisa diganti bahasanya */}
         <OklchGradientText>{lang === 'id' ? "Apa Kata Mereka?" : "What Did They Say?"}</OklchGradientText>
       </motion.h2>
 
@@ -88,7 +76,12 @@ const Testimonials = ({ lang }) => {
           
           <Tilt 
             key={index} 
-            options={defaultOptions}
+            // 2. GANTI PROPS DISINI SESUAI LIBRARY BARU
+            tiltMaxAngleX={15}
+            tiltMaxAngleY={15}
+            scale={1.02}
+            transitionSpeed={1000}
+            perspective={1000}
             className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-2rem)]"
           >
             <motion.div
@@ -107,13 +100,12 @@ const Testimonials = ({ lang }) => {
                   <RiDoubleQuotesL className="text-8xl text-amber-600 dark:text-cyan-500" />
               </div>
 
-              {/* 3. PANGGIL DATA SESUAI BAHASA */}
               <p className="text-neutral-700 dark:text-neutral-300 italic mb-8 mt-4 relative z-10 leading-relaxed font-light min-h-[80px]">
                   "{testi.quote[lang]}"
               </p>
 
               <div className="flex items-center gap-4 relative z-10">
-                  <img 
+                  <img decoding="async" loading="lazy" 
                       src={testi.image} 
                       alt={testi.name} 
                       className="w-14 h-14 rounded-full border-2 border-neutral-200 dark:border-neutral-700 group-hover:border-amber-400 dark:group-hover:border-cyan-400 transition duration-300 object-cover"

@@ -4,6 +4,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --- SCROLL PERFORMANCE BOOSTER --- */
+/* Saat user scroll, matikan pointer events (hover, click) */
+/* Ini memaksa browser fokus render FPS tinggi saja */
+.is-scrolling,
+.is-scrolling * {
+  pointer-events: none !important;
+}
+
+/* Opsional: Paksa Hardware Acceleration pada elemen berat */
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* BASE STYLES */
 :root {
   font-family: 'Inter', sans-serif;
@@ -54,4 +69,10 @@ html {
 
 .animate-shimmer {
   animation: shimmer 1.5s infinite linear;
+}
+
+/* Utility Class untuk Render Lazy CSS */
+.render-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
 }

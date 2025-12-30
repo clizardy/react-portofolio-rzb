@@ -48,7 +48,7 @@ const YouTubeCard = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center gap-4 mt-2">
          <div className="relative w-20 h-[45px] flex-shrink-0 rounded-lg overflow-hidden shadow-sm">
-             <img src={data.thumbnail} alt="Thumb" className="w-full h-full object-cover" />
+             <img decoding="async" loading="lazy" src={data.thumbnail} alt="Thumb" className="w-full h-full object-cover" />
              <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <FaPlay className="text-white text-[10px]" />
              </div>

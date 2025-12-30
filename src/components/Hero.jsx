@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { TypeAnimation } from 'react-type-animation';
 import { FaDownload } from "react-icons/fa"; 
 import OklchGradientText from "../components/OklchGradientText";
+import LocationWidget from "../components/LocationWidget";
+import QuoteWidget from "../components/QuoteWidget";
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
@@ -18,13 +20,15 @@ const container = (delay) => ({
   },
 });
 
-const ClockWidget = () => {
+const ClockWidget = ({ lang }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+const locale = lang === 'id' ? 'id-ID' : 'en-US';
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -42,8 +46,8 @@ const ClockWidget = () => {
       </span>
       
       {/* Tanggal Kecil */}
-      <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
-        {time.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' })}
+        <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
+        {time.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short' })}
       </span>
     </div>
   );
@@ -129,7 +133,7 @@ const Hero = ({ lang }) => {
               className="flex flex-wrap gap-4 mt-6 justify-center lg:justify-start items-center"
             >
               <a href="#projects">
-                  <MagneticButton className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-600 to-blue-700 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
+                  <MagneticButton className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
                     {t.btnPortfolio}
                   </MagneticButton>
               </a>
@@ -146,8 +150,27 @@ const Hero = ({ lang }) => {
                   </MagneticButton>
               </a>
             </motion.div>
+
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.9 }} // Delay 0.9s biar muncul paling akhir
+                className="mt-8 flex justify-center lg:justify-start w-full"
+            >
+                <LocationWidget lang={lang} />
+            </motion.div>
+
+            <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.1 }} // Delay lebih lama biar muncul berurutan
+            className="mt-4 flex justify-center lg:justify-start w-full"
+        >
+            <QuoteWidget lang={lang} />
+        </motion.div>
           </div>
         </div>
+        
 
         {/* BAGIAN KANAN */}
         <div className="w-full lg:w-1/2 lg:p-8 mt-16 lg:mt-0">
@@ -174,20 +197,20 @@ const Hero = ({ lang }) => {
               className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl p-2 lg:p-3 w-full"
             >
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-                  <img
-                    src={profilePic}
-                    alt="Ronald Zuni Bachtiar"
-                    width="600" 
-                    height="800"
-                    loading="eager"
-                    fetchPriority="high"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  <img decoding="async"
+                  src={profilePic}
+                  alt="Ronald Zuni Bachtiar"
+                  width="600" 
+                  height="800"
+                  loading="eager"
+                  fetchPriority="high"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
 
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
                                   bg-transparent border border-white/0 
                                   px-4 shadow-lg min-w-[120px]">
-                      <ClockWidget />
+                      <ClockWidget lang={lang} />
                   </div>
 
               </div>

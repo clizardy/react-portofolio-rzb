@@ -195,7 +195,7 @@ const TimelineGallery = ({ lang }) => {
                         <FaTimes size={20} />
                     </button>
                     
-                    <img 
+                    <img decoding="async" loading="lazy" 
                         src={selectedImage.url} 
                         alt="Full View" 
                         className="w-auto h-auto max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl border border-white/10"
@@ -226,7 +226,7 @@ const ImageWithSkeleton = ({ src, alt }) => {
                 </div>
             )}
 
-            <img 
+            <img decoding="async"
                 src={src} 
                 alt={alt} 
                 onLoad={() => setIsLoaded(true)}

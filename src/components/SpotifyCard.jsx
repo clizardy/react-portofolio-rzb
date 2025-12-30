@@ -90,7 +90,7 @@ const SpotifyCard = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center gap-4 mt-4">
         <div className="relative w-16 h-16 flex-shrink-0">
-            <img 
+            <img decoding="async" loading="lazy" 
                 src={data?.albumImageUrl || defaultImage} 
                 alt="Album" 
                 className={`w-full h-full object-cover rounded-xl shadow-md transition-all duration-500 ${isPlaying ? 'group-hover:scale-105' : 'grayscale opacity-60'}`} 

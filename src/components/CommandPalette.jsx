@@ -128,7 +128,6 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
   );
 
   // Keyboard Handler
-// --- EVENT LISTENER (KEYBOARD & MOBILE TOUCH) ---
   useEffect(() => {
     // 1. Handler untuk Keyboard (Desktop: Ctrl + K)
     const handleKeyDown = (e) => {
@@ -167,7 +166,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
 
     // Pasang Pendengar Event
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('openCommandPalette', handleMobileOpen); // <--- INI KUNCINYA
+    window.addEventListener('openCommandPalette', handleMobileOpen); 
 
     // Bersihkan saat komponen di-unmount
     return () => {
@@ -176,7 +175,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     };
   }, [isOpen, selectedIndex, filteredCommands]);
   
-  // --- SCROLL LOCKING FIX (INI YANG PENTING) ---
+  // --- SCROLL LOCKING FIX ---
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'; // Kunci Scroll
@@ -193,21 +192,31 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-[10vh] px-4 font-sans">
           
+          {/* BACKDROP GELAP (Tetap gelap biar fokus) */}
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-neutral-950/60 dark:bg-neutral-950/50 backdrop-blur-sm"
           />
 
           <motion.div 
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="relative w-full max-w-xl bg-neutral-900 border border-neutral-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            // GAYA DEEP GLASSMORPHISM DISINI:
+            className="
+                relative w-full max-w-xl 
+                bg-neutral-900/80 
+                dark:bg-black/50
+                backdrop-blur-xl 
+                border border-white/10 
+                rounded-2xl shadow-2xl 
+                overflow-hidden flex flex-col
+            "
           >
-            {/* Input */}
-            <div className="flex items-center px-5 py-4 border-b border-neutral-800">
-              <FaSearch className="text-neutral-500 mr-3 text-lg" />
+            {/* Input Search - Transparent */}
+            <div className="flex items-center px-5 py-4 border-b border-white/10">
+              <FaSearch className="text-neutral-400 mr-3 text-lg" />
               <input 
                 autoFocus
                 type="text"
@@ -216,12 +225,12 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-full bg-transparent text-white placeholder-neutral-500 outline-none text-lg"
               />
-              <div className="text-xs text-neutral-400 bg-neutral-800 px-2 py-1 rounded border border-neutral-700 font-mono shadow-sm">
+              <div className="text-xs text-neutral-400 bg-white/5 px-2 py-1 rounded border border-white/10 font-mono shadow-sm">
                 ESC
               </div>
             </div>
 
-            {/* List */}
+            {/* List Commands */}
             <div className="max-h-[350px] overflow-y-auto py-2 scrollbar-hide overscroll-contain">
               {filteredCommands.length > 0 ? (
                 filteredCommands.map((cmd, index) => (
@@ -231,12 +240,12 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`flex items-center justify-between px-5 py-3 cursor-pointer transition-all border-l-4 ${
                       index === selectedIndex 
-                        ? 'bg-neutral-800 border-cyan-500' 
-                        : 'border-transparent hover:bg-neutral-800/50'
+                        ? 'bg-white/10 border-cyan-500' // Highlight state (Glassy)
+                        : 'border-transparent hover:bg-white/5'
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-neutral-700 text-cyan-400' : 'bg-neutral-800 text-neutral-400'}`}>
+                      <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-cyan-500/20 text-cyan-400' : 'bg-white/5 text-neutral-400'}`}>
                         {cmd.icon}
                       </div>
                       <div className="flex flex-col">
@@ -249,7 +258,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
                       </div>
                     </div>
                     {cmd.shortcut && (
-                      <span className="text-xs text-neutral-500 font-mono bg-neutral-800 px-2 py-1 rounded hidden sm:inline-block border border-neutral-700">
+                      <span className="text-xs text-neutral-500 font-mono bg-white/5 px-2 py-1 rounded hidden sm:inline-block border border-white/10">
                         {cmd.shortcut}
                       </span>
                     )}
@@ -263,15 +272,15 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
             </div>
 
             {/* Footer */}
-            <div className="bg-neutral-950 px-5 py-3 border-t border-neutral-800 flex justify-between items-center text-[10px] text-neutral-500 font-mono">
+            <div className="bg-black/40 px-5 py-3 border-t border-white/5 flex justify-between items-center text-[10px] text-neutral-500 font-mono">
               <div className="flex gap-3">
                 <span className="flex items-center gap-1">
-                   <kbd className="bg-neutral-800 px-1 rounded">↑</kbd> 
-                   <kbd className="bg-neutral-800 px-1 rounded">↓</kbd> 
+                   <kbd className="bg-white/10 px-1 rounded">↑</kbd> 
+                   <kbd className="bg-white/10 px-1 rounded">↓</kbd> 
                    to navigate
                 </span>
                 <span className="flex items-center gap-1">
-                   <kbd className="bg-neutral-800 px-1 rounded">↵</kbd> 
+                   <kbd className="bg-white/10 px-1 rounded">↵</kbd> 
                    to select
                 </span>
               </div>

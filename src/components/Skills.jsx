@@ -131,9 +131,20 @@ const Skills = ({ lang }) => {
                                 {/* --- BAGIAN DEPAN (FRONT) --- */}
                                 <div 
                                     className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center gap-1.5 p-2 text-center
-                                               bg-white/5 dark:bg-sky-950/50 border border-neutral-200 dark:border-neutral-400 
-                                               backdrop-blur-sm group-hover:border-cyan-300/50 transition-colors rounded-xl overflow-hidden"
+                                    
+                                    /* --- LIGHT MODE (AMBER THEME) --- */
+                                    bg-neutral-200/50 border border-amber-500 text-amber-900
+                                    group-hover:border-amber-500 group-hover:bg-amber-100/80
+                                    
+                                    /* --- DARK MODE (SKY THEME) --- */
+                                    dark:bg-sky-950/50 dark:border-white/10 dark:text-white
+                                    dark:group-hover:border-cyan-300/50 dark:group-hover:bg-sky-900/60
+                                    
+                                    /* --- COMMON --- */
+                                    backdrop-blur-sm transition-all duration-300 rounded-xl overflow-hidden shadow-sm"
+                                    
                                     style={{ backfaceVisibility: "hidden" }}
+                            
                                 >
                                     <motion.div
                                         variants={iconVariants(skill.duration)}
@@ -152,7 +163,7 @@ const Skills = ({ lang }) => {
                                 {/* --- BAGIAN BELAKANG (BACK) --- */}
                                 <div 
                                     className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center p-3 text-center
-                                               bg-neutral-100 dark:bg-sky-950 border border-cyan-300/30 rounded-xl overflow-hidden shadow-inner"
+                                               bg-neutral-100 dark:bg-sky-950 border-amber-400/25 dark:border-cyan-300/30 rounded-xl overflow-hidden shadow-inner"
                                     style={{ 
                                         backfaceVisibility: "hidden", 
                                         transform: "rotateY(180deg)" 

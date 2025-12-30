@@ -30,7 +30,7 @@ const Footer = ({ lang }) => {
         {/* === BAGIAN KIRI: FOTO & NAMA === */}
         <div className="text-center lg:text-left w-full lg:w-1/3 lg:order-1">
           <div className="flex items-center justify-center lg:justify-start gap-4 mb-2">
-              <img 
+              <img decoding="async" loading="lazy" 
                   src={profileImg} 
                   alt="Ronald Zuni Bachtiar" 
                   className="w-10 h-10 rounded-full object-cover border-2 border-neutral-500/50 shadow-sm hover:scale-105 transition-transform duration-300"

@@ -51,7 +51,7 @@ const Dedication = ({ lang }) => {
             
             {/* Foto Utama */}
             <div className="relative rounded-2xl overflow-hidden border-4 border-neutral-800 dark:border-neutral-200 shadow-2xl">
-                <img 
+                <img decoding="async" loading="lazy" 
                     src={parentsImg} 
                     alt="My Parents" 
                     className="w-full h-auto object-cover transition duration-700 ease-in-out"

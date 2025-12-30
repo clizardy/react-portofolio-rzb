@@ -78,7 +78,7 @@ const Education = ({ lang }) => {
                         <div className="flex flex-col items-center mb-0 relative z-10">
                            
                              {/* Tahun Badge */}
-                             <span className="mb-4 px-4 py-1.5 rounded-full bg-amber-100 dark:bg-cyan-900/30 text-amber-800 dark:text-cyan-300 font-mono font-bold text-xs md:text-sm border border-amber-200 dark:border-cyan-500 shadow-sm relative z-20">
+                             <span className="mb-4 px-4 py-1.5 rounded-full bg-white dark:bg-sky-950 text-amber-800 dark:text-cyan-300 font-mono font-bold text-xs md:text-sm border border-amber-400 dark:border-cyan-300 shadow-sm relative z-20">
                                 {experience.year?.[lang] || experience.year}
                             </span>
 
@@ -92,7 +92,7 @@ const Education = ({ lang }) => {
                                 {/* LOGO CONTAINER */}
                                 <div className="relative z-10 w-20 h-20 p-1.5 rounded-full bg-white dark:bg-neutral-800 border-4 border-amber-500 dark:border-cyan-500 shadow-xl group-hover:scale-110 transition-transform duration-500 ease-out">
                                     {experience.image ? (
-                                        <img 
+                                        <img decoding="async" loading="lazy" 
                                             src={experience.image} 
                                             alt="School Logo" 
                                             className="w-full h-full object-cover rounded-full bg-white"
@@ -110,7 +110,7 @@ const Education = ({ lang }) => {
                         <div className="mt-6 lg:mt-8 pt-8 px-6 pb-6 h-full rounded-3xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 shadow-sm hover:shadow-xl group-hover:-translate-y-1 relative z-10">
                             
                             {/* Panah dekorasi */}
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white dark:bg-neutral-900 border-t border-l border-neutral-200 dark:border-neutral-800 rotate-45"></div>
+                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-amber-500 dark:bg-cyan-400 border-t border-l border-neutral-200 dark:border-neutral-800 rotate-45"></div>
                             
                             {/* Role & Company */}
                             <h3 className="text-lg md:text-xl font-bold text-neutral-900 dark:text-white mb-1 text-center lg:text-left">

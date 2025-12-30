@@ -51,7 +51,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
           
           {/* --- BAGIAN KIRI: LOGO --- */}
           <div className="flex flex-shrink-0 items-center gap-4">
-              <img 
+              <img decoding="async" loading="lazy" 
                   // EVENT CLICK SUDAH BENAR
                   onClick={() => setClickCount(prev => prev + 1)}
                   

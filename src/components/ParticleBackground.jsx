@@ -1,29 +1,52 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
-const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
+const ParticleBackground = ({ theme }) => {
   const canvasRef = useRef(null);
+  // State untuk mengecek apakah canvas terlihat di layar (untuk performa)
+  const [isVisible, setIsVisible] = useState(true);
 
+  // --- 1. SETUP INTERSECTION OBSERVER ---
+  // Tujuannya: Mematikan animasi saat user scroll ke bawah agar CPU hemat
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (canvasRef.current) {
+      observer.observe(canvasRef.current);
+    }
+
+    return () => {
+      if (canvasRef.current) observer.unobserve(canvasRef.current);
+    };
+  }, []);
+
+  // --- 2. LOGIC CANVAS & ANIMASI ---
+  useEffect(() => {
+    // Jika tidak terlihat di layar, JANGAN jalankan script berat ini
+    if (!isVisible) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let particles = [];
 
-    // --- KONFIGURASI WARNA BERDASARKAN TEMA ---
-    // Light Mode = Amber (245, 158, 11)
-    // Dark Mode  = Cyan  (103, 232, 249)
+    // --- KONFIGURASI WARNA ---
     const isLight = theme === 'light';
     const colorRGB = isLight ? '245, 158, 11' : '103, 232, 249'; 
-    // ------------------------------------------
-
-    const particleCount = 50; 
-    const connectionDistance = 140; 
+    
+    // --- KONFIGURASI PARTIKEL ---
+    const particleCount = 30; // Jumlah partikel
+    const connectionDistance = 150; 
     const mouseDistance = 180; 
 
     let mouse = { x: null, y: null };
     let canvasWidth, canvasHeight;
 
-    // --- FUNGSI RESIZE (HIGH-DPI SUPPORT) ---
+    // Fungsi Resize (High DPI / Retina Support)
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       canvasWidth = window.innerWidth;
@@ -39,15 +62,21 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
       initParticles();
     };
 
-    window.addEventListener('mousemove', (e) => {
+    // Event Listeners
+    const onMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-    });
-    window.addEventListener('mouseleave', () => {
+    };
+    
+    const onMouseLeave = () => {
       mouse.x = null;
       mouse.y = null;
-    });
+    };
 
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseleave', onMouseLeave);
+
+    // Class Particle
     class Particle {
       constructor() {
         this.x = Math.random() * canvasWidth;
@@ -61,9 +90,11 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
         this.x += this.vx;
         this.y += this.vy;
 
+        // Pantulan dinding
         if (this.x < 0 || this.x > canvasWidth) this.vx *= -1;
         if (this.y < 0 || this.y > canvasHeight) this.vy *= -1;
 
+        // Interaksi Mouse
         if (mouse.x != null) {
             let dx = mouse.x - this.x;
             let dy = mouse.y - this.y;
@@ -79,7 +110,6 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
       }
 
       draw() {
-        // 2. GUNAKAN VARIABEL WARNA DINAMIS
         ctx.fillStyle = `rgba(${colorRGB}, 0.7)`; 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -94,9 +124,11 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
         }
     }
 
+    // Inisialisasi awal
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // --- ANIMATION LOOP UTAMA ---
     const animate = () => {
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       
@@ -104,6 +136,7 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
         particles[i].update();
         particles[i].draw();
 
+        // Loop Nested untuk Garis Koneksi
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
@@ -112,7 +145,6 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
           if (distance < connectionDistance) {
             ctx.beginPath();
             const opacity = 1 - (distance / connectionDistance);
-            // 3. GUNAKAN VARIABEL WARNA DINAMIS UNTUK GARIS
             ctx.strokeStyle = `rgba(${colorRGB}, ${opacity * 0.15})`; 
             ctx.lineWidth = 0.8;
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -121,20 +153,29 @@ const ParticleBackground = ({ theme }) => { // 1. TERIMA PROPS THEME
           }
         }
       }
+      
+      // Request frame berikutnya (Looping)
       animationFrameId = requestAnimationFrame(animate);
     };
+    
+    // Jalankan animasi
     animate();
 
+    // Cleanup Function (Saat component unmount / theme berubah / hilang dari layar)
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseleave', onMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [theme]); // 4. PENTING: Jalankan ulang jika theme berubah
+  }, [theme, isVisible]); // Dependency array
 
   return (
     <canvas 
       ref={canvasRef} 
       className="fixed top-0 left-0 w-full h-full pointer-events-none z-[0]"
+      // Hint browser untuk optimasi rendering
+      style={{ willChange: 'transform' }} 
     />
   );
 };

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"; 
-import { Tilt } from 'react-tilt';
+// 1. GANTI LIBRARY TILT DISINI (Tanpa kurung kurawal)
+import Tilt from 'react-parallax-tilt'; 
 import { PROJECTS } from "../../constants"; 
 import { motion, AnimatePresence } from "framer-motion";
 import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
 import { toast } from "react-hot-toast";
-import OklchGradientText from "../OklchGradientText";
+import OklchGradientText from "../OklchGradientText"; 
 
 // --- FUNGSI PEMBANTU ---
 const getYouTubeID = (url) => {
@@ -14,10 +15,6 @@ const getYouTubeID = (url) => {
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
 };
-
-const defaultOptions = {
-  reverse: false, max: 25, perspective: 1000, scale: 1.05, speed: 1000, transition: true, axis: null, reset: true, easing: "cubic-bezier(.03,.98,.52,.99)",    
-}
 
 const CATEGORY_TRANSLATIONS = {
   "All": { en: "All", id: "Semua" },
@@ -30,26 +27,28 @@ const CATEGORIES = Object.keys(CATEGORY_TRANSLATIONS);
 
 // --- PROJECT CARD ---
 const ProjectCard = ({ project, lang, setSelectedImage }) => {
-    // State Like
+    // Cek Mobile (Agar Tilt mati di HP)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     const initialLikes = Math.floor(Math.random() * 40) + 10; 
     const [likes, setLikes] = useState(initialLikes);
     const [isLiked, setIsLiked] = useState(false);
-    
-    // State Skeleton Loading
     const [imageLoaded, setImageLoaded] = useState(false);
 
     useEffect(() => {
-        const likedProjects = JSON.parse(localStorage.getItem('likedProjects')) || {};
-        if (likedProjects[project.title]) {
-            setIsLiked(true);
-            setLikes(prev => prev + 1); 
+        try {
+            const likedProjects = JSON.parse(localStorage.getItem('likedProjects')) || {};
+            if (likedProjects[project.title]) {
+                setIsLiked(true);
+                setLikes(prev => prev + 1); 
+            }
+        } catch (e) {
+            console.error("Local storage error", e);
         }
     }, [project.title]);
 
-    // FUNGSI LIKE (DI DALAM COMPONENT)
     const handleLike = () => {
         const likedProjects = JSON.parse(localStorage.getItem('likedProjects')) || {};
-        
         if (isLiked) {
             setLikes(likes - 1);
             setIsLiked(false);
@@ -58,17 +57,17 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
             setLikes(likes + 1);
             setIsLiked(true);
             likedProjects[project.title] = true;
-            
-            ReactGA.event({
-                category: "Project Interaction",
-                action: "Liked Project",
-                label: project.title,
-            });
+            if (typeof ReactGA.event === 'function') {
+                ReactGA.event({
+                    category: "Project Interaction",
+                    action: "Liked Project",
+                    label: project.title,
+                });
+            }
         }
         localStorage.setItem('likedProjects', JSON.stringify(likedProjects));
     };
 
-    // FUNGSI SHARE (DI DALAM COMPONENT)
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -97,17 +96,26 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
             transition={{ duration: 0.3 }}
             className="flex flex-wrap lg:justify-start mb-16" 
         >
-            {/* --- Bagian Media (Kiri) --- */}
-            <div className="w-full lg:w-1/3">
+            <div className="w-full lg:w-1/3 relative z-10">
                 {videoID ? (
-                    <div className="w-full aspect-video rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 relative z-10 bg-black shadow-lg">
-                        <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${videoID}`} title={project.title} frameBorder="0" allowFullScreen></iframe>
+                    // === PERBAIKAN SHADOW VIDEO DISINI ===
+                    // Kita pisahkan shadow ke layer belakang (absolute) supaya tidak kena potong overflow
+                    <div className="relative w-full aspect-video">
+                        
+                        {/* Layer Shadow (Blur di belakang) */}
+                        <div className="absolute -inset-3 bg-black/40 dark:bg-black/60 blur-xl rounded-xl -z-10"></div>
+                        
+                        {/* Layer Video (Content) */}
+                        <div className="w-full h-full rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-black relative z-10">
+                            <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${videoID}`} title={project.title} frameBorder="0" allowFullScreen></iframe>
+                        </div>
+                        
                     </div>
                 ) : (
-                    <Tilt options={defaultOptions} className="w-full h-full"> 
-                        <div className="relative group w-full h-auto rounded-lg overflow-hidden cursor-pointer bg-neutral-200 dark:bg-neutral-800" onClick={() => setSelectedImage(project.image)}>
-                            
-                            {/* Skeleton Loading */}
+                    // --- LOGIC TILT BARU (FIXED) ---
+                    // Jika Mobile: Render Div Biasa
+                    isMobile ? (
+                        <div className="relative group w-full h-auto rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800" onClick={() => setSelectedImage(project.image)}>
                             {!imageLoaded && (
                                 <div className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-300 dark:bg-neutral-800 animate-pulse">
                                     <svg className="w-10 h-10 text-neutral-400 dark:text-neutral-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
@@ -115,16 +123,40 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
                                     </svg>
                                 </div>
                             )}
-
-                            <img src={project.image} alt={project.title} onLoad={() => setImageLoaded(true)} className={`w-full h-auto shadow-lg object-cover transition-transform duration-500 group-hover:scale-105 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}/>
-                            
+                            <img decoding="async" loading="lazy" src={project.image} alt={project.title} onLoad={() => setImageLoaded(true)} className={`w-full h-auto shadow-lg object-cover transition-transform duration-500 group-hover:scale-105 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}/>
                             <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 <div className="bg-neutral-900/80 dark:bg-white/90 text-white dark:text-neutral-900 p-2.5 rounded-full shadow-lg">
                                     <FaSearchPlus className="text-lg" />
                                 </div>
                             </div>
                         </div>
-                    </Tilt>
+                    ) : (
+                        // Jika Desktop: Pakai REACT-PARALLAX-TILT (Syntax Baru)
+                        <Tilt 
+                            className="w-full h-full"
+                            tiltMaxAngleX={15} 
+                            tiltMaxAngleY={15}
+                            scale={1.02}
+                            transitionSpeed={500}
+                            perspective={1000}
+                        > 
+                            <div className="relative group w-full h-auto rounded-lg overflow-hidden cursor-pointer bg-neutral-200 dark:bg-neutral-800" onClick={() => setSelectedImage(project.image)}>
+                                {!imageLoaded && (
+                                    <div className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-300 dark:bg-neutral-800 animate-pulse">
+                                        <svg className="w-10 h-10 text-neutral-400 dark:text-neutral-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                            <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                                        </svg>
+                                    </div>
+                                )}
+                                <img decoding="async" loading="lazy" src={project.image} alt={project.title} onLoad={() => setImageLoaded(true)} className={`w-full h-auto shadow-lg object-cover transition-transform duration-500 group-hover:scale-105 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}/>
+                                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                    <div className="bg-neutral-900/80 dark:bg-white/90 text-white dark:text-neutral-900 p-2.5 rounded-full shadow-lg">
+                                        <FaSearchPlus className="text-lg" />
+                                    </div>
+                                </div>
+                            </div>
+                        </Tilt>
+                    )
                 )}
             </div>
 
@@ -148,14 +180,12 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    {/* BUTTON WEBSITE */}
                     {project.link && (
                         <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
                             {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-xs" />
                         </a>
                     )}
 
-                    {/* BUTTON LIKE */}
                     <button 
                         onClick={handleLike}
                         className={`
@@ -174,7 +204,6 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
                         </span>
                     </button>
 
-                    {/* BUTTON SHARE (TERPISAH) */}
                     <button 
                         onClick={handleShare} 
                         className="text-neutral-400 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full"
@@ -201,7 +230,6 @@ const Projects = ({ lang }) => {
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
 
-      {/* FILTER BUTTONS */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         {CATEGORIES.map((cat) => (
           <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 border ${activeCategory === cat ? "bg-amber-600 dark:bg-cyan-600 text-white border-amber-600 dark:border-cyan-600 shadow-lg scale-105" : "bg-transparent text-neutral-900 dark:text-neutral-100 border-neutral-900 dark:border-neutral-100 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"}`}>
@@ -210,7 +238,6 @@ const Projects = ({ lang }) => {
         ))}
       </div>
 
-      {/* INFO VIDEO */}
       {activeCategory === 'Videography' && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-12">
             <div className="flex items-center gap-2 bg-amber-50 dark:bg-neutral-900 border border-amber-200 dark:border-neutral-700 px-4 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-400">
@@ -220,8 +247,7 @@ const Projects = ({ lang }) => {
         </motion.div>
       )}
       
-      {/* DAFTAR PROJECT */}
-      <motion.div layout className="flex flex-col px-4">
+      <motion.div layout className="flex flex-col p-4 md:p-6">
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project, index) => (
              <ProjectCard 
@@ -240,7 +266,6 @@ const Projects = ({ lang }) => {
         )}
       </motion.div>
 
-      {/* MODAL FULLSCREEN */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedImage(null)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm">
