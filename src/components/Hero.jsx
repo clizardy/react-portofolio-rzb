@@ -7,16 +7,18 @@ import { FaDownload } from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
 import LocationWidget from "../components/LocationWidget";
 import QuoteWidget from "../components/QuoteWidget";
+import TechStackWidget from "../components/TechStackWidget";
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
 
+// --- PERBAIKAN: Hapus duplikasi container & gunakan prop delay ---
 const container = (delay) => ({
   hidden: { x: -50, opacity: 0 },
   visible: {
     x: 0,
     opacity: 1,
-    transition: { duration: 0.5, delay },
+    transition: { duration: 0.5, delay: delay }
   },
 });
 
@@ -28,32 +30,28 @@ const ClockWidget = ({ lang }) => {
     return () => clearInterval(timer);
   }, []);
 
-const locale = lang === 'id' ? 'id-ID' : 'en-US';
+  const locale = lang === 'id' ? 'id-ID' : 'en-US';
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* Import Font Orbitron dari Google Fonts */}
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');`}
       </style>
-
-      {/* Jam Besar */}
       <span 
         style={{ fontFamily: "'Orbitron'" }} 
         className="text-2xl lg:text-3xl font-bold tracking-widest text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]"
       >
         {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
       </span>
-      
-      {/* Tanggal Kecil */}
-        <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
+      <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
         {time.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short' })}
       </span>
     </div>
   );
 };
 
-const Hero = ({ lang }) => {
+// --- PERBAIKAN: Terima prop isReady ---
+const Hero = ({ lang, isReady = true }) => {
   const t = TRANSLATIONS[lang ? lang : 'en']?.hero || TRANSLATIONS['en'].hero;
 
   const sequenceEn = [
@@ -82,27 +80,28 @@ const Hero = ({ lang }) => {
         }
       `}</style>
 
-      <div id="hero" className="flex flex-wrap items-center">
+      <div id="hero" className="flex flex-wrap items-center pt-10 pb-20">
         
         {/* BAGIAN KIRI */}
         <div className="w-full lg:w-1/2">
           <div className="flex flex-col items-center lg:items-start">
             
             <RevealText>
+                {/* LOGIKA: Jika isReady true -> visible, jika false -> hidden */}
                 <motion.h1
-                variants={container(0)}
-                initial="hidden"
-                animate="visible"
-                className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
+                  variants={container(0)} // Delay 0
+                  initial="hidden"
+                  animate={isReady ? "visible" : "hidden"} 
+                  className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
                 >
-                <OklchGradientText>Ronald Zuni Bachtiar</OklchGradientText>
+                  <OklchGradientText>Ronald Zuni Bachtiar</OklchGradientText>
                 </motion.h1>
             </RevealText>
 
             <motion.div
               variants={container(0.2)}
               initial="hidden"
-              animate="visible"
+              animate={isReady ? "visible" : "hidden"}
               className="h-16 lg:h-20"
             >
                 <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-cyan-300 dark:via-slate-100 dark:to-blue-400 bg-clip-text text-3xl lg:text-4xl tracking-tight text-transparent font-bold">
@@ -119,7 +118,7 @@ const Hero = ({ lang }) => {
             <motion.p
               variants={container(0.4)}
               initial="hidden"
-              animate="visible"
+              animate={isReady ? "visible" : "hidden"}
               className="my-2 py-6 max-w-xl font-light tracking-tighter text-center lg:text-left text-neutral-700 dark:text-neutral-300"
             >
               {t.desc}
@@ -128,7 +127,7 @@ const Hero = ({ lang }) => {
             {/* --- GROUP TOMBOL --- */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-wrap gap-4 mt-6 justify-center lg:justify-start items-center"
             >
@@ -151,28 +150,30 @@ const Hero = ({ lang }) => {
               </a>
             </motion.div>
 
+            {/* WIDGETS */}
             <motion.div 
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.9 }} // Delay 0.9s biar muncul paling akhir
+                animate={isReady ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.8, delay: 0.9 }}
                 className="mt-8 flex justify-center lg:justify-start w-full"
             >
                 <LocationWidget lang={lang} />
             </motion.div>
 
             <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.1 }} // Delay lebih lama biar muncul berurutan
-            className="mt-4 flex justify-center lg:justify-start w-full"
-        >
-            <QuoteWidget lang={lang} />
-        </motion.div>
+              initial={{ opacity: 0, y: 20 }}
+              animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="mt-4 flex justify-center lg:justify-start w-full"
+            >
+                <QuoteWidget lang={lang} />
+            </motion.div>
+
           </div>
         </div>
         
 
-        {/* BAGIAN KANAN */}
+        {/* BAGIAN KANAN (TETAP SEPERTI SEMULA / NO 3D) */}
         <div className="w-full lg:w-1/2 lg:p-8 mt-16 lg:mt-0">
           <div className="flex justify-center relative group z-10"> 
             
@@ -192,7 +193,7 @@ const Hero = ({ lang }) => {
 
             <motion.div
               initial={{ x: 50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }} // Sinkronisasi Animasi Masuk
               transition={{ duration: 0.8 }}
               className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl p-2 lg:p-3 w-full"
             >

@@ -207,7 +207,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
             className="
                 relative w-full max-w-xl 
                 bg-neutral-900/80 
-                dark:bg-black/50
+                dark:bg-black/100
                 backdrop-blur-xl 
                 border border-white/10 
                 rounded-2xl shadow-2xl 

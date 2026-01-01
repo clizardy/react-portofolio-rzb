@@ -231,9 +231,6 @@ const ImageWithSkeleton = ({ src, alt }) => {
                 alt={alt} 
                 onLoad={() => setIsLoaded(true)}
                 loading="lazy" 
-                // 2. KUNCI UTAMA: 'object-contain'
-                // 'cover': Potong gambar biar kotaknya penuh.
-                // 'contain': Pas-kan gambar biar masuk semua ke kotak TANPA TERPOTONG.
                 className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
             />
         </div>

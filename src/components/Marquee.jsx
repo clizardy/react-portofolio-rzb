@@ -1,73 +1,67 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { 
+  motion, 
+  useScroll, 
+  useSpring, 
+  useTransform, 
+  useMotionValue, 
+  useVelocity, 
+  useAnimationFrame 
+} from "framer-motion";
+import { wrap } from "@motionone/utils";
 
-// Daftar teks yang akan berjalan
-const MARQUEE_TEXT = [
-  "Editor",
-  "•",
-  "Photographer",
-  "•",
-  "Videographer",
-  "•",
-  "Musician",
-  "•",
-  "Frontend Engineer",
-  "•",
-  "Graphic Designer",
-  "•",
-];
+const MARQUEE_TEXT = "Editor • Photographer • Videographer • Musician • Frontend Engineer • Graphic Designer • ";
 
 const Marquee = () => {
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  
+  // Smooth physics: membuat perubahan kecepatan terasa halus (seperti mobil)
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+
+  // Mengubah kecepatan scroll menjadi kecepatan gerakan teks
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false
+  });
+
+  // Magic Loop Logic
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+
+  const directionFactor = useRef(1);
+
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * 2.5 * (delta / 2000); // Kecepatan dasar
+
+    // Tambahkan kecepatan dari scroll user
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1;
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1;
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+    baseX.set(baseX.get() + moveBy);
+  });
+
   return (
-    // UBAH 1: Background & Border Adaptif (Terang di Light Mode, Gelap di Dark Mode)
-    <div className="w-full py-6 bg-neutral-100 dark:bg-neutral-900 border-y border-neutral-300 dark:border-neutral-800 overflow-hidden relative z-20">
-      
-      <div className="flex whitespace-nowrap">
-        
-        {/* BAGIAN 1 */}
-        <motion.div
-          initial={{ x: 0 }}
-          animate={{ x: "-100%" }}
-          transition={{ 
-            repeat: Infinity, 
-            ease: "linear", 
-            duration: 20 
-          }}
-          className="flex gap-8 pr-8"
-        >
-          {MARQUEE_TEXT.map((item, index) => (
+    <div className="w-full py-8 bg-neutral-100 dark:bg-neutral-900 border-y border-neutral-300 dark:border-neutral-800 overflow-hidden relative z-20">
+      <div className="flex whitespace-nowrap overflow-hidden">
+        <motion.div className="flex gap-8" style={{ x }}>
+          {/* Kita render teks berulang kali (4x) biar loop-nya ga putus */}
+          {Array.from({ length: 4 }).map((_, i) => (
             <span 
-              key={index} 
-              // UBAH 2: Warna Teks Gradient
-              // Light Mode: from-neutral-600 to-neutral-900 (Gelap & Tajam)
-              // Dark Mode: dark:from-neutral-200 dark:to-neutral-500 (Terang & Soft)
+              key={i}
               className="text-4xl lg:text-6xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
             >
-              {item}
+              {MARQUEE_TEXT}
             </span>
           ))}
         </motion.div>
-
-        {/* BAGIAN 2 (Duplikat) */}
-        <motion.div
-          initial={{ x: 0 }}
-          animate={{ x: "-100%" }}
-          transition={{ 
-            repeat: Infinity, 
-            ease: "linear", 
-            duration: 20 
-          }}
-          className="flex gap-8 pr-8"
-        >
-          {MARQUEE_TEXT.map((item, index) => (
-            <span 
-              key={index} 
-              className="text-4xl lg:text-6xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
-            >
-              {item}
-            </span>
-          ))}
-        </motion.div>
-
       </div>
     </div>
   );

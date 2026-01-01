@@ -21,6 +21,7 @@ import AiArtCard from "./components/AiArtCard";
 import MagicCard from "./components/MagicCard";
 
 // IMPORT HALAMAN
+import WelcomeScreen from "./components/WelcomeScreen";
 import ParticleBackground from './components/ParticleBackground';
 import Navbar from './components/Navbar';
 import CommandPalette from "./components/CommandPalette";
@@ -67,6 +68,18 @@ const AnimatedWave = ({ theme }) => {
 };
 
 const App = () => {
+const [showWelcome, setShowWelcome] = useState(true);
+
+  // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas saat Refresh
+  useEffect(() => {
+    if (showWelcome) {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0); // <-- PENTING: Reset scroll ke atas biar Hero tidak nge-bug
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [showWelcome]);
+
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [lang, setLang] = useState("en");
   const [isLoading, setIsLoading] = useState(true);
@@ -165,105 +178,87 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
      return () => clearTimeout(timer);
   }, []);
 
-  return (
+return (
     <>
-<style>{`
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    /* DURASI DIPERLAMBAT BIAR BLUR KERASA */
-    animation-duration: 1.2s;
-    /* Easing halus ala sinematik */
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    mix-blend-mode: normal;
-  }
+      <style>{`
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 1.2s;
+          animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+          mix-blend-mode: normal;
+        }
+        ::view-transition-old(root) {
+          z-index: 1;
+          animation-name: slowBlurOut;
+        }
+        ::view-transition-new(root) {
+          z-index: 2;
+          animation-name: cinematicSlash;
+        }
+        @keyframes cinematicSlash {
+          0% {
+            clip-path: polygon(-50% 0%, -10% 0%, -30% 100%, -70% 100%, 40% 0%, 40% 0%, 20% 100%, 20% 100%, 110% 0%, 150% 0%, 130% 100%, 90% 100%);
+            filter: blur(15px) brightness(1.2);
+            transform: scale(1.05);
+          }
+          50% { filter: blur(5px) brightness(1.1); }
+          100% {
+            clip-path: polygon(-20% 0%, 70% 0%, 50% 100%, -40% 100%, 30% 0%, 110% 0%, 90% 100%, 10% 100%, 80% 0%, 150% 0%, 130% 100%, 60% 100%);
+            filter: blur(0px) brightness(1);
+            transform: scale(1);
+          }
+        }
+        @keyframes slowBlurOut {
+          0% { opacity: 1; filter: blur(0px); }
+          100% { opacity: 0; filter: blur(20px); transform: scale(0.95); }
+        }
+      `}</style>
 
-  /* TEMA LAMA: Blur & Mundur Perlahan */
-  ::view-transition-old(root) {
-    z-index: 1;
-    animation-name: slowBlurOut;
-  }
-
-  /* TEMA BARU: Slash Masuk dengan Efek Fokus */
-  ::view-transition-new(root) {
-    z-index: 2;
-    animation-name: cinematicSlash;
-  }
-
-  @keyframes cinematicSlash {
-    0% {
-      /* POSISI AWAL: Terbuka */
-      clip-path: polygon(
-        -50% 0%, -10% 0%, -30% 100%, -70% 100%,
-        40% 0%, 40% 0%, 20% 100%, 20% 100%,
-        110% 0%, 150% 0%, 130% 100%, 90% 100%
-      );
-      /* EFEK BLUR KUAT DISINI */
-      filter: blur(15px) brightness(1.2);
-      transform: scale(1.05);
-    }
-    
-    /* Di tengah animasi, blur mulai berkurang tapi masih ada */
-    50% {
-      filter: blur(5px) brightness(1.1);
-    }
-
-    100% {
-      /* POSISI AKHIR: Menutup Rapat (Overlap) */
-      clip-path: polygon(
-        -20% 0%, 70% 0%, 50% 100%, -40% 100%,
-        30% 0%, 110% 0%, 90% 100%, 10% 100%,
-        80% 0%, 150% 0%, 130% 100%, 60% 100%
-      );
-      /* GAMBAR JADI TAJAM (FOCUS) */
-      filter: blur(0px) brightness(1);
-      transform: scale(1);
-    }
-  }
-
-  @keyframes slowBlurOut {
-    0% {
-      opacity: 1;
-      filter: blur(0px);
-    }
-    100% { 
-      opacity: 0;
-      /* Background lama jadi ngeblur parah saat menghilang */
-      filter: blur(20px);
-      transform: scale(0.95);
-    }
-  }
-`}</style>
       <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
+      
+      {/* 1. PRELOADER */}
       <AnimatePresence mode="wait">
         {isLoading && <Preloader key="preloader" onComplete={handleLoadComplete} />}
       </AnimatePresence>
 
       <CommandPalette 
-      theme={theme} 
-      toggleTheme={toggleTheme} 
-      lang={lang}                
-      toggleLanguage={toggleLanguage} 
+        theme={theme} 
+        toggleTheme={toggleTheme} 
+        lang={lang}                
+        toggleLanguage={toggleLanguage} 
       />
 
-      {/* 2. WEBSITE UTAMA */}
+      {/* 2. CONTAINER UTAMA WEBSITE */}
       <div 
         className={`antialiased transition-colors duration-300 min-h-screen bg-neutral-900 
         ${theme === 'dark' 
           ? 'text-neutral-100 selection:bg-cyan-500 selection:text-white' 
           : 'text-neutral-900 selection:bg-amber-500 selection:text-white'}`}
-        
         style={{ 
             opacity: isLoading ? 0 : 1, 
             transition: 'opacity 0.5s ease-in-out'
         }}
       >
+        
+        {/* === PERBAIKAN: WELCOME SCREEN PINDAH KESINI (PALING ATAS) === */}
+        {/* Sekarang posisinya di luar elemen 'transform', jadi 'fixed' akan jalan normal */}
+        <AnimatePresence mode="wait">
+            {showWelcome && (
+              <WelcomeScreen onEnter={() => setShowWelcome(false)}
+              lang={lang} />
+            )}
+        </AnimatePresence>
+
         <Terminal />    
         <ScrollProgress />
         <CustomCursor theme={theme} />
         <SidebarMenu lang={lang} />
 
+        {/* 3. HERO SECTION WRAPPER (Paper Style) */}
+        {/* Div ini punya 'transform-gpu', makanya Welcome Screen dilarang ditaruh di dalamnya */}
         <div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-neutral-950 shadow-2xl overflow-hidden pb-28 md:pb-40 rounded-b-[30px] md:rounded-b-[60px]">
             
+            {/* Background Gradients */}
             <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none">
                 {theme === 'dark' ? (
                     <div className="h-full w-full bg-sky-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
@@ -272,76 +267,75 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
                 )}
             </div>
 
-        <ParticleBackground theme={theme} />
+            {/* NAVBAR & HERO */}
+            <div id="hero" className="container mx-auto px-4 md:px-8 relative z-10">
+                <Navbar 
+                    toggleTheme={toggleTheme} 
+                    theme={theme} 
+                    toggleLanguage={toggleLanguage} 
+                    lang={lang} 
+                />
+                
+                <Hero 
+                    lang={lang} 
+                    isReady={!showWelcome} 
+                />
 
-        {/* 3. KONTEN WEBSITE */}
-        <div id="hero" className="container mx-auto px-4 md:px-8 relative z-10">
-            <Navbar toggleTheme={toggleTheme} theme={theme} toggleLanguage={toggleLanguage} lang={lang} />
-            <Hero lang={lang} />
-        </div>
+                <ParticleBackground theme={theme} />
+            </div>
 
+            {/* MARQUEE */}
             <div className="w-full">
                 <Marquee />
             </div>
 
+            {/* KONTEN UTAMA */}
             <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
-                <div id="about" className="render-lazy">
-                  <About lang={lang}/></div>
+                    <div id="about" className="render-lazy"><About lang={lang}/></div>
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Skills...</div>}>
-                <div id="skills">
-                  <Skills lang={lang}/></div> 
+                    <div id="skills"><Skills lang={lang}/></div> 
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Education...</div>}>
-                <div id="education" className="render-lazy"> 
-                  <Education lang={lang}/></div>
+                    <div id="education" className="render-lazy"><Education lang={lang}/></div>
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Projects...</div>}>
-                <div id="projects">
-                  <Projects lang={lang}/></div>
+                    <div id="projects"><Projects lang={lang}/></div>
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Services...</div>}>
-                <div id="services" className="render-lazy">
-                  <Services lang={lang}/></div>
+                    <div id="services" className="render-lazy"><Services lang={lang}/></div>
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Gallery...</div>}>
-                <div id="timeline" className="render-lazy">
-                  <TimelineGallery lang={lang} />
-                </div>
+                    <div id="timeline" className="render-lazy"><TimelineGallery lang={lang} /></div>
                 </Suspense>
 
-                <div id="organization">
-                  <Organization lang={lang}/></div>
+                <div id="organization"><Organization lang={lang}/></div>
+                
                 <Suspense fallback={<div className="text-center py-20">Loading Dedication...</div>}>
-                <div id="dedication">
-                  <Dedication lang={lang}/></div>
+                    <div id="dedication"><Dedication lang={lang}/></div>
                 </Suspense>
                 <Suspense fallback={<div className="text-center py-20">Loading Testimonials...</div>}>
-                <div id="testimonials" className="render-lazy">
-                  <Testimonials lang={lang}/></div>
+                    <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
                 </Suspense>
             </div>
             
             <AnimatedWave theme={theme} />
         </div>
 
-        <div className="relative z-0 -mt-20 pt-24 pb-0 w-full bg-neutral-900 text-white flex flex-col items-center justify-center
-                        bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+        {/* 4. FOOTER SECTION */}
+        <div className="relative z-0 -mt-20 pt-24 pb-0 w-full bg-neutral-900 text-white flex flex-col items-center justify-center bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
               
-              <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
+            <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
-              <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-16">
+            <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-16">
                 <Suspense fallback={<div className="text-center py-20">Loading Contact...</div>}>
-                <MagicCard>
-                  <Contact lang={lang} />
-                </MagicCard>
+                    <MagicCard><Contact lang={lang} /></MagicCard>
                 </Suspense>
-              </div>
+            </div>
 
-              <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-20">
+            <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    
                     <div className="lg:col-span-7 flex flex-col">
                         <div className="p-6 md:p-8 rounded-3xl bg-neutral-800/50 border border-neutral-700/50 backdrop-blur-sm h-full shadow-lg">
                             <h3 className="text-xl font-bold mb-6 text-neutral-200 flex items-center gap-2">
@@ -350,9 +344,7 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
                             </h3>
                             <div className="min-h-[300px]">
                                 <Suspense fallback={<div className="text-center py-20">Loading Comments...</div>}>
-                                <MagicCard>
-                                <GiscusComments theme={theme} />
-                                </MagicCard>
+                                    <MagicCard><GiscusComments theme={theme} /></MagicCard>
                                 </Suspense>
                             </div>
                         </div>
@@ -361,38 +353,31 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
                     <div className="lg:col-span-5 flex flex-col gap-6">
                         <div className="w-full">
                             <Suspense fallback={<div className="text-center py-20">Loading AI Art...</div>}>
-                            <MagicCard>
-                            <AiArtCard />
-                            </MagicCard>
+                                <MagicCard><AiArtCard /></MagicCard>
                             </Suspense>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="h-full min-h-[160px]">
                                 <Suspense fallback={<div className="text-center py-20">Loading Spotify...</div>}>
-                                <MagicCard>
-                                <SpotifyCard />
-                                </MagicCard>
+                                    <MagicCard><SpotifyCard /></MagicCard>
                                 </Suspense>
                             </div>
                             <div className="h-full min-h-[160px]">
                                 <Suspense fallback={<div className="text-center py-20">Loading YouTube...</div>}>
-                                <MagicCard>
-                                <YouTubeCard />
-                                </MagicCard>
+                                    <MagicCard><YouTubeCard /></MagicCard>
                                 </Suspense>
                             </div>
                         </div>
                     </div>
-
                 </div>
-              </div>
+            </div>
               
-              <div className="w-full z-10">
-                  <Suspense fallback={<div className="text-center py-20">Loading Footer...</div>}>
-                  <Footer lang={lang} />
-                  </Suspense>
-              </div>
+            <div className="w-full z-10">
+                <Suspense fallback={<div className="text-center py-20">Loading Footer...</div>}>
+                    <Footer lang={lang} />
+                </Suspense>
+            </div>
         </div>
 
         <div className="relative z-50">
