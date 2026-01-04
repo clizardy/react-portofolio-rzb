@@ -8,6 +8,7 @@ import {
   FaFileDownload, FaGlobe, FaCodeBranch
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import CV from '../assets/CV.pdf';
 
 // Pastikan props toggleLanguage dan lang diterima disini
 const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
@@ -18,12 +19,12 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
 
   // --- CONFIG: Link Social Media Kamu (Ganti Bagian Ini) ---
   const SOCIAL_LINKS = {
-    github: 'https://github.com/username',
-    linkedin: 'https://linkedin.com/in/username',
-    instagram: 'https://instagram.com/username',
-    spotify: 'https://open.spotify.com/user/username', // Atau link playlist
-    repo: 'https://github.com/username/portfolio-v2', // Link repo web ini
-    cv: '/cv_ronald.pdf' // Pastikan file ada di folder public
+    github: 'https://github.com/clizardy',
+    linkedin: 'https://linkedin.com/in/ronald-zuni-bachtiar-a52990345/',
+    instagram: 'https://instagram.com/ronald_rzb',
+    spotify: 'https://open.spotify.com/user/31no4b5xpzclgwvuesdkow7nl4ne?si=640a695380964edb',
+    repo: 'https://github.com/clizardy/react-portofolio-rzb',
+    cv: CV
   };
 
   // --- DAFTAR PERINTAH LENGKAP ---
@@ -207,7 +208,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
             className="
                 relative w-full max-w-xl 
                 bg-neutral-900/80 
-                dark:bg-black/100
+                dark:bg-black/50
                 backdrop-blur-xl 
                 border border-white/10 
                 rounded-2xl shadow-2xl 

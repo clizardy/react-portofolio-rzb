@@ -16,11 +16,13 @@ const getYouTubeID = (url) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
+// --- UPDATE DISINI: MENAMBAHKAN KATEGORI VOLUNTEER ---
 const CATEGORY_TRANSLATIONS = {
   "All": { en: "All", id: "Semua" },
   "Web Dev": { en: "Web Dev", id: "Web Dev" },
   "Photography": { en: "Photography", id: "Fotografi" },
   "Videography": { en: "Videography", id: "Videografi" },
+  "Volunteer": { en: "Volunteer", id: "Relawan" }, // <--- Kategori Baru
 };
 
 const CATEGORIES = Object.keys(CATEGORY_TRANSLATIONS);
@@ -240,7 +242,7 @@ const Projects = ({ lang }) => {
 
       {activeCategory === 'Videography' && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-12">
-            <div className="flex items-center gap-2 bg-amber-50 dark:bg-neutral-900 border border-amber-200 dark:border-neutral-700 px-4 py-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-400">
+            <div className="flex items-center gap-2 bg-amber-50 dark:bg-sky-950 border border-amber-500 dark:border-neutral-300 px-4 py-2 rounded-lg italic text-sm text-neutral-600 dark:text-neutral-400">
                 <FaInfoCircle className="text-amber-500 dark:text-cyan-500" />
                 <p>{lang === 'id' ? "Catatan: Lihat video lainnya di " : "Note: Find more videos in "}<a href="#organization" className="font-bold text-amber-600 dark:text-cyan-400 hover:underline">{lang === 'id' ? "Organisasi" : "Organization"}</a>.</p>
             </div>

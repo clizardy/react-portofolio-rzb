@@ -5,6 +5,7 @@ import project1 from "../assets/projects/project-1.jpg";
 import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
 import webdev1 from "../assets/webdev1.jpg";
+import volunteer from "../assets/volunteer.webp";
 
 export const HERO_CONTENT = `Hello! I'm Ronald, A skilled professional with expertise in photography, videography, music, and organizational leadership. Possesses strong technical abilities in producing high-quality visual and audio content, along with a deep understanding of project and team management. Experienced in dynamic environments, consistently delivering creative and strategic solutions with innovation and efficiency. Beside that, I also student active of Tidar University who takes the Information Technology education program.`;
 
@@ -135,6 +136,17 @@ export const PROJECTS = [
     technologies: ["React", "Node.js"],
     category: "Web Dev",
     link: "https://muhammad-farchan.vercel.app",
+  },
+  {
+    title: "Kemah Cengkir - Lembah Khayangan",
+    category: "Volunteer", 
+    image: volunteer, 
+    description: {
+       en: "Served as a facilitator for an educational nature camp for children. Responsible for coordinating outdoor activities, ensuring participant safety, and fostering teamwork through interactive games and character-building sessions.",
+       id: "Berperan sebagai fasilitator dalam kemah edukasi alam untuk anak-anak. Bertanggung jawab mengkoordinasikan aktivitas luar ruangan, memastikan keamanan peserta, dan membangun kerjasama tim melalui permainan interaktif serta sesi pembangunan karakter."
+    },
+    technologies: ["Event Management", "Leadership", "Public Speaking", "Mentoring"],
+    link: "https://instagram.com/p/DQDFcfpEmMl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
   },
 ];
 

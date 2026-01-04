@@ -23,7 +23,7 @@ const TESTIMONIALS = [
   },
   {
     name: "Dewi Sukmawati",
-    role: "Client & Mentor",
+    role: "Klien & Mentor",
     image: testi2,
     quote: {
         id: "Hasil editing videonya sangat sinematik dan punya storytelling yang kuat. Sangat jarang menemukan talenta muda dengan visi visual seperti ini.",
@@ -32,7 +32,7 @@ const TESTIMONIALS = [
   },
   {
     name: "David Hamdani Putranusa, S.Pd.",
-    role: "Teacher & Organization Partner",
+    role: "Partner & Guru",
     image: testi3,
     quote: {
         id: "Saya sangat mengagumi Ronald, terutama sifat pekerja keras dan amanahnya. Dia benar-benar menunjukkan kekuatannya dalam editing profesional.",
@@ -41,7 +41,7 @@ const TESTIMONIALS = [
   },
   {
     name: "Komang Ayu Wisnu Wardani, M.A.",
-    role: "Dosen Pengajar & Mentor UIN Sunan Kalijaga",
+    role: "Dosen & Mentor UIN Sunan Kalijaga",
     image: testi4,
     quote: {
         id: "Ronald memiliki kemampuan komunikasi yang baik, totalitas dalam pekerjaannya, kreatif & bisa menampilkan keunikan dalam karya-karya desainnya.",
@@ -49,8 +49,8 @@ const TESTIMONIALS = [
     }
   },
   {
-    name: "dr. Pandu Tirta Niagara",
-    role: "Colleague",
+    name: "Pandu Tirta Niagara",
+    role: "Kolega",
     image: testi5,
     quote: {
         id: "Sejauh yang Saya kenal Ronald adalah orang yang sangat disiplin, bertanggung jawab, berprinsip & berjiwa sosial. Saya senang dapat mengenalnya karena beliau adalah ATM berjalan bagi saya.❤️",

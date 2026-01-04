@@ -70,13 +70,19 @@ const AnimatedWave = ({ theme }) => {
 const App = () => {
 const [showWelcome, setShowWelcome] = useState(true);
 
-  // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas saat Refresh
+// Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas
   useEffect(() => {
     if (showWelcome) {
+      // Kunci Body & HTML (Penting buat Mobile biar gak bisa di-swipe)
       document.body.style.overflow = 'hidden';
-      window.scrollTo(0, 0); // <-- PENTING: Reset scroll ke atas biar Hero tidak nge-bug
+      document.documentElement.style.overflow = 'hidden'; 
+      
+      // Paksa balik ke paling atas
+      window.scrollTo(0, 0);
     } else {
+      // Lepas Kunci
       document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
     }
   }, [showWelcome]);
 

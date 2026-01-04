@@ -107,7 +107,7 @@ const Services = ({ lang }) => {
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap border ${
                 activeTab.id === service.id
                   ? "bg-slate-800 dark:bg-cyan-600 text-white border-transparent shadow-lg shadow-cyan-500/20 transform scale-105"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
               }`}
             >
               <span className="text-base">{service.icon}</span>
