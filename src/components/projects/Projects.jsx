@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"; 
-// 1. GANTI LIBRARY TILT DISINI (Tanpa kurung kurawal)
+import { createPortal } from "react-dom"; // <--- 1. IMPORT INI WAJIB
 import Tilt from 'react-parallax-tilt'; 
 import { PROJECTS } from "../../constants"; 
 import { motion, AnimatePresence } from "framer-motion";
-import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt } from "react-icons/fa"; 
+import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
 import { toast } from "react-hot-toast";
 import OklchGradientText from "../OklchGradientText"; 
@@ -16,28 +16,28 @@ const getYouTubeID = (url) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
-// --- UPDATE DISINI: MENAMBAHKAN KATEGORI VOLUNTEER ---
 const CATEGORY_TRANSLATIONS = {
   "All": { en: "All", id: "Semua" },
   "Web Dev": { en: "Web Dev", id: "Web Dev" },
   "Photography": { en: "Photography", id: "Fotografi" },
   "Videography": { en: "Videography", id: "Videografi" },
-  "Volunteer": { en: "Volunteer", id: "Relawan" }, // <--- Kategori Baru
 };
 
 const CATEGORIES = Object.keys(CATEGORY_TRANSLATIONS);
 
 // --- PROJECT CARD ---
-const ProjectCard = ({ project, lang, setSelectedImage }) => {
-    // Cek Mobile (Agar Tilt mati di HP)
+const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
-    const initialLikes = Math.floor(Math.random() * 40) + 10; 
-    const [likes, setLikes] = useState(initialLikes);
+    const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    
+    // State Video Hover
+    const [isHovered, setIsHovered] = useState(false);
+    const videoID = project.video ? getYouTubeID(project.video) : null;
 
     useEffect(() => {
+        setLikes(Math.floor(Math.random() * 40) + 10);
         try {
             const likedProjects = JSON.parse(localStorage.getItem('likedProjects')) || {};
             if (likedProjects[project.title]) {
@@ -87,7 +87,17 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
         }
     };
 
-    const videoID = project.video ? getYouTubeID(project.video) : null;
+    const handleCardClick = () => {
+        if (project.video && videoID) {
+            setSelectedVideo(videoID);
+        } else {
+            setSelectedImage(project.image);
+        }
+    };
+
+    const thumbnailSrc = videoID 
+        ? `https://img.youtube.com/vi/${videoID}/hqdefault.jpg` 
+        : project.image;
 
     return (
         <motion.div 
@@ -98,71 +108,85 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
             transition={{ duration: 0.3 }}
             className="flex flex-wrap lg:justify-start mb-16" 
         >
-            <div className="w-full lg:w-1/3 relative z-10">
-                {videoID ? (
-                    // === PERBAIKAN SHADOW VIDEO DISINI ===
-                    // Kita pisahkan shadow ke layer belakang (absolute) supaya tidak kena potong overflow
-                    <div className="relative w-full aspect-video">
-                        
-                        {/* Layer Shadow (Blur di belakang) */}
-                        <div className="absolute -inset-3 bg-black/40 dark:bg-black/60 blur-xl rounded-xl -z-10"></div>
-                        
-                        {/* Layer Video (Content) */}
-                        <div className="w-full h-full rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-black relative z-10">
-                            <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${videoID}`} title={project.title} frameBorder="0" allowFullScreen></iframe>
-                        </div>
-                        
+            <div 
+                className="w-full lg:w-1/3 relative z-10"
+                onMouseEnter={() => setIsHovered(true)} 
+                onMouseLeave={() => setIsHovered(false)} 
+            >
+                {isMobile ? (
+                    <div className={`relative group w-full rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${videoID ? 'aspect-video' : 'h-auto'}`} onClick={handleCardClick}>
+                        <img 
+                            decoding="async" 
+                            loading="lazy" 
+                            src={thumbnailSrc} 
+                            alt={project.title} 
+                            onLoad={() => setImageLoaded(true)} 
+                            className={`w-full shadow-lg block ${videoID ? 'h-full object-cover' : 'h-auto'}`}
+                        />
+                        {videoID && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                <FaPlay className="text-white text-3xl opacity-80" />
+                            </div>
+                        )}
                     </div>
                 ) : (
-                    // --- LOGIC TILT BARU (FIXED) ---
-                    // Jika Mobile: Render Div Biasa
-                    isMobile ? (
-                        <div className="relative group w-full h-auto rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800" onClick={() => setSelectedImage(project.image)}>
-                            {!imageLoaded && (
-                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-300 dark:bg-neutral-800 animate-pulse">
-                                    <svg className="w-10 h-10 text-neutral-400 dark:text-neutral-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                                        <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
-                                    </svg>
-                                </div>
-                            )}
-                            <img decoding="async" loading="lazy" src={project.image} alt={project.title} onLoad={() => setImageLoaded(true)} className={`w-full h-auto shadow-lg object-cover transition-transform duration-500 group-hover:scale-105 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}/>
-                            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                <div className="bg-neutral-900/80 dark:bg-white/90 text-white dark:text-neutral-900 p-2.5 rounded-full shadow-lg">
-                                    <FaSearchPlus className="text-lg" />
-                                </div>
+                <Tilt 
+                    className="w-full"
+                    tiltMaxAngleX={10} 
+                    tiltMaxAngleY={10}
+                    scale={1.02}
+                    transitionSpeed={500}
+                    perspective={1000}
+                > 
+                    <div 
+                        className={`relative group w-full rounded-lg overflow-hidden cursor-pointer bg-neutral-900 border border-neutral-800 ${videoID ? 'aspect-video' : ''}`} 
+                        onClick={handleCardClick}
+                    >
+                        <img 
+                            decoding="async" 
+                            loading="lazy" 
+                            src={thumbnailSrc} 
+                            alt={project.title} 
+                            onLoad={() => setImageLoaded(true)} 
+                            className={`w-full block transition-opacity duration-500 ${videoID ? 'h-full object-cover' : 'h-auto'} ${isHovered && videoID ? 'opacity-0' : 'opacity-100'}`}
+                        />
+
+                        {videoID && (
+                            <div className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${isHovered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                                <iframe 
+                                    width="100%" 
+                                    height="100%" 
+                                    src={`https://www.youtube.com/embed/${videoID}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${videoID}&showinfo=0&rel=0&iv_load_policy=3&fs=0`} 
+                                    title={project.title} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    className="w-full h-full object-cover scale-[1.05]" 
+                                ></iframe>
+                                <div className="absolute inset-0 bg-transparent cursor-pointer"></div>
+                            </div>
+                        )}
+
+                        {!imageLoaded && (
+                            <div className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-800 animate-pulse"></div>
+                        )}
+
+                        <div className={`absolute top-3 right-3 transition-all duration-300 transform ${!isHovered ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
+                            <div className="bg-neutral-900/80 dark:bg-white/90 text-white dark:text-neutral-900 p-2.5 rounded-full shadow-lg">
+                                {videoID ? <FaPlay className="text-sm pl-0.5" /> : <FaSearchPlus className="text-lg" />}
                             </div>
                         </div>
-                    ) : (
-                        // Jika Desktop: Pakai REACT-PARALLAX-TILT (Syntax Baru)
-                        <Tilt 
-                            className="w-full h-full"
-                            tiltMaxAngleX={15} 
-                            tiltMaxAngleY={15}
-                            scale={1.02}
-                            transitionSpeed={500}
-                            perspective={1000}
-                        > 
-                            <div className="relative group w-full h-auto rounded-lg overflow-hidden cursor-pointer bg-neutral-200 dark:bg-neutral-800" onClick={() => setSelectedImage(project.image)}>
-                                {!imageLoaded && (
-                                    <div className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-300 dark:bg-neutral-800 animate-pulse">
-                                        <svg className="w-10 h-10 text-neutral-400 dark:text-neutral-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                                            <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
-                                        </svg>
-                                    </div>
-                                )}
-                                <img decoding="async" loading="lazy" src={project.image} alt={project.title} onLoad={() => setImageLoaded(true)} className={`w-full h-auto shadow-lg object-cover transition-transform duration-500 group-hover:scale-105 ${!imageLoaded ? 'opacity-0' : 'opacity-100'}`}/>
-                                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                                    <div className="bg-neutral-900/80 dark:bg-white/90 text-white dark:text-neutral-900 p-2.5 rounded-full shadow-lg">
-                                        <FaSearchPlus className="text-lg" />
-                                    </div>
-                                </div>
+
+                        {videoID && isHovered && (
+                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/10 backdrop-blur-md px-3 py-1 rounded-full text-[8px] text-white font-bold tracking-widest uppercase border border-white/10 pointer-events-none">
+                                Click to Watch
                             </div>
-                        </Tilt>
-                    )
+                        )}
+                    </div>
+                </Tilt>
                 )}
             </div>
 
-            {/* --- Bagian Deskripsi (Kanan) --- */}
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-4xl lg:w-3/4 lg:pl-16 mt-6 lg:mt-0">
                 <div className="flex items-center justify-between mb-2">
                     <h6 className="font-bold text-xl text-neutral-900 dark:text-white">{project.title}</h6>
@@ -190,13 +214,7 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
 
                     <button 
                         onClick={handleLike}
-                        className={`
-                            group flex items-center gap-2 transition-all duration-300 outline-none
-                            ${isLiked 
-                                ? "text-red-500 dark:text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.6)] scale-105" 
-                                : "text-neutral-900 dark:text-neutral-100 hover:text-red-500 dark:hover:text-red-400 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"
-                            }
-                        `}
+                        className={`group flex items-center gap-2 transition-all duration-300 outline-none ${isLiked ? "text-red-500 dark:text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.6)] scale-105" : "text-neutral-900 dark:text-neutral-100 hover:text-red-500 dark:hover:text-red-400 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"}`}
                     >
                         <motion.div whileTap={{ scale: 1.5 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="relative">
                             {isLiked ? <FaHeart className="text-xl" /> : <FaRegHeart className="text-xl" />}
@@ -206,11 +224,7 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
                         </span>
                     </button>
 
-                    <button 
-                        onClick={handleShare} 
-                        className="text-neutral-400 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full"
-                        title="Share Project"
-                    >
+                    <button onClick={handleShare} className="text-neutral-400 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
                         <FaShareAlt className="text-lg" />
                     </button>
                 </div>
@@ -219,10 +233,11 @@ const ProjectCard = ({ project, lang, setSelectedImage }) => {
     );
 }
 
-// --- KOMPONEN UTAMA PROJECTS ---
+// --- KOMPONEN UTAMA ---
 const Projects = ({ lang }) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedImage, setSelectedImage] = useState(null); 
+  const [selectedVideo, setSelectedVideo] = useState(null); 
 
   const filteredProjects = activeCategory === "All" ? PROJECTS : PROJECTS.filter(project => project.category === activeCategory);
 
@@ -257,6 +272,7 @@ const Projects = ({ lang }) => {
                 project={project} 
                 lang={lang} 
                 setSelectedImage={setSelectedImage} 
+                setSelectedVideo={setSelectedVideo} 
              />
           ))}
         </AnimatePresence>
@@ -268,14 +284,68 @@ const Projects = ({ lang }) => {
         )}
       </motion.div>
 
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedImage(null)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm">
-            <button onClick={() => setSelectedImage(null)} className="absolute top-6 right-6 text-white/70 hover:text-white text-4xl transition-colors z-50"><FaTimes /></button>
-            <motion.img initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 300 }} src={selectedImage} alt="Full Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onClick={(e) => e.stopPropagation()} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {createPortal(
+          <AnimatePresence>
+            {selectedImage && (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setSelectedImage(null)} 
+                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm" 
+                style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }}
+              >
+                <button 
+                    onClick={() => setSelectedImage(null)} 
+                    className="absolute top-5 right-5 z-[10000] p-3 rounded-full bg-black/50 hover:bg-red-500/80 backdrop-blur-md border border-white/10 text-white/70 hover:text-white transition-all duration-300 hover:rotate-90 shadow-2xl"
+                >
+                    <FaTimes className="text-xl" />
+                </button>
+                <motion.img initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ type: "spring", damping: 25, stiffness: 300 }} src={selectedImage} alt="Full Preview" className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onClick={(e) => e.stopPropagation()} />
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+      )}
+
+      {createPortal(
+          <AnimatePresence>
+            {selectedVideo && (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setSelectedVideo(null)} 
+                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4 md:p-10 backdrop-blur-md"
+                style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }}
+              >
+                <button onClick={() => setSelectedVideo(null)} className="absolute top-6 right-6 text-white/70 hover:text-red-500 text-4xl transition-colors z-[10000]">
+                    <FaTimes />
+                </button>
+                
+                <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }} 
+                    animate={{ scale: 1, opacity: 1 }} 
+                    exit={{ scale: 0.8, opacity: 0 }} 
+                    transition={{ type: "spring", damping: 25, stiffness: 300 }} 
+                    className="w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-neutral-800"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1&modestbranding=1&rel=0&showinfo=0`} 
+                        title="Video Player" 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                    ></iframe>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+      )}
     </div>
   )
 }

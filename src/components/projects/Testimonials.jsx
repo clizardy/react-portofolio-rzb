@@ -1,7 +1,8 @@
-// 1. IMPORT LIBRARY BARU YANG BENAR
+import React, { useState } from 'react'; // Tambahkan useState
 import Tilt from 'react-parallax-tilt';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // Tambahkan AnimatePresence
 import { RiDoubleQuotesL } from "react-icons/ri"; 
+import { FaChevronDown } from "react-icons/fa"; // Ikon untuk indikator klik
 import OklchGradientText from '../OklchGradientText';
 import testi1 from "../../assets/testi1.jpg";
 import testi2 from "../../assets/testi2.jpg";
@@ -59,68 +60,106 @@ const TESTIMONIALS = [
   }
 ];
 
+const TestimonialCard = ({ testi, lang, index }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Tilt 
+      tiltMaxAngleX={10}
+      tiltMaxAngleY={10}
+      scale={1.01}
+      transitionSpeed={1000}
+      className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)]"
+    >
+      <motion.div
+        layout // Animasi perubahan ukuran otomatis
+        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.4, delay: index * 0.05 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className={`
+          h-full relative p-5 rounded-3xl border transition-all duration-300 cursor-pointer group
+          ${isOpen ? 'bg-white dark:bg-neutral-900/20 border-amber-500/50 dark:border-cyan-500/50' : 'bg-white/30 dark:bg-neutral-900/10 border-amber-500 dark:border-cyan-500/30'}
+          hover:shadow-md
+        `}
+      >
+        {/* Ikon Kutipan Dekoratif (Hanya muncul saat terbuka) */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.1 }}
+              exit={{ opacity: 0 }}
+              className="absolute top-3 right-4"
+            >
+              <RiDoubleQuotesL className="text-5xl text-amber-600 dark:text-cyan-500" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* BAGIAN PROFILE (Selalu Terlihat) */}
+        <div className="flex items-center gap-4 relative z-10">
+          <img 
+            decoding="async" 
+            loading="lazy" 
+            src={testi.image} 
+            alt={testi.name} 
+            className={`w-16 h-16 rounded-full border transition-all duration-300 object-cover ${isOpen ? 'border-amber-400 dark:border-cyan-400 scale-110' : 'border-neutral-900 dark:border-neutral-100'}`}
+          />
+          <div className="flex-1 overflow-hidden">
+            <h4 className="font-bold text-[13px] md:text-lg text-neutral-900 dark:text-white truncate">
+              {testi.name}
+            </h4>
+            <p className="text-[9px] md:text-[11px] font-sans uppercase tracking-tighter text-amber-600 dark:text-cyan-400 truncate">
+              {testi.role}
+            </p>
+          </div>
+          
+          {/* Indikator Klik */}
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            className="text-neutral-600 dark:text-neutral-400 text-xs"
+          >
+            <FaChevronDown />
+          </motion.div>
+        </div>
+
+        {/* BAGIAN TESTIMONI (Muncul saat diklik) */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <p className="text-neutral-700 dark:text-neutral-200 italic text-sm mt-3 leading-normal font-light border-t border-neutral-700/30 dark:border-neutral-300/30 pt-4">
+                "{testi.quote[lang]}"
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </Tilt>
+  );
+};
+
 const Testimonials = ({ lang }) => {
   return (
-    <div id="testimonials">
+    <div id="testimonials" className="py-10">
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: -50 }}
+        initial={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.5 }}
-        className="my-12 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
+        className="mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r"
       >
         <OklchGradientText>{lang === 'id' ? "Apa Kata Mereka?" : "What Did They Say?"}</OklchGradientText>
       </motion.h2>
 
-      <div className="flex flex-wrap justify-center gap-6 lg:gap-8 px-4">
+      <div className="flex flex-wrap justify-center gap-4 lg:gap-6 px-4">
         {TESTIMONIALS.map((testi, index) => (
-          
-          <Tilt 
-            key={index} 
-            // 2. GANTI PROPS DISINI SESUAI LIBRARY BARU
-            tiltMaxAngleX={15}
-            tiltMaxAngleY={15}
-            scale={1.02}
-            transitionSpeed={1000}
-            perspective={1000}
-            className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-2rem)]"
-          >
-            <motion.div
-              whileInView={{ opacity: 1, scale: 1 }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="
-                h-full
-                relative bg-white dark:bg-neutral-900/50 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-lg 
-                hover:border-amber-500/50 dark:hover:border-cyan-500/50 
-                hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] dark:hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] 
-                transition duration-300 group
-              "
-            >
-              <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition duration-300">
-                  <RiDoubleQuotesL className="text-8xl text-amber-600 dark:text-cyan-500" />
-              </div>
-
-              <p className="text-neutral-700 dark:text-neutral-300 italic mb-8 mt-4 relative z-10 leading-relaxed font-light min-h-[80px]">
-                  "{testi.quote[lang]}"
-              </p>
-
-              <div className="flex items-center gap-4 relative z-10">
-                  <img decoding="async" loading="lazy" 
-                      src={testi.image} 
-                      alt={testi.name} 
-                      className="w-14 h-14 rounded-full border-2 border-neutral-200 dark:border-neutral-700 group-hover:border-amber-400 dark:group-hover:border-cyan-400 transition duration-300 object-cover"
-                  />
-                  <div>
-                      <h4 className="font-bold text-md text-neutral-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-cyan-400 transition duration-300">
-                          {testi.name}
-                      </h4>
-                      <span className="text-xs uppercase tracking-wide text-amber-600 dark:text-cyan-300">
-                          {testi.role}
-                      </span>
-                  </div>
-              </div>
-            </motion.div>
-          </Tilt>
+          <TestimonialCard key={index} testi={testi} lang={lang} index={index} />
         ))}
       </div>
     </div>

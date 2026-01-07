@@ -38,6 +38,7 @@ import Testimonials from './components/projects/Testimonials';
 import Contact from './components/Contact';
 import Terminal from "./components/Terminal";
 
+
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
 
 const AnimatedWave = ({ theme }) => {
@@ -300,6 +301,7 @@ return (
                 <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
                     <div id="about" className="render-lazy"><About lang={lang}/></div>
                 </Suspense>
+
                 <Suspense fallback={<div className="text-center py-20">Loading Skills...</div>}>
                     <div id="skills"><Skills lang={lang}/></div> 
                 </Suspense>

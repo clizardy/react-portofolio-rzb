@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGraduationCap, FaCode, FaHiking, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { MdIso, MdCamera, MdCenterFocusStrong, MdShutterSpeed } from "react-icons/md"; 
 import OklchGradientText from "./OklchGradientText";
+import exifr from 'exifr'; 
 
 // Import gambar
 import aboutImg1 from "../assets/about-me.jpg";
@@ -10,13 +12,18 @@ import aboutImg3 from "../assets/foto-lain-2.jpg";
 
 const IMAGES = [aboutImg1, aboutImg2, aboutImg3];
 
-// 1. DATA KONTEN 2 BAHASA
+// Helper: Format Shutter Speed
+const formatExposureTime = (time) => {
+    if (!time) return "-";
+    if (time >= 1) return time + "s";
+    return "1/" + Math.round(1 / time) + "s";
+};
+
 const CONTENT = {
   en: {
     title: "About Me",
-    desc: "Freelance Photographer & Videographer (2021 - Present). Produced visual content for clients across various industries, including events, products, and advertising campaigns. STIGMAPA's Leader (2022 - 2023), led a team in planning, organizing, and executing various organizational activities, improving internal communication and achieving successful event outcomes. If you really want to contact me, you can contact on the number below! Nice to meet you! :)",
+    desc: "Freelance Photographer & Videographer (2021 - Present). Produced visual content for clients across various industries, including events, products, and advertising campaigns. STIGMAPA's Leader (2022 - 2023).",
     eduTitle: "Education",
-    eduDesc: "Student at",
     eduSchool: "Tidar University",
     eduMajor: "Information Technology Education",
     techTitle: "Current Focus",
@@ -25,13 +32,13 @@ const CONTENT = {
     hobbyTitle: "Passions",
     hobbyDesc: "Nature, Music, & Photography",
     statusTitle: "Status",
-    statusDesc: "Available for Freelance Projects"
+    statusDesc: "Available for Freelance Projects",
+    clickHint: "Tap photo for details" 
   },
   id: {
     title: "Tentang Saya",
-    desc: "Fotografer & Videografer Lepas (2021 - Sekarang). Memproduksi konten visual untuk klien di berbagai industri, termasuk acara, produk, dan kampanye iklan. Ketua STIGMAPA (2022 - 2023), memimpin tim dalam merencanakan, mengorganisir, dan melaksanakan berbagai kegiatan organisasi, meningkatkan komunikasi internal dan mencapai hasil acara yang sukses. Jika Anda ingin menghubungi saya, silakan hubungi nomor di bawah ini! Senang bertemu dengan Anda! :)",
+    desc: "Fotografer & Videografer Lepas (2021 - Sekarang). Memproduksi konten visual untuk klien di berbagai industri. Ketua STIGMAPA (2022 - 2023).",
     eduTitle: "Pendidikan",
-    eduDesc: "Mahasiswa di",
     eduSchool: "Universitas Tidar",
     eduMajor: "Pendidikan Teknologi Informasi",
     techTitle: "Fokus Saat Ini",
@@ -40,148 +47,214 @@ const CONTENT = {
     hobbyTitle: "Minat",
     hobbyDesc: "Alam, Musik, & Fotografi",
     statusTitle: "Status",
-    statusDesc: "Tersedia untuk Proyek Freelance"
+    statusDesc: "Tersedia untuk Proyek Freelance",
+    clickHint: "Klik foto untuk detail"
   }
 };
 
-// 2. TERIMA PROPS 'lang'
 const About = ({ lang }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showInfo, setShowInfo] = useState(false);
+  const [exifData, setExifData] = useState(null);
+  const [loadingExif, setLoadingExif] = useState(false);
 
-  // Ambil konten sesuai bahasa
   const t = CONTENT[lang] || CONTENT['en'];
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === IMAGES.length - 1 ? 0 : prevIndex + 1
-    );
+  useEffect(() => {
+    setShowInfo(false);
+    setExifData(null);
+  }, [currentIndex]);
+
+  const nextSlide = (e) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev === IMAGES.length - 1 ? 0 : prev + 1));
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? IMAGES.length - 1 : prevIndex - 1
-    );
+  const prevSlide = (e) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? IMAGES.length - 1 : prev - 1));
+  };
+
+  const toggleInfo = async () => {
+      if (showInfo) {
+          setShowInfo(false);
+          return;
+      }
+      setLoadingExif(true);
+      setShowInfo(true);
+      
+      try {
+          const imgSrc = IMAGES[currentIndex];
+          const output = await exifr.parse(imgSrc, ['Make', 'Model', 'ISO', 'FNumber', 'ExposureTime']);
+          setExifData(output);
+      } catch (error) {
+          console.error("Gagal baca EXIF:", error);
+      } finally {
+          setLoadingExif(false);
+      }
   };
 
   return (
-    <div id="about" className="pt-24 border-b border-neutral-800 dark:border-neutral-200 pb-4">
+    <div id="about" className="pt-24 border-b border-neutral-800 dark:border-neutral-200 pb-4 relative">
       <h2 className="my-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{t.title}</OklchGradientText>
       </h2>
       
       <div className="flex flex-wrap items-center">
-        
-        {/* === SLIDER (TIDAK BERUBAH) === */}
+        {/* === SLIDER AREA === */}
         <motion.div 
           whileInView={{ opacity: 1, x: 0 }}
           initial={{ opacity: 0, x: -100 }}
           transition={{ duration: 0.5 }}
-          className="w-full lg:w-1/2 lg:p-8"
+          className="w-full lg:w-1/2 lg:p-8 flex justify-center"
         >
-          {/* ... (Kode Slider Gambar Sama Persis) ... */}
-           <div className="flex items-center justify-center">
-            <div className="relative rounded-2xl overflow-hidden max-w-sm lg:max-w-md w-full shadow-[0_0_25px_rgba(0,0,0,0.3)] dark:shadow-[0_0_20px_rgba(255,255,255,0.3)] group">
-              <div className="relative aspect-[3/4] w-full"> 
+           <div className="relative rounded-2xl overflow-hidden max-w-sm lg:max-w-md w-full shadow-2xl group">
+              {/* Container Foto */}
+              <div 
+                className="relative aspect-[3/4] w-full bg-neutral-200 dark:bg-neutral-800 cursor-pointer overflow-hidden"
+                onClick={toggleInfo} 
+              > 
                 <AnimatePresence mode="wait">
                   <motion.img 
                     key={currentIndex}
                     src={IMAGES[currentIndex]}
                     alt={`Slide ${currentIndex}`}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full h-full object-cover rounded-2xl"
+                    initial={{ scale: 1.1 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.6 }}
+                    className="w-full h-full object-cover"
                   />
                 </AnimatePresence>
+                
+                {/* --- FLOATING PILL EXIF (FIXED CENTER) --- */}
+                <AnimatePresence>
+                    {showInfo && (
+                        <motion.div 
+                            // PERBAIKAN UTAMA DISINI: x: "-50%" dipindah ke properti animasi
+                            initial={{ y: 20, x: "-50%", opacity: 0, scale: 0.9 }}
+                            animate={{ y: 0, x: "-50%", opacity: 1, scale: 1 }}
+                            exit={{ y: 20, x: "-50%", opacity: 0, scale: 0.9 }}
+                            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                            // Hapus class -translate-x-1/2 dari sini
+                            className="absolute bottom-6 left-1/2 z-20 w-auto max-w-[90%]"
+                            onClick={(e) => e.stopPropagation()} 
+                        >
+
+                            <div className="text-center text-white/60 text-[5px] uppercase italic tracking-[0.2em] mb-1 font-medium drop-shadow-sm">
+                                #Metadata
+                            </div>
+
+                            <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-[2rem] px-5 py-2.5 sm:px-6 sm:py-3 flex items-center shadow-2xl gap-4 sm:gap-6 whitespace-nowrap">
+                                
+                                {loadingExif ? (
+                                    <span className="text-white/60 text-xs animate-pulse px-4">Scanning...</span>
+                                ) : exifData ? (
+                                    <>
+                                        {/* Bagian Kiri: Kamera */}
+                                        <div className="flex items-center gap-3 pr-1">
+                                            <MdCamera className="dark:text-cyan-400 text-amber-400 text-2xl sm:text-3xl" />
+                                            <div className="flex flex-col text-left">
+                                                <span className="text-[8px] text-neutral-300 tracking-wider leading-none mb-0.5 font-medium">Device</span>
+                                                <span className="text-sm sm:text-base font-bold text-white leading-none font-sans">
+                                                    {exifData.Model ? exifData.Model.replace("ILCE-", "Sony ") : "Unknown"}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Divider Vertikal */}
+                                        <div className="w-px h-8 bg-white/90"></div>
+
+                                        {/* Bagian Kanan: Grid Settings */}
+                                        <div className="flex items-center gap-4 sm:gap-6">
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <MdCenterFocusStrong className="dark:text-cyan-400 text-amber-400 text-sm" />
+                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                    f/{exifData.FNumber || "-"}
+                                                </span>
+                                            </div>
+
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <MdShutterSpeed className="dark:text-cyan-400 text-amber-400 text-sm" />
+                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                    {formatExposureTime(exifData.ExposureTime)}
+                                                </span>
+                                            </div>
+
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <MdIso className="dark:text-cyan-400 text-amber-400 text-sm" />
+                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                    {exifData.ISO || "-"}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <span className="text-white/50 text-xs italic px-2">No Metadata</span>
+                                )}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {!showInfo && (
+                    <div className="absolute top-4 right-4 z-10">
+                         <span className="dark:text-cyan-300 text-amber-300 italic px-3 py-1.5 rounded-full text-[10px] font-medium border border-white/50 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg flex items-center gap-1">
+                            {t.clickHint}
+                        </span>
+                    </div>
+                )}
               </div>
-              <button onClick={prevSlide} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-amber-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                <FaChevronLeft size={20} />
+
+              {/* Navigation Buttons */}
+              <button onClick={prevSlide} className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-2.5 rounded-full z-10 transition-all border border-white/10 shadow-lg">
+                <FaChevronLeft size={14} />
               </button>
-              <button onClick={nextSlide} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-amber-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                <FaChevronRight size={20} />
+              <button onClick={nextSlide} className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-2.5 rounded-full z-10 transition-all border border-white/10 shadow-lg">
+                <FaChevronRight size={14} />
               </button>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+           </div>
+           
+           <div className="absolute -bottom-6 flex space-x-2">
                 {IMAGES.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                      currentIndex === index ? "bg-amber-500 w-6" : "bg-white/50 hover:bg-white"
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      currentIndex === index ? "bg-amber-500 w-6" : "bg-neutral-300 dark:bg-neutral-700 w-2 hover:bg-amber-300"
                     }`}
                   />
                 ))}
-              </div>
             </div>
-          </div>
         </motion.div>
 
-        {/* === BAGIAN TEKS (KANAN) === */}
+        {/* === CONTENT TEXT (KANAN) === */}
         <motion.div 
           whileInView={{ opacity: 1, x: 0 }}
           initial={{ opacity: 0, x: 100 }}
           transition={{ duration: 0.5 }}
-          className="w-full lg:w-1/2 lg:p-8 mt-6 lg:mt-0"
+          className="w-full lg:w-1/2 lg:p-8 mt-12 lg:mt-0"
         >
-            {/* DESKRIPSI UTAMA */}
-            <p className="my-2 max-w-xl py-6 text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+            <p className="my-2 max-w-xl text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
                 {t.desc}
             </p>
 
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                {/* Info 1: Education */}
-                <div className="bg-white dark:bg-neutral-900/50 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 dark:hover:border-cyan-500 transition duration-300 shadow-sm hover:shadow-md">
-                    <div className="flex items-center gap-3 mb-2">
-                        <FaGraduationCap className="text-amber-500 dark:text-cyan-400 text-xl" />
-                        <h4 className="font-bold text-neutral-900 dark:text-white">{t.eduTitle}</h4>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                    { icon: <FaGraduationCap />, title: t.eduTitle, sub: t.eduSchool, desc: t.eduMajor },
+                    { icon: <FaCode />, title: t.techTitle, sub: t.techDesc, desc: t.techDetail },
+                    { icon: <FaHiking />, title: t.hobbyTitle, sub: t.hobbyDesc, desc: "" },
+                    { icon: <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"/>, title: t.statusTitle, sub: t.statusDesc, desc: "" }
+                ].map((item, idx) => (
+                    <div key={idx} className="bg-neutral-50 dark:bg-neutral-900/40 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-colors">
+                        <div className="flex items-center gap-2 mb-2 text-amber-600 dark:text-cyan-400">
+                            <span className="text-lg">{item.icon}</span>
+                            <h4 className="font-bold text-neutral-900 dark:text-white text-sm">{item.title}</h4>
+                        </div>
+                        <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{item.sub}</p>
+                        {item.desc && <p className="text-xs text-neutral-500 mt-0.5">{item.desc}</p>}
                     </div>
-                    <p className="text-sm text-neutral-700 dark:text-slate-300">
-                        {t.eduDesc} <span className="text-amber-600 dark:text-cyan-400">{t.eduSchool}</span>
-                    </p>
-                    <p className="text-xs text-neutral-500 mt-1">
-                        {t.eduMajor}
-                    </p>
-                </div>
-
-                {/* Info 2: Tech Interest */}
-                <div className="bg-white dark:bg-neutral-900/50 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 dark:hover:border-cyan-500 transition duration-300 shadow-sm hover:shadow-md">
-                    <div className="flex items-center gap-3 mb-2">
-                        <FaCode className="text-amber-500 dark:text-cyan-400 text-xl" />
-                        <h4 className="font-bold text-neutral-900 dark:text-white">{t.techTitle}</h4>
-                    </div>
-                    <p className="text-sm text-neutral-700 dark:text-slate-300">
-                        {t.techDesc}
-                    </p>
-                    <p className="text-xs text-neutral-500 mt-1">
-                        {t.techDetail}
-                    </p>
-                </div>
-
-                {/* Info 3: Hobbies */}
-                <div className="bg-white dark:bg-neutral-900/50 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 dark:hover:border-cyan-500 transition duration-300 shadow-sm hover:shadow-md">
-                    <div className="flex items-center gap-3 mb-2">
-                        <FaHiking className="text-amber-500 dark:text-cyan-400 text-xl" />
-                        <h4 className="font-bold text-neutral-900 dark:text-white">{t.hobbyTitle}</h4>
-                    </div>
-                    <p className="text-sm text-neutral-700 dark:text-slate-300">
-                        {t.hobbyDesc}
-                    </p>
-                </div>
-
-                {/* Info 4: Status */}
-                <div className="bg-white dark:bg-neutral-900/50 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500 dark:hover:border-cyan-500 transition duration-300 shadow-sm hover:shadow-md">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <h4 className="font-bold text-neutral-900 dark:text-white">{t.statusTitle}</h4>
-                    </div>
-                    <p className="text-sm text-neutral-700 dark:text-slate-300">
-                        {t.statusDesc}
-                    </p>
-                </div>
-
+                ))}
             </div>
-            
         </motion.div>
       </div>
     </div>
