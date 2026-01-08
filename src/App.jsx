@@ -127,11 +127,24 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
     return () => clearTimeout(timer);
   }, []);
 
+// --- GABUNGAN LOGIC TEMA (Class, LocalStorage, & Browser Color) ---
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
+
+    // 1. Update Class & LocalStorage
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     localStorage.setItem("theme", theme);
+
+    // 2. Update Meta Theme Color (Warna Browser Bar)
+    if (metaThemeColor) {
+      const color = theme === "dark" ? "#06b6d4" : "#fafafa";
+      metaThemeColor.setAttribute("content", color);
+    }
   }, [theme]);
 
   // SMOOTH SCROLL
@@ -187,6 +200,17 @@ const GA_MEASUREMENT_ID = "G-N4E8H7CL0G";
      const timer = setTimeout(() => setIsLoading(false), 2500); 
      return () => clearTimeout(timer);
   }, []);
+
+  // --- MULAI SCRIPT DYNAMIC THEME COLOR ---
+  useEffect(() => {
+    // 1. Cari elemen meta theme-color di head
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
+
+    if (metaThemeColor) {
+      const color = theme === "dark" ? "#06b6d4" : "#fafafa";
+      metaThemeColor.setAttribute("content", color);
+    }
+  }, [theme]);
 
 return (
     <>
