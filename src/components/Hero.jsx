@@ -93,6 +93,7 @@ const Hero = ({ lang, isReady = true }) => {
                   initial="hidden"
                   animate={isReady ? "visible" : "hidden"} 
                   className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
+                  aria-label="Ronald Zuni Bachtiar"
                 >
                   <OklchGradientText>Ronald Zuni Bachtiar</OklchGradientText>
                 </motion.h1>
