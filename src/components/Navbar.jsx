@@ -3,13 +3,13 @@ import logo from "../assets/rzbLogo.png";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaHashtag } from "react-icons/fa"; 
 import { FaSearch } from 'react-icons/fa';
-import MatrixRain from './MatrixRain'; // Import sudah benar
+import MatrixRain from './MatrixRain';
 
-const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
+const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
   
   // --- LOGIKA CHEAT CODE ---
   const [clickCount, setClickCount] = useState(0);
-  const [showMatrix, setShowMatrix] = useState(false); // <--- 1. INI WAJIB DITAMBAHKAN
+  const [showMatrix, setShowMatrix] = useState(false); 
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,7 +19,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
     // Jika mencapai 5 klik
     if (clickCount === 5) {
       setShowMatrix(true); // <--- 2. UBAH ALERT JADI INI
-      alert("🎉 MODE RAHASIA TERBUKA! Hello Developer.");
+      alert("SECRET MODE ACTIVATED! Hello Developer.");
       setClickCount(0);
     }
 
@@ -63,8 +63,14 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang }) => {
                   alt="Logo" 
               />
               
-              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-cyan-900 border border-neutral-400 dark:border-neutral-300 shadow-sm">
-                  <span className="relative flex h-2.5 w-2.5">
+              {/* === TRIGGER CAMERA OVERLAY DISINI === */}
+            <div 
+                // 2. SAAT DIKLIK, PANGGIL FUNGSI BUKA KAMERA
+                onClick={onOpenCamera}
+                className="group flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-cyan-900 border border-neutral-400 dark:border-neutral-300 shadow-sm cursor-pointer select-none active:scale-95 transition-all hover:ring-2 hover:ring-offset-2 hover:ring-red-500 dark:hover:ring-red-400"
+                title="Click to enter REC Mode"
+            >
+                <span className="relative flex h-2.5 w-2.5">
                     {IS_AVAILABLE && (
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     )}

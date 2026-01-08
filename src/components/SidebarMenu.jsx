@@ -6,9 +6,11 @@ import {
   FaShapes, FaEnvelope, FaImages, FaGraduationCap, 
   FaHeart, FaCommentDots, 
   FaInstagram, FaWhatsapp, FaFacebook, FaTiktok,
-  FaSignal, FaWifi, FaNetworkWired, FaGlobe 
+  FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode 
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; 
+
+const SITE_URL = window.location.href;
 
 const FaHistoryIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
@@ -30,6 +32,7 @@ const MENU_ITEMS = [
 
 const SidebarMenu = ({ lang }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showQR, setShowQR] = useState(false);
   
   // --- STATE NETWORK ---
   const [showNetInfo, setShowNetInfo] = useState(false);
@@ -140,7 +143,7 @@ const SidebarMenu = ({ lang }) => {
               // Dark: Hitam Pekat (Neutral-950) dengan transparansi 90% + Blur Kuat + Border halus
               className="
                 fixed top-0 right-0 h-full w-80 
-                bg-white/60 
+                bg-white/90 
                 dark:bg-neutral-950/60 
                 backdrop-blur-xl 
                 border-l border-white/20 dark:border-white/5 
@@ -235,10 +238,95 @@ const SidebarMenu = ({ lang }) => {
                     </span>
                   </motion.button>
                 ))}
+              {/* 2. TAMBAHKAN TOMBOL QR INI DI SINI (JANGAN LUPA) */}
+              <div className="mt-4 border-t border-black/20 dark:border-white/50 pt-4">
+                <motion.button
+                    onClick={() => setShowQR(true)}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="w-full flex items-center justify-center gap-2 p-3 rounded-full
+                              border border-dashed border-amber-500 dark:border-cyan-500
+                              text-amber-600 dark:text-cyan-400 font-bold tracking-widest uppercase text-xs
+                              hover:bg-amber-500/10 dark:hover:bg-cyan-500/10 
+                              hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-cyan-500/20
+                              transition-all duration-300 group"
+                >
+                    <FaQrcode className="text-lg group-hover:rotate-12 transition-transform" />
+                    <span>
+                        {lang === 'id' ? "Bagikan Web" : "Share Site"}
+                    </span>
+                </motion.button>
               </div>
+              </div>  
+              {/* MODAL QR CODE */}
+              <AnimatePresence>
+                  {showQR && (
+                      <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/70 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-[1000]"
+                      >
+                          <motion.div
+                              initial={{ scale: 0.8, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+
+                              exit={{ scale: 0.8, opacity: 0 }}
+                              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                              className="relative bg-neutral-100 dark:bg-neutral-900 p-6 rounded-3xl shadow-2xl flex flex-col items-center gap-4"
+                          >
+                              {/* Tombol Close */}
+                              <button 
+                                  onClick={() => setShowQR(false)}
+                                  className="absolute top-4 right-4 p-2 text-amber-500 hover:text-neutral-900 dark:text-cyan-500 dark:hover:text-white transition-colors"
+                              >
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                              </button>
+
+                              {/* Judul Kecil */}
+                              <div className="text-center">
+                                  <h3 className="font-bold font-sans text-xl mb-1 text-neutral-900 dark:text-white">
+                                      {lang === 'id' ? "Tampilan HP" : "Mobile View"}
+                                  </h3>
+                                  <p className="italic font-mono text-[10px] text-amber-500 dark:text-cyan-400">
+                                      {lang === 'id' ? "Scan untuk membuka di HP" : "Scan to open on Mobile"}
+                                  </p>
+                              </div>
+
+                              {/* Container QR Code */}
+                              <div className="p-4 bg-white rounded-3xl shadow-inner border border-neutral-100">
+                                  <img
+                                      // GUNAKAN window.location.href AGAR TIDAK ERROR
+                                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&bgcolor=ffffff&color=000000&margin=0`}
+                                      alt="Website QR"
+                                      className="w-48 h-48 object-contain"
+                                  />
+                              </div>
+
+                              {/* Footer Text */}
+                              <div className="flex items-center gap-2 px-2 py-1 rounded-full 
+                                              bg-amber-500/10 border border-amber-500/20 
+                                              dark:bg-cyan-500/10 dark:border-cyan-500/20">
+                                  
+                                  <div className="w-1 h-1 rounded-full animate-pulse 
+                                                  bg-amber-500 dark:bg-cyan-500"></div>
+                                  
+                                  <p className="text-[6px] font-mono tracking-wider 
+                                                text-amber-600 dark:text-cyan-400">
+                                      LIVE PREVIEW
+                                  </p>
+                              </div>
+
+                          </motion.div>
+                      </motion.div>
+                  )}
+              </AnimatePresence>
 
               {/* FOOTER */}
-              <div className="flex-shrink-0 pt-4 border-t border-neutral-700 dark:border-neutral-300 mx-6">
+              <div>
                 <p className="text-xs font-bold text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-4 text-center">
                     {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
                 </p>

@@ -39,6 +39,8 @@ import Contact from './components/Contact';
 import Terminal from "./components/Terminal";
 
 
+const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
+
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
 
 const AnimatedWave = ({ theme }) => {
@@ -90,6 +92,7 @@ const [showWelcome, setShowWelcome] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [lang, setLang] = useState("en");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCameraActive, setIsCameraActive] = useState(false);
 
 const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
 
@@ -281,6 +284,7 @@ return (
                     theme={theme} 
                     toggleLanguage={toggleLanguage} 
                     lang={lang} 
+                    onOpenCamera={() => setIsCameraActive(true)}
                 />
                 
                 <Hero 
@@ -390,6 +394,12 @@ return (
 
         <div className="relative z-50">
             <MusicPlayer theme={theme} />
+            <Suspense fallback={null}>  
+                <CameraOverlay 
+                    isActive={isCameraActive} 
+                    onClose={() => setIsCameraActive(false)} 
+                />
+            </Suspense>
             <BackToTop theme={theme} />
         </div>
       </div>

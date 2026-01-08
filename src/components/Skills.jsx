@@ -1,189 +1,199 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode } from "react-icons/fa";
 import { SiAdobelightroom, SiAdobepremierepro } from "react-icons/si";
 import { MdPiano } from "react-icons/md";
 import OklchGradientText from "../components/OklchGradientText";
 
-const iconVariants = (duration) => ({
-  initial: { y: -2 },
-  animate: {
-    y: [2, -2],
-    transition: {
-      duration: duration,
-      repeat: Infinity,
-      repeatType: "reverse",
-      ease: "easeInOut", 
-    },
-  },
-});
-
+// --- DATA SKILLS ---
 const SKILLS_LIST = [
   {
     id: "photography",
-    icon: <FaCamera className="text-2xl md:text-3xl text-cyan-500" />,
+    icon: <FaCamera />,
+    color: "text-cyan-400",
     label: { en: "Photography", id: "Fotografi" },
     desc: { en: "Capturing moments with professional gear.", id: "Menangkap momen dengan gear profesional." },
-    duration: 3
   },
   {
     id: "videography",
-    icon: <FaVideo className="text-2xl md:text-3xl text-red-500" />,
+    icon: <FaVideo />,
+    color: "text-red-500",
     label: { en: "Videography", id: "Videografi" },
     desc: { en: "Cinematic storytelling & motion picture.", id: "Bercerita secara sinematik & gambar bergerak." },
-    duration: 2.5
   },
   {
     id: "editing_photo",
-    icon: <SiAdobelightroom className="text-2xl md:text-3xl text-blue-500" />,
+    icon: <SiAdobelightroom />,
+    color: "text-blue-500",
     label: { en: "Photo Editing", id: "Editing Foto" },
     desc: { en: "Advanced retouching via Lightroom.", id: "Retouching tingkat lanjut via Lightroom." },
-    duration: 4
   },
   {
     id: "editing_video",
-    icon: <SiAdobepremierepro className="text-2xl md:text-3xl text-purple-500" />, 
+    icon: <SiAdobepremierepro />, 
+    color: "text-purple-500",
     label: { en: "Video Editing", id: "Editing Video" },
     desc: { en: "Visual effects & cutting with Premiere Pro.", id: "Efek visual & cutting dengan Premiere Pro." },
-    duration: 4
   },
   {
     id: "piano",
-    icon: <MdPiano className="text-2xl md:text-3xl text-neutral-400 dark:text-neutral-200" />,
+    icon: <MdPiano />,
+    color: "text-neutral-200",
     label: { en: "Piano", id: "Piano" },
     desc: { en: "Classical & pop arrangement skills.", id: "Keahlian aransemen klasik & pop." },
-    duration: 3.5
   },
   {
     id: "guitar",
-    icon: <FaGuitar className="text-2xl md:text-3xl text-orange-500" />,
+    icon: <FaGuitar />,
+    color: "text-orange-500",
     label: { en: "Guitar", id: "Gitar" },
     desc: { en: "Acoustic & electric session player.", id: "Pemain sesi akustik & elektrik." },
-    duration: 5
   },
   {
     id: "pm",
-    icon: <FaClipboardList className="text-2xl md:text-3xl text-emerald-500" />,
+    icon: <FaClipboardList />,
+    color: "text-emerald-400",
     label: { en: "Project Manager", id: "Manajer Proyek" },
     desc: { en: "Agile leadership & team coordination.", id: "Kepemimpinan Agile & koordinasi tim." },
-    duration: 4.5
   },
   {
     id: "webdev",
-    icon: <FaLaptopCode className="text-2xl md:text-3xl text-indigo-500" />,
+    icon: <FaLaptopCode />,
+    color: "text-indigo-400",
     label: { en: "Web Developer", id: "Pengembang Web" },
     desc: { en: "Building responsive & dynamic websites.", id: "Membangun website responsif." },
-    duration: 3
   },
 ];
 
-const Skills = ({ lang }) => {
-  const [flippedId, setFlippedId] = useState(null);
+// --- DOCK ICON (DESKTOP: WAVE / MOBILE: STATIC) ---
+const DockIcon = ({ mouseX, skill, selectedSkill, setSelectedSkill }) => {
+  const ref = useRef(null);
+  const isSelected = selectedSkill?.id === skill.id;
 
-  const handleCardClick = (id) => {
-    setFlippedId(flippedId === id ? null : id);
-  };
+  // --- LOGIKA FISIKA (Hanya aktif di Desktop via CSS width override) ---
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  // RANGE: Mouse deket dikit (-150px sampai 150px) langsung bereaksi
+  // WIDTH: Base 64px -> Max 110px (Pembesaran Signifikan)
+  const widthSync = useTransform(distance, [-150, 0, 150], [64, 110, 64]);
+  
+  // PHYSICS: STIFFNESS 1500 = SUPER CEPAT (SNAPPY)
+  // Damping 50 = Berhenti instan tanpa goyang berlebih
+  const width = useSpring(widthSync, { mass: 0.1, stiffness: 1500, damping: 50 });
 
   return (
-    <div id="skills" className="border-b border-neutral-800 dark:border-neutral-200 py-16 relative">
+    <motion.div
+      ref={ref}
+      style={{ width }} 
+      // Layout Desktop (md:...) pakai width dari spring
+      // Layout Mobile (...) pakai ukuran fix w-20 h-20 (grid rapi)
+      className={`
+        relative aspect-square rounded-2xl cursor-pointer z-10 group flex items-center justify-center
+        transition-colors duration-200
+        w-20 h-20 md:w-auto md:h-auto 
+        ${isSelected ? "bg-white/20 ring-1 ring-white/50" : "hover:bg-white/10"}
+      `}
+      onClick={() => setSelectedSkill(skill)}
+      onMouseEnter={() => setSelectedSkill(skill)}
+    >
+        {/* ICON CONTAINER */}
+        <div className={`w-full h-full flex items-center justify-center p-2 ${skill.color}`}>
+             {/* Icon Scale: Mobile text-4xl, Desktop Dynamic */}
+             <div className="w-full h-full flex items-center justify-center text-3xl md:text-[200%]">
+                 {skill.icon}
+             </div>
+        </div>
+
+        {/* Indikator Titik (Desktop Style) */}
+        {isSelected && (
+             <motion.div 
+                layoutId="activeDot"
+                className="absolute -bottom-2 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_white]"
+             />
+        )}
+    </motion.div>
+  );
+};
+
+// --- KOMPONEN UTAMA ---
+const Skills = ({ lang }) => {
+  const mouseX = useMotionValue(null);
+  const [selectedSkill, setSelectedSkill] = useState(SKILLS_LIST[0]);
+
+  return (
+    <div id="skills" className="relative py-10 md:py-14 border-b border-neutral-800 dark:border-neutral-200 overflow-visible">
         
-        {/* Dekorasi Background */}
-        <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-[80px] -z-10"></div>
+        {/* Ambient Light */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-500/10 dark:bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-        {/* JUDUL */}
-        <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-8"
-        >
-            <h2 className="text-3xl md:text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
-                <OklchGradientText>{lang === 'id' ? "Keahlian & Keterampilan" : "Skills & Expertise"}</OklchGradientText>
-            </h2>
-            <p className="text-slate-700 dark:text-slate-300 mt-2 text-sm max-w-lg mx-auto px-4 underline">
-                {lang === 'id' 
-                  ? "Klik kartu untuk melihat detail" 
-                  : "Click card to view details"}
-            </p>
-        </motion.div>
-        
-        {/* GRID CONTAINER */}
-        <div className="container mx-auto px-4 max-w-5xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3"> 
-                
-                {SKILLS_LIST.map((skill, index) => {
-                    const isFlipped = flippedId === skill.id;
+        <div className="container mx-auto px-4 text-center z-10 relative">
 
-                    return (
-                        <div 
-                            key={index} 
-                            // UBAH DISINI: h-32 jadi h-24 (96px)
-                            className="relative h-24 cursor-pointer perspective-1000 group" 
-                            onClick={() => handleCardClick(skill.id)}
-                        >
-                            <motion.div
-                                className="w-full h-full relative"
-                                initial={false}
-                                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                                transition={{ duration: 0.5, type: "spring", stiffness: 260, damping: 20 }}
-                                style={{ transformStyle: "preserve-3d" }}
-                            >
-                                {/* --- BAGIAN DEPAN (FRONT) --- */}
-                                <div 
-                                    className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center gap-1.5 p-2 text-center
-                                    
-                                    /* --- LIGHT MODE (AMBER THEME) --- */
-                                    bg-neutral-200/50 border border-amber-500 text-amber-900
-                                    group-hover:border-amber-500 group-hover:bg-amber-100/80
-                                    
-                                    /* --- DARK MODE (SKY THEME) --- */
-                                    dark:bg-sky-950/50 dark:border-white/10 dark:text-white
-                                    dark:group-hover:border-cyan-300/50 dark:group-hover:bg-sky-900/60
-                                    
-                                    /* --- COMMON --- */
-                                    backdrop-blur-sm transition-all duration-300 rounded-xl overflow-hidden shadow-sm"
-                                    
-                                    style={{ backfaceVisibility: "hidden" }}
-                            
-                                >
-                                    <motion.div
-                                        variants={iconVariants(skill.duration)}
-                                        initial="initial"
-                                        animate="animate"
-                                        className="filter drop-shadow-md"
-                                    >
-                                        {skill.icon}
-                                    </motion.div>
-
-                                    <h3 className="text-neutral-800 dark:text-neutral-200 font-semibold text-xs md:text-sm tracking-wide leading-tight">
-                                        {skill.label[lang]}
-                                    </h3>
-                                </div>
-
-                                {/* --- BAGIAN BELAKANG (BACK) --- */}
-                                <div 
-                                    className="absolute inset-0 w-full h-full backface-hidden flex flex-col items-center justify-center p-3 text-center
-                                               bg-neutral-100 dark:bg-sky-950 border-amber-400/25 dark:border-cyan-300/30 rounded-xl overflow-hidden shadow-inner"
-                                    style={{ 
-                                        backfaceVisibility: "hidden", 
-                                        transform: "rotateY(180deg)" 
-                                    }}
-                                >
-                                    {/* Text Description lebih kecil (text-[10px] sm:text-xs) agar muat */}
-                                    <p className="text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-300 leading-tight font-serif">
-                                        {skill.desc[lang]}
-                                    </p>
-                                </div>
-
-                            </motion.div>
-                        </div>
-                    );
-                })}
-
+             {/* HEADER */}
+             <div className="mb-2">
+                <h2 className="text-4xl md:text-4xl font-bold mb-2">
+                    <OklchGradientText>
+                        {lang === 'id' ? "Keahlian" : "Skills"}
+                    </OklchGradientText>
+                </h2>
+                <p className="text-neutral-700 dark:text-neutral-200 italic text-[9px] md:text-[12px] font-mono tracking-[0.2em] uppercase">
+                    {lang === 'id' ? "Pilih icon dibawah" : "Select an icon below"}
+                </p>
             </div>
+
+            {/* DESCRIPTION BOX (Fixed Height biar gak layout shift) */}
+            <div className="h-28 flex flex-col items-center justify-center mb-6">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={selectedSkill ? selectedSkill.id : "empty"}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.1 }} // Cepat
+                        className="flex flex-col items-center gap-1"
+                    >
+                        <h3 className={`text-2xl md:text-3xl font-bold ${selectedSkill.color} drop-shadow-lg`}>
+                            {selectedSkill.label[lang]}
+                        </h3>
+                        <p className="text-neutral-600 dark:text-neutral-300 font-medium text-sm md:text-lg max-w-lg leading-relaxed">
+                            {selectedSkill.desc[lang]}
+                        </p>
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+
+            {/* --- DOCK AREA --- */}
+            <div className="flex justify-center w-full pb-8">
+                <motion.div
+                    onMouseMove={(e) => mouseX.set(e.pageX)}
+                    onMouseLeave={() => mouseX.set(null)}
+                    
+                    // CONTAINER STYLE (RAPI & CLEAN)
+                    // Mobile: Grid 4 Kolom, Gap Kecil
+                    // Desktop: Flex Baris, Background Kaca (Glass)
+                    className="
+                        grid grid-cols-4 gap-3 p-3 rounded-3xl
+                        md:flex md:gap-4 md:items-end md:px-6 md:pb-4 md:pt-4
+                        md:bg-neutral-200/50 md:dark:bg-white/5 md:backdrop-blur-2xl md:border md:border-white/10 md:shadow-2xl
+                    "
+                >
+                    {SKILLS_LIST.map((skill) => (
+                        <DockIcon 
+                            key={skill.id} 
+                            mouseX={mouseX} 
+                            skill={skill}
+                            selectedSkill={selectedSkill}
+                            setSelectedSkill={setSelectedSkill} 
+                        />
+                    ))}
+                </motion.div>
+            </div>
+
         </div>
     </div>
-  )
-}
+  );
+};
 
 export default Skills;
