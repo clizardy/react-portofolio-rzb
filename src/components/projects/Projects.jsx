@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, useRef } from "react"; 
 import { createPortal } from "react-dom"; // <--- 1. IMPORT INI WAJIB
 import Tilt from 'react-parallax-tilt'; 
 import { PROJECTS } from "../../constants"; 
@@ -239,9 +239,16 @@ const Projects = ({ lang }) => {
   const [selectedImage, setSelectedImage] = useState(null); 
   const [selectedVideo, setSelectedVideo] = useState(null); 
 
+  const isFirstRender = useRef(true);
+
   const filteredProjects = activeCategory === "All" ? PROJECTS : PROJECTS.filter(project => project.category === activeCategory);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+    }
+    
     const timer = setTimeout(() => {
       const section = document.getElementById("projects");
       if (section) {
