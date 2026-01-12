@@ -296,7 +296,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
                 dark:bg-black/50
                 backdrop-blur-xl 
                 border border-white/10 
-                rounded-2xl shadow-2xl 
+                rounded-md shadow-2xl 
                 overflow-hidden flex flex-col
             "
           >

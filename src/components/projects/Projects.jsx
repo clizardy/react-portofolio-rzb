@@ -248,7 +248,7 @@ const Projects = ({ lang }) => {
         isFirstRender.current = false;
         return;
     }
-    
+
     const timer = setTimeout(() => {
       const section = document.getElementById("projects");
       if (section) {
@@ -279,7 +279,7 @@ return (
         <div className="
             flex items-center gap-1.5 md:gap-2 
             overflow-x-auto py-2 px-2 
-            md:justify-center 
+            justify-center 
             bg-neutral-100/80 dark:bg-white/5 backdrop-blur-md
             border border-neutral-200 dark:border-white/5
             rounded-2xl md:rounded-full shadow-inner

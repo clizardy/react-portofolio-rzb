@@ -24,7 +24,7 @@ const Footer = ({ lang }) => {
   const t = CONTENT[lang] || CONTENT.en;
 
   return (
-    <footer className="mb-10 border-t border-neutral-800/50 pt-8">
+    <footer className="mb-6 md:mb-10 border-t border-neutral-800/50">
       <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row justify-between items-center gap-8">
         
         {/* === BAGIAN KIRI: FOTO & NAMA === */}
@@ -46,7 +46,7 @@ const Footer = ({ lang }) => {
 
         {/* === BAGIAN TENGAH: IKON TECH + TOMBOL POPOVER === */}
         <div className="flex flex-col items-center justify-center w-full lg:w-1/3 order-1 lg:order-2">
-            <p className="text-[10px] text-neutral-500 uppercase tracking-widest mb-3 font-medium">
+            <p className="text-[8px] text-neutral-500 uppercase tracking-widest mb-3 font-medium">
                 {t.built}
             </p>
             

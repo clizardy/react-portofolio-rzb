@@ -46,6 +46,7 @@ import Workflow from "./components/Workflow";
 import Stats from "./components/Stats";
 import SecretManager from "./components/SecretManager";
 import BookingModal from "./components/BookingModal";
+import TimeThemeNotification from "./components/TimeThemeNotification";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 
@@ -332,6 +333,7 @@ return (
         </AnimatePresence>
 
         <Terminal />    
+        <TimeThemeNotification theme={theme} />
         <ScrollProgress />
         <CustomCursor theme={theme} />
         <SidebarMenu 

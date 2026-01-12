@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTerminal, FaMinus, FaTimes, FaExpand, FaWifi, FaBatteryFull } from 'react-icons/fa';
+import { FaTerminal, FaWifi, FaBatteryFull } from 'react-icons/fa';
 
 // --- DATA FILE SYSTEM ---
 const fileSystem = {
@@ -27,7 +27,7 @@ const fileSystem = {
   }
 };
 
-// --- TEMA WARNA LENGKAP (DARK & LIGHT) ---
+// --- TEMA WARNA LENGKAP ---
 const THEMES = {
   matrix: { 
     text: 'text-green-500', 
@@ -65,15 +65,14 @@ const THEMES = {
     border: 'border-red-600', 
     caret: 'caret-red-500' 
   },
-  // --- NEW LIGHT MODE ---
   light: { 
-    text: 'text-slate-800',       // Teks Gelap
-    prompt: 'text-indigo-600',    // Prompt Ungu/Biru
-    path: 'text-blue-600',        // Path Biru Gelap
-    bg: 'bg-gray-50',             // Background Putih Abu
-    header: 'bg-gray-200/90',     // Header Abu Cerah
-    border: 'border-gray-300',    // Border Abu
-    caret: 'caret-slate-800'      // Kursor Gelap
+    text: 'text-slate-800', 
+    prompt: 'text-indigo-600', 
+    path: 'text-blue-600', 
+    bg: 'bg-gray-50', 
+    header: 'bg-gray-200/90', 
+    border: 'border-gray-300', 
+    caret: 'caret-slate-800' 
   }
 };
 
@@ -89,10 +88,27 @@ const Terminal = () => {
   const [currentPath, setCurrentPath] = useState(['root', 'home', 'guest']); 
   const [commandHistory, setCommandHistory] = useState([]); 
   const [historyIndex, setHistoryIndex] = useState(-1); 
-  const [currentTheme, setCurrentTheme] = useState('matrix'); // Default theme
+  const [currentTheme, setCurrentTheme] = useState('matrix'); 
 
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+            e.preventDefault();
+            setIsOpen(prev => !prev);
+        }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+        setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -231,7 +247,7 @@ const Terminal = () => {
     }
   };
 
-  const theme = THEMES[currentTheme];
+  const theme = THEMES[currentTheme] || THEMES.matrix;
   const pathString = `~${currentPath.length > 3 ? '/' + currentPath.slice(3).join('/') : ''}`;
 
   return (
@@ -251,15 +267,16 @@ const Terminal = () => {
         .text-glow { text-shadow: ${currentTheme === 'light' ? 'none' : '0 0 5px currentColor'}; }
       `}</style>
 
+      {/* TOMBOL PEMICU KECIL & TERSEMBUNYI (Pojok Kiri Bawah) */}
       {!isOpen && (
-        <motion.button
-          initial={{ scale: 0 }} animate={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+        <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-24 right-6 z-50 bg-neutral-200 dark:bg-sky-950 text-green-600 border-green-700 dark:text-green-400 border dark:border-green-500 p-4 rounded-full shadow-[0_0_20px_rgba(74,222,128,0.5)] flex items-center justify-center font-mono text-xl hover:bg-neutral-900 transition-colors"
+          className="fixed bottom-4 left-4 z-40 opacity-30 hover:opacity-100 transition-opacity p-2 text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white flex items-center gap-2"
+          title="Open Terminal (Ctrl + K)"
         >
           <FaTerminal />
-        </motion.button>
+          <span className="hidden group-hover:inline">Terminal</span>
+        </button>
       )}
 
       <AnimatePresence>
@@ -267,7 +284,7 @@ const Terminal = () => {
           <motion.div
             drag={!isMaximized}
             dragMomentum={false}
-            initial={{ opacity: 0, scale: 0.8, y: 100 }}
+            initial={{ opacity: 0, scale: 0.95, y: 50 }}
             animate={{ 
               opacity: 1, scale: 1, y: 0,
               width: isMaximized ? '100vw' : 'min(700px, 90vw)',
@@ -277,9 +294,10 @@ const Terminal = () => {
               left: isMaximized ? 0 : undefined,
               borderRadius: isMaximized ? 0 : '12px'
             }}
-            exit={{ opacity: 0, scale: 0.8, y: 100 }}
-            // Hapus class 'crt' jika mode light agar bersih
+            exit={{ opacity: 0, scale: 0.95, y: 50 }}
             className={`fixed z-50 ${theme.bg} backdrop-blur-sm border ${theme.border} shadow-2xl flex flex-col font-mono text-sm md:text-base ${currentTheme !== 'light' ? 'crt' : ''} overflow-hidden ${!isMaximized && 'bottom-10 right-4 md:bottom-20 md:right-20'}`}
+            // Style tambahan agar posisi default tidak menempel ke tepi saat mode maximize
+            style={!isMaximized ? {} : { top: 0, left: 0 }}
           >
             {/* Header Bar dengan Warna Dinamis */}
             <div className={`${theme.header} px-4 py-2 flex items-center justify-between cursor-move select-none border-b ${theme.border} transition-colors duration-300`} onPointerDown={(e) => e.preventDefault()}> 
@@ -304,7 +322,7 @@ const Terminal = () => {
                   {line.type === 'command' ? (
                     <div className="flex gap-2 opacity-90">
                       <span className={theme.prompt}>➜</span>
-                      <span className={theme.path}>{pathString}</span>
+                      <span className={theme.path}>{line.path}</span>
                       <span>{line.content}</span>
                     </div>
                   ) : line.type === 'error' ? (

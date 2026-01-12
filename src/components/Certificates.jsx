@@ -156,7 +156,7 @@ const Certificates = ({ lang }) => {
 
   return (
     // 1. TINGGI: Wajib min 150vh biar sticky-nya jalan. Kalau 50vh dia gak akan nempel.
-    <section ref={targetRef} className="relative h-[50vh] md:h-[40vh] bg-neutral-200 dark:bg-sky-950">
+    <section ref={targetRef} className="relative h-[45vh] md:h-[40vh] bg-neutral-200 dark:bg-sky-950">
       
       {/* 2. POSISI: Ganti 'items-center' jadi 'items-start'.
             Tambah 'pt-24' (padding top) biar kontennya naik ke atas, gak di tengah layar.

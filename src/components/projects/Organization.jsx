@@ -88,7 +88,7 @@ const OrgHeader = ({ icon, title, colorClass, gradientLine }) => {
 
 const Organization = ({ lang }) => {
   return (
-    <div id="organization" className="border-b border-neutral-800 dark:border-neutral-200 pb-20">
+    <div id="organization" className="border-b border-neutral-800 dark:border-neutral-200">
       
       {/* JUDUL UTAMA */}
       <motion.h2

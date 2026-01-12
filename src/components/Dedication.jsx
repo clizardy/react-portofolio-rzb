@@ -67,7 +67,7 @@ const Dedication = ({ lang }) => {
   }, [isDragging]);
 
   return (
-    <div id="dedication" className="border-b border-neutral-800 dark:border-neutral-200 pb-20">
+    <div id="dedication" className="border-b border-neutral-800 dark:border-neutral-200 pb-10">
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
