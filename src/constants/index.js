@@ -6,7 +6,9 @@ import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
 import webdev1 from "../assets/webdev1.jpg";
 
-export const HERO_CONTENT = `Hello! I'm Ronald, A skilled professional with expertise in photography, videography, music, and organizational leadership. Possesses strong technical abilities in producing high-quality visual and audio content, along with a deep understanding of project and team management. Experienced in dynamic environments, consistently delivering creative and strategic solutions with innovation and efficiency. Beside that, I also student active of Tidar University who takes the Information Technology education program.`;
+export const HERO_CONTENT = `Hi, I'm Ronald! A tech enthusiast with a creative soul.
+
+Currently studying IT Education at Tidar University, I specialize in crafting high-quality visual and audio content. Whether it's behind a camera, on an instrument, or leading a team, I turn creative vision into reality with efficiency and innovation.`;
 
 export const ABOUT_TEXT = `Freelance Photographer & Videographer
 (2021 - Present)

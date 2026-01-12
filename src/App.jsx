@@ -37,7 +37,15 @@ import Dedication from './components/Dedication';
 import Testimonials from './components/projects/Testimonials'; 
 import Contact from './components/Contact';
 import Terminal from "./components/Terminal";
-
+import Portfolio from "./components/Portfolio";
+import Pricing from "./components/Pricing";
+import FaqSidebar from "./components/FaqSidebar";
+import Gear from "./components/Gear";
+import Certificates from "./components/Certificates";
+import Workflow from "./components/Workflow";
+import Stats from "./components/Stats";
+import SecretManager from "./components/SecretManager";
+import BookingModal from "./components/BookingModal";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 
@@ -72,6 +80,11 @@ const AnimatedWave = ({ theme }) => {
 
 const App = () => {
 const [showWelcome, setShowWelcome] = useState(true);
+const [isWorkflowOpen, setIsWorkflowOpen] = useState(false);
+const [isGearOpen, setIsGearOpen] = useState(false);
+const [isBookingOpen, setIsBookingOpen] = useState(false);
+const [isPricingOpen, setIsPricingOpen] = useState(false);
+const [isFaqOpen, setIsFaqOpen] = useState(false);
 
 // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas
   useEffect(() => {
@@ -248,7 +261,42 @@ return (
         }
       `}</style>
 
-      <Toaster position="bottom-right" toastOptions={{ style: { background: '#333', color: '#fff' } }} />
+      <Toaster 
+        position="bottom-right"
+        reverseOrder={false}
+        toastOptions={{
+          // Durasi tampil
+          duration: 4000,
+          
+          // Reset style bawaan biar bisa kita timpa pake Tailwind
+          style: {
+            background: 'transparent',
+            boxShadow: 'none',
+            border: 'none',
+            padding: 0,
+          },
+
+          // Styling Premium Glassmorphism
+          className: `
+            !bg-white/70 dark:!bg-neutral-900/60 
+            !backdrop-blur-xl 
+            !border !border-white/20 dark:!border-white/10 
+            !text-neutral-800 dark:!text-white 
+            !rounded-full 
+            !px-6 !py-3 
+            !shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:!shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] 
+            !font-medium !text-sm !tracking-wide
+          `,
+          
+          // Kustomisasi Ikon Sukses (Opsional)
+          success: {
+            iconTheme: {
+              primary: '#14b8a6', // Teal
+              secondary: 'white',
+            },
+          },
+        }}
+      />
       
       {/* 1. PRELOADER */}
       <AnimatePresence mode="wait">
@@ -286,7 +334,11 @@ return (
         <Terminal />    
         <ScrollProgress />
         <CustomCursor theme={theme} />
-        <SidebarMenu lang={lang} />
+        <SidebarMenu 
+    lang={lang} 
+    onOpenFaq={() => setIsFaqOpen(true)} 
+    onOpenBooking={() => setIsBookingOpen(true)}
+/>
 
         {/* 3. HERO SECTION WRAPPER (Paper Style) */}
         {/* Div ini punya 'transform-gpu', makanya Welcome Screen dilarang ditaruh di dalamnya */}
@@ -315,17 +367,20 @@ return (
                     lang={lang} 
                     isReady={!showWelcome} 
                 />
-
+                <SecretManager />
                 <ParticleBackground theme={theme} />
             </div>
 
             {/* MARQUEE */}
             <div className="w-full">
                 <Marquee />
-            </div>
+            </div> 
 
-            {/* KONTEN UTAMA */}
-            <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
+            <Suspense fallback={null}>
+                <Stats />
+            </Suspense>
+
+            <div className="container mx-auto px-4 md:px-8 pb-10 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
                     <div id="about" className="render-lazy"><About lang={lang}/></div>
                 </Suspense>
@@ -333,15 +388,38 @@ return (
                 <Suspense fallback={<div className="text-center py-20">Loading Skills...</div>}>
                     <div id="skills"><Skills lang={lang}/></div> 
                 </Suspense>
+
                 <Suspense fallback={<div className="text-center py-20">Loading Education...</div>}>
                     <div id="education" className="render-lazy"><Education lang={lang}/></div>
                 </Suspense>
+            </div>
+
+                <Suspense fallback={<div className="text-center py-20">Loading Certificates...</div>}>
+                    <div id="certificates" className="render-lazy"><Certificates lang={lang}/></div>
+                </Suspense>
+
+            <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading Projects...</div>}>
                     <div id="projects"><Projects lang={lang}/></div>
                 </Suspense>
+
                 <Suspense fallback={<div className="text-center py-20">Loading Services...</div>}>
-                    <div id="services" className="render-lazy"><Services lang={lang}/></div>
-                </Suspense>
+                    <div id="services" className="render-lazy"><Services lang={lang}
+                    onOpenPricing={() => setIsPricingOpen(true)}
+                    onOpenGear={() => setIsGearOpen(true)}
+                    onOpenWorkflow={() => setIsWorkflowOpen(true)}
+                    />
+                </div>
+            </Suspense>
+        </div>
+
+                <Suspense fallback={<div className="text-center py-20">Loading Portfolio...</div>}>
+                <div id="portfolio" className="render-lazy w-full overflow-hidden">
+                    <Portfolio lang={lang} />
+                </div>
+            </Suspense>
+
+            <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading Gallery...</div>}>
                     <div id="timeline" className="render-lazy"><TimelineGallery lang={lang} /></div>
                 </Suspense>
@@ -351,12 +429,13 @@ return (
                 <Suspense fallback={<div className="text-center py-20">Loading Dedication...</div>}>
                     <div id="dedication"><Dedication lang={lang}/></div>
                 </Suspense>
+
                 <Suspense fallback={<div className="text-center py-20">Loading Testimonials...</div>}>
                     <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
                 </Suspense>
             </div>
-            
-            <AnimatedWave theme={theme} />
+            </div>
+            <div className="relative z-10"><AnimatedWave theme={theme} /></div>
         </div>
 
         {/* 4. FOOTER SECTION */}
@@ -416,6 +495,47 @@ return (
             </div>
         </div>
 
+{/* --- AREA MODAL & SIDEBAR (Z-INDEX 100) --- */}
+        <div className="relative z-[100]">
+             <Suspense fallback={null}>
+                <Pricing 
+                    lang={lang} 
+                    isOpen={isPricingOpen} 
+                    onClose={() => setIsPricingOpen(false)} 
+                />
+             </Suspense>
+
+             <Suspense fallback={null}>
+                <Gear 
+                    lang={lang} 
+                    isOpen={isGearOpen} 
+                    onClose={() => setIsGearOpen(false)} 
+                />
+              </Suspense>
+
+              <Suspense fallback={null}>
+              <Workflow 
+                  lang={lang} 
+                  isOpen={isWorkflowOpen} 
+                  onClose={() => setIsWorkflowOpen(false)} 
+              />
+            </Suspense>
+
+             <FaqSidebar 
+                lang={lang} 
+                isOpen={isFaqOpen} 
+                onClose={() => setIsFaqOpen(false)} 
+            />
+
+            <BookingModal 
+          isOpen={isBookingOpen} 
+          onClose={() => setIsBookingOpen(false)} 
+       />
+        </div> 
+        {/* Tutup div z-100 disini biar rapi */}
+
+
+        {/* --- AREA UTILS (MUSIC, CAMERA, DLL) (Z-INDEX 50) --- */}
         <div className="relative z-50">
             <MusicPlayer theme={theme} />
             <Suspense fallback={null}>  
@@ -426,7 +546,6 @@ return (
             </Suspense>
             <BackToTop theme={theme} />
         </div>
-      </div>
     </>
   );
 };

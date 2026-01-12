@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FaMountain, FaMusic } from "react-icons/fa"; 
 import OklchGradientText from "../OklchGradientText";
 
 // --- BAGIAN 1: DATA SISPALA ---
@@ -42,7 +43,7 @@ const NEW_ORG_DATA = [
   {
     title: {
         en: "QC Goes To National Folklore Festival FEB UI",
-        id: "QC Goes To National Folklore Festival FEB UI" // Judul acara biasanya tetap sama
+        id: "QC Goes To National Folklore Festival FEB UI" 
     },
     role: {
         en: "Documentation",
@@ -57,37 +58,55 @@ const NEW_ORG_DATA = [
   }
 ];
 
-// 1. TERIMA PROPS 'lang'
+// --- COMPONENT DIVIDER HEADER ---
+const OrgHeader = ({ icon, title, colorClass, gradientLine }) => {
+    return (
+        <motion.div 
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.8 }}
+            className="flex items-center justify-center gap-4 py-12 w-full max-w-5xl mx-auto"
+        >
+            {/* Garis Kiri */}
+            <div className={`h-[1px] flex-1 bg-gradient-to-r from-transparent ${gradientLine} opacity-50`}></div>
+            
+            {/* Badge Tengah */}
+            <div className={`
+                flex items-center gap-3 px-6 py-2 rounded-full border
+                bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm
+                ${colorClass} shadow-lg
+            `}>
+                <span className="text-xl">{icon}</span>
+                <span className="text-sm md:text-base font-bold uppercase tracking-widest">{title}</span>
+            </div>
+
+            {/* Garis Kanan */}
+            <div className={`h-[1px] flex-1 bg-gradient-to-l from-transparent ${gradientLine} opacity-50`}></div>
+        </motion.div>
+    )
+}
+
 const Organization = ({ lang }) => {
   return (
-    <div id="organization" className="border-b border-neutral-800 dark:border-neutral-200">
+    <div id="organization" className="border-b border-neutral-800 dark:border-neutral-200 pb-20">
       
-      {/* ================= JUDUL UTAMA ================= */}
+      {/* JUDUL UTAMA */}
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
-        className="mt-20 mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
+        className="mt-20 mb-4 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Pengalaman Organisasi" : "Organization Experience"}</OklchGradientText>
       </motion.h2>
 
-      {/* ================= SEKSI 1: SISPALA ================= */}
+      {/* ================= SEKSI 1: SISPALA (Tetap Hijau/Emerald) ================= */}
+      <OrgHeader 
+        icon={<FaMountain />}
+        title="STIGMAPA: SMA N 3 Magelang Pecinta Alam"
+        colorClass="border-emerald-500/30 text-emerald-700 dark:text-emerald-400 dark:shadow-emerald-500/20"
+        gradientLine="to-emerald-500"
+      />
       
-{/* Subjudul 1 */}
-      <motion.p
-        whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-center text-lg mb-20 tracking-wide italic
-                   text-slate-700 
-                   dark:text-cyan-200 
-                   dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]
-                   dark:shadow-cyan-500/50"
-      >
-        STIGMAPA: SMA Negeri 3 Magelang Pecinta Alam
-      </motion.p>
-      
-      {/* Loop Data Sispala */}
       <div className="">
         {SISPALA_DATA.map((org, index) => (
           <div className="mb-20 flex flex-wrap lg:justify-start items-center" key={index}>
@@ -97,14 +116,17 @@ const Organization = ({ lang }) => {
               transition={{ duration: 1 }}
               className="w-full lg:w-1/3 z-10" 
             >
-              {/* VIDEO PLAYER */}
+            {/* CONTAINER VIDEO */}
               <div className="relative group">
-                  <div className="absolute -inset-3 rounded-xl blur-2xl opacity-50 dark:opacity-40 -z-10 transition duration-500 bg-neutral-950 dark:bg-white"></div>
-                  <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black">
+                  {/* FIX GLOW: Hapus -z-10, biarkan z-auto (default 0) */}
+                  <div className="absolute -inset-4 rounded-2xl blur-2xl opacity-60 dark:opacity-50 transition duration-500 bg-emerald-500/40 dark:bg-emerald-500/40"></div>
+                  
+                  {/* FIX VIDEO: Kasih relative z-10 biar naik ke atas glow */}
+                  <div className="relative z-10 w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black shadow-2xl">
                     <iframe 
                       className="absolute top-0 left-0 w-full h-full"
                       src={org.videoUrl} 
-                      title={org.title[lang]} // Judul Video Sesuai Bahasa
+                      title={org.title[lang]} 
                       frameBorder="0" 
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                       allowFullScreen>
@@ -119,12 +141,11 @@ const Organization = ({ lang }) => {
               transition={{ duration: 1 }}
               className="w-full max-w-4xl lg:w-3/4 lg:pl-24 mt-6 lg:mt-0"
             >
-              {/* 2. PANGGIL DATA SESUAI BAHASA */}
               <h6 className="mb-1 text-2xl font-bold text-neutral-900 dark:text-white">
                 {org.title[lang]}
               </h6>
               
-              <span className="text-md text-amber-600 dark:text-cyan-400 mb-4 block italic font-semibold">
+              <span className="text-md text-emerald-600 dark:text-emerald-400 mb-4 block italic font-semibold">
                 {org.role[lang]}
               </span>
               
@@ -136,7 +157,7 @@ const Organization = ({ lang }) => {
                 {org.skills.map((skill, index) => (
                   <span 
                     key={index} 
-                    className="rounded bg-amber-100 dark:bg-sky-950 border border-amber-300 dark:border-sky-500 px-3 py-1 text-sm font-medium text-amber-900 dark:text-neutral-100"
+                    className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 px-3 py-1 text-xs font-bold tracking-wide text-emerald-800 dark:text-emerald-200 uppercase"
                   >
                     {skill}
                   </span>
@@ -146,23 +167,14 @@ const Organization = ({ lang }) => {
           </div>
         ))}
       </div>
+      
+      <OrgHeader 
+        icon={<FaMusic />}
+        title="Quinta Chamber: Band & Choir"
+        colorClass="border-indigo-500/30 text-indigo-700 dark:text-indigo-400 dark:shadow-indigo-500/20"
+        gradientLine="to-indigo-500"
+      />
 
-
-      {/* Subjudul 2 */}
-      <motion.p
-        whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: -30 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-center text-lg mb-20 tracking-wide italic
-                   text-slate-700 
-                   dark:text-cyan-200 
-                   dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]
-                   dark:shadow-cyan-500/50"
-      >
-        Quinta Chamber:  Band & Choir
-      </motion.p>
-
-      {/* Loop Data Organisasi Baru */}
       <div className="">
         {NEW_ORG_DATA.map((qc, index) => (
           <div className="mb-20 flex flex-wrap lg:justify-start items-center" key={index}>
@@ -172,10 +184,13 @@ const Organization = ({ lang }) => {
               transition={{ duration: 1 }}
               className="w-full lg:w-1/3 z-10" 
             >
-               {/* VIDEO PLAYER */}
+              {/* CONTAINER VIDEO */}
                <div className="relative group">
-                  <div className="absolute -inset-3 rounded-xl blur-2xl opacity-50 dark:opacity-40 -z-10 transition duration-500 bg-neutral-950 dark:bg-white"></div>
-                  <div className="relative w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black">
+                  {/* FIX GLOW: Hapus -z-10 */}
+                  <div className="absolute -inset-4 rounded-2xl blur-2xl opacity-60 dark:opacity-50 transition duration-500 bg-indigo-600/40 dark:bg-indigo-500/50"></div>
+                  
+                  {/* FIX VIDEO: Kasih relative z-10 */}
+                  <div className="relative z-10 w-full pb-[56.25%] h-0 rounded-lg overflow-hidden border border-neutral-300 dark:border-neutral-600 bg-black shadow-2xl">
                     <iframe 
                       className="absolute top-0 left-0 w-full h-full"
                       src={qc.videoUrl} 
@@ -194,12 +209,12 @@ const Organization = ({ lang }) => {
               transition={{ duration: 1 }}
               className="w-full max-w-4xl lg:w-3/4 lg:pl-24 mt-6 lg:mt-0"
             >
-              {/* 3. PANGGIL DATA SESUAI BAHASA */}
               <h6 className="mb-1 text-2xl font-bold text-neutral-900 dark:text-white">
                 {qc.title[lang]}
               </h6>
               
-              <span className="text-md text-amber-600 dark:text-cyan-400 mb-4 block italic font-semibold">
+              {/* 👇 Text Role jadi Indigo */}
+              <span className="text-md text-indigo-600 dark:text-indigo-400 mb-4 block italic font-semibold">
                 {qc.role[lang]}
               </span>
 
@@ -211,7 +226,7 @@ const Organization = ({ lang }) => {
                 {qc.skills.map((skill, index) => (
                   <span 
                     key={index} 
-                    className="rounded bg-amber-100 dark:bg-sky-950 border border-amber-300 dark:border-sky-500 px-3 py-1 text-sm font-medium text-amber-900 dark:text-neutral-100"
+                    className="rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700 px-3 py-1 text-xs font-bold tracking-wide text-indigo-800 dark:text-indigo-200 uppercase"
                   >
                     {skill}
                   </span>

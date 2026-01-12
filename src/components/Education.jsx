@@ -32,7 +32,7 @@ const Education = ({ lang }) => {
   };
 
   return (
-    <div id="education" className="border-b border-neutral-800 dark:border-neutral-200 pb-24 relative overflow-hidden">
+    <div id="education">
         
         {/* --- HEADER SECTION --- */}
         <motion.div

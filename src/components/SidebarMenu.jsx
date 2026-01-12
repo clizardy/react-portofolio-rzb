@@ -4,11 +4,12 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { 
   FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, 
   FaShapes, FaEnvelope, FaImages, FaGraduationCap, 
-  FaHeart, FaCommentDots, 
-  FaInstagram, FaWhatsapp, FaFacebook, FaTiktok,
-  FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode 
+  FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle,
+  FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate,
+  FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
 } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; 
+import { FaL, FaXTwitter } from "react-icons/fa6"; 
+import OklchGradientText from "../components/OklchGradientText";
 
 const SITE_URL = window.location.href;
 
@@ -21,8 +22,10 @@ const MENU_ITEMS = [
   { id: "about", label: { en: "About Me", id: "Tentang Saya" }, icon: <FaUser /> },
   { id: "skills", label: { en: "Skills", id: "Keahlian" }, icon: <FaShapes /> },
   { id: "education", label: { en: "Education", id: "Pendidikan" }, icon: <FaGraduationCap /> },
+  { id: "certificates", label: { en: "Certificates", id: "Sertifikat" }, icon: <FaCertificate /> },
   { id: "projects", label: { en: "Projects", id: "Proyek" }, icon: <FaBriefcase /> },
   { id: "services", label: { en: "Services", id: "Layanan" }, icon: <FaLaptopCode /> },
+  { id: "portfolio", label: { en: "Portfolio", id: "Portofolio" }, icon: <FaLayerGroup /> },
   { id: "timeline", label: { en: "Journey", id: "Perjalanan" }, icon: <FaHistoryIcon /> },
   { id: "organization", label: { en: "Organization", id: "Organisasi" }, icon: <FaImages /> },
   { id: "dedication", label: { en: "Motivation", id: "Motivasi" }, icon: <FaHeart /> }, 
@@ -30,7 +33,7 @@ const MENU_ITEMS = [
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
-const SidebarMenu = ({ lang }) => {
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   
@@ -66,6 +69,19 @@ const SidebarMenu = ({ lang }) => {
         window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // --- 🔥 FIX SCROLL LOCKING ---
+  // Saat sidebar terbuka, kunci scroll body website
+  useEffect(() => {
+    if (isOpen) {
+        document.body.style.overflow = 'hidden'; // Kunci scroll
+    } else {
+        document.body.style.overflow = ''; // Lepas kunci
+    }
+    
+    // Cleanup saat unmount
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -138,25 +154,24 @@ const SidebarMenu = ({ lang }) => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              // --- UPDATE BACKGROUND DISINI ---
-              // Light: Putih bersih dengan sedikit transparansi
-              // Dark: Hitam Pekat (Neutral-950) dengan transparansi 90% + Blur Kuat + Border halus
               className="
-                fixed top-0 right-0 h-full w-80 
+                fixed top-0 right-0 h-[100dvh] w-80 
                 bg-white/90 
                 dark:bg-neutral-950/60 
                 backdrop-blur-xl 
                 border-l border-white/20 dark:border-white/5 
                 shadow-2xl z-[999] flex flex-col overflow-hidden
               "
+              // Pastikan sidebar ini sendiri tidak ikut ke-lock scroll-nya
+              style={{ maxHeight: '100dvh' }} 
             >
               
               {/* --- HEADER --- */}
               <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-700 dark:border-neutral-300">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 dark:from-cyan-200 dark:to-blue-500 bg-clip-text text-transparent">
-                            {lang === 'id' ? "Menu Cepat" : "Quick Access"}
+                        <h3 className="text-xl font-bold bg-gradient-to-r bg-clip-text text-transparent">
+                            <OklchGradientText>{lang === 'id' ? "Menu Cepat" : "Quick Access"}</OklchGradientText>
                         </h3>
                         
                         <button 
@@ -219,8 +234,11 @@ const SidebarMenu = ({ lang }) => {
                   </AnimatePresence>
               </div>
 
-              {/* LIST MENU (SCROLLABLE) */}
-              <div className="flex flex-col gap-1 overflow-y-auto px-6 py-2 custom-scrollbar flex-1">
+              {/* LIST MENU (SCROLLABLE & INTERACTIVE) */}
+              <div 
+                  className="flex flex-col gap-1 overflow-y-auto px-6 py-2 custom-scrollbar flex-1 overscroll-contain"
+                  onWheel={(e) => e.stopPropagation()} // Mencegah scroll bubble ke body
+              >
                 {MENU_ITEMS.map((item, index) => (
                   <motion.button
                     key={item.id}
@@ -228,7 +246,7 @@ const SidebarMenu = ({ lang }) => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }} 
                     onClick={() => scrollToSection(item.id)}
-                    className="flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
+                    className="flex-shrink-0 flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
                   >
                     <span className="text-xl text-amber-600 dark:text-cyan-300/80 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all">
                         {item.icon}
@@ -238,8 +256,9 @@ const SidebarMenu = ({ lang }) => {
                     </span>
                   </motion.button>
                 ))}
-              {/* 2. TAMBAHKAN TOMBOL QR INI DI SINI (JANGAN LUPA) */}
-              <div className="mt-4 border-t border-black/20 dark:border-white/50 pt-4">
+              
+              {/* TOMBOL-TOMBOL EXTRA */}
+              <div className="mt-4 flex-shrink-0">
                 <motion.button
                     onClick={() => setShowQR(true)}
                     initial={{ opacity: 0, y: 10 }}
@@ -258,7 +277,44 @@ const SidebarMenu = ({ lang }) => {
                     </span>
                 </motion.button>
               </div>
-              </div>  
+
+                {/* TOMBOL BOOKING (SPECIAL STYLE) */}
+                <button
+                    onClick={() => {
+                        onOpenBooking(); // Trigger Modal
+                        setIsOpen(false); // Tutup Sidebar
+                    }}
+                    className="
+                        flex-shrink-0 h-12 w-full flex items-center justify-center gap-3
+                        bg-gradient-to-r from-cyan-600 to-blue-600 
+                        hover:from-cyan-500 hover:to-blue-500
+                        text-white font-bold py-4 rounded-full
+                        shadow-lg shadow-cyan-900/20
+                        transition-all duration-300 transform hover:scale-[1.02] mt-2
+                    "
+                >
+                    <FaCalendarAlt className="text-lg" />
+                    <span>{lang === 'id' ? "Jadwalkan Diskusi" : "Book a Call"}</span>
+                </button>
+
+                <div className="mt-2 flex-shrink-0"> 
+                    <button
+                        onClick={() => {
+                            setIsOpen(false); 
+                            onOpenFaq();
+                        }}
+                        className="w-full flex items-center justify-center gap-3 p-3 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 hover:bg-teal-500 hover:text-white transition-all group border border-teal-500/20"
+                    >
+                        <FaQuestionCircle className="text-xl group-hover:scale-110 transition-transform" />
+                        <span className="font-bold italic tracking-wide text-sm">
+                            {lang === 'id' ? "Tanya Jawab (FAQ)" : "Help & FAQ"}
+                        </span>
+                    </button>
+                </div>
+
+              </div> 
+              {/* End Scrollable Area */}
+              
               {/* MODAL QR CODE */}
               <AnimatePresence>
                   {showQR && (
@@ -308,14 +364,14 @@ const SidebarMenu = ({ lang }) => {
 
                               {/* Footer Text */}
                               <div className="flex items-center gap-2 px-2 py-1 rounded-full 
-                                              bg-amber-500/10 border border-amber-500/20 
-                                              dark:bg-cyan-500/10 dark:border-cyan-500/20">
+                                                        bg-amber-500/10 border border-amber-500/20 
+                                                        dark:bg-cyan-500/10 dark:border-cyan-500/20">
                                   
                                   <div className="w-1 h-1 rounded-full animate-pulse 
-                                                  bg-amber-500 dark:bg-cyan-500"></div>
+                                                        bg-amber-500 dark:bg-cyan-500"></div>
                                   
                                   <p className="text-[6px] font-mono tracking-wider 
-                                                text-amber-600 dark:text-cyan-400">
+                                                        text-amber-600 dark:text-cyan-400">
                                       LIVE PREVIEW
                                   </p>
                               </div>
@@ -326,8 +382,8 @@ const SidebarMenu = ({ lang }) => {
               </AnimatePresence>
 
               {/* FOOTER */}
-              <div>
-                <p className="text-xs font-bold text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-4 text-center">
+              <div className="flex-shrink-0">
+                <p className="text-xs font-bold mt-2 text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-2 text-center">
                     {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
@@ -338,7 +394,7 @@ const SidebarMenu = ({ lang }) => {
                     <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
                 </div>
                 <div className="mt-0 p-4 text-center text-[10px] text-neutral-600 dark:text-neutral-400 font-medium">
-                   <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
+                    <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
                 </div>
               </div>
 

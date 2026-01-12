@@ -18,9 +18,9 @@ const getYouTubeID = (url) => {
 
 const CATEGORY_TRANSLATIONS = {
   "All": { en: "All", id: "Semua" },
-  "Web Dev": { en: "Web Dev", id: "Web Dev" },
   "Photography": { en: "Photography", id: "Fotografi" },
   "Videography": { en: "Videography", id: "Videografi" },
+  "Web Dev": { en: "Web Dev", id: "Web Dev" },
 };
 
 const CATEGORIES = Object.keys(CATEGORY_TRANSLATIONS);
@@ -241,18 +241,74 @@ const Projects = ({ lang }) => {
 
   const filteredProjects = activeCategory === "All" ? PROJECTS : PROJECTS.filter(project => project.category === activeCategory);
 
-  return (
-    <div id="projects" className="border-b border-neutral-800 dark:border-neutral-200 py-16 relative">
-      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const section = document.getElementById("projects");
+      if (section) {
+        const offset = -100;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = section.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition + offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100); 
+
+    return () => clearTimeout(timer);
+  }, [activeCategory]);
+
+return (
+    <div id="projects" className="border-b border-neutral-800 mt-6 dark:border-neutral-200 relative">
+      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-5 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
-        {CATEGORIES.map((cat) => (
-          <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 border ${activeCategory === cat ? "bg-amber-600 dark:bg-cyan-600 text-white border-amber-600 dark:border-cyan-600 shadow-lg scale-105" : "bg-transparent text-neutral-900 dark:text-neutral-100 border-neutral-900 dark:border-neutral-100 hover:border-amber-500 dark:hover:border-cyan-500 hover:text-amber-600 dark:hover:text-cyan-400"}`}>
-            {CATEGORY_TRANSLATIONS[cat][lang]}
-          </button>
-        ))}
+      {/* --- KATEGORI FILTER DENGAN SCROLL FIX --- */}
+      <div className="w-full max-w-3xl mx-auto mb-10 px-4">
+        <div className="
+            flex items-center gap-1.5 md:gap-2 
+            overflow-x-auto py-2 px-2 
+            md:justify-center 
+            bg-neutral-100/80 dark:bg-white/5 backdrop-blur-md
+            border border-neutral-200 dark:border-white/5
+            rounded-2xl md:rounded-full shadow-inner
+            scrollbar-hide
+        ">
+            {CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat;
+                return (
+                    <button 
+                        key={cat} 
+                        // 👇 GANTI onClick JADI PANGGIL FUNGSI DI ATAS
+                        onClick={() => setActiveCategory(cat)} 
+                        className={`
+                            relative px-5 py-2.5 rounded-xl md:rounded-full 
+                            text-sm font-bold whitespace-nowrap transition-all duration-300
+                            shrink-0 outline-none select-none
+                            ${isActive 
+                                ? "text-white shadow-lg scale-100" 
+                                : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5"
+                            }
+                        `}
+                    >
+                        {isActive && (
+                            <motion.div 
+                                layoutId="activeCategoryBg"
+                                className="absolute inset-0 bg-neutral-900 dark:bg-cyan-600 rounded-xl md:rounded-full z-[-1]"
+                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                            />
+                        )}
+                        <span className="relative z-10">
+                            {CATEGORY_TRANSLATIONS[cat][lang]}
+                        </span>
+                    </button>
+                );
+            })}
+        </div>
       </div>
 
       {activeCategory === 'Videography' && (

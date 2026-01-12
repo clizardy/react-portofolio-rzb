@@ -67,7 +67,7 @@ const SERVICES_DATA = [
   }
 ];
 
-const Services = ({ lang }) => {
+const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
   const [activeTab, setActiveTab] = useState(SERVICES_DATA[0]);
 
   return (
@@ -187,8 +187,77 @@ const Services = ({ lang }) => {
           </AnimatePresence>
         </div>
 
+        {/* --- TOMBOL AKSI (PREMIUM STYLE) --- */}
+        <div className="mt-4 md:mt-0 w-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+
+          {/* 1. TOMBOL WORKFLOW (Theme: Indigo/Blue) */}
+          <button
+              onClick={onOpenWorkflow}
+              className="
+                group relative w-full md:w-auto px-6 py-3 rounded-full 
+                bg-white/5 dark:bg-black/20 backdrop-blur-md
+                border border-indigo-500/30 dark:border-indigo-400/30
+                text-indigo-600 dark:text-indigo-300
+                font-bold text-xs tracking-wide
+                overflow-hidden transition-all duration-300
+                hover:border-indigo-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]
+                hover:bg-indigo-500/10
+                flex items-center justify-center gap-3
+              "
+          >
+            <span className="text-lg group-hover:rotate-12 transition-transform duration-300">📋</span>
+            <span>{lang === 'id' ? "Alur Kerja" : "My Workflow"}</span>
+            
+            {/* Efek Kilat Lewat */}
+            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
+          </button>
+          
+          {/* 2. TOMBOL GEAR (Theme: Amber/Gold) */}
+          <button
+              onClick={onOpenGear}
+              className="
+                group relative w-full md:w-auto px-6 py-3 rounded-full 
+                bg-white/5 dark:bg-black/20 backdrop-blur-md
+                border border-amber-500/30 dark:border-amber-400/30
+                text-amber-600 dark:text-amber-300
+                font-bold text-xs tracking-wide
+                overflow-hidden transition-all duration-300
+                hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]
+                hover:bg-amber-500/10
+                flex items-center justify-center gap-3
+              "
+          >
+             <span className="text-lg group-hover:rotate-45 transition-transform duration-300">🛠️</span>
+             <span>{lang === 'id' ? "Lihat Gear" : "My Arsenal"}</span>
+          </button>
+
+          {/* 3. TOMBOL PRICING (Theme: Teal Gradient - CTA UTAMA) */}
+          <button
+              onClick={onOpenPricing}
+              className="
+                group relative w-full md:w-auto px-8 py-3 
+                bg-gradient-to-r from-teal-500 to-cyan-600
+                text-white 
+                rounded-full font-bold text-xs tracking-wider
+                flex items-center justify-center gap-3 
+                shadow-lg shadow-cyan-500/25
+                transition-all duration-300 
+                hover:scale-105 hover:shadow-cyan-500/50 active:scale-95
+              "
+          >
+              <span>{lang === 'id' ? "Lihat Paket & Harga" : "View Packages"}</span>
+              
+              <span className="bg-white/20 rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+              </span>
+          </button>
+
+        </div>
+
+        </div>
       </div>
-    </div>
   );
 };
 

@@ -7,12 +7,10 @@ import { FaDownload } from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
 import LocationWidget from "../components/LocationWidget";
 import QuoteWidget from "../components/QuoteWidget";
-import TechStackWidget from "../components/TechStackWidget";
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
 
-// --- PERBAIKAN: Hapus duplikasi container & gunakan prop delay ---
 const container = (delay) => ({
   hidden: { x: -50, opacity: 0 },
   visible: {
@@ -58,14 +56,14 @@ const Hero = ({ lang, isReady = true }) => {
     'Freelancer', 1000,
     'Digital Creator', 1000,
     'Musician', 1000,
-    'Professional Project Manager', 1000
+    'Project Manager', 1000
   ];
 
   const sequenceId = [
     'Pekerja Lepas', 1000,
     'Kreator Digital', 1000,
     'Musisi', 1000,
-    'Manajer Proyek Profesional', 1000
+    'Manajer Proyek', 1000
   ];
 
   return (
@@ -120,7 +118,7 @@ const Hero = ({ lang, isReady = true }) => {
               variants={container(0.4)}
               initial="hidden"
               animate={isReady ? "visible" : "hidden"}
-              className="my-2 py-6 max-w-xl font-light tracking-tighter text-center lg:text-left text-neutral-700 dark:text-neutral-300"
+              className="my-2 py-6 max-w-xl font-light tracking-tighter font-sans text-center lg:text-left text-neutral-700 dark:text-neutral-300"
             >
               {t.desc}
             </motion.p>
@@ -196,7 +194,7 @@ const Hero = ({ lang, isReady = true }) => {
               initial={{ x: 50, opacity: 0 }}
               animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }} // Sinkronisasi Animasi Masuk
               transition={{ duration: 0.8 }}
-              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl p-2 lg:p-3 w-full"
+              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl lg:p-3 w-full"
             >
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
                   <img decoding="async"

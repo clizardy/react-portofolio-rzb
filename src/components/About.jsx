@@ -95,7 +95,7 @@ const About = ({ lang }) => {
   };
 
   return (
-    <div id="about" className="pt-24 border-b border-neutral-800 dark:border-neutral-200 pb-4 relative">
+    <div id="about">
       <h2 className="my-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{t.title}</OklchGradientText>
       </h2>
@@ -234,7 +234,7 @@ const About = ({ lang }) => {
           transition={{ duration: 0.5 }}
           className="w-full lg:w-1/2 lg:p-8 mt-12 lg:mt-0"
         >
-            <p className="my-2 max-w-xl text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+            <p className="my-2 max-w-xl font-sans text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
                 {t.desc}
             </p>
 
