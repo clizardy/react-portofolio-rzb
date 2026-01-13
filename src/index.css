@@ -102,3 +102,12 @@ html {
     color: rgb(241, 245, 249);
   }
 }
+/* Custom Text Selection Color */
+::selection {
+  background-color: #f59e0b; /* Amber-500 (Warna emas tema kamu) */
+  color: #ffffff;
+}
+.dark ::selection {
+  background-color: #06b6d4; /* Cyan-500 (Warna biru neon tema malam) */
+  color: #ffffff;
+}

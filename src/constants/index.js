@@ -1,9 +1,9 @@
 import collage from "../assets/collage.jpg";
 import senior from "../assets/senior.jpg";
 import junior from "../assets/junior.jpg";
-import project1 from "../assets/projects/project-1.jpg";
-import project2 from "../assets/projects/project-2.jpg";
-import project3 from "../assets/projects/project-3.jpg";
+import project1 from "../assets/projects/project-1.webp";
+import project2 from "../assets/projects/project-2.webp";
+import project3 from "../assets/projects/project-3.webp";
 import webdev1 from "../assets/webdev1.jpg";
 
 export const HERO_CONTENT = `Hi, I'm Ronald! A tech enthusiast with a creative soul.
