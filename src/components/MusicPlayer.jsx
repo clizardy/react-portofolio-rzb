@@ -52,15 +52,16 @@ const MusicPlayer = ({ theme }) => {
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 className={`flex items-center gap-3 pr-2 pl-1.5 py-1.5 rounded-full shadow-xl border backdrop-blur-md overflow-hidden ${
                     theme === 'dark' 
-                    ? 'bg-neutral-900/90 border-cyan-500/30 shadow-cyan-500/20' 
-                    : 'bg-white/90 border-amber-500/30 shadow-amber-500/20'
+                    ? 'border-cyan-500/30 shadow-cyan-500/20' 
+                    : 'border-amber-500/50 shadow-amber-500/20'
                 }`}
             >
                 {/* TOMBOL PLAY/PAUSE (KIRI) */}
                 <button 
                     onClick={togglePlay}
-                    className={`relative w-10 h-10 flex items-center justify-center rounded-full shrink-0 transition-transform active:scale-95 ${
-                        theme === 'dark' ? 'bg-neutral-800' : 'bg-neutral-100'
+                    className={`relative w-10 h-10 flex items-center justify-center rounded-full shrink-0 transition-transform active:scale-95 bg-transparent ${
+                        // Masukkan logika variabel lain di sini, contoh:
+                        isPlaying ? 'text-cyan-500' : 'text-neutral-500'
                     }`}
                 >
                     <motion.div
@@ -83,15 +84,15 @@ const MusicPlayer = ({ theme }) => {
                             transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
                             className="whitespace-nowrap flex gap-4"
                         >
-                            <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-neutral-800'}`}>
+                            <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
                                 Juicy Luicy - Tampar
                             </span>
-                            <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-neutral-800'}`}>
+                            <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
                                 Juicy Luicy - Tampar
                             </span>
                         </motion.div>
                     </div>
-                    <span className={`text-[9px] font-medium tracking-wider uppercase ${
+                    <span className={`md:text-[9px] text-[7px] font-mono tracking-wider italic uppercase ${
                         theme === 'dark' ? 'text-neutral-400' : 'text-neutral-500'
                     }`}>
                         {isPlaying ? "Playing" : "Paused"}
@@ -117,7 +118,7 @@ const MusicPlayer = ({ theme }) => {
                 <button 
                     onClick={() => setIsOpen(false)}
                     className={`p-2 rounded-full hover:bg-black/5 transition-colors ${
-                        theme === 'dark' ? 'text-neutral-400 hover:text-white' : 'text-neutral-400 hover:text-neutral-800'
+                        theme === 'dark' ? 'text-white/90 hover:text-white' : 'text-black/90 hover:text-neutral-800'
                     }`}
                 >
                     <FaTimes size={12} />
@@ -135,10 +136,10 @@ const MusicPlayer = ({ theme }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(true)}
-                className={`flex items-center justify-center w-12 h-12 rounded-full shadow-lg border backdrop-blur-md relative ${
+                className={`flex items-center justify-center w-12 h-12 rounded-full relative ${
                     theme === 'dark' 
-                    ? 'bg-sky-950/80 border-sky-300/30 text-cyan-400' 
-                    : 'bg-neutral-200/80 border-neutral-200/30 text-amber-500'
+                    ? 'border-slate-950/5 text-cyan-400' 
+                    : 'text-amber-600'
                 }`}
             >
                 {/* Indikator "Playing" (Ping Effect) */}

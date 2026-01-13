@@ -67,7 +67,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
             <div 
                 // 2. SAAT DIKLIK, PANGGIL FUNGSI BUKA KAMERA
                 onClick={onOpenCamera}
-                className="group flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-cyan-900 border border-neutral-400 dark:border-neutral-300 shadow-sm cursor-pointer select-none active:scale-95 transition-all hover:ring-2 hover:ring-offset-2 hover:ring-red-500 dark:hover:ring-red-400"
+                className="group flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/20 shadow-sm cursor-pointer select-none active:scale-95 transition-all hover:ring-2 hover:ring-offset-2 hover:ring-red-500 dark:hover:ring-red-400"
                 title="Click to enter REC Mode"
             >
                 <span className="relative flex h-2.5 w-2.5">
@@ -76,8 +76,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
                     )}
                     <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${IS_AVAILABLE ? 'bg-green-500' : 'bg-red-500'}`}></span>
                   </span>
-                  
-                  <span className="text-[8px] font-medium text-neutral-900 dark:text-neutral-100 tracking-wide uppercase">
+
+                  <span className="md:text-[7px] text-[6px] mt-0.5 md:mt-0 font-medium text-neutral-900 dark:text-neutral-100 tracking-wide uppercase">
                       {IS_AVAILABLE ? t.available : t.busy}
                   </span>
               </div>
@@ -96,9 +96,9 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
 
           {/* Tombol Hint Ctrl + K */}
           <div 
-            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg border text-xs font-mono cursor-pointer transition
-            bg-neutral-100 border-neutral-500 text-neutral-700 hover:bg-neutral-200
-            dark:bg-cyan-950/50 dark:border-neutral-100/50 dark:text-neutral-100 dark:hover:bg-neutral-800"
+            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-mono cursor-pointer transition
+              text-neutral-700 hover:bg-neutral-200
+              dark:text-neutral-100 dark:hover:bg-neutral-800"
             onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'ctrlKey': true}))}
           >
             <span className="text-xs">⌘</span>
@@ -108,7 +108,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
               {/* Tombol Bahasa */}
               <button 
                   onClick={toggleLanguage} 
-                  className="flex items-center justify-center rounded-full w-10 h-10 border border-neutral-500 dark:border-neutral-200 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
+                  className="flex items-center justify-center rounded-full w-10 h-10 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
               >
                   <span className="text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-300">
                       {t.langCode}
@@ -123,7 +123,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
                   {theme === "dark" ? (
                       <FiSun className="text-amber-400 text-xl" /> 
                   ) : (
-                      <FiMoon className="text-slate-600 text-xl" /> 
+                      <FiMoon className="text-slate-700 text-xl" /> 
                   )}
               </button>
 
@@ -132,7 +132,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
               {/* Tombol Follow */}
               <button
                   onClick={handleOpenSidebar}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 dark:bg-sky-900 border border-amber-500 dark:border-cyan-300 hover:bg-amber-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500 dark:border-cyan-300/60 hover:bg-amber-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
               >
                   <span className="text-xs font-bold tracking-wide uppercase group-hover:text-amber-600 dark:group-hover:text-cyan-400">
                       {t.follow}

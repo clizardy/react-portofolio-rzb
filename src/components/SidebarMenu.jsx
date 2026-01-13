@@ -156,8 +156,8 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="
                 fixed top-0 right-0 h-[100dvh] w-80 
-                bg-white/90 
-                dark:bg-neutral-950/60 
+                bg-indigo-100/70 
+                dark:bg-slate-950/50 
                 backdrop-blur-xl 
                 border-l border-white/20 dark:border-white/5 
                 shadow-2xl z-[999] flex flex-col overflow-hidden

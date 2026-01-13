@@ -72,7 +72,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
 
   return (
     // UBAH 1: py-16 jadi py-10 (Lebih pendek atas bawah)
-    <div id="services" className="py-10 bg-neutral-200 dark:bg-sky-950 transition-colors duration-500">
+    <div id="services" className="py-10 bg-indigo-100 dark:bg-slate-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto px-4">
         
         {/* HEADER SECTION */}
@@ -107,7 +107,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap border ${
                 activeTab.id === service.id
                   ? "bg-slate-800 dark:bg-cyan-600 text-white border-transparent shadow-lg shadow-cyan-500/20 transform scale-105"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  : "bg-white dark:bg-black text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-amber-200 dark:hover:bg-slate-700"
               }`}
             >
               <span className="text-base">{service.icon}</span>
@@ -126,7 +126,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.98 }}
               transition={{ duration: 0.4 }}
-              className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-4"
+              className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-4"
             >
 
               <div className="p-6 md:p-8 flex flex-col justify-center order-2 lg:order-1 lg:col-span-3">

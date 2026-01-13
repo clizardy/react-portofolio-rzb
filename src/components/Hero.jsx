@@ -78,7 +78,7 @@ const Hero = ({ lang, isReady = true }) => {
         }
       `}</style>
 
-      <div id="hero" className="flex flex-wrap items-center pt-10 pb-20">
+      <div id="hero" className="flex flex-wrap items-center md:pt-10 pt-0 pb-16 md:pb-0">
         
         {/* BAGIAN KIRI */}
         <div className="w-full lg:w-1/2">
@@ -128,20 +128,23 @@ const Hero = ({ lang, isReady = true }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-4 mt-6 justify-center lg:justify-start items-center"
+              className="flex flex-wrap gap-3 lg:gap-6 mt-6 justify-center lg:justify-start items-center"
             >
               <a href="#projects">
-                  <MagneticButton className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
+                  {/* MOBILE: px-4 py-2 text-sm | PC: px-6 py-3 text-base */}
+                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
                     {t.btnPortfolio}
                   </MagneticButton>
               </a>
               <a href="#contact">
-                  <MagneticButton className="px-6 py-3 rounded-full border border-neutral-400 dark:border-neutral-500 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
+                  {/* MOBILE: px-4 py-2 text-sm | PC: px-6 py-3 text-base */}
+                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-neutral-400 dark:border-neutral-500 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
                     {t.btnContact}
                   </MagneticButton>
               </a>
               <a href={cvFile} download="Ronald_Zuni_CV.pdf"> 
-                  <MagneticButton className="group relative px-8 py-3 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2">
+                  {/* MOBILE: px-5 py-2 text-sm | PC: px-8 py-3 text-base */}
+                  <MagneticButton className="group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2">
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
                     <span>{t.btnCv}</span>
                     <FaDownload className="transition-transform group-hover:translate-y-1" />

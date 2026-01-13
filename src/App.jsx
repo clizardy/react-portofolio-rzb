@@ -344,15 +344,17 @@ return (
 
         {/* 3. HERO SECTION WRAPPER (Paper Style) */}
         {/* Div ini punya 'transform-gpu', makanya Welcome Screen dilarang ditaruh di dalamnya */}
-        <div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-neutral-950 shadow-2xl overflow-hidden pb-28 md:pb-40 rounded-b-[30px] md:rounded-b-[60px]">
+<div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 rounded-b-[30px] md:rounded-b-[60px] transition-colors duration-500">
             
-            {/* Background Gradients */}
-            <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none">
-                {theme === 'dark' ? (
-                    <div className="h-full w-full bg-sky-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
-                ) : (
-                    <div className="h-full w-full bg-neutral-200 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
-                )}
+            {/* Background Gradients Wrapper */}
+            <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-500">
+                
+                {/* 1. GRADIENT MALAM (Sky-950) - Otomatis muncul saat class 'dark' ada */}
+                <div className="absolute inset-0 h-full w-full hidden dark:block bg-slate-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
+
+                {/* 2. GRADIENT SIANG (Neutral-200) - Otomatis muncul saat class 'dark' HILANG */}
+                <div className="absolute inset-0 h-full w-full block dark:hidden bg-indigo-100 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
+
             </div>
 
             {/* NAVBAR & HERO */}

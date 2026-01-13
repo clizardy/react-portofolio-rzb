@@ -190,8 +190,8 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-4xl lg:w-3/4 lg:pl-16 mt-6 lg:mt-0">
                 <div className="flex items-center justify-between mb-2">
                     <h6 className="font-bold text-xl text-neutral-900 dark:text-white">{project.title}</h6>
-                    <span className="text-xs font-mono uppercase tracking-widest text-neutral-900 dark:text-neutral-100 border border-neutral-900 dark:border-neutral-100 px-2 py-1 rounded">
-                        {CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
+                    <span className="text-[8px] md:text-[10px] font-mono italic tracking-widest bg-black dark:bg-white text-white dark:text-black border px-2 py-1 rounded">
+                        #{CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
                     </span>
                 </div>
                 
@@ -201,13 +201,13 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 
                 <div className="flex flex-wrap gap-2 mb-6">
                     {project.technologies.map((tech, idx) => (
-                        <span key={idx} className="rounded bg-amber-100 dark:bg-sky-950 border border-amber-300 dark:border-sky-500 px-3 py-1 text-sm font-medium text-amber-900 dark:text-neutral-100">{tech}</span>
+                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[12px] text-[10px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
                     ))}
                 </div>
 
                 <div className="flex items-center gap-4">
                     {project.link && (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium text-sm transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
                             {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-xs" />
                         </a>
                     )}
@@ -280,8 +280,8 @@ return (
             flex items-center gap-1.5 md:gap-2 
             overflow-x-auto py-2 px-2 
             justify-center 
-            bg-neutral-100/80 dark:bg-white/5 backdrop-blur-md
-            border border-neutral-200 dark:border-white/5
+            bg-white dark:bg-white/5 backdrop-blur-md
+            border border-black/10 dark:border-white/10
             rounded-2xl md:rounded-full shadow-inner
             scrollbar-hide
         ">
@@ -294,7 +294,7 @@ return (
                         onClick={() => setActiveCategory(cat)} 
                         className={`
                             relative px-5 py-2.5 rounded-xl md:rounded-full 
-                            text-sm font-bold whitespace-nowrap transition-all duration-300
+                            md:text-[16px] text-[10px] font-bold whitespace-nowrap transition-all duration-300
                             shrink-0 outline-none select-none
                             ${isActive 
                                 ? "text-white shadow-lg scale-100" 

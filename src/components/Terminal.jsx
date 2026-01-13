@@ -267,18 +267,6 @@ const Terminal = () => {
         .text-glow { text-shadow: ${currentTheme === 'light' ? 'none' : '0 0 5px currentColor'}; }
       `}</style>
 
-      {/* TOMBOL PEMICU KECIL & TERSEMBUNYI (Pojok Kiri Bawah) */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 left-4 z-40 opacity-30 hover:opacity-100 transition-opacity p-2 text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white flex items-center gap-2"
-          title="Open Terminal (Ctrl + K)"
-        >
-          <FaTerminal />
-          <span className="hidden group-hover:inline">Terminal</span>
-        </button>
-      )}
-
       <AnimatePresence>
         {isOpen && (
           <motion.div

@@ -187,7 +187,7 @@ const Skills = ({ lang }) => {
                         className="
                             grid grid-cols-4 gap-3 p-3 rounded-3xl w-full max-w-md md:max-w-none
                             md:flex md:flex-wrap md:justify-center md:gap-4 md:p-8
-                            md:bg-neutral-200/50 md:dark:bg-white/5 md:backdrop-blur-2xl md:border md:border-white/10 md:shadow-2xl md:rounded-[2rem]
+                            md:bg-white/85 md:dark:bg-white/5 md:backdrop-blur-2xl md:border md:border-white/10 md:shadow-2xl md:rounded-[2rem]
                         "
                     >
                         {SKILLS_LIST.map((skill) => (

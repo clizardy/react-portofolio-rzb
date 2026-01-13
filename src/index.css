@@ -85,3 +85,20 @@ html {
   content-visibility: auto;
   contain-intrinsic-size: 1px 1000px;
 }
+
+@layer base {
+  body {
+    /* Pastikan transisi background smooth saat berubah siang/malam */
+    @apply transition-colors duration-700 ease-in-out;
+    
+    /* Default (Light Mode) */
+    @apply bg-slate-50 text-slate-900;
+  }
+
+  /* Saat class 'dark' aktif di HTML */
+  .dark body {
+    /* Default (Dark Mode) - Sesuaikan dengan deep blue kamu */
+    background-color: rgb(11, 17, 32); 
+    color: rgb(241, 245, 249);
+  }
+}

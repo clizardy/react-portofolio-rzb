@@ -78,7 +78,7 @@ const Education = ({ lang }) => {
                         <div className="flex flex-col items-center mb-0 relative z-10">
                            
                              {/* Tahun Badge */}
-                             <span className="mb-4 px-4 py-1.5 rounded-full bg-white dark:bg-sky-950 text-amber-800 dark:text-cyan-300 font-mono font-bold text-xs md:text-sm border border-amber-400 dark:border-cyan-300 shadow-sm relative z-20">
+                             <span className="mb-4 px-4 py-1.5 rounded-full bg-white dark:bg-slate-950/20 text-amber-600 dark:text-cyan-300 font-mono font-bold text-xs md:text-sm border border-amber-400 dark:border-neutral-300 shadow-sm relative z-20">
                                 {experience.year?.[lang] || experience.year}
                             </span>
 
@@ -107,7 +107,7 @@ const Education = ({ lang }) => {
                         </div>
 
                         {/* === BAGIAN BAWAH: KARTU DETAIL === */}
-                        <div className="mt-6 lg:mt-8 pt-8 px-6 pb-6 h-full rounded-3xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 shadow-sm hover:shadow-xl group-hover:-translate-y-1 relative z-10">
+                        <div className="mt-6 lg:mt-8 pt-8 px-6 pb-6 h-full rounded-3xl bg-white/50 dark:bg-slate-950/70 backdrop-blur-sm border border-black/15 dark:border-white/20 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 shadow-sm hover:shadow-xl group-hover:-translate-y-1 relative z-10">
                             
                             {/* Panah dekorasi */}
                             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-amber-500 dark:bg-cyan-400 border-t border-l border-neutral-200 dark:border-neutral-800 rotate-45"></div>

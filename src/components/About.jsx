@@ -245,7 +245,7 @@ const About = ({ lang }) => {
                     { icon: <FaHiking />, title: t.hobbyTitle, sub: t.hobbyDesc, desc: "" },
                     { icon: <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"/>, title: t.statusTitle, sub: t.statusDesc, desc: "" }
                 ].map((item, idx) => (
-                    <div key={idx} className="bg-neutral-50 dark:bg-neutral-900/40 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-colors">
+                    <div key={idx} className="p-4 rounded-3xl border border-black/25 dark:border-white/25 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-colors">
                         <div className="flex items-center gap-2 mb-2 text-amber-600 dark:text-cyan-400">
                             <span className="text-lg">{item.icon}</span>
                             <h4 className="font-bold text-neutral-900 dark:text-white text-sm">{item.title}</h4>

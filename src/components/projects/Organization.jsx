@@ -77,7 +77,7 @@ const OrgHeader = ({ icon, title, colorClass, gradientLine }) => {
                 ${colorClass} shadow-lg
             `}>
                 <span className="text-xl">{icon}</span>
-                <span className="text-sm md:text-base font-bold uppercase tracking-widest">{title}</span>
+                <span className="text-[9px] md:text-md font-bold uppercase tracking-widest">{title}</span>
             </div>
 
             {/* Garis Kanan */}

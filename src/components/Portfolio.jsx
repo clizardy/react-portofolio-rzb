@@ -154,7 +154,7 @@ const ProjectCard = ({ project, lang, index }) => {
 
 const Portfolio = ({ lang }) => {
   return (
-    <section id="portfolio" className="relative bg-neutral-200 dark:bg-sky-950 overflow-hidden perspective-1000 w-full">
+    <section id="portfolio" className="relative bg-indigo-100 dark:bg-slate-950 overflow-hidden perspective-1000 w-full">
       
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
@@ -163,7 +163,7 @@ const Portfolio = ({ lang }) => {
       <div className="container mx-auto px-6 mb-10 relative z-10">
           
           {/* Glass Panel Container */}
-          <div className="relative bg-neutral-900/50 dark:bg-neutral-950/20 border border-neutral-200/20 dark:border-white/10 backdrop-blur-md rounded-[2.5rem] p-8 md:p-8 overflow-hidden shadow-2xl">
+          <div className="relative bg-neutral-900/20 dark:bg-neutral-950/20 border border-neutral-200/20 dark:border-white/30 backdrop-blur-md rounded-[2.5rem] p-8 md:p-8 overflow-hidden shadow-2xl">
               
               {/* Dekorasi Glow Halus di dalam Header */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/20 blur-[80px] rounded-full pointer-events-none" />
@@ -177,7 +177,7 @@ const Portfolio = ({ lang }) => {
                               {lang === 'id' ? "Karya Terpilih" : "Featured Projects"}
                           </OklchGradientText>
                       </h2>
-                      <p className="text-neutral-200 dark:text-neutral-300 italic text-md">
+                      <p className="text-neutral-100 dark:text-neutral-300 italic text-md">
                           {lang === 'id' ? "Eksplorasi visual dengan sentuhan interaktif." : "Visual exploration with interactive touch."}
                       </p>
                   </div>

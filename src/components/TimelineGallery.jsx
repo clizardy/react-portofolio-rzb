@@ -142,7 +142,7 @@ const TimelineGallery = ({ lang }) => {
       </div>
 
       {/* WALL CONTAINER */}
-      <div className="relative h-[800px] md:h-[1000px] overflow-hidden bg-neutral-200 dark:bg-cyan-950/50 flex justify-center gap-3 md:gap-6 px-2 md:px-4 mb-8">
+      <div className="relative h-[800px] md:h-[1000px] overflow-hidden flex justify-center gap-3 md:gap-6 px-2 md:px-4 mb-8">
         
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white dark:from-neutral-950 to-transparent z-10 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent z-10 pointer-events-none"></div>
@@ -162,10 +162,10 @@ const TimelineGallery = ({ lang }) => {
 
       {/* TOMBOL LOAD MORE */}
       {visibleCount < ALL_IMAGES.length && (
-          <div className="flex justify-center pb-10 relative z-20">
+          <div className="flex justify-center relative z-20">
               <button 
                 onClick={handleLoadMore}
-                className="flex items-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full font-bold shadow-lg hover:scale-105 transition-transform cursor-pointer"
+                className="flex items-center gap-2 px-2 py-1 md:px-6 md:py-3 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold md:text-sm text-[11px] shadow-lg hover:scale-105 transition-transform cursor-pointer"
               >
                   <FaArrowDown />
                   {lang === 'en' ? "Load More" : "Muat Lebih Banyak"}
@@ -218,10 +218,17 @@ const TimelineGallery = ({ lang }) => {
 // IMAGE LOADING (SOLUSI ANTI-CROP & ANTI-CLS)
 const ImageWithSkeleton = ({ src, alt }) => {
     const [isLoaded, setIsLoaded] = useState(false);
+
     return (
-        <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden border border-neutral-700 bg-neutral-900">
+        // PERBAIKAN DISINI:
+        // Hapus 'border' dan 'border-neutral-700'.
+        // Container sekarang benar-benar transparan, hanya menjaga aspek rasio.
+        <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden">
+            
+            {/* Skeleton Loading (Hanya efek shimmer yang berjalan) */}
             {!isLoaded && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
+                    {/* Gradient shimmer berjalan di area transparan */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent animate-pulse" />
                 </div>
             )}
