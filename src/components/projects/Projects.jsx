@@ -190,7 +190,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-4xl lg:w-3/4 lg:pl-16 mt-6 lg:mt-0">
                 <div className="flex items-center justify-between mb-2">
                     <h6 className="font-bold text-xl text-neutral-900 dark:text-white">{project.title}</h6>
-                    <span className="text-[8px] md:text-[10px] font-mono italic tracking-widest bg-black dark:bg-white text-white dark:text-black border px-2 py-1 rounded">
+                    <span className="text-[8px] md:text-[10px] font-mono italic tracking-widest bg-black dark:bg-white text-white dark:text-black border px-2 py-1 rounded-full">
                         #{CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
                     </span>
                 </div>
@@ -224,7 +224,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                         </span>
                     </button>
 
-                    <button onClick={handleShare} className="text-neutral-400 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
+                    <button onClick={handleShare} className="text-black/80 dark:text-white/90 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
                         <FaShareAlt className="text-lg" />
                     </button>
                 </div>

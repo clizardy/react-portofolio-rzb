@@ -48,10 +48,10 @@ const BackToTop = ({ theme }) => {
           whileHover="hover" // Memicu animasi child (icon) saat tombol di-hover
           whileTap={{ scale: 0.9, y: -10 }} // Efek "tekan" dan sedikit naik saat diklik
           onClick={scrollToTop}
-          className={`fixed bottom-6 right-6 z-40 p-3.5 rounded-full shadow-xl border backdrop-blur-sm transition-all duration-300 group ${
+          className={`fixed bottom-6 right-6 z-40 p-3.5 shadow-lg rounded-full backdrop-blur-sm transition-all duration-300 group ${
             theme === "dark"
-              ? "text-white border-sky-950/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-              : " text-black border-neutral-200/30 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+              ? "text-white hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
+              : " text-black hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]"
           }`}
         >
           {/* Bungkus Icon dengan motion.div agar bisa dianimasikan terpisah */}

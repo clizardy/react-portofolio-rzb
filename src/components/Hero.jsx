@@ -41,7 +41,7 @@ const ClockWidget = ({ lang }) => {
       >
         {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
       </span>
-      <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-cyan-300 uppercase mt-1">
+      <span className="text-[10px] lg:text-xs font-medium tracking-wide italic text-amber-300 dark:text-cyan-300 mt-1">
         {time.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short' })}
       </span>
     </div>

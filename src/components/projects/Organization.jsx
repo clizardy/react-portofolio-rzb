@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { FaMountain, FaMusic } from "react-icons/fa"; 
+import { FaMountain } from "react-icons/fa"; 
+import { GiMusicalNotes } from "react-icons/gi";
 import OklchGradientText from "../OklchGradientText";
 
 // --- BAGIAN 1: DATA SISPALA ---
@@ -169,7 +170,7 @@ const Organization = ({ lang }) => {
       </div>
       
       <OrgHeader 
-        icon={<FaMusic />}
+        icon={<GiMusicalNotes />}
         title="Quinta Chamber: Band & Choir"
         colorClass="border-indigo-500/30 text-indigo-700 dark:text-indigo-400 dark:shadow-indigo-500/20"
         gradientLine="to-indigo-500"

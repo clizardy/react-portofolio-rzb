@@ -156,7 +156,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="
                 fixed top-0 right-0 h-[100dvh] w-80 
-                bg-indigo-100/70 
+                bg-indigo-100
                 dark:bg-slate-950/50 
                 backdrop-blur-xl 
                 border-l border-white/20 dark:border-white/5 
@@ -248,7 +248,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                     onClick={() => scrollToSection(item.id)}
                     className="flex-shrink-0 flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
                   >
-                    <span className="text-xl text-amber-600 dark:text-cyan-300/80 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all">
+                    <span className="text-xl text-amber-600 dark:text-cyan-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all">
                         {item.icon}
                     </span>
                     <span className="font-medium text-sm">
@@ -265,7 +265,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                     className="w-full flex items-center justify-center gap-2 p-3 rounded-full
-                              border border-dashed border-amber-500 dark:border-cyan-500
+                              border border-dashed border-amber-600 dark:border-cyan-500
                               text-amber-600 dark:text-cyan-400 font-bold tracking-widest uppercase text-xs
                               hover:bg-amber-500/10 dark:hover:bg-cyan-500/10 
                               hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-cyan-500/20
@@ -303,7 +303,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                             setIsOpen(false); 
                             onOpenFaq();
                         }}
-                        className="w-full flex items-center justify-center gap-3 p-3 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 hover:bg-teal-500 hover:text-white transition-all group border border-teal-500/20"
+                        className="w-full flex items-center justify-center gap-3 p-3 rounded-2xl bg-teal-700/80 dark:bg-teal-500/10 text-white dark:text-teal-400 hover:bg-teal-500 hover:text-white transition-all group border border-teal-200 dark:border-teal-500/20"
                     >
                         <FaQuestionCircle className="text-xl group-hover:scale-110 transition-transform" />
                         <span className="font-bold italic tracking-wide text-sm">
@@ -387,13 +387,13 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                     {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
-                    <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-500" />
+                    <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-700 dark:text-green-400" />
                     <SocialBtn icon={<FaInstagram />} href="https://www.instagram.com/ronald_rzb/" color="text-pink-500" />
-                    <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600" />
+                    <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600 dark:text-blue-500" />
                     <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />
                     <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
                 </div>
-                <div className="mt-0 p-4 text-center text-[10px] text-neutral-600 dark:text-neutral-400 font-medium">
+                <div className="mt-0 p-2 md:p-3 text-center text-[8px] md:text-[10px] text-black/70 dark:text-white/70 font-medium">
                     <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
                 </div>
               </div>
@@ -407,7 +407,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
 };
 
 const SocialBtn = ({ icon, href, color }) => (
-    <a href={href} target="_blank" rel="noreferrer" className={`p-3 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 ${color} hover:scale-110 hover:bg-white dark:hover:bg-white/10 shadow-sm transition-all duration-300 text-lg`}>
+    <a href={href} target="_blank" rel="noreferrer" className={`${color} hover:scale-110 hover:bg-white dark:hover:bg-white/10 shadow-md transition-all duration-300 text-lg md:text-2xl p-2 rounded-full`}>
         {icon}
     </a>
 );

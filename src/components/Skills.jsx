@@ -142,7 +142,7 @@ const Skills = ({ lang }) => {
                                 {lang === 'id' ? "Keahlian" : "Skills"}
                             </OklchGradientText>
                         </h2>
-                        <p className="text-neutral-600 dark:text-neutral-300 text-xs md:text-xs font-mono tracking-widest italic uppercase">
+                        <p className="text-neutral-600 dark:text-neutral-300 text-xs md:text-xs font-mono tracking-widest italic">
                             {lang === 'id' ? "Sentuh icon untuk detail" : "Hover icons to view details"}
                         </p>
                     </div>
@@ -169,7 +169,7 @@ const Skills = ({ lang }) => {
                                         transition={{ duration: 0.4 }}
                                     />
                                 </div>
-                                <p className="text-neutral-700 dark:text-neutral-300 font-medium text-base md:text-lg leading-relaxed max-w-md">
+                                <p className="text-black dark:text-white font-medium text-base md:text-lg leading-relaxed max-w-md">
                                     {selectedSkill.desc[lang]}
                                 </p>
                             </motion.div>

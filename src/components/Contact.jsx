@@ -3,7 +3,7 @@ import { CONTACT } from '../constants';
 import { motion } from "framer-motion";
 import OklchGradientText from "../components/OklchGradientText";
 import { 
-    RiMapPinLine, RiPhoneLine, RiMailLine, 
+    RiMapPinLine, RiMailLine, 
     RiSendPlaneFill, RiWhatsappLine, RiFileCopyLine 
 } from "react-icons/ri"; 
 import emailjs from '@emailjs/browser';
@@ -46,12 +46,11 @@ const Contact = ({ lang }) => {
   };
 
   return (
-    <div id="contact" className='border-b border-neutral-800 dark:border-neutral-800 pb-20 pt-20 relative overflow-hidden'>
+    <div id="contact" className='pb-10 pt-10 relative overflow-hidden'>
         
         {/* Dekorasi Background Halus */}
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/20 dark:bg-cyan-500/20 rounded-full blur-[100px] -z-10"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] -z-10"></div>
-        {/* 1. Cyber Grid Pattern (Jaring Halus) */}
 
       {/* 2. Glowing Orb Kiri (Ungu) */}
       <motion.div 
@@ -83,7 +82,7 @@ const Contact = ({ lang }) => {
             <h2 className='text-4xl md:text-5xl font-bold text-neutral-100 dark:text-white mb-4'>
                 <OklchGradientText>{lang === 'id' ? "Mari Terhubung" : "Let's Connect"}</OklchGradientText>
             </h2>
-            <p className="text-neutral-400 dark:text-neutral-400 max-w-xl mx-auto">
+            <p className="text-neutral-400 italic max-w-xl mx-auto">
                 {lang === 'id' 
                  ? "Punya ide proyek atau ingin sekadar menyapa? Saya selalu terbuka untuk diskusi baru." 
                  : "Have a project in mind or just want to say hi? I'm always open to discussing new ideas."}
@@ -131,13 +130,13 @@ const Contact = ({ lang }) => {
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="lg:col-span-3 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 p-8 rounded-3xl shadow-2xl relative"
+                className="lg:col-span-3 bg-white/70 dark:bg-neutral-900/50 backdrop-blur-xl border border-neutral-200 dark:border-white/40 p-8 rounded-3xl shadow-2xl relative"
             >
-                <div className="absolute top-0 right-0 p-4 opacity-10 text-9xl text-neutral-500 pointer-events-none">
+                <div className="absolute top-0 right-0 p-4 opacity-10 text-9xl text-black dark:text-white pointer-events-none">
                     <RiSendPlaneFill />
                 </div>
 
-                <h3 className="text-2xl font-bold mb-6 text-neutral-800 dark:text-white">
+                <h3 className="text-2xl font-bold mb-6 text-black dark:text-white">
                     {lang === 'id' ? "Kirim Pesan" : "Send a Message"}
                 </h3>
 
@@ -149,7 +148,7 @@ const Contact = ({ lang }) => {
                             type="text" 
                             value={formData.name} 
                             onChange={handleChange} 
-                            placeholder="Aldi Rifandi"
+                            placeholder="Herman Afandi"
                         />
                         <InputGroup 
                             label="Email" 
@@ -157,12 +156,12 @@ const Contact = ({ lang }) => {
                             type="email" 
                             value={formData.email} 
                             onChange={handleChange} 
-                            placeholder="rifandi147@example.com"
+                            placeholder="afandi147@example.com"
                         />
                     </div>
                     
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-neutral-600 dark:text-neutral-400 ml-1">
+                        <label className="text-sm font-bold text-black dark:text-white ml-1">
                             {lang === 'id' ? "Pesan" : "Message"}
                         </label>
                         <textarea 
@@ -172,7 +171,7 @@ const Contact = ({ lang }) => {
                             onChange={handleChange} 
                             required
                             placeholder={lang === 'id' ? "Ceritakan tentang proyek Anda..." : "Tell me about your project..."}
-                            className="w-full p-4 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all text-neutral-900 dark:text-white resize-none"
+                            className="w-full p-4 rounded-xl bg-white dark:bg-black border border-black/20 dark:border-white/20 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all text-neutral-900 dark:text-white resize-none"
                         ></textarea>
                     </div>
 
@@ -204,14 +203,14 @@ const Contact = ({ lang }) => {
 const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction }) => (
     <motion.div 
         whileHover={{ y: -5 }}
-        className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-md hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all group"
+        className="flex items-center gap-4 p-5 rounded-2xl bg-white dark:bg-black border border-black/30 dark:border-white/30 shadow-sm hover:shadow-md hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all group"
     >
-        <div className="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-amber-600 dark:text-cyan-400 text-2xl group-hover:bg-amber-100 dark:group-hover:bg-cyan-900 transition-colors">
+        <div className="p-3 rounded-full bg-neutral-100 dark:bg-white/10 text-amber-600 dark:text-cyan-400 text-2xl group-hover:bg-amber-100 dark:group-hover:bg-cyan-900 transition-colors">
             {icon}
         </div>
         <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">{title}</h4>
-            <p className="text-neutral-900 dark:text-white font-medium truncate">{value}</p>
+            <h4 className="text-sm font-semibold text-black dark:text-white">{title}</h4>
+            <p className="text-neutral-900 dark:text-white/80 font-medium truncate">{value}</p>
         </div>
         
         {/* Tombol Aksi (Copy / Open) */}
@@ -219,7 +218,7 @@ const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction 
             {secondaryAction && (
                 <button 
                     onClick={secondaryAction} 
-                    className="p-2 text-neutral-400 hover:text-amber-600 dark:hover:text-cyan-400 transition-colors"
+                    className="p-2 dark:text-neutral-400 text-neutral-600 hover:text-amber-600 dark:hover:text-cyan-400 transition-colors"
                     title="Copy"
                 >
                     <RiFileCopyLine />
@@ -227,7 +226,7 @@ const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction 
             )}
             <button 
                 onClick={action}
-                className="px-3 py-1 rounded-lg text-xs font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-amber-600 hover:text-white dark:hover:bg-cyan-600 transition-colors"
+                className="px-3 py-1 rounded-lg text-xs font-bold bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 hover:bg-amber-600 hover:text-white dark:hover:bg-cyan-600 transition-colors"
             >
                 {actionLabel}
             </button>
@@ -238,7 +237,7 @@ const ContactCard = ({ icon, title, value, action, actionLabel, secondaryAction 
 // Input Group (Label + Input)
 const InputGroup = ({ label, name, type, value, onChange, placeholder }) => (
     <div className="flex flex-col gap-2">
-        <label className="text-sm font-bold text-neutral-600 dark:text-neutral-400 ml-1">
+        <label className="text-sm font-bold text-black dark:text-neutral-100 ml-1">
             {label}
         </label>
         <input 
@@ -248,7 +247,7 @@ const InputGroup = ({ label, name, type, value, onChange, placeholder }) => (
             onChange={onChange} 
             required
             placeholder={placeholder}
-            className="w-full p-4 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all text-neutral-900 dark:text-white"
+            className="w-full p-4 rounded-xl bg-white dark:bg-black border border-neutral-300 dark:border-neutral-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none transition-all text-neutral-900 dark:text-white"
         />
     </div>
 );

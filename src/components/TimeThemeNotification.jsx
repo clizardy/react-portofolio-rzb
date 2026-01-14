@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, X } from 'lucide-react';
 
 const TimeThemeNotification = () => {
-  const [isDayTime, setIsDayTime] = useState(true);
+  // 1. STATE INITIALIZATION (Langsung baca Storage biar sinkron sama index.html)
+  const [isDayTime, setIsDayTime] = useState(() => {
+    // Cek storage dulu
+    const saved = localStorage.getItem('rzb-theme-preference');
+    if (saved) {
+      return saved === 'day';
+    }
+    // Kalau kosong, cek waktu
+    const hour = new Date().getHours();
+    return hour >= 9 && hour < 15;
+  });
+
   const [visible, setVisible] = useState(true);
   const [lang, setLang] = useState('id');
 
@@ -12,60 +23,95 @@ const TimeThemeNotification = () => {
     en: { light: 'Light Mode', dark: 'Dark Mode' }
   };
 
+  // --- FUNGSI EKSEKUTOR TEMA ---
+  const applyTheme = (isDay) => {
+    const htmlElement = document.documentElement;
+    const rootElement = document.getElementById('root');
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+
+    if (isDay) {
+      // SIANG (Indigo-100)
+      htmlElement.classList.remove('dark');
+      const lightBg = '#e0e7ff';
+      const lightText = '#1e293b';
+
+      document.body.style.backgroundColor = lightBg;
+      document.body.style.color = lightText;
+      if (rootElement) {
+        rootElement.style.backgroundColor = lightBg;
+        rootElement.style.color = lightText;
+      }
+      if (metaTheme) metaTheme.setAttribute('content', lightBg);
+
+    } else {
+      // MALAM (Slate-950)
+      htmlElement.classList.add('dark');
+      const darkBg = '#020617';
+      const darkText = 'rgb(241, 245, 249)';
+
+      document.body.style.backgroundColor = darkBg;
+      document.body.style.color = darkText;
+      if (rootElement) {
+        rootElement.style.backgroundColor = darkBg;
+        rootElement.style.color = darkText;
+      }
+      if (metaTheme) metaTheme.setAttribute('content', darkBg);
+    }
+  };
+
+  // --- LOGIKA UTAMA (TIMER & STORAGE CHECK) ---
   useEffect(() => {
+    // 1. Terapkan tema sesuai state awal saat pertama load
+    applyTheme(isDayTime);
+
+    // 2. Fungsi Cek Waktu (Dengan Pengaman Ganda)
     const checkTime = () => {
+      // PENGAMAN UTAMA: Cek storage setiap detik timer jalan.
+      // Jika ada 'rzb-theme-preference', matikan logika waktu!
+      const saved = localStorage.getItem('rzb-theme-preference');
+      if (saved) {
+        // Jangan ubah apa-apa, biarkan user choice berkuasa
+        return; 
+      }
+
+      // Jika tidak ada storage, baru jalankan logika waktu
       const hour = new Date().getHours();
-      // Tes logika: Siang = Jam 6 - 18
-      const isDay = hour >= 6 && hour < 14;
+      const isDay = hour >= 9 && hour < 15;
       
       setIsDayTime(isDay);
-
-      // --- LOGIKA GANTI BACKGROUND (DIPERKUAT) ---
-      const htmlElement = document.documentElement;
-      const rootElement = document.getElementById('root'); // Kita target root juga
-
-      if (isDay) {
-        // SIANG
-        htmlElement.classList.remove('dark');
-        
-        // Ubah BODY (Dinding)
-        document.body.style.backgroundColor = '#f8fafc';
-        document.body.style.color = '#1e293b';
-
-        // Ubah ROOT (Wallpaper) - Biar tembus
-        if (rootElement) {
-            rootElement.style.backgroundColor = '#f8fafc';
-            rootElement.style.color = '#1e293b';
-        }
-
-      } else {
-        // MALAM
-        htmlElement.classList.add('dark');
-        
-        // Ubah BODY
-        document.body.style.backgroundColor = 'rgb(11, 17, 32)';
-        document.body.style.color = 'rgb(241, 245, 249)';
-
-        // Ubah ROOT
-        if (rootElement) {
-            rootElement.style.backgroundColor = 'rgb(11, 17, 32)';
-            rootElement.style.color = 'rgb(241, 245, 249)';
-        }
-      }
+      applyTheme(isDay);
     };
 
-    checkTime();
-    // Cek ulang setiap 1 menit
-    const interval = setInterval(checkTime, 60000); 
+    // Jalankan timer cek setiap 60 detik
+    const interval = setInterval(checkTime, 600000);
 
-    const timeout = window.innerWidth >= 768 ? 8000 : 5000;
-    const hideTimer = setTimeout(() => setVisible(false), timeout);
+    // Timer untuk hide notifikasi
+    // (Kita cek apakah ini user manual atau auto, kalau manual hide lebih cepat gapapa)
+    const hasManual = localStorage.getItem('rzb-theme-preference');
+    const timeoutDuration = hasManual ? 3000 : (window.innerWidth >= 768 ? 8000 : 5000);
+    
+    const hideTimer = setTimeout(() => setVisible(false), timeoutDuration);
 
     return () => {
       clearInterval(interval);
       clearTimeout(hideTimer);
     };
-  }, []);
+  }, []); // Dependency kosong agar setup hanya sekali
+
+  // --- LOGIKA TOMBOL MANUAL ---
+  const toggleThemeManual = () => {
+    const newMode = !isDayTime;
+    
+    // 1. Update State
+    setIsDayTime(newMode);
+    
+    // 2. Terapkan Visual Langsung
+    applyTheme(newMode);
+
+    // 3. KUNCI PERMANEN di LocalStorage
+    // Begitu baris ini jalan, fungsi checkTime di atas otomatis akan selalu "return" (berhenti)
+    localStorage.setItem('rzb-theme-preference', newMode ? 'day' : 'night');
+  };
 
   if (!visible) return null;
 
@@ -86,13 +132,14 @@ const TimeThemeNotification = () => {
             borderColor: isDayTime ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)',
           }}
         >
-          {/* GROUP KIRI */}
           <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
-            <div className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full shrink-0 ${
+            <button 
+                onClick={toggleThemeManual}
+                className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full shrink-0 cursor-pointer transition-transform active:scale-90 hover:opacity-80 ${
                 isDayTime ? 'bg-amber-400/20 text-amber-600' : 'bg-blue-500/20 text-blue-400'
               }`}>
               {isDayTime ? <Sun className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Moon className="w-3.5 h-3.5 md:w-4 md:h-4" />}
-            </div>
+            </button>
             <span className={`text-xs md:text-sm font-medium truncate ${
                 isDayTime ? 'text-slate-800' : 'text-slate-100'
               }`}>
@@ -100,7 +147,6 @@ const TimeThemeNotification = () => {
             </span>
           </div>
 
-          {/* GROUP KANAN */}
           <div className="flex items-center gap-1 md:gap-2 shrink-0 ml-2">
             <div className={`w-px h-3 md:h-4 mx-0.5 ${isDayTime ? 'bg-slate-300' : 'bg-slate-700'}`}></div>
             <button onClick={() => setLang(prev => prev === 'id' ? 'en' : 'id')}

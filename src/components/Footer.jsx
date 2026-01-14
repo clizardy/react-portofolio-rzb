@@ -24,7 +24,7 @@ const Footer = ({ lang }) => {
   const t = CONTENT[lang] || CONTENT.en;
 
   return (
-    <footer className="mb-6 md:mb-10 border-t border-neutral-800/50">
+    <footer className="mb-6 md:mb-10">
       <div className="container mx-auto px-4 md:px-8 flex flex-col lg:flex-row justify-between items-center gap-8">
         
         {/* === BAGIAN KIRI: FOTO & NAMA === */}
@@ -78,7 +78,7 @@ const Footer = ({ lang }) => {
                     </span>
                 } 
                 title="Teknologi Website Ini"
-                className="!px-3 !py-1 !text-[10px] !bg-neutral-800/30 hover:!bg-neutral-800 !border !border-neutral-700 !rounded-full !shadow-none hover:!border-cyan-500/50 transition-all text-neutral-400 hover:text-cyan-400"
+                className="!px-3 !py-1 !text-[10px] !bg-black/40 hover:!bg-neutral-800 !border !border-neutral-700 !rounded-full !shadow-none hover:!border-cyan-500/50 transition-all text-neutral-400 hover:text-cyan-400"
             >
                 <div className="space-y-4 text-sm">
                     <p className="text-neutral-600 dark:text-neutral-300">
@@ -124,20 +124,20 @@ const Footer = ({ lang }) => {
         <div className="flex justify-center lg:justify-end items-center gap-3 w-full lg:w-1/3 order-3">
           <SocialLink 
             href="https://www.linkedin.com/in/ronald-zuni-bachtiar-a52990345/"
-            icon={<FaLinkedin size={18} className="text-[#0077b5]" />} 
+            icon={<FaLinkedin size={23} className="text-[#47bfff]" />} 
             label="LinkedIn"
             hoverColor="hover:bg-[#0077b5] hover:border-[#0077b5]"
           />
           <SocialLink 
             href="https://github.com/clizardy"
-            icon={<FaGithub size={18} className="text-white" />} 
+            icon={<FaGithub size={23} className="text-white" />} 
             label="GitHub"
             hoverColor="hover:bg-[#333] hover:border-[#333]"
           />
-          <div className="h-8 w-[1px] bg-neutral-200 mx-2"></div>
+          <div className="h-8 mb-3 w-[1px] bg-white mx-2"></div>
           <SocialLink 
             href="https://drive.google.com/drive/folders/16agTTmATFoRkcQuJBSjiX2jBdnAzLM7p?usp=sharing"
-            icon={<FaGoogleDrive size={18} className="text-[#1DA462]" />} 
+            icon={<FaGoogleDrive size={23} className="text-[#2ae189]" />} 
             label="My Drive"
             hoverColor="hover:bg-[#1DA462] hover:border-[#1DA462]" 
           />
@@ -162,7 +162,7 @@ const SocialLink = ({ href, icon, label, hoverColor }) => (
     target="_blank" 
     rel="noreferrer"
     className={`
-      p-3 rounded-full border border-neutral-700 bg-neutral-800/50 text-neutral-400 
+      p-1 mb-3 rounded-full text-neutral-400 
       backdrop-blur-sm transition-all duration-300 
       hover:text-white hover:-translate-y-1 hover:shadow-lg
       ${hoverColor}

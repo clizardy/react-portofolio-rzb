@@ -4,19 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script>
+      (function() {
+        try {
+          const savedMode = localStorage.getItem('rzb-theme-preference');
+          const html = document.documentElement;
+          const metaTheme = document.querySelector('meta[name="theme-color"]');
+          
+          let isDay;
+
+          if (savedMode) {
+            // Jika user pernah setting manual, patuhi itu mutlak!
+            isDay = savedMode === 'day';
+          } else {
+            // Jika belum ada settingan, baru cek jam (09:00 - 15.00)
+            const hour = new Date().getHours();
+            isDay = hour >= 9 && hour < 15;
+          }
+
+          if (isDay) {
+            html.classList.remove('dark');
+            // Warna Indigo-100 (Siang)
+            if (metaTheme) metaTheme.setAttribute('content', '#e0e7ff'); 
+          } else {
+            html.classList.add('dark');
+            // Warna Slate-950 (Malam)
+            if (metaTheme) metaTheme.setAttribute('content', '#020617');
+          }
+        } catch (e) {
+          console.error("Theme script error:", e);
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     
-    <link rel="icon" type="image/svg+xml" href="/src/assets/icons.svg" />
-    <link rel="apple-touch-icon" href="/src/assets/icons.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icons.svg" />
+    <link rel="apple-touch-icon" href="/icons.svg" />
+    
     <title>RZB | Creative Portfolio</title>
 
     <meta name="description" content="Portfolio of Ronald Zuni Bachtiar - A skilled Photographer, Videographer, and IT Education Student. Exploring visual arts and code." />
     <meta name="keywords" content="Ronald Zuni Bachtiar, Portfolio, Videographer, Photographer, React Developer, Magelang, Tidar University" />
     <meta name="author" content="Ronald Zuni Bachtiar" />
 
-    <meta name="theme-color" content="#06b6d4" /> 
+    <meta name="theme-color" content="#0b1120" /> 
     
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://portfolio-rzb.vercel.app/" /> 
@@ -31,11 +65,10 @@
     <meta property="twitter:description" content="Professional & Digital Creator based in Indonesia." />
     <meta property="twitter:image" content="https://portfolio-rzb.vercel.app/og-image.jpg" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="google-site-verification" content="-hv_huP3vRKDWgxYreMIiB-xQATRZcZS5gkJhk3cZQ0" />
   </head>
-  <body class="bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-300 selection:bg-teal-300/30 selection:text-teal-300">
+  
+  <body class="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-300">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

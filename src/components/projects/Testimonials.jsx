@@ -79,7 +79,7 @@ const TestimonialCard = ({ testi, lang, index }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`
           h-full relative p-5 rounded-3xl border transition-all duration-300 cursor-pointer group
-          ${isOpen ? 'bg-white dark:bg-neutral-900/20 border-amber-500/50 dark:border-cyan-500/50' : 'bg-white/30 dark:bg-neutral-900/10 border-amber-500 dark:border-cyan-500/30'}
+          ${isOpen ? 'bg-black/5 dark:bg-white/5 border-amber-500/50 dark:border-cyan-500/50' : 'bg-indigo-200/40 dark:bg-slate-900 border-amber-500 dark:border-cyan-500/30'}
           hover:shadow-md
         `}
       >

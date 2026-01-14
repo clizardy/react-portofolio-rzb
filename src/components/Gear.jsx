@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaCamera, FaLaptop, FaPlane, FaSdCard, FaMusic } from "react-icons/fa";
+import { FaTimes, FaCamera, FaLaptop, FaSdCard, FaMusic } from "react-icons/fa";
+import { SiDji } from "react-icons/si";
 import OklchGradientText from "./OklchGradientText";
 
 const GEAR_ITEMS = [
@@ -24,7 +25,7 @@ const GEAR_ITEMS = [
     category: "Drone",
     name: "DJI Mavic Mini 3",
     desc: "Aerial Cinematic Shots",
-    icon: <FaPlane />,
+    icon: <SiDji />,
     color: "bg-sky-900/80 text-white backdrop-blur-md",
     colSpan: "col-span-1",
   },

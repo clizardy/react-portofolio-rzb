@@ -89,7 +89,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
           {/* Tombol Search Mobile */}
           <button 
             onClick={() => window.dispatchEvent(new CustomEvent('openCommandPalette'))}
-            className="md:hidden p-2 rounded-lg text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 transition-colors"
+            className="md:hidden p-2 rounded-lg text-black/80 hover:bg-neutral-100 dark:text-white/80 dark:hover:bg-neutral-800 transition-colors"
           >
             <FaSearch className="text-lg" />
           </button>
@@ -97,8 +97,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
           {/* Tombol Hint Ctrl + K */}
           <div 
             className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-mono cursor-pointer transition
-              text-neutral-700 hover:bg-neutral-200
-              dark:text-neutral-100 dark:hover:bg-neutral-800"
+              text-black hover:bg-neutral-200
+              dark:text-white dark:hover:bg-neutral-800"
             onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'ctrlKey': true}))}
           >
             <span className="text-xs">⌘</span>
@@ -110,7 +110,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
                   onClick={toggleLanguage} 
                   className="flex items-center justify-center rounded-full w-10 h-10 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
               >
-                  <span className="text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-300">
+                  <span className="text-xs md:text-sm font-bold text-black dark:text-white">
                       {t.langCode}
                   </span>
               </button>
@@ -123,7 +123,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
                   {theme === "dark" ? (
                       <FiSun className="text-amber-400 text-xl" /> 
                   ) : (
-                      <FiMoon className="text-slate-700 text-xl" /> 
+                      <FiMoon className="text-slate-900 text-xl" /> 
                   )}
               </button>
 

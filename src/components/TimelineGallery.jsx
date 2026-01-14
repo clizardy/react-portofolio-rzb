@@ -10,10 +10,10 @@ const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
   let year = "2024";
   let desc = `Moment #${id}`;
 
-  if (id <= 20) { year = "2000 - 2010"; desc = "Masa Kecil"; }
-  else if (id <= 50) { year = "2011 - 2018"; desc = "Masa Sekolah"; }
-  else if (id <= 80) { year = "2019 - 2023"; desc = "Masa Kuliah"; }
-  else { year = "2024 - Now"; desc = "Professional Life"; }
+  if (id <= 20) { year = "2006 - 2018"; desc = "# Masa Kecil"; }
+  else if (id <= 50) { year = "2018 - 2021"; desc = "# Masa SMP"; }
+  else if (id <= 80) { year = "2021 - 2024"; desc = "# Masa SMA"; }
+  else { year = "2024 - Now"; desc = "# Professional Life"; }
 
   return {
     id: id,
@@ -144,8 +144,8 @@ const TimelineGallery = ({ lang }) => {
       {/* WALL CONTAINER */}
       <div className="relative h-[800px] md:h-[1000px] overflow-hidden flex justify-center gap-3 md:gap-6 px-2 md:px-4 mb-8">
         
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white dark:from-neutral-950 to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-slate-200 dark:from-cyan-500/20 to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-200 dark:from-cyan-500/20 to-transparent z-10 pointer-events-none"></div>
 
         {columns.map((colImages, i) => (
             <ParallaxColumn 
@@ -284,37 +284,36 @@ const ParallaxColumn = ({ images, direction, duration, onImageClick, onDownload,
                     <div 
                         key={`${img.id}-${idx}`} 
                         // Tambah class 'card-item' untuk trigger hover CSS
-                        className="relative rounded-lg overflow-hidden shadow-md transition-transform duration-100 active:scale-95 bg-neutral-200 dark:bg-neutral-800 z-20 card-item cursor-pointer"
+                        className="relative rounded-lg overflow-hidden shadow-md transition-transform duration-100 active:scale-95z-20 card-item cursor-pointer"
                         onClick={(e) => handleImageClick(e, img)}
                     >
                         <ImageWithSkeleton src={img.url} alt={img.year} />
-                        
-                        {/* TOMBOL AKSI: Menggunakan Class Manual 'action-buttons' */}
+
                         <div 
-                            className={`absolute top-2 right-2 z-50 flex gap-2 action-buttons ${
+                            className={`absolute top-2 right-2 z-50 flex gap-1 action-buttons ${
                                 clickedImageId === img.id ? 'show-mobile' : ''
                             }`}
                         >
                             <button 
                                 onClick={(e) => { e.stopPropagation(); onDownload(img.url, `memory-${img.id}.jpg`); }}
-                                className="p-2 bg-black/60 text-white hover:text-amber-400 rounded-full backdrop-blur-md border border-white/20 shadow-lg cursor-pointer"
+                                className="md:p-2 p-1 text-black dark:text-white hover:text-amber-400 rounded-full backdrop-blur-md shadow-md cursor-pointer"
                                 title="Download"
                             >
-                                <FaDownload size={12} />
+                                <FaDownload className="w-2 h-2 md:w-4 md:h-4" />
                             </button>
                             <button 
                                 onClick={(e) => { e.stopPropagation(); onShare(img); }}
-                                className="p-2 bg-black/60 text-white hover:text-cyan-400 rounded-full backdrop-blur-md border border-white/20 shadow-lg cursor-pointer"
+                                className="md:p-2 p-1 text-black dark:text-white hover:text-cyan-400 rounded-full backdrop-blur-md shadow-md cursor-pointer"
                                 title="Share"
                             >
-                                <FaShareAlt size={12} />
+                                <FaShareAlt className="w-2 h-2 md:w-4 md:h-4" />
                             </button>
                         </div>
 
                         {/* Deskripsi */}
-                        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-10 pb-3 px-3 flex flex-col justify-end pointer-events-none z-30">
-                            <span className="text-amber-400 font-bold text-[7px] uppercase tracking-wider mb-0.5">{img.year}</span>
-                            <span className="text-white text-[5px] font-medium truncate">{img.desc}</span>
+                        <div className="absolute bottom-0 w-full md:pb-3 md:px-3 pb-1 px-1 flex flex-col justify-between pointer-events-none z-30">
+                            <span className="text-amber-500 dark:text-cyan-300 font-bold text-[6px] md:text-[12px] uppercase tracking-wider md:mb-0.5 mb-0">{img.year}</span>
+                            <span className="text-black dark:text-white text-[4px] md:text-[10px] font-medium truncate">{img.desc}</span>
                         </div>
                     </div>
                 ))}

@@ -56,7 +56,7 @@ const Marquee = () => {
           {Array.from({ length: 4 }).map((_, i) => (
             <span 
               key={i}
-              className="text-4xl lg:text-6xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
+              className="text-4xl lg:text-6xl font-extrabold font-sans uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
             >
               {MARQUEE_TEXT}
             </span>

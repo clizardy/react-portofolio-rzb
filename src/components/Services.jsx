@@ -131,7 +131,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
 
               <div className="p-6 md:p-8 flex flex-col justify-center order-2 lg:order-1 lg:col-span-3">
                 <div className="mb-4">
-                  <div className={`inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r ${activeTab.color} text-white mb-3 shadow-md`}>
+                  <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r ${activeTab.color} text-white mb-3 shadow-md`}>
                     Service #{activeTab.id}
                   </div>
                   
@@ -146,7 +146,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                   {activeTab.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-slate-700 dark:text-slate-400 font-medium">
+                    <div key={idx} className="flex items-center gap-2 text-black dark:text-white italic font-medium">
                       <FaCheckCircle className={`shrink-0 ${activeTab.id === 2 ? 'text-cyan-400' : 'text-amber-500 dark:text-cyan-400'}`} />
                       <span className="text-xs md:text-sm">{feature}</span>
                     </div>
@@ -154,7 +154,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
                 </div>
 
                 <a 
-                   href={`https://wa.me/6281281954366?text=Halo%20Ronald,%20saya%20tertarik%20dengan%20layanan%20${encodeURIComponent(activeTab.title)}`}
+                   href={`https://wa.me/6281281954366?text=Hii%20Kak,%20saya%20tertarik%20dengan%20layanan%20${encodeURIComponent(activeTab.title)}`}
                    target="_blank"
                    rel="noreferrer"
                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:scale-105 transition-transform w-fit shadow-lg text-sm"
@@ -166,8 +166,8 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
               </div>
 
               {/* KANAN: Visual (25% Lebar) */}
-              <div className={`relative h-48 lg:h-auto overflow-hidden order-1 lg:order-2 lg:col-span-1 bg-gradient-to-br ${activeTab.color} flex items-center justify-center`}>
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+              <div className={`relative h-32 lg:h-auto overflow-hidden order-1 lg:order-2 lg:col-span-1 bg-gradient-to-br ${activeTab.color} flex items-center justify-center`}>
+                <div className="absolute top-0 right-0 w-64  h-64 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl"></div>
                 
                 <div className="relative z-10 text-white/90 drop-shadow-2xl">
@@ -176,7 +176,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
                      initial={{ scale: 0.5, rotate: -15, opacity: 0 }}
                      animate={{ scale: 1, rotate: 0, opacity: 1 }}
                      transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
-                     className="text-[80px] md:text-[120px]"
+                     className="text-[60px] md:text-[120px]"
                    >
                      {activeTab.icon}
                    </motion.div>

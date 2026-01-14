@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion, useTransform, useScroll, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { FaTrophy, FaMusic, FaMedal, FaDrum, FaHandsHelping, FaRocket, FaBookOpen, FaCampground, FaPlane } from "react-icons/fa";
+import { FaMusic, FaMedal, FaHandsHelping, FaRocket, FaBookOpen, FaCampground } from "react-icons/fa";
+import { GiXylophone } from "react-icons/gi";
+import { SiDji } from "react-icons/si";
 import OklchGradientText from "./OklchGradientText";
 
 const CERTIFICATES_DATA = [
@@ -28,7 +30,7 @@ const CERTIFICATES_DATA = [
     issuer: "Taman Mini Indonesia Indah",
     date: "2020",
     desc: "Duta seni pelajar Kota Magelang Anjungan Jawa Tengah",
-    icon: <FaDrum />,
+    icon: <GiXylophone />,
     color: "from-emerald-500 to-green-600", // Budaya/Tradisional
   },
   {
@@ -46,7 +48,7 @@ const CERTIFICATES_DATA = [
     issuer: "Flying Robot Competition",
     date: "2020",
     desc: "Partisipan aktif dalam kompetisi teknis penerbangan Micro Drone",
-    icon: <FaPlane />,
+    icon: <SiDji />,
     color: "from-slate-500 to-gray-600", // Teknologi/Drone
   },
   {
@@ -137,7 +139,7 @@ return (
       </div>
 
       <div style={{ transform: "translateZ(20px)" }} className="relative z-10 pt-2 border-t border-neutral-400 dark:border-white/20 mt-auto flex justify-between items-center">
-         <span className="text-[9px] md:text-[11px] px-2 font-mono italic tracking-widest">#<OklchGradientText>{item.date}</OklchGradientText></span>
+         <span className="text-[9px] md:text-[11px] px-2 font-mono italic tracking-widest"><OklchGradientText>#{item.date}</OklchGradientText></span>
          <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${item.color}`}></div>
       </div>
     </motion.div>

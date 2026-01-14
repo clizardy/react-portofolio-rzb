@@ -52,33 +52,6 @@ const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
 
-const AnimatedWave = ({ theme }) => {
-  const waveColor = '#171717'; 
-
-  return (
-    <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 z-20 pointer-events-none">
-       <style>{`
-         @keyframes waveMove {
-           0% { transform: translateX(0); }
-           100% { transform: translateX(-50%); }
-         }
-         .wave-path {
-           animation: waveMove 20s linear infinite;
-         }
-       `}</style>
-
-       <svg className="relative block w-[200%] h-[80px] md:h-[150px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-            fill={waveColor}
-            fillOpacity="1"
-            className="wave-path"
-          />
-       </svg>
-    </div>
-  );
-};
-
 const App = () => {
 const [showWelcome, setShowWelcome] = useState(true);
 const [isWorkflowOpen, setIsWorkflowOpen] = useState(false);
@@ -439,24 +412,23 @@ return (
                 </Suspense>
             </div>
             </div>
-            <div className="relative z-10"><AnimatedWave theme={theme} /></div>
         </div>
 
         {/* 4. FOOTER SECTION */}
-        <div className="relative z-0 -mt-20 pt-24 pb-0 w-full bg-neutral-900 text-white flex flex-col items-center justify-center bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+        <div className="relative z-10 -mt-20 pt-24 pb-0 w-full bg-black/30 flex flex-col items-center justify-center bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
               
             <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
-            <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-16">
+            <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-10">
                 <Suspense fallback={<div className="text-center py-20">Loading Contact...</div>}>
                     <MagicCard><Contact lang={lang} /></MagicCard>
                 </Suspense>
             </div>
 
-            <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-20">
+            <div className="w-full container mx-auto px-4 md:px-8 z-10 mb-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-7 flex flex-col">
-                        <div className="p-6 md:p-8 rounded-3xl bg-neutral-800/50 border border-neutral-700/50 backdrop-blur-sm h-full shadow-lg">
+                        <div className="p-6 md:p-8 rounded-3xl bg-white/5 border border-white/30 backdrop-blur-sm h-full shadow-lg">
                             <h3 className="text-xl font-bold mb-6 text-neutral-200 flex items-center gap-2">
                                 <span className="text-cyan-500">#</span> 
                                 {lang === 'id' ? "Diskusi & Komentar" : "Discussion"}
@@ -492,14 +464,13 @@ return (
                 </div>
             </div>
               
-            <div className="w-full z-10">
-                <Suspense fallback={<div className="text-center py-20">Loading Footer...</div>}>
+            <div className="w-full z-0">
+                <Suspense fallback={<div className="text-center py-10">Loading Footer...</div>}>
                     <Footer lang={lang} />
                 </Suspense>
             </div>
         </div>
 
-{/* --- AREA MODAL & SIDEBAR (Z-INDEX 100) --- */}
         <div className="relative z-[100]">
              <Suspense fallback={null}>
                 <Pricing 
@@ -536,10 +507,7 @@ return (
           onClose={() => setIsBookingOpen(false)} 
        />
         </div> 
-        {/* Tutup div z-100 disini biar rapi */}
 
-
-        {/* --- AREA UTILS (MUSIC, CAMERA, DLL) (Z-INDEX 50) --- */}
         <div className="relative z-50">
             <MusicPlayer theme={theme} />
             <Suspense fallback={null}>  
