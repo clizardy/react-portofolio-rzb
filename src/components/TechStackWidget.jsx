@@ -48,27 +48,26 @@ const TechStackWidget = () => {
         <div className="relative flex items-center justify-center gap-2 md:gap-3 py-1.5 px-3 md:py-2 md:px-4 rounded-xl w-auto transition-all duration-300 group overflow-hidden">
             
             {/* ANIMASI CAHAYA */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out] pointer-events-none z-0" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out] pointer-events-none z-0" />
 
             {/* LABEL KIRI (Desktop Only - Tetap Sama) */}
-            <div className="hidden md:flex items-center gap-2 pr-3 border-r border-neutral-700/50 dark:border-white/20 z-10">
-                <div className="p-1 rounded-md bg-white/10 text-neutral-300 shadow-sm">
+            <div className="hidden md:flex items-center gap-2 pr-3 border-r border-white/80 z-0">
+                <div className="p-1 rounded-md bg-white/20 text-white shadow-sm">
                     <FaLayerGroup className="text-[10px]" />
                 </div>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-white">
                     Stack
                 </span>
             </div>
 
             {/* ICONS KANAN - MOBILE LEBIH KECIL */}
-            {/* UBAH: gap-3 (Mobile Rapat), md:gap-5 (Desktop Lega) */}
-            <div className="flex items-center justify-center gap-3 md:gap-5 z-10">
+            <div className="flex items-center justify-center gap-3 md:gap-5 z-0">
                 {TECH_STACK.map((tech, index) => (
                     <div key={index} className="group/icon relative flex flex-col items-center justify-center h-full">
                         
                         {/* UBAH: text-base (Mobile 16px), md:text-xl (Desktop 20px) */}
-                        <div className={`text-base md:text-xl transition-all duration-300 cursor-pointer transform will-change-transform flex justify-center items-center
-                            ${tech.color} opacity-60 hover:opacity-100 hover:scale-115 ${tech.shadow}`}>
+                        <div className={`text-xs md:text-lg transition-all duration-300 cursor-pointer transform will-change-transform flex justify-center items-center
+                            ${tech.color} opacity-80 hover:opacity-100 hover:scale-115 ${tech.shadow}`}>
                             {tech.icon}
                         </div>
 
