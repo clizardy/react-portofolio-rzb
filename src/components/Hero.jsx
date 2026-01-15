@@ -195,9 +195,12 @@ const Hero = ({ lang, isReady = true }) => {
 
             <motion.div
               initial={{ x: 50, opacity: 0 }}
-              animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }} // Sinkronisasi Animasi Masuk
+              animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-sm lg:max-w-xl lg:p-3 w-full"
+              // PERUBAHAN ADA DI BAWAH INI:
+              // Ganti 'max-w-sm' menjadi 'max-w-xs' (atau max-w-[260px] jika ingin lebih kecil lagi)
+              // 'lg:max-w-xl' tetap ada, jadi PC tidak berubah.
+              className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-xs lg:max-w-xl lg:p-3 w-full"
             >
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
                   <img decoding="async"
@@ -220,7 +223,6 @@ const Hero = ({ lang, isReady = true }) => {
             </motion.div>
           </div>
         </div>
-
       </div>
     </div>
   );

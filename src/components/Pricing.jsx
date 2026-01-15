@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCheck, FaWhatsapp, FaTimes, FaCamera, FaVideo, FaLaptopCode, FaMusic, FaTasks } from "react-icons/fa";
+import { FaCheck, FaWhatsapp, FaTimes, FaCamera, FaVideo, FaLaptopCode, FaMusic, FaTasks, FaRedo, FaBolt, FaGem, FaCrown } from "react-icons/fa";
 import OklchGradientText from "./OklchGradientText";
 
-// --- DATA LIST KATEGORI ---
+// --- DATA LIST KATEGORI (SAMA) ---
 const CATEGORIES = [
   { id: "photography", label: { en: "Photography", id: "Fotografi" }, icon: <FaCamera /> },
   { id: "videography", label: { en: "Videography", id: "Videografi" }, icon: <FaVideo /> },
@@ -12,7 +12,7 @@ const CATEGORIES = [
   { id: "pm", label: { en: "Project Mgmt", id: "Manajemen Proyek" }, icon: <FaTasks /> },
 ];
 
-// --- DATA HARGA LENGKAP (5 KATEGORI) ---
+// --- DATA HARGA (SAMA - TIDAK DIUBAH) ---
 const PRICING_DATA = {
   photography: [
     {
@@ -221,6 +221,172 @@ const PRICING_DATA = {
   ]
 };
 
+// --- KOMPONEN KARTU FLIP (SUB-COMPONENT) ---
+// --- KOMPONEN KARTU FLIP (DENGAN DEKORASI KASTA) ---
+// --- KOMPONEN KARTU FLIP (FIX CONTRAST LIGHT MODE) ---
+const FlipCard = ({ plan, lang, index }) => {
+  
+  const getTierVisual = (idx) => {
+    switch (idx) {
+      case 0: // TIER 1: STARTER
+        return {
+          icon: <FaBolt />,
+          label: "LITE",
+          color: "text-cyan-500", // Gelapkan dikit biar jelas di background putih
+          bgGradient: "from-cyan-500/10 to-blue-500/10",
+        };
+      case 1: // TIER 2: PRO
+        return {
+          icon: <FaGem />,
+          label: "PRO",
+          color: "text-teal-400",
+          bgGradient: "from-teal-500/10 to-emerald-500/10",
+        };
+      case 2: // TIER 3: ELITE
+        return {
+          icon: <FaCrown />,
+          label: "ELITE",
+          color: "text-amber-500", // Gelapkan dikit (amber-500) biar jelas
+          bgGradient: "from-amber-500/10 to-orange-500/10",
+        };
+      default:
+        return { icon: <FaBolt />, color: "text-gray-400", bgGradient: "" };
+    }
+  };
+
+  const tier = getTierVisual(index);
+
+  return (
+    <div className="group h-[500px] w-full [perspective:1000px] cursor-pointer">
+      <div className="relative h-[420px] md:h-[500px] w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-2xl rounded-[2.5rem]">
+        
+        {/* ==================== SISI DEPAN (FRONT) ==================== */}
+        <div className={`
+            absolute inset-0 h-full w-full rounded-[2.5rem] [backface-visibility:hidden] 
+            flex flex-col items-center justify-center p-8 text-center border overflow-hidden
+            ${plan.recommend 
+                ? "bg-neutral-900 border-teal-500/50" 
+                : "bg-white dark:bg-neutral-900/40 backdrop-blur-md border-neutral-200 dark:border-white/10"
+            }
+        `}>
+            {/* WATERMARK ICON */}
+            <div className={`absolute -right-6 -bottom-6 text-[10rem] opacity-5 rotate-12 z-0 ${tier.color}`}>
+                {tier.icon}
+            </div>
+
+            {/* CAHAYA GRADASI */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${tier.bgGradient} opacity-30 z-0`} />
+
+            {/* BADGE RECOMMENDED */}
+            {plan.recommend && (
+                <div className="absolute top-0 right-0 z-20">
+                    <div className="bg-gradient-to-l from-teal-500 to-cyan-600 text-white text-[10px] font-bold uppercase py-1 px-6 rounded-bl-2xl shadow-lg">
+                        Best Value
+                    </div>
+                </div>
+            )}
+
+            {/* KONTEN DEPAN */}
+            <div className="relative z-10 flex-1 flex flex-col items-center justify-center gap-2">
+                
+                {/* ICON TIER */}
+                <div className={`text-4xl mb-2 drop-shadow-md ${tier.color}`}>
+                    {tier.icon}
+                </div>
+                
+                {/* LABEL TIER */}
+                <span className={`text-[10px] font-mono tracking-[0.3em] uppercase font-bold mb-1 ${tier.color}`}>
+                    {tier.label} TIER
+                </span>
+
+                {/* JUDUL PAKET (Fix Warna Light Mode) */}
+                <h3 className={`text-2xl font-black leading-tight ${plan.recommend ? "text-white" : "text-neutral-900 dark:text-white"}`}>
+                    {plan.title[lang]}
+                </h3>
+                
+                {/* HARGA (PERBAIKAN UTAMA DISINI) */}
+                {/* Logika: Kalau recommend (Dark BG) pakai gradient putih. Kalau biasa (Light BG) pakai gradient hitam/abu */}
+                <div className={`text-5xl font-extrabold text-transparent bg-clip-text tracking-tighter my-2 drop-shadow-sm
+                    ${plan.recommend 
+                        ? "bg-gradient-to-r from-neutral-500 via-neutral-200 to-neutral-400" 
+                        : "bg-gradient-to-r from-neutral-800 via-neutral-600 to-neutral-900" 
+                    }
+                `}>
+                   {plan.recommend ? <span className="text-teal-400">{plan.price}</span> : plan.price}
+                </div>
+                
+                {/* DESKRIPSI (Fix Warna Light Mode) */}
+                <p className={`text-sm px-4 font-medium leading-relaxed ${plan.recommend ? "text-neutral-400" : "text-neutral-600 dark:text-neutral-300"}`}>
+                    {plan.desc[lang]}
+                </p>
+            </div>
+
+            {/* HINT HOVER */}
+            <div className={`relative z-10 mt-auto flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-60 group-hover:opacity-0 transition-opacity
+                ${plan.recommend ? "text-neutral-400" : "text-neutral-500 dark:text-neutral-400"}
+            `}>
+                 <FaRedo className="animate-spin-slow" /> 
+                 Flip for Details
+            </div>
+        </div>
+
+        {/* ==================== SISI BELAKANG (BACK) ==================== */}
+        <div className={`
+            absolute inset-0 h-full w-full rounded-[2.5rem] [backface-visibility:hidden] [transform:rotateY(180deg)]
+            flex flex-col p-8 border overflow-hidden
+            ${plan.recommend 
+                ? "bg-neutral-950 border-teal-500/50" 
+                : "bg-white dark:bg-neutral-950 border-neutral-200 dark:border-white/10"
+            }
+        `}>
+             <div className={`absolute inset-0 bg-gradient-to-tl ${tier.bgGradient} opacity-20 z-0`} />
+
+            <div className="relative z-10 text-center mb-6 border-b border-neutral-200 dark:border-white/10 pb-4 flex items-center justify-between">
+                 <div className={`text-xl ${tier.color}`}>{tier.icon}</div>
+                 <h4 className={`text-xs font-bold uppercase tracking-widest ${plan.recommend ? "text-teal-400" : "text-neutral-500 dark:text-neutral-400"}`}>
+                    {tier.label} Features
+                 </h4>
+            </div>
+
+            <ul className="relative z-10 space-y-3 flex-1 overflow-y-auto scrollbar-hide">
+                {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm">
+                        {feature.included 
+                            ? <FaCheck className={`${tier.color} mt-1 shrink-0`} />
+                            : <FaTimes className="text-neutral-400 dark:text-neutral-700 mt-1 shrink-0" />
+                        }
+                        <span className={`font-medium ${
+                            feature.included 
+                                ? (plan.recommend ? "text-neutral-200" : "text-neutral-700 dark:text-neutral-300")
+                                : "text-neutral-400 dark:text-neutral-700 line-through"
+                        }`}>
+                            {feature.name[lang]}
+                        </span>
+                    </li>
+                ))}
+            </ul>
+
+            <a 
+                href={`https://wa.me/6281281954366?text=Halo, saya tertarik dengan paket ${tier.label} - ${plan.title[lang]}...`} 
+                target="_blank"
+                rel="noreferrer"
+                className={`relative z-10 mt-6 w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm transition-all shadow-xl hover:scale-105
+                ${plan.recommend 
+                    ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white hover:shadow-teal-500/30" 
+                    : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:shadow-lg"
+                }`}
+                onClick={(e) => e.stopPropagation()} 
+            >
+                <FaWhatsapp className="text-lg" /> 
+                {lang === 'id' ? "Order Paket Ini" : "Order This Plan"}
+            </a>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+// --- KOMPONEN UTAMA (MODAL WRAPPER) ---
 const Pricing = ({ lang, isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState("photography");
 
@@ -233,7 +399,7 @@ const Pricing = ({ lang, isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-return (
+  return (
     <AnimatePresence>
       {isOpen && (
         <motion.div 
@@ -242,46 +408,45 @@ return (
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-6"
         >
-          {/* BACKDROP (Overlay Gelap + Blur Dikit) */}
+          {/* BACKDROP */}
           <div 
-            className="absolute inset-0 bg-neutral-950/75 backdrop-blur-sm transition-all"
+            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-md transition-all"
             onClick={onClose}
           />
 
-          {/* MODAL CONTENT - GLASSMORPHISM EFFECT */}
-          {/* bg-white/90 (Light) & dark:bg-neutral-950/40 (Dark) + backdrop-blur-2xl */}
+          {/* MODAL CONTAINER */}
           <motion.div 
-            initial={{ scale: 0.95, y: 20, opacity: 0 }}
+            initial={{ scale: 0.9, y: 30, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.95, y: 20, opacity: 0 }}
+            exit={{ scale: 0.9, y: 30, opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-6xl max-h-[90vh] bg-white/10 dark:bg-neutral-950/5 backdrop-blur-2xl rounded-[2.5rem] border border-white/20 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col"
+            className="relative w-full max-w-6xl max-h-[90vh] bg-white/5 dark:bg-neutral-950/30 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden flex flex-col"
           >
              
              {/* CLOSE BUTTON */}
              <button 
                 onClick={onClose}
-                className="absolute top-6 right-6 z-50 p-2.5 rounded-full bg-neutral-200/50 dark:bg-neutral-800/50 hover:bg-red-500 hover:text-white transition-all backdrop-blur-md"
+                className="absolute top-6 right-6 z-50 p-2.5 rounded-full bg-white/10 hover:bg-red-500 hover:text-white text-white/70 transition-all backdrop-blur-md border border-white/5"
              >
                 <FaTimes />
              </button>
 
-             {/* SCROLLABLE AREA */}
-             <div className="overflow-y-auto p-6 md:p-10 scrollbar-hide">
+             {/* SCROLLABLE CONTENT */}
+             <div className="overflow-y-auto p-6 md:p-10 scrollbar-hide h-full">
                 
-                {/* HEADER */}
-                <div className="text-center mb-10 pt-4">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4 text-neutral-900 dark:text-white drop-shadow-sm">
+                {/* HEADER SECTION */}
+                <div className="text-center mb-10 pt-2">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-sm">
                         <OklchGradientText>
                             {lang === 'id' ? "Pilih Paket Anda" : "Select Your Plan"}
                         </OklchGradientText>
                     </h2>
-                    <p className="text-neutral-200 dark:text-neutral-300 italic text-xs md:text-sm">
-                        {lang === 'id' ? "Transparan & Profesional. Sesuaikan dengan kebutuhan." : "Transparent & Professional. Tailored to your needs."}
+                    <p className="text-neutral-400 italic text-xs md:text-sm">
+                        {lang === 'id' ? "Sentuh kartu untuk melihat detail paket." : "Hover or tap card to see package details."}
                     </p>
 
-                    {/* TABS (GLASS STYLE) */}
-                    <div className="mt-4 flex justify-center w-full">
+                    {/* CATEGORY TABS */}
+                    <div className="mt-8 flex justify-center w-full">
                         <div className="flex gap-2 overflow-x-auto pb-4 px-2 w-full md:w-auto scrollbar-hide justify-start md:justify-center">
                             {CATEGORIES.map((cat) => (
                                 <button
@@ -289,8 +454,8 @@ return (
                                     onClick={() => setActiveTab(cat.id)}
                                     className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs md:text-sm font-bold whitespace-nowrap transition-all duration-300 border backdrop-blur-md ${
                                         activeTab === cat.id 
-                                        ? "bg-teal-500 text-white border-teal-500 shadow-lg shadow-teal-500/20" 
-                                        : "bg-white/50 dark:bg-neutral-800/40 text-neutral-600 dark:text-neutral-400 border-transparent hover:bg-white/80 dark:hover:bg-neutral-800/60 hover:border-teal-500/30"
+                                        ? "bg-teal-500 text-white border-teal-500 shadow-[0_0_20px_rgba(20,184,166,0.4)]" 
+                                        : "bg-white/5 dark:bg-neutral-800/40 text-neutral-400 border-transparent hover:bg-white/10 hover:text-white"
                                     }`}
                                 >
                                     {cat.icon}
@@ -301,60 +466,31 @@ return (
                     </div>
                 </div>
 
-                {/* CARDS GRID */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* --- 3D FLIP CARDS GRID --- */}
+<div className="
+                    flex md:grid 
+                    md:grid-cols-2 lg:grid-cols-3 
+                    gap-4 md:gap-8 
+                    pb-10 pt-4 px-6 md:px-0
+                    overflow-x-auto md:overflow-visible 
+                    snap-x snap-mandatory 
+                    scrollbar-hide
+                ">
                     {PRICING_DATA[activeTab].map((plan, index) => (
-                        <div
+                        <motion.div
                             key={index}
-                            className={`relative flex flex-col p-6 rounded-[1.5rem] border transition-all duration-300 ${
-                                plan.recommend 
-                                ? "bg-neutral-900/90 dark:bg-neutral-800/80 border-teal-500/50 backdrop-blur-sm shadow-xl" 
-                                : "bg-white/60 dark:bg-neutral-900/40 border-white/40 dark:border-white/5 hover:border-teal-500/30 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-neutral-900/60"
-                            }`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            // Mobile: min-w-[85%] agar kartu terlihat sebagian besar, sisa dikit di pinggir untuk kode swipe
+                            className="min-w-[85%] md:min-w-0 snap-center"
                         >
-                            {plan.recommend && (
-                                <div className="absolute top-4 right-4 text-[10px] font-bold px-3 py-1 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full shadow-lg uppercase tracking-wider">
-                                    Recommended
-                                </div>
-                            )}
-
-                            <h3 className={`text-lg font-bold ${plan.recommend ? "text-white" : "text-neutral-900 dark:text-white"}`}>
-                                {plan.title[lang]}
-                            </h3>
-                            <div className="text-3xl font-extrabold text-teal-500 my-3 tracking-tight">{plan.price}</div>
-                            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-6 h-8 leading-relaxed font-medium">{plan.desc[lang]}</p>
-
-                            <ul className="space-y-3 mb-8 flex-1">
-                                {plan.features.map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm">
-                                        {feature.included 
-                                            ? <div className="mt-0.5 p-0.5 bg-teal-500/20 rounded-full"><FaCheck className="text-teal-500 text-[10px]" /></div>
-                                            : <FaTimes className="text-neutral-400/50 dark:text-neutral-600 mt-1" />
-                                        }
-                                        <span className={feature.included 
-                                            ? (plan.recommend ? "text-neutral-300" : "text-neutral-700 dark:text-neutral-300") 
-                                            : "text-neutral-400/60 dark:text-neutral-600 line-through decoration-neutral-400/30"
-                                        }>
-                                            {feature.name[lang]}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <a 
-                                href={`https://wa.me/6281234567890?text=Halo, saya mau tanya paket ${plan.title[lang]}...`} 
-                                target="_blank"
-                                rel="noreferrer"
-                                className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm transition-all shadow-md
-                                ${plan.recommend 
-                                    ? "bg-teal-500 hover:bg-teal-400 text-black hover:shadow-teal-500/25" 
-                                    : "bg-white dark:bg-white/5 hover:bg-neutral-50 dark:hover:bg-white/10 text-neutral-900 dark:text-white border border-neutral-200 dark:border-white/10"
-                                }`}
-                            >
-                                <FaWhatsapp className="text-lg" /> {lang === 'id' ? "Pesan Sekarang" : "Book Now"}
-                            </a>
-                        </div>
+                            <FlipCard plan={plan} lang={lang} index={index} /> 
+                        </motion.div>
                     ))}
+                    
+                    {/* Spacer kosong di kanan mobile agar kartu terakhir bisa digeser ke tengah */}
+                    <div className="min-w-[4%] md:hidden"></div>
                 </div>
 
              </div>

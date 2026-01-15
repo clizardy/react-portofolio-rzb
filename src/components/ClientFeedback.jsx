@@ -150,7 +150,7 @@ const handleSubmit = () => {
             onClick={handleSubmit}
             // SYARAT: Rating tidak boleh 0 ATAU Nama tidak boleh kosong
             disabled={rating === 0 || !name.trim()} 
-            className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold tracking-wider uppercase transition-all
+            className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold tracking-wider transition-all
                 ${rating > 0 && name.trim() 
                     ? "bg-cyan-600 hover:bg-cyan-500 text-white shadow-[0_0_20px_rgba(8,145,178,0.4)] cursor-pointer" 
                     : "bg-neutral-800 text-neutral-500 cursor-not-allowed"}

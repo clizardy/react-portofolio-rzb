@@ -286,7 +286,7 @@ return (
 
       {/* 2. CONTAINER UTAMA WEBSITE */}
       <div 
-        className={`antialiased transition-colors duration-300 min-h-screen bg-neutral-900 
+        className={`antialiased transition-colors duration-300 min-h-screen bg-black 
         ${theme === 'dark' 
           ? 'text-neutral-100 selection:bg-cyan-500 selection:text-white' 
           : 'text-neutral-900 selection:bg-amber-500 selection:text-white'}`}
@@ -316,18 +316,10 @@ return (
 />
 
         {/* 3. HERO SECTION WRAPPER (Paper Style) */}
-        {/* Div ini punya 'transform-gpu', makanya Welcome Screen dilarang ditaruh di dalamnya */}
-<div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 rounded-b-[30px] md:rounded-b-[60px] transition-colors duration-500">
-            
-            {/* Background Gradients Wrapper */}
+<div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 transition-colors duration-500">
             <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-500">
-                
-                {/* 1. GRADIENT MALAM (Sky-950) - Otomatis muncul saat class 'dark' ada */}
                 <div className="absolute inset-0 h-full w-full hidden dark:block bg-slate-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
-
-                {/* 2. GRADIENT SIANG (Neutral-200) - Otomatis muncul saat class 'dark' HILANG */}
                 <div className="absolute inset-0 h-full w-full block dark:hidden bg-indigo-100 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
-
             </div>
 
             {/* NAVBAR & HERO */}
@@ -357,7 +349,7 @@ return (
                 <Stats />
             </Suspense>
 
-            <div className="container mx-auto px-4 md:px-8 pb-10 relative">
+            <div className="container mx-auto px-4 md:px-8 pb-8 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
                     <div id="about" className="render-lazy"><About lang={lang}/></div>
                 </Suspense>
@@ -375,7 +367,7 @@ return (
                     <div id="certificates" className="render-lazy"><Certificates lang={lang}/></div>
                 </Suspense>
 
-            <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
+            <div className="container mx-auto px-4 md:px-8 pb-6 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading Projects...</div>}>
                     <div id="projects"><Projects lang={lang}/></div>
                 </Suspense>
@@ -396,7 +388,7 @@ return (
                 </div>
             </Suspense>
 
-            <div className="container mx-auto px-4 md:px-8 pb-8 md:pb-24 relative">
+            <div className="container mx-auto px-4 md:px-8 relative">
                 <Suspense fallback={<div className="text-center py-20">Loading Gallery...</div>}>
                     <div id="timeline" className="render-lazy"><TimelineGallery lang={lang} /></div>
                 </Suspense>
@@ -415,11 +407,11 @@ return (
         </div>
 
         {/* 4. FOOTER SECTION */}
-        <div className="relative z-10 -mt-20 pt-24 pb-0 w-full bg-black/30 flex flex-col items-center justify-center bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+        <div className="relative z-10 -mt-20 pb-0 w-full bg-black/80 flex flex-col items-center justify-center bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:24px_24px]">
               
             <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
-            <div className="w-full px-4 md:px-0 z-10 container mx-auto mb-10">
+            <div className="w-full md:pt-8 pt-0 px-4 md:px-0 z-10 container mx-auto mb-10">
                 <Suspense fallback={<div className="text-center py-20">Loading Contact...</div>}>
                     <MagicCard><Contact lang={lang} /></MagicCard>
                 </Suspense>

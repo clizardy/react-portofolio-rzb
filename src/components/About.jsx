@@ -108,23 +108,23 @@ const About = ({ lang }) => {
           transition={{ duration: 0.5 }}
           className="w-full lg:w-1/2 lg:p-8 flex justify-center"
         >
-           <div className="relative rounded-2xl overflow-hidden max-w-sm lg:max-w-md w-full shadow-2xl group">
-              {/* Container Foto */}
-              <div 
-                className="relative aspect-[3/4] w-full bg-neutral-200 dark:bg-neutral-800 cursor-pointer overflow-hidden"
-                onClick={toggleInfo} 
-              > 
-                <AnimatePresence mode="wait">
-                  <motion.img 
-                    key={currentIndex}
-                    src={IMAGES[currentIndex]}
-                    alt={`Slide ${currentIndex}`}
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.6 }}
-                    className="w-full h-full object-cover"
-                  />
-                </AnimatePresence>
+        <div className="relative rounded-2xl overflow-hidden max-w-xs lg:max-w-md w-full shadow-2xl group">
+          {/* Container Foto */}
+          <div 
+            className="relative aspect-[3/4] w-full bg-neutral-200 dark:bg-neutral-800 cursor-pointer overflow-hidden"
+            onClick={toggleInfo} 
+          > 
+            <AnimatePresence mode="wait">
+              <motion.img 
+                key={currentIndex}
+                src={IMAGES[currentIndex]}
+                alt={`Slide ${currentIndex}`}
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.6 }}
+                className="w-full h-full object-cover"
+              />
+            </AnimatePresence>
                 
                 {/* --- FLOATING PILL EXIF (FIXED CENTER) --- */}
                 <AnimatePresence>
@@ -144,7 +144,7 @@ const About = ({ lang }) => {
                                 #Metadata
                             </div>
 
-                            <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-[2rem] px-5 py-2.5 sm:px-6 sm:py-3 flex items-center shadow-2xl gap-4 sm:gap-6 whitespace-nowrap">
+                            <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-[2rem] px-3 py-1.5 sm:px-6 sm:py-3 flex items-center shadow-2xl gap-4 sm:gap-6 whitespace-nowrap">
                                 
                                 {loadingExif ? (
                                     <span className="text-white/60 text-xs animate-pulse px-4">Scanning...</span>
@@ -154,35 +154,35 @@ const About = ({ lang }) => {
                                         <div className="flex items-center gap-3 pr-1">
                                             <MdCamera className="dark:text-cyan-400 text-amber-400 text-2xl sm:text-3xl" />
                                             <div className="flex flex-col text-left">
-                                                <span className="text-[8px] text-neutral-300 tracking-wider leading-none mb-0.5 font-medium">Device</span>
-                                                <span className="text-sm sm:text-base font-bold text-white leading-none font-sans">
+                                                <span className="text-[7px] md:text-[9px] text-neutral-300 tracking-wider leading-none mb-0.5 font-medium">Device</span>
+                                                <span className="text-xs sm:text-base font-bold text-white leading-none font-sans">
                                                     {exifData.Model ? exifData.Model.replace("ILCE-", "Sony ") : "Unknown"}
                                                 </span>
                                             </div>
                                         </div>
 
                                         {/* Divider Vertikal */}
-                                        <div className="w-px h-8 bg-white/90"></div>
+                                        <div className="w-px md:h-8 h-6 bg-white/90"></div>
 
                                         {/* Bagian Kanan: Grid Settings */}
                                         <div className="flex items-center gap-4 sm:gap-6">
-                                            <div className="flex flex-col items-center gap-0.5">
+                                            <div className="flex flex-col items-center">
                                                 <MdCenterFocusStrong className="dark:text-cyan-400 text-amber-400 text-sm" />
-                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                <span className="text-[8px] sm:text-sm font-medium text-white font-serif">
                                                     f/{exifData.FNumber || "-"}
                                                 </span>
                                             </div>
 
-                                            <div className="flex flex-col items-center gap-0.5">
+                                            <div className="flex flex-col items-center">
                                                 <MdShutterSpeed className="dark:text-cyan-400 text-amber-400 text-sm" />
-                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                <span className="text-[8px] sm:text-sm font-medium text-white font-serif">
                                                     {formatExposureTime(exifData.ExposureTime)}
                                                 </span>
                                             </div>
 
-                                            <div className="flex flex-col items-center gap-0.5">
+                                            <div className="flex flex-col items-center">
                                                 <MdIso className="dark:text-cyan-400 text-amber-400 text-sm" />
-                                                <span className="text-xs sm:text-sm font-medium text-white font-serif">
+                                                <span className="text-[8px] sm:text-sm font-medium text-white font-serif">
                                                     {exifData.ISO || "-"}
                                                 </span>
                                             </div>
@@ -198,7 +198,7 @@ const About = ({ lang }) => {
 
                 {!showInfo && (
                     <div className="absolute top-4 right-4 z-10">
-                         <span className="dark:text-cyan-300 text-amber-300 italic px-3 py-1.5 rounded-full text-[10px] font-medium border border-white/50 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg flex items-center gap-1">
+                         <span className="dark:text-cyan-300 text-amber-300 italic px-3 py-1.5 rounded-full text-[7px] md:text-[10px] font-medium border border-white/50 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg flex items-center gap-1">
                             {t.clickHint}
                         </span>
                     </div>
