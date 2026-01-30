@@ -9,6 +9,7 @@ import {
   FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
 } from "react-icons/fa";
 import { FaL, FaXTwitter } from "react-icons/fa6"; 
+import { toast } from "react-hot-toast";
 import OklchGradientText from "../components/OklchGradientText";
 
 const SITE_URL = window.location.href;
@@ -33,9 +34,12 @@ const MENU_ITEMS = [
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
-const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
+
+  // --- SECRET TRIGGER STATE ---
+  const [clickCount, setClickCount] = useState(0);
   
   // --- STATE NETWORK ---
   const [showNetInfo, setShowNetInfo] = useState(false);
@@ -46,6 +50,24 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
     downlink: "...",
     type: "..."
   });
+
+  // --- LOGIC SECRET CLICK ---
+  const handleSecretClick = () => {
+    setClickCount((prev) => prev + 1);
+    
+    // Reset hitungan jika tidak diklik lagi dalam 1 detik
+    if (clickCount === 0) {
+        setTimeout(() => setClickCount(0), 1000);
+    }
+
+    // Jika sudah klik ke-3 (0, 1, 2) -> Buka Notes
+    if (clickCount >= 2) {
+        toast("Admin Mode: Job Notes Accessed", { icon: '🔐' });
+        onOpenJobNotes();
+        setClickCount(0); // Reset
+        setIsOpen(false); // Tutup sidebar biar fokus ke notes
+    }
+  };
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -168,14 +190,21 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
               
               {/* --- HEADER --- */}
               <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-700 dark:border-neutral-300">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between mb-4">
+                    {/* Tambahkan 'flex items-center gap-3' di sini */}
+                    <div 
+                        onClick={handleSecretClick} 
+                        className="flex items-center gap-3 cursor-pointer select-none active:scale-95 transition-transform"
+                    >
                         <h3 className="text-xl font-bold bg-gradient-to-r bg-clip-text text-transparent">
                             <OklchGradientText>{lang === 'id' ? "Menu Cepat" : "Quick Access"}</OklchGradientText>
                         </h3>
                         
                         <button 
-                            onClick={() => setShowNetInfo(!showNetInfo)}
+                            onClick={(e) => {
+                                e.stopPropagation(); // Mencegah trigger secret click saat klik sinyal
+                                setShowNetInfo(!showNetInfo);
+                            }}
                             className={`p-1.5 rounded-lg transition-all duration-300 ${showNetInfo ? 'bg-neutral-200 dark:bg-cyan-500/20' : 'hover:bg-neutral-100 dark:hover:bg-neutral-900'}`}
                         >
                             <FaSignal className={`${statusColor} ${networkInfo.online ? "animate-pulse" : ""}`} />
@@ -189,7 +218,6 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                       <FaTimes size={20} />
                     </button>
                   </div>
-
                   {/* === NETWORK PANEL === */}
                   <AnimatePresence>
                     {showNetInfo && (
@@ -199,7 +227,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                             exit={{ height: 0, opacity: 0, marginTop: 0 }}
                             className="overflow-hidden rounded-xl 
                                     bg-neutral-50 border border-neutral-200 shadow-inner
-                                    dark:bg-black/50 dark:border-white/10"
+                                    dark:bg-black/50 dark:border-cyan-400/80"
                         >
                             <div className="p-4 space-y-3 text-xs font-mono">
                                 <div className="flex items-center justify-between">
@@ -393,7 +421,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking }) => {
                     <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />
                     <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
                 </div>
-                <div className="mt-0 p-2 md:p-3 text-center text-[8px] md:text-[10px] text-black/70 dark:text-white/70 font-medium">
+                <div className="mt-0 p-2 md:p-3 text-center text-[7px] md:text-[9px] text-black/70 dark:text-white/70 font-medium">
                     <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
                 </div>
               </div>

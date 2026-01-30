@@ -148,7 +148,6 @@ const handleSubmit = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleSubmit}
-            // SYARAT: Rating tidak boleh 0 ATAU Nama tidak boleh kosong
             disabled={rating === 0 || !name.trim()} 
             className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold tracking-wider transition-all
                 ${rating > 0 && name.trim() 

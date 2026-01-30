@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
-import { InlineWidget } from "react-calendly";
+import { InlineWidget, useCalendlyEventListener } from "react-calendly"; // 1. Import Event Listener
+import { toast } from "react-hot-toast"; // Pastikan install react-hot-toast
 
 const BookingModal = ({ isOpen, onClose }) => {
   
@@ -12,8 +13,31 @@ const BookingModal = ({ isOpen, onClose }) => {
     return () => { document.body.style.overflow = "unset"; }
   }, [isOpen]);
 
-  // GANTI LINK INI DENGAN LINK CALENDLY ABANG
   const CALENDLY_URL = "https://calendly.com/ronaldzunibachtiar/30min"; 
+
+  // 2. LOGIKA DETEKSI BOOKING SELESAI
+  useCalendlyEventListener({
+    onEventScheduled: (e) => {
+      // Ini jalan otomatis ketika client klik "Schedule Event"
+      console.log("Booking Berhasil!", e);
+      
+      // A. Tutup Modal
+      onClose();
+
+      // B. Kasih Notifikasi Keren
+      toast.success("Booking Terkonfirmasi! Saya akan segera menghubungi Anda untuk detail project.", {
+        duration: 5000,
+        icon: '🚀',
+        style: {
+            background: '#171717',
+            color: '#fff',
+            border: '1px solid #06b6d4'
+        }
+      });
+
+      // C. (Opsional) Redirect ke halaman "Thank You" atau biarkan di halaman utama
+    },
+  });
 
   return (
     <AnimatePresence>
@@ -65,9 +89,6 @@ const BookingModal = ({ isOpen, onClose }) => {
 
             {/* CALENDLY WIDGET AREA */}
             <div className="flex-1 w-full relative bg-white/10 dark:bg-neutral-900/10  overflow-hidden">
-               {/* Container ini butuh height 100% agar InlineWidget bisa fill. 
-                  InlineWidget sendiri akan menghandle scroll di dalam iframe-nya.
-               */}
                <div className="h-full w-full"> 
                    <InlineWidget 
                       url={CALENDLY_URL}
@@ -76,16 +97,16 @@ const BookingModal = ({ isOpen, onClose }) => {
                         width: '100%',
                       }}
                       pageSettings={{
-                        backgroundColor: '171717', // Match dark theme
+                        backgroundColor: '171717', 
                         hideEventTypeDetails: false,
                         hideLandingPageDetails: false,
-                        primaryColor: '06b6d4', // Cyan accent
+                        primaryColor: '06b6d4', 
                         textColor: 'ffffff' 
                       }}
                    />
                </div>
                
-               {/* Loading Overlay (Hidden behind iframe once loaded) */}
+               {/* Loading Overlay */}
                <div className="absolute inset-0 flex items-center justify-center -z-10">
                   <span className="animate-pulse text-neutral-500 text-sm">Loading Calendar...</span>
                </div>

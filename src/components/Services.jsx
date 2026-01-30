@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, FaWhatsapp, FaArrowRight } from "react-icons/fa";
+import { FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, FaWhatsapp, FaArrowRight, FaCalculator } from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
+import { Link } from 'react-router-dom';
 
 // DATA SERVICE (TETAP SAMA)
 const SERVICES_DATA = [
@@ -89,7 +90,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className=" text-slate-600 dark:text-slate-300 italic max-w-2xl mx-auto text-base md:text-lg"
+            className=" text-slate-600 dark:text-slate-300 italic max-w-2xl mx-auto text-[10px] md:text-md"
           >
             {lang === 'id' 
                 ? "Solusi kreatif dan manajerial terintegrasi untuk mewujudkan visi Kamu!" 
@@ -190,69 +191,87 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
         {/* --- TOMBOL AKSI (PREMIUM STYLE) --- */}
         <div className="mt-4 md:mt-0 w-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
 
-          {/* 1. TOMBOL WORKFLOW (Theme: Indigo/Blue) */}
-          <button
-              onClick={onOpenWorkflow}
-              className="
-                group relative w-full md:w-auto px-6 py-3 rounded-full 
-                bg-white/5 dark:bg-black/20 backdrop-blur-md
-                border border-indigo-500/30 dark:border-indigo-400/30
-                text-indigo-600 dark:text-indigo-300
-                font-bold text-xs tracking-wide
-                overflow-hidden transition-all duration-300
-                hover:border-indigo-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]
-                hover:bg-indigo-500/10
-                flex items-center justify-center gap-3
-              "
-          >
-            <span className="text-lg group-hover:rotate-12 transition-transform duration-300">📋</span>
-            <span>{lang === 'id' ? "Alur Kerja" : "My Workflow"}</span>
-            
-            {/* Efek Kilat Lewat */}
-            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
-          </button>
+      {/* 1. TOMBOL WORKFLOW (Theme: Indigo/Blue) */}
+        <button
+          onClick={onOpenWorkflow}
+          className="
+            group relative w-full md:w-auto px-6 py-3 rounded-full 
+            bg-white/5 dark:bg-black/20 backdrop-blur-md
+            border border-indigo-500/30 dark:border-indigo-400/30
+            text-indigo-600 dark:text-indigo-300
+            font-bold text-xs tracking-wide
+            overflow-hidden transition-all duration-300
+            hover:border-indigo-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]
+            hover:bg-indigo-500/10
+            flex items-center justify-center gap-3
+          "
+        >
+          <span className="text-lg group-hover:rotate-12 transition-transform duration-300">📋</span>
+          <span>{lang === 'id' ? "Alur Kerja" : "My Workflow"}</span>
           
-          {/* 2. TOMBOL GEAR (Theme: Amber/Gold) */}
-          <button
-              onClick={onOpenGear}
-              className="
-                group relative w-full md:w-auto px-6 py-3 rounded-full 
-                bg-white/5 dark:bg-black/20 backdrop-blur-md
-                border border-amber-500/30 dark:border-amber-400/30
-                text-amber-600 dark:text-amber-300
-                font-bold text-xs tracking-wide
-                overflow-hidden transition-all duration-300
-                hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]
-                hover:bg-amber-500/10
-                flex items-center justify-center gap-3
-              "
-          >
-             <span className="text-lg group-hover:rotate-45 transition-transform duration-300">🛠️</span>
-             <span>{lang === 'id' ? "Lihat Gear" : "My Arsenal"}</span>
-          </button>
+          {/* Efek Kilat Lewat */}
+          <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
+        </button>
+        
+        {/* 2. TOMBOL GEAR (Theme: Amber/Gold) */}
+        <button
+          onClick={onOpenGear}
+          className="
+            group relative w-full md:w-auto px-6 py-3 rounded-full 
+            bg-white/5 dark:bg-black/20 backdrop-blur-md
+            border border-amber-500/30 dark:border-amber-400/30
+            text-amber-600 dark:text-amber-300
+            font-bold text-xs tracking-wide
+            overflow-hidden transition-all duration-300
+            hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]
+            hover:bg-amber-500/10
+            flex items-center justify-center gap-3
+          "
+        >
+          <span className="text-lg group-hover:rotate-45 transition-transform duration-300">🛠️</span>
+          <span>{lang === 'id' ? "Lihat Gear" : "My Arsenal"}</span>
+        </button>
 
-          {/* 3. TOMBOL PRICING (Theme: Teal Gradient - CTA UTAMA) */}
-          <button
-              onClick={onOpenPricing}
+        {/* 3. TOMBOL PRICING (Theme: Teal Gradient - CTA UTAMA) */}
+        <button
+          onClick={onOpenPricing}
+          className="
+            group relative w-full md:w-auto px-8 py-3 
+            bg-gradient-to-r from-teal-500 to-cyan-600
+            text-white 
+            rounded-full font-bold text-xs tracking-wider
+            flex items-center justify-center gap-3 
+            shadow-lg shadow-cyan-500/25
+            transition-all duration-300 
+            hover:scale-105 hover:shadow-cyan-500/50 active:scale-95
+          "
+        >
+          <span>{lang === 'id' ? "Lihat Paket & Harga" : "View Packages"}</span>
+          <span className="bg-white/20 rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </span>
+        </button>
+
+        {/* 4. SECTION KALKULATOR (Pemisah Visual) */}
+        <div className="hidden md:block w-px h-8 bg-white mx-2"></div>
+        
+        <div className="flex flex-col md:flex-row items-center gap-3">
+            <span className="text-[10px] text-slate-400 italic hidden md:block">Masih bingung budget?</span>
+            <Link 
+              to="/calculator" 
               className="
-                group relative w-full md:w-auto px-8 py-3 
-                bg-gradient-to-r from-teal-500 to-cyan-600
-                text-white 
-                rounded-full font-bold text-xs tracking-wider
-                flex items-center justify-center gap-3 
-                shadow-lg shadow-cyan-500/25
-                transition-all duration-300 
-                hover:scale-105 hover:shadow-cyan-500/50 active:scale-95
+                group inline-flex items-center gap-2 px-5 py-2.5 rounded-full 
+                bg-[#0f172a] border border-slate-100/40 hover:border-cyan-500/50 
+                text-slate-300 hover:text-white transition-all duration-300
+                text-xs font-bold hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]
               "
-          >
-              <span>{lang === 'id' ? "Lihat Paket & Harga" : "View Packages"}</span>
-              
-              <span className="bg-white/20 rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                  </svg>
-              </span>
-          </button>
+            >
+              <FaCalculator className="text-cyan-500 group-hover:scale-110 transition-transform text-lg" />
+              <span>Coba Estimasi</span>
+            </Link>
+        </div>
 
         </div>
 

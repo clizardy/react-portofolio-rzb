@@ -78,7 +78,7 @@ const Hero = ({ lang, isReady = true }) => {
         }
       `}</style>
 
-      <div id="hero" className="flex flex-wrap items-center md:pt-10 pt-0 pb-16 md:pb-0">
+      <div id="hero" className="flex flex-wrap items-center pb-16 md:pb-0">
         
         {/* BAGIAN KIRI */}
         <div className="w-full lg:w-1/2">

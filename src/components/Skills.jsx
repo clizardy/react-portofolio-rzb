@@ -178,8 +178,6 @@ const Skills = ({ lang }) => {
 
                 </div>
 
-                {/* --- BAGIAN KANAN (DOCK ICON) --- */}
-                {/* Desktop: Ambil 7 Kolom */}
                 <div className="md:col-span-7 flex justify-center md:justify-end w-full">
                     <motion.div
                         onMouseMove={(e) => mouseX.set(e.pageX)}

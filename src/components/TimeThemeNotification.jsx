@@ -82,11 +82,9 @@ const TimeThemeNotification = () => {
       applyTheme(isDay);
     };
 
-    // Jalankan timer cek setiap 60 detik
-    const interval = setInterval(checkTime, 600000);
+    // Jalankan timer cek setiap 15 menit
+    const interval = setInterval(checkTime, 900000);
 
-    // Timer untuk hide notifikasi
-    // (Kita cek apakah ini user manual atau auto, kalau manual hide lebih cepat gapapa)
     const hasManual = localStorage.getItem('rzb-theme-preference');
     const timeoutDuration = hasManual ? 3000 : (window.innerWidth >= 768 ? 8000 : 5000);
     
@@ -108,8 +106,6 @@ const TimeThemeNotification = () => {
     // 2. Terapkan Visual Langsung
     applyTheme(newMode);
 
-    // 3. KUNCI PERMANEN di LocalStorage
-    // Begitu baris ini jalan, fungsi checkTime di atas otomatis akan selalu "return" (berhenti)
     localStorage.setItem('rzb-theme-preference', newMode ? 'day' : 'night');
   };
 

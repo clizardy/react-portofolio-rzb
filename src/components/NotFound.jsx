@@ -332,7 +332,7 @@ const NotFound = () => {
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 text-neutral-200">
                         Kamu Salah Link Njirr😔😭
                     </h2>
-                    <p className="text-neutral-400 mb-10 text-lg italic leading-relaxed">
+                    <p className="text-neutral-400 mb-10 text-[10px] md:text-md italic leading-relaxed">
                         Ups! Tetap semangat karena salah arah bukan berarti salah jalan. Bisa jadi arah lain lebih baik dari jalan yang kamu inginkan sebelumnya. ANJAY
                         <br /> {/* <-- Tambah <br /> untuk pindah baris */}
                         <span className="text-red-400 font-bold text-xl not-italic mt-2 block"> {/* <-- Sedikit penyesuaian style biar lebih rapi */}

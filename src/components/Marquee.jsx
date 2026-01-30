@@ -52,7 +52,6 @@ const Marquee = () => {
     <div className="w-full py-8 bg-indigo-100/50 dark:bg-neutral-950/30 border-y border-black/10 dark:border-white/10 overflow-hidden relative z-20">
       <div className="flex whitespace-nowrap overflow-hidden">
         <motion.div className="flex gap-6" style={{ x }}>
-          {/* Kita render teks berulang kali (4x) biar loop-nya ga putus */}
           {Array.from({ length: 4 }).map((_, i) => (
             <span 
               key={i}
