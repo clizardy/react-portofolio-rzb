@@ -8,17 +8,21 @@ import {
 
 // --- IMPORT ICON ---
 import { 
-    FaTimes, FaCopy, FaFileInvoiceDollar, 
+    FaTimes, FaFileInvoiceDollar, 
     FaFingerprint, FaClock, FaSave, FaSearch,
     FaHistory, FaPlusCircle, FaRocket, 
     FaMapMarkerAlt, FaCog, FaTrashAlt, FaEdit, FaThLarge,
-    FaCrown, FaLink, FaColumns, FaArrowRight, FaArrowLeft, 
+    FaCrown, FaColumns, FaArrowRight, FaArrowLeft, 
     FaCheckDouble, FaSpinner, FaListUl, FaFileSignature, FaMedal, FaBoxOpen,
     FaChartPie, FaWallet, FaExclamationCircle, FaCheckCircle
 } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+
+// --- IMPORT FIREBASE ---
 import { db } from "../firebase"; 
-import { doc, setDoc } from "firebase/firestore";
+import { 
+    doc, setDoc, collection, onSnapshot, query, orderBy, deleteDoc 
+} from "firebase/firestore";
 
 const JobNotesModal = ({ isOpen, onClose }) => {
   // --- STATE SYSTEM ---
@@ -47,7 +51,7 @@ const JobNotesModal = ({ isOpen, onClose }) => {
   });
 
   const [formData, setFormData] = useState(defaultForm);
-  const [dbJobs, setDbJobs] = useState([]);
+  const [dbJobs, setDbJobs] = useState([]); // Sekarang ini akan diisi dari Firebase
   const [searchTerm, setSearchTerm] = useState("");
 
   // --- SCROLL LOCKING ---
@@ -65,32 +69,47 @@ const JobNotesModal = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  // --- INITIALIZATION ---
+  // --- INITIALIZATION & REALTIME SYNC (FIREBASE) ---
   useEffect(() => {
     if (isOpen) {
-        const savedJobs = JSON.parse(localStorage.getItem("rzb_job_history")) || [];
-        setDbJobs(savedJobs);
+        // 1. Ambil Draft Lokal (Form Input)
         const savedDraft = JSON.parse(localStorage.getItem("rzb_current_draft"));
         if(savedDraft) setFormData(savedDraft);
+
+        // 2. LISTEN KE FIREBASE 'projects' (Sync Realtime Laptop <-> HP)
+        const q = query(collection(db, "projects"), orderBy("id", "desc"));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const fetchedJobs = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setDbJobs(fetchedJobs);
+        }, (error) => {
+            console.error("Error fetching projects:", error);
+            toast.error("Gagal sync data project.");
+        });
+
+        return () => unsubscribe();
     }
+    
+    // Jam Digital
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, [isOpen]);
 
-  // Auto Save Draft
+  // Auto Save Draft Form (Tetap Local Storage agar tidak hilang saat refresh)
   useEffect(() => {
     if (activeTab === "new") {
         localStorage.setItem("rzb_current_draft", JSON.stringify(formData));
     }
   }, [formData, activeTab]);
 
-  // --- ANALYTICS DATA PROCESSING (LOGIKA GRAFIK) ---
+  // --- ANALYTICS DATA PROCESSING ---
   const analyticsData = useMemo(() => {
-    // 1. Monthly Revenue Calculation
     const monthlyData = {};
     dbJobs.forEach(job => {
         const date = new Date(job.date);
-        const month = date.toLocaleString('default', { month: 'short' }); // Jan, Feb...
+        const month = date.toLocaleString('default', { month: 'short' }); 
         const amount = parseInt(job.amount) || 0;
         if (monthlyData[month]) {
             monthlyData[month] += amount;
@@ -98,13 +117,12 @@ const JobNotesModal = ({ isOpen, onClose }) => {
             monthlyData[month] = amount;
         }
     });
-    // Convert to Array for Recharts
+    
     const chartData = Object.keys(monthlyData).map(key => ({
         name: key,
         revenue: monthlyData[key]
     }));
 
-    // 2. Status Distribution (Paid vs Unpaid)
     let paidCount = 0;
     let unpaidCount = 0;
     let pendingAmount = 0;
@@ -118,8 +136,8 @@ const JobNotesModal = ({ isOpen, onClose }) => {
     });
 
     const pieData = [
-        { name: 'Paid', value: paidCount, color: '#10b981' }, // Emerald
-        { name: 'Unpaid', value: unpaidCount, color: '#ef4444' } // Red
+        { name: 'Paid', value: paidCount, color: '#10b981' }, 
+        { name: 'Unpaid', value: unpaidCount, color: '#ef4444' } 
     ];
 
     return { chartData, pieData, pendingAmount };
@@ -134,38 +152,48 @@ const JobNotesModal = ({ isOpen, onClose }) => {
     toast("Form Reset", { icon: '🧹', style: { background: '#333', color: '#fff'} });
   };
 
-  const handleSaveToDB = () => {
+  // --- SAVE TO FIREBASE (UPDATE UTAMA) ---
+  const handleSaveToDB = async () => {
     if (!formData.client || !formData.project) {
         toast.error("Nama Klien & Project wajib diisi!");
         return;
     }
-    const newJob = { 
-        ...formData, 
-        id: formData.id || Date.now(), 
-        timestamp: new Date().toLocaleString(),
-        kanbanStatus: formData.kanbanStatus || "todo" 
-    };
 
-    let updatedJobs;
-    if (formData.id) {
-        updatedJobs = dbJobs.map(job => job.id === formData.id ? newJob : job);
-        toast.success("Data Updated!", { icon: '✅' });
-    } else {
-        updatedJobs = [newJob, ...dbJobs];
-        toast.success("Saved to History!", { icon: '💾' });
+    const toastId = toast.loading("Menyimpan ke Cloud...");
+    
+    try {
+        const jobId = formData.id || Date.now().toString(); // Gunakan String ID untuk Firebase
+        
+        const newJob = { 
+            ...formData, 
+            id: jobId, 
+            timestamp: new Date().toISOString(), // Standard ISO format
+            kanbanStatus: formData.kanbanStatus || "todo" 
+        };
+
+        // Simpan ke Collection 'projects' di Firestore
+        await setDoc(doc(db, "projects", jobId.toString()), newJob);
+
+        toast.success("Data Tersimpan Online!", { id: toastId, icon: '☁️' });
+        setFormData(defaultForm); 
+        setActiveTab("kanban");
+        
+    } catch (error) {
+        console.error(error);
+        toast.error("Gagal menyimpan data.", { id: toastId });
     }
-    setDbJobs(updatedJobs);
-    localStorage.setItem("rzb_job_history", JSON.stringify(updatedJobs));
-    setFormData(defaultForm); 
-    setActiveTab("kanban");
   };
 
-  const handleDeleteJob = (id) => {
-    if(confirm("Hapus data ini permanen?")) {
-        const filtered = dbJobs.filter(job => job.id !== id);
-        setDbJobs(filtered);
-        localStorage.setItem("rzb_job_history", JSON.stringify(filtered));
-        toast.success("Deleted.", { icon: '🗑️' });
+  // --- DELETE FROM FIREBASE ---
+  const handleDeleteJob = async (id) => {
+    if(confirm("Hapus data ini permanen dari Cloud?")) {
+        const toastId = toast.loading("Menghapus...");
+        try {
+            await deleteDoc(doc(db, "projects", id.toString()));
+            toast.success("Data Terhapus.", { id: toastId, icon: '🗑️' });
+        } catch (error) {
+            toast.error("Gagal menghapus.", { id: toastId });
+        }
     }
   };
 
@@ -173,6 +201,30 @@ const JobNotesModal = ({ isOpen, onClose }) => {
     setFormData(job);
     setActiveTab("new");
     toast("Mode Edit Aktif", { icon: '✏️' });
+  };
+
+  // --- KANBAN LOGIC (UPDATE FIREBASE) ---
+  const moveJob = async (job, direction) => {
+      const statusOrder = ["todo", "inprogress", "done"];
+      const currentIndex = statusOrder.indexOf(job.kanbanStatus || "todo");
+      let newIndex = currentIndex;
+      if (direction === "next" && currentIndex < 2) newIndex++;
+      if (direction === "prev" && currentIndex > 0) newIndex--;
+
+      if (newIndex !== currentIndex) {
+          const newStatus = statusOrder[newIndex];
+          // Update status di Firestore
+          try {
+              await setDoc(doc(db, "projects", job.id.toString()), { 
+                  ...job, 
+                  kanbanStatus: newStatus 
+              }, { merge: true }); // Merge: hanya update field yang berubah
+              
+              toast.success(`Moved to ${newStatus.toUpperCase()}`);
+          } catch (error) {
+              toast.error("Gagal memindahkan kartu.");
+          }
+      }
   };
 
   // --- GENERATOR LINKS ---
@@ -230,22 +282,6 @@ const JobNotesModal = ({ isOpen, onClose }) => {
       }
   };
 
-  const moveJob = (job, direction) => {
-      const statusOrder = ["todo", "inprogress", "done"];
-      const currentIndex = statusOrder.indexOf(job.kanbanStatus || "todo");
-      let newIndex = currentIndex;
-      if (direction === "next" && currentIndex < 2) newIndex++;
-      if (direction === "prev" && currentIndex > 0) newIndex--;
-
-      if (newIndex !== currentIndex) {
-          const newStatus = statusOrder[newIndex];
-          const updatedJobs = dbJobs.map(j => j.id === job.id ? { ...j, kanbanStatus: newStatus } : j);
-          setDbJobs(updatedJobs);
-          localStorage.setItem("rzb_job_history", JSON.stringify(updatedJobs));
-          toast.success(`Moved to ${newStatus.toUpperCase()}`);
-      }
-  };
-
   const totalRevenue = dbJobs.reduce((acc, job) => acc + (parseInt(job.amount) || 0), 0);
 
   // --- RENDER ---
@@ -262,14 +298,12 @@ const JobNotesModal = ({ isOpen, onClose }) => {
                         <div className="p-6 border-b border-white/5 bg-gradient-to-r from-teal-900/20 to-transparent">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded bg-teal-600 flex items-center justify-center text-white shadow-lg"><FaFingerprint /></div>
-                                <div><h3 className="font-bold text-white text-sm">COMMAND</h3><p className="text-[10px] text-neutral-500 font-mono">v.6.0.0</p></div>
+                                <div><h3 className="font-bold text-white text-sm">COMMAND</h3><p className="text-[10px] text-neutral-500 font-mono">v.6.1.0 (Cloud)</p></div>
                             </div>
                         </div>
                         <div className="p-4 space-y-2">
                             <NavButton active={activeTab === "new"} onClick={() => setActiveTab("new")} icon={<FaPlusCircle />} label="New Entry" />
-                            {/* MENU BARU: STATS */}
                             <NavButton active={activeTab === "stats"} onClick={() => setActiveTab("stats")} icon={<FaChartPie />} label="Analytics" />
-                            
                             <NavButton active={activeTab === "kanban"} onClick={() => setActiveTab("kanban")} icon={<FaColumns />} label="Kanban Board" />
                             <NavButton active={activeTab === "tracker"} onClick={() => setActiveTab("tracker")} icon={<FaMapMarkerAlt />} label="Tracker System" />
                             <NavButton active={activeTab === "history"} onClick={() => setActiveTab("history")} icon={<FaHistory />} label="History Log" badge={dbJobs.length} />
@@ -315,7 +349,7 @@ const JobNotesModal = ({ isOpen, onClose }) => {
 
                                 {/* ACTION BUTTONS */}
                                 <div className="hidden md:flex gap-3 pt-4 border-t border-white/5 flex-wrap">
-                                    <button onClick={handleSaveToDB} className="flex-1 bg-white text-black font-bold py-3 rounded-lg hover:bg-cyan-50 flex items-center justify-center gap-2 min-w-[120px]"><FaSave className="text-teal-600"/> Save</button>
+                                    <button onClick={handleSaveToDB} className="flex-1 bg-white text-black font-bold py-3 rounded-lg hover:bg-cyan-50 flex items-center justify-center gap-2 min-w-[120px]"><FaSave className="text-teal-600"/> Save (Cloud)</button>
                                     <ActionButton onClick={() => handleGenerateQuotation(formData)} icon={<FaCrown />} label="Quote" color="amber" />
                                     <ActionButton onClick={() => handleGenerateContract(formData)} icon={<FaFileSignature />} label="SPK" color="indigo" />
                                     <ActionButton onClick={() => handleGenerateInvoice(formData)} icon={<FaFileInvoiceDollar />} label="Invoice" color="cyan" />
@@ -325,7 +359,7 @@ const JobNotesModal = ({ isOpen, onClose }) => {
                                 </div>
                                 
                                 <div className="md:hidden grid grid-cols-3 gap-2 pt-2">
-                                    <button onClick={handleSaveToDB} className="col-span-3 bg-white text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg mb-2"><FaSave className="text-teal-600"/> Simpan Data</button>
+                                    <button onClick={handleSaveToDB} className="col-span-3 bg-white text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg mb-2"><FaSave className="text-teal-600"/> Simpan Cloud</button>
                                     <MobileAction onClick={() => handleGenerateQuotation(formData)} icon={<FaCrown />} label="Quote" color="text-amber-500" />
                                     <MobileAction onClick={() => handleGenerateContract(formData)} icon={<FaFileSignature />} label="SPK" color="text-indigo-400" />
                                     <MobileAction onClick={() => handleGenerateInvoice(formData)} icon={<FaFileInvoiceDollar />} label="Invoice" color="text-white" />
@@ -336,7 +370,7 @@ const JobNotesModal = ({ isOpen, onClose }) => {
                             </div>
                         )}
 
-                        {/* --- TAB: ANALYTICS (FITUR BARU) --- */}
+                        {/* --- TAB: ANALYTICS --- */}
                         {activeTab === "stats" && (
                             <div className="p-4 md:p-8 space-y-6">
                                 {/* KPI CARDS */}
@@ -357,7 +391,6 @@ const JobNotesModal = ({ isOpen, onClose }) => {
 
                                 {/* CHARTS GRID */}
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    {/* CHART 1: REVENUE TREND */}
                                     <div className="bg-[#121214] border border-white/5 p-5 rounded-xl h-80">
                                         <h4 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><FaChartPie className="text-teal-500"/> Revenue Trend</h4>
                                         <ResponsiveContainer width="100%" height="100%">
@@ -371,7 +404,6 @@ const JobNotesModal = ({ isOpen, onClose }) => {
                                         </ResponsiveContainer>
                                     </div>
 
-                                    {/* CHART 2: STATUS DISTRIBUTION */}
                                     <div className="bg-[#121214] border border-white/5 p-5 rounded-xl h-80">
                                         <h4 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><FaChartPie className="text-purple-500"/> Project Status</h4>
                                         <ResponsiveContainer width="100%" height="100%">
@@ -497,4 +529,4 @@ const InputGroup = ({ label, icon, children }) => (<div className="space-y-1.5">
 const NavButton = ({ active, onClick, icon, label, badge }) => (<button onClick={onClick} className={`w-full flex items-center justify-between p-3 rounded-lg text-sm transition-all ${active ? "bg-teal-600 text-white" : "text-neutral-400 hover:bg-white/5 hover:text-white"}`}><div className="flex items-center gap-3"><span className="text-lg">{icon}</span><span className="font-medium">{label}</span></div>{badge > 0 && <span className="bg-neutral-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{badge}</span>}</button>);
 const MobileTab = ({ active, onClick, icon, label }) => (<button onClick={onClick} className={`flex-1 flex flex-col items-center justify-center gap-1 ${active ? "text-teal-400" : "text-neutral-600"}`}><span className="text-xl">{icon}</span><span className="text-[10px] font-bold">{label}</span></button>);
 
-export default JobNotesModal;
+export default JobNotesModal;   
