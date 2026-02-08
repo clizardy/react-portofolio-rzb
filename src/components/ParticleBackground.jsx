@@ -34,6 +34,8 @@ const ParticleBackground = ({ theme }) => {
     let animationFrameId;
     let particles = [];
 
+    
+
     // --- KONFIGURASI WARNA ---
     const isLight = theme === 'light';
     const colorRGB = isLight ? '245, 158, 11' : '103, 232, 249'; 

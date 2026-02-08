@@ -51,6 +51,18 @@ const ClockWidget = ({ lang }) => {
 // --- PERBAIKAN: Terima prop isReady ---
 const Hero = ({ lang, isReady = true }) => {
   const t = TRANSLATIONS[lang ? lang : 'en']?.hero || TRANSLATIONS['en'].hero;
+  const [isCustom, setIsCustom] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const savedTheme = localStorage.getItem('user-accent-hex');
+      setIsCustom(!!savedTheme); 
+    };
+    checkTheme();
+    // Cek setiap 500ms agar reaktif saat ThemeBuilder diganti
+    const interval = setInterval(checkTheme, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const sequenceEn = [
     'Freelancer', 1000,
@@ -97,22 +109,35 @@ const Hero = ({ lang, isReady = true }) => {
                 </motion.h1>
             </RevealText>
 
-            <motion.div
-              variants={container(0.2)}
-              initial="hidden"
-              animate={isReady ? "visible" : "hidden"}
-              className="h-16 lg:h-20"
-            >
-                <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-cyan-300 dark:via-slate-100 dark:to-blue-400 bg-clip-text text-3xl lg:text-4xl tracking-tight text-transparent font-bold">
-                    <TypeAnimation
-                        key={lang} 
-                        sequence={lang === 'id' ? sequenceId : sequenceEn}
-                        wrapper="span"
-                        speed={50}
-                        repeat={Infinity}
-                    />
-                </span>
-            </motion.div>
+<motion.div
+        variants={container(0.2)}
+        initial="hidden"
+        animate={isReady ? "visible" : "hidden"}
+        className="h-16 lg:h-20"
+    >
+        {/* 3. Update className span di bawah ini */}
+        <span 
+            className={`
+                bg-clip-text text-3xl lg:text-4xl tracking-tight text-transparent font-bold
+                
+                ${isCustom 
+                    /* JIKA CUSTOM: Pakai class magic dari index.css */
+                    ? "bg-gradient-accent animate-gradient-xy"
+                    
+                    /* JIKA DEFAULT: Pakai warna asli kamu */
+                    : "bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-cyan-300 dark:via-slate-100 dark:to-blue-400"
+                }
+            `}
+        >
+            <TypeAnimation
+                key={lang} 
+                sequence={lang === 'id' ? sequenceId : sequenceEn}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+            />
+        </span>
+    </motion.div>
 
             <motion.p
               variants={container(0.4)}

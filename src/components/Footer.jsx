@@ -86,7 +86,7 @@ const Footer = ({ lang }) => {
                     </p>
                     <div className="grid grid-cols-2 gap-3">
                         <div className="p-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center gap-3">
-                            <div className="text-cyan-500 text-xl"><FaHeart /></div>
+                            <div className="text-accent text-xl"><FaHeart /></div>
                             <div>
                                 <div className="font-bold text-neutral-800 dark:text-neutral-200">React 18</div>
                                 <div className="text-[10px] text-neutral-500">Core Library</div>

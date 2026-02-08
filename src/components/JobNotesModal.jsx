@@ -312,7 +312,7 @@ const JobNotesModal = ({ isOpen, onClose }) => {
                     </div>
                     <div className="p-6">
                         <div className="p-4 rounded-lg space-y-2">
-                            <p className="text-[10px] text-neutral-500 font-bold uppercase flex items-center gap-2"><FaClock className="text-cyan-500" /> System Time</p>
+                            <p className="text-[10px] text-neutral-500 font-bold uppercase flex items-center gap-2"><FaClock className="text-accent" /> System Time</p>
                             <p className="font-mono text-xl text-white tracking-widest leading-none">{time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                         </div>
                     </div>
@@ -500,7 +500,7 @@ const KanbanColumn = ({ title, icon, color, titleColor = "text-white", jobs, onM
                     <div className="flex justify-between items-start mb-2"><h4 className="font-bold text-white text-sm truncate w-32">{job.client}</h4><span className="text-[10px] bg-white/5 text-neutral-400 px-1.5 py-0.5 rounded font-mono">{new Date(job.date).toLocaleDateString('id-ID', {day:'numeric', month:'short'})}</span></div>
                     <p className="text-xs text-neutral-500 mb-3 truncate">{job.project}</p>
                     <div className="flex justify-between items-center pt-2 border-t border-white/5">
-                        <p className="text-xs font-mono font-bold text-cyan-500">Rp {parseInt(job.amount).toLocaleString('id-ID')}</p>
+                        <p className="text-xs font-mono font-bold text-accent">Rp {parseInt(job.amount).toLocaleString('id-ID')}</p>
                         <div className="flex gap-1">
                             {status !== 'todo' && <button onClick={() => onMove(job, 'prev')} className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white"><FaArrowLeft className="text-xs" /></button>}
                             {status !== 'done' && <button onClick={() => onMove(job, 'next')} className="p-1.5 rounded bg-teal-500/20 hover:bg-teal-500 text-teal-500 hover:text-white"><FaArrowRight className="text-xs" /></button>}

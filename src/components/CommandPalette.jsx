@@ -52,13 +52,16 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     },
 
     // ... System & Utility ...
-    { 
+{ 
       id: 'theme', 
       label: theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode', 
       icon: theme === 'dark' ? <FaSun className="text-yellow-400"/> : <FaMoon className="text-purple-400"/>, 
       group: 'System',
       shortcut: 'T',
-      action: toggleTheme
+      action: () => {
+        toggleTheme(); // 1. Jalankan fungsi asli
+        toast('Theme toggled!', { icon: '🎨' }); // 2. Munculkan Toast
+      }
     },
     { 
       id: 'lang', 
@@ -66,7 +69,10 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
       icon: <FaGlobe className="text-green-400"/>, 
       group: 'System',
       shortcut: 'L',
-      action: toggleLanguage
+      action: () => {
+        toggleLanguage(); // 1. Jalankan fungsi asli
+        toast('Language switched!', { icon: '🌐' }); // 2. Munculkan Toast
+      }
     },
     { 
       id: 'cv', 
@@ -145,7 +151,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     {
       id: 'color-cyan',
       label: 'Copy Brand Color: Cyan (#06b6d4)',
-      icon: <FaPalette className="text-cyan-500"/>,
+      icon: <FaPalette className="text-accent"/>,
       group: 'Design',
       action: () => { navigator.clipboard.writeText('#06b6d4'); toast.success('Copied Cyan!'); }
     },
@@ -371,7 +377,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                 <span className="text-cyan-500">◆</span> 
+                 <span className="text-accent">◆</span> 
                  {/* Logic Kalkulator Indikator */}
                  {/^[\d\s\+\-\*\/\(\)\.]+$/.test(query) && query.length > 0 ? (
                     <span className="text-green-400 animate-pulse">Calc Mode Active</span>

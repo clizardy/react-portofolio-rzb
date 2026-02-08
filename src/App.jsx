@@ -58,6 +58,9 @@ import Receipt from "./components/Receipt";
 import ClientDelivery from "./components/ClientDelivery";
 import TestimonialForm from "./components/TestimonialForm";
 import ProjectCalculator from "./components/ProjectCalculator";
+import ThemeBuilder from "./components/ThemeBuilder";
+import BottomDock from "./components/BottomDock";
+import ShareModal from "./components/ShareModal";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 
@@ -72,6 +75,9 @@ const PortfolioContent = () => {
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isFaqOpen, setIsFaqOpen] = useState(false);
     const [isJobNotesOpen, setIsJobNotesOpen] = useState(false);
+    const [isSidebarMenuOpen, setIsSidebarMenuOpen] = useState(false);
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
     // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas
     useEffect(() => {
@@ -182,6 +188,14 @@ const PortfolioContent = () => {
     return (
         <>
             <style>{`
+                .text-accent, .text-cyan-400, .text-blue-500 { color: rgb(var(--accent-color)) !important; }
+                .bg-cyan-500, .bg-cyan-600 { background-color: rgb(var(--accent-color)) !important; }
+                .border-cyan-500 { border-color: rgb(var(--accent-color)) !important; }
+                
+
+                .group:hover .magic-card-border {
+                    border-color: rgba(var(--accent-color), 0.5) !important;
+                }
                 ::view-transition-old(root),
                 ::view-transition-new(root) {
                   animation-duration: 1.2s;
@@ -214,6 +228,8 @@ const PortfolioContent = () => {
                   100% { opacity: 0; filter: blur(20px); transform: scale(0.95); }
                 }
             `}</style>
+
+            <ThemeBuilder></ThemeBuilder>
 
             <Toaster 
                 position="bottom-right"
@@ -281,6 +297,8 @@ const PortfolioContent = () => {
                 <CustomCursor theme={theme} />
                 <SidebarMenu 
                     lang={lang} 
+                    isOpen={isSidebarMenuOpen}
+                    onClose={() => setIsSidebarMenuOpen(false)}
                     onOpenFaq={() => setIsFaqOpen(true)} 
                     onOpenBooking={() => setIsBookingOpen(true)}
                     onOpenJobNotes={() => setIsJobNotesOpen(true)}
@@ -302,6 +320,7 @@ const PortfolioContent = () => {
                             lang={lang} 
                             onOpenCamera={() => setIsCameraActive(true)}
                         />
+                        
                         
                         <Hero 
                             lang={lang} 
@@ -392,7 +411,7 @@ const PortfolioContent = () => {
                             <div className="lg:col-span-7 flex flex-col">
                                 <div className="p-6 md:p-8 rounded-3xl bg-white/5 border border-white/30 backdrop-blur-sm h-full shadow-lg">
                                     <h3 className="text-xl font-bold mb-6 text-neutral-200 flex items-center gap-2">
-                                        <span className="text-cyan-500">#</span> 
+                                        <span className="text-accent">#</span> 
                                         {lang === 'id' ? "Diskusi & Komentar" : "Discussion"}
                                     </h3>
                                     <div className="min-h-[300px]">
@@ -479,14 +498,27 @@ const PortfolioContent = () => {
                 </div> 
 
                 <div className="relative z-50">
-                    <MusicPlayer theme={theme} />
+                    {/* Pastikan MusicPlayer menerima props show jika fiturnya mau jalan */}
+                    <MusicPlayer theme={theme} show={showMusicPlayer} /> 
+
                     <Suspense fallback={null}>  
                         <CameraOverlay 
                             isActive={isCameraActive} 
                             onClose={() => setIsCameraActive(false)} 
                         />
                     </Suspense>
+                    
                     <BackToTop theme={theme} />
+
+                    <ShareModal 
+                            isOpen={isShareOpen} 
+                            onClose={() => setIsShareOpen(false)} 
+                        />
+                    
+                    <BottomDock 
+                            onMenuClick={() => setIsSidebarMenuOpen(true)} 
+                            onShareClick={() => setIsShareOpen(true)}
+                         />
                 </div>
             </div>
         </>

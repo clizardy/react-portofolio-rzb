@@ -280,7 +280,7 @@ const ProjectCalculator = () => {
             <div className="hidden lg:block lg:col-span-1 lg:sticky lg:top-24">
                 <motion.div layout className="bg-[#121214] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-indigo-500"></div>
-                    <h3 className="text-lg font-bold mb-6 flex items-center gap-2"><FaCalculator className="text-cyan-500" /> Estimasi Biaya</h3>
+                    <h3 className="text-lg font-bold mb-6 flex items-center gap-2"><FaCalculator className="text-accent" /> Estimasi Biaya</h3>
                     <ReceiptContent />
                     <div className="mb-8 mt-6 border-t border-white/10 pt-4">
                         <p className="text-xs text-neutral-500 uppercase tracking-widest mb-1">Total Estimasi</p>
@@ -321,7 +321,7 @@ const ProjectCalculator = () => {
                     className="fixed bottom-0 left-0 w-full bg-[#121214] rounded-t-3xl border-t border-white/10 z-50 p-6 lg:hidden max-h-[80vh] overflow-y-auto pb-24"
                 >
                     <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-lg font-bold text-white flex items-center gap-2"><FaCalculator className="text-cyan-500"/> Rincian Biaya</h3>
+                        <h3 className="text-lg font-bold text-white flex items-center gap-2"><FaCalculator className="text-accent"/> Rincian Biaya</h3>
                         <button onClick={() => setShowMobileReceipt(false)} className="p-2 bg-white/5 rounded-full"><FaTimes/></button>
                     </div>
                     <ReceiptContent />

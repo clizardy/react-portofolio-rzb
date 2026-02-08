@@ -268,7 +268,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
                 text-xs font-bold hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]
               "
             >
-              <FaCalculator className="text-cyan-500 group-hover:scale-110 transition-transform text-lg" />
+              <FaCalculator className="text-accent group-hover:scale-110 transition-transform text-lg" />
               <span>Coba Estimasi</span>
             </Link>
         </div>

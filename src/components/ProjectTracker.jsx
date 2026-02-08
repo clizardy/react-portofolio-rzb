@@ -151,7 +151,7 @@ const ProjectTracker = () => {
                     
                     <div className="flex justify-between items-end mb-10">
                         <h3 className="text-lg font-bold text-white flex items-center gap-3">
-                            <RiDashboardLine className="text-cyan-500 text-xl"/> 
+                            <RiDashboardLine className="text-accent text-xl"/> 
                             Production Timeline
                         </h3>
                         <p className="text-xs text-neutral-500 font-mono hidden md:block">
@@ -242,7 +242,7 @@ const ProjectTracker = () => {
                             <p className="text-neutral-500"><span className="text-green-500">➜</span> <span className="text-blue-400">~</span> initializing connection...</p>
                             <p className="text-neutral-500"><span className="text-green-500">➜</span> <span className="text-blue-400">~</span> fetching project data id: <span className="text-yellow-500">{trackingID}</span></p>
                             <div className="flex items-start gap-2 mt-4">
-                                <span className="text-cyan-500 blink animate-pulse">❯</span>
+                                <span className="text-accent blink animate-pulse">❯</span>
                                 <div>
                                     <span className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1 block">LATEST STATUS MESSAGE:</span>
                                     <p className="text-white typing-effect">"{data.Msg}"</p>

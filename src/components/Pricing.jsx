@@ -232,7 +232,7 @@ const FlipCard = ({ plan, lang, index }) => {
         return {
           icon: <FaBolt />,
           label: "LITE",
-          color: "text-cyan-500", // Gelapkan dikit biar jelas di background putih
+          color: "text-accent", // Gelapkan dikit biar jelas di background putih
           bgGradient: "from-cyan-500/10 to-blue-500/10",
         };
       case 1: // TIER 2: PRO

@@ -224,7 +224,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                         </span>
                     </button>
 
-                    <button onClick={handleShare} className="text-black/80 dark:text-white/90 hover:text-cyan-500 transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
+                    <button onClick={handleShare} className="text-black/80 dark:text-white/90 hover:text-accent transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
                         <FaShareAlt className="text-lg" />
                     </button>
                 </div>
@@ -321,7 +321,7 @@ return (
       {activeCategory === 'Videography' && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-12">
             <div className="flex items-center gap-2 bg-amber-50 dark:bg-sky-950 border border-amber-500 dark:border-neutral-300 px-4 py-2 rounded-lg italic text-sm text-neutral-600 dark:text-neutral-400">
-                <FaInfoCircle className="text-amber-500 dark:text-cyan-500" />
+                <FaInfoCircle className="text-amber-500 dark:text-accent" />
                 <p>{lang === 'id' ? "Catatan: Lihat video lainnya di " : "Note: Find more videos in "}<a href="#organization" className="font-bold text-amber-600 dark:text-cyan-400 hover:underline">{lang === 'id' ? "Organisasi" : "Organization"}</a>.</p>
             </div>
         </motion.div>

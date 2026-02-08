@@ -4,12 +4,14 @@ import { FiSun, FiMoon } from "react-icons/fi";
 import { FaHashtag } from "react-icons/fa"; 
 import { FaSearch } from 'react-icons/fa';
 import MatrixRain from './MatrixRain';
+import SocialModal from './SocialModal';
 
 const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
   
   // --- LOGIKA CHEAT CODE ---
   const [clickCount, setClickCount] = useState(0);
   const [showMatrix, setShowMatrix] = useState(false); 
+  const [showSocials, setShowSocials] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,15 +38,9 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
 
   const t = NAVBAR_TEXT[lang] || NAVBAR_TEXT.en;
 
-  const handleOpenSidebar = () => {
-    const event = new Event('open-sidebar');
-    window.dispatchEvent(event);
-  };
-
   return (
     <>
-      {/* --- 3. RENDERING MATRIX (WAJIB DITAMBAH DI SINI) --- */}
-      {/* Ini akan menampilkan layar Matrix jika showMatrix bernilai true */}
+      <SocialModal isOpen={showSocials} onClose={() => setShowSocials(false)} />
       {showMatrix && <MatrixRain onClose={() => setShowMatrix(false)} />}
 
       <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
@@ -131,7 +127,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
 
               {/* Tombol Follow */}
               <button
-                  onClick={handleOpenSidebar}
+                  onClick={() => setShowSocials(true)} // Trigger Modal Disini
                   className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500 dark:border-cyan-300/60 hover:bg-amber-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
               >
                   <span className="text-xs font-bold tracking-wide uppercase group-hover:text-amber-600 dark:group-hover:text-cyan-400">

@@ -114,7 +114,7 @@ const TestimonialCard = ({ review, index, lang }) => {
               initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 0.1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}
               className="absolute top-4 right-4"
             >
-              <RiDoubleQuotesL className="text-6xl text-cyan-500" />
+              <RiDoubleQuotesL className="text-6xl text-accent" />
             </motion.div>
           )}
         </AnimatePresence>

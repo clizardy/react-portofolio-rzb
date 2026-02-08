@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiMenuAlt3 } from "react-icons/hi"; 
 import { 
   FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, 
-  FaShapes, FaEnvelope, FaImages, FaGraduationCap, 
+  FaShapes, FaEnvelope, FaImages, FaGraduationCap, FaTelegram,
   FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle,
   FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate,
   FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
@@ -34,8 +34,7 @@ const MENU_ITEMS = [
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
-const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, onClose, setIsOpen }) => {
   const [showQR, setShowQR] = useState(false);
 
   // --- SECRET TRIGGER STATE ---
@@ -78,11 +77,11 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
   };
 
   useEffect(() => {
-    const openSidebarHandler = () => setIsOpen(true);
+    const openSidebarHandler = () => { if(setIsOpen) setIsOpen(true); };
     window.addEventListener('open-sidebar', openSidebarHandler);
     
     const handleResize = () => {
-      if (window.innerWidth > 1024) setIsOpen(false);
+      if (window.innerWidth > 1024) onClose();
     };
     window.addEventListener("resize", handleResize);
 
@@ -147,16 +146,6 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
 
   return (
     <>
-      <motion.button
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setIsOpen(true)}
-        className="fixed top-6 right-6 z-50 p-2 text-neutral-900 dark:text-white cursor-pointer transition-colors hover:text-amber-600 dark:hover:text-cyan-100 drop-shadow-md"
-      >
-        <HiMenuAlt3 size={28} />
-      </motion.button>
 
       <AnimatePresence>
         {isOpen && (
@@ -212,7 +201,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
                     </div>
 
                     <button
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => onClose()}
                       className="p-2 rounded-full hover:bg-red-500 hover:text-white text-neutral-500 dark:text-neutral-400 transition-colors"
                     >
                       <FaTimes size={20} />
@@ -232,7 +221,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
                             <div className="p-4 space-y-3 text-xs font-mono">
                                 <div className="flex items-center justify-between">
                                     <span className="text-neutral-500 dark:text-slate-400 flex items-center gap-2">
-                                        <FaGlobe className="text-cyan-600 dark:text-cyan-500"/> IP_ADDR
+                                        <FaGlobe className="text-cyan-600 dark:text-accent"/> IP_ADDR
                                     </span>
                                     <span className="font-bold tracking-wider text-neutral-800 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
                                         {networkInfo.ip}
@@ -363,7 +352,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
                               {/* Tombol Close */}
                               <button 
                                   onClick={() => setShowQR(false)}
-                                  className="absolute top-4 right-4 p-2 text-amber-500 hover:text-neutral-900 dark:text-cyan-500 dark:hover:text-white transition-colors"
+                                  className="absolute top-4 right-4 p-2 text-amber-500 hover:text-neutral-900 dark:text-accent dark:hover:text-white transition-colors"
                               >
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -414,8 +403,9 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes }) => {
                 <p className="text-xs font-bold mt-2 text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-2 text-center">
                     {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
                 </p>
-                <div className="flex flex-wrap justify-center gap-3">
+                <div className="flex flex-wrap justify-center md:gap-1.5 gap-2.5">
                     <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-700 dark:text-green-400" />
+                    <SocialBtn icon={<FaTelegram />} href="https://t.me/ronald_rzb" color="text-blue-400 dark:text-blue-300" />
                     <SocialBtn icon={<FaInstagram />} href="https://www.instagram.com/ronald_rzb/" color="text-pink-500" />
                     <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600 dark:text-blue-500" />
                     <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />

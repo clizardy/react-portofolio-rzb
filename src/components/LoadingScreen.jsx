@@ -70,7 +70,7 @@ const Preloader = ({ onComplete }) => {
       {/* 1. BAGIAN ATAS: STATUS TAHUN */}
       <div className="w-full flex justify-between items-start opacity-0 animate-fade-in-down" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
         {/* Logo kecil di kiri saya hapus biar fokus ke Logo Besar di tengah */}
-        <span className="text-xs font-mono text-cyan-500 uppercase tracking-widest border border-cyan-900 px-2 py-1 rounded bg-cyan-950/30">
+        <span className="text-xs font-mono text-accent uppercase tracking-widest border border-cyan-900 px-2 py-1 rounded bg-cyan-950/30">
             Portfolio 2025
         </span>
       </div>
@@ -111,10 +111,10 @@ const Preloader = ({ onComplete }) => {
                 `}
              >
                 {textIndex === GREETINGS.length - 1 && (
-                    <span className="block text-xs font-normal text-cyan-500 mb-2 tracking-[0.3em] uppercase">Presenting</span>
+                    <span className="block text-xs font-normal text-accent mb-2 tracking-[0.3em] uppercase">Presenting</span>
                 )}
                 {GREETINGS[textIndex]}
-                <span className="text-cyan-500">.</span>
+                <span className="text-accent">.</span>
              </motion.h2>
         </AnimatePresence>
       </div>

@@ -61,7 +61,7 @@ const MusicPlayer = ({ theme }) => {
                     onClick={togglePlay}
                     className={`relative w-10 h-10 flex items-center justify-center rounded-full shrink-0 transition-transform active:scale-95 bg-transparent ${
                         // Masukkan logika variabel lain di sini, contoh:
-                        isPlaying ? 'text-cyan-500' : 'text-neutral-500'
+                        isPlaying ? 'text-accent' : 'text-neutral-500'
                     }`}
                 >
                     <motion.div
