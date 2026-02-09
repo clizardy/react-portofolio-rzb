@@ -85,16 +85,7 @@ const PortfolioContent = () => {
 
 
 // --- STATE UNTUK MUSIK PLAYER ---
-    const [showPlayer, setShowPlayer] = useState(false); // Kontrol Popup
-     useEffect(() => {
-        const opened = localStorage.getItem("music-opened");
-        if (!opened) {
-            setShowPlayer(true);
-            localStorage.setItem("music-opened", "1");
-        }
-        }, []);
-
-    // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas
+    const [showPlayer, setShowPlayer] = useState(false);
     useEffect(() => {
         if (showWelcome) {
             document.body.style.overflow = 'hidden';
