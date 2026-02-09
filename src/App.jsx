@@ -1,13 +1,13 @@
-import { useState, useEffect, lazy, Suspense } from "react"; 
+import { useState, useEffect, lazy, Suspense, useRef } from "react"; 
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast"; 
 import { AnimatePresence } from "framer-motion"; 
 import Lenis from 'lenis';
 import ReactGA from "react-ga4"; 
+import React from "react";
 
 // IMPORT KOMPONEN UI
 import CustomCursor from "./components/CustomCursor";
-import MusicPlayer from "./components/MusicPlayer";
 import BackToTop from "./components/BackToTop";
 import ScrollProgress from "./components/ScrollProgress";
 import Preloader from "./components/LoadingScreen";
@@ -47,6 +47,7 @@ import Workflow from "./components/Workflow";
 import Stats from "./components/Stats";
 import SecretManager from "./components/SecretManager";
 import BookingModal from "./components/BookingModal";
+import ProjectInquiryForm from "./components/ProjectInquiryForm";
 import TimeThemeNotification from "./components/TimeThemeNotification";
 import Invoice from "./components/Invoice"; 
 import NotFound from "./components/NotFound";
@@ -62,6 +63,8 @@ import ThemeBuilder from "./components/ThemeBuilder";
 import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
 
+import MusicPlayerWidget from "./components/MusicPlayerWidget";
+
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
@@ -72,12 +75,24 @@ const PortfolioContent = () => {
     const [isWorkflowOpen, setIsWorkflowOpen] = useState(false);
     const [isGearOpen, setIsGearOpen] = useState(false);
     const [isBookingOpen, setIsBookingOpen] = useState(false);
+    const [isInquiryOpen, setIsInquiryOpen] = useState(false);
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isFaqOpen, setIsFaqOpen] = useState(false);
     const [isJobNotesOpen, setIsJobNotesOpen] = useState(false);
     const [isSidebarMenuOpen, setIsSidebarMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
-    const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+    const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+
+
+// --- STATE UNTUK MUSIK PLAYER ---
+    const [showPlayer, setShowPlayer] = useState(false); // Kontrol Popup
+     useEffect(() => {
+        const opened = localStorage.getItem("music-opened");
+        if (!opened) {
+            setShowPlayer(true);
+            localStorage.setItem("music-opened", "1");
+        }
+        }, []);
 
     // Kunci Scroll saat Welcome Screen & Paksa Scroll ke Atas
     useEffect(() => {
@@ -95,6 +110,7 @@ const PortfolioContent = () => {
     const [lang, setLang] = useState("en");
     const [isLoading, setIsLoading] = useState(true);
     const [isCameraActive, setIsCameraActive] = useState(false);
+    const [isCalculatorOpen, setIsCalculatorOpen] = useState(true);
 
     const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
 
@@ -284,11 +300,10 @@ const PortfolioContent = () => {
                     transition: 'opacity 0.5s ease-in-out'
                 }}
             >
+                <ParticleBackground theme={theme} />
         
                 <AnimatePresence mode="wait">
-                    {showWelcome && (
-                      <WelcomeScreen onEnter={() => setShowWelcome(false)} lang={lang} />
-                    )}
+                    {showWelcome && (<WelcomeScreen onEnter={() => setShowWelcome(false)} lang={lang} />)}
                 </AnimatePresence>
 
                 <Terminal />    
@@ -301,6 +316,7 @@ const PortfolioContent = () => {
                     onClose={() => setIsSidebarMenuOpen(false)}
                     onOpenFaq={() => setIsFaqOpen(true)} 
                     onOpenBooking={() => setIsBookingOpen(true)}
+                    onOpenInquiry={() => setIsInquiryOpen(true)}
                     onOpenJobNotes={() => setIsJobNotesOpen(true)}
                 />
 
@@ -327,13 +343,12 @@ const PortfolioContent = () => {
                             isReady={!showWelcome} 
                         />
                         <SecretManager />
-                        <ParticleBackground theme={theme} />
                     </div>
 
                     {/* MARQUEE */}
                     <div className="w-full">
                         <Marquee />
-                    </div> 
+                    </div>
 
                     <Suspense fallback={null}>
                         <Stats />
@@ -485,22 +500,32 @@ const PortfolioContent = () => {
                         />
                     </Suspense>
 
+                    <Suspense fallback={null}>
                     <FaqSidebar 
                         lang={lang} 
                         isOpen={isFaqOpen} 
                         onClose={() => setIsFaqOpen(false)} 
                     />
+                    </Suspense>
 
+                    <Suspense fallback={null}>
                     <BookingModal 
+                        lang={lang}
                         isOpen={isBookingOpen} 
                         onClose={() => setIsBookingOpen(false)} 
                     />
+                    </Suspense>
+
+                    <Suspense fallback={null}>
+                    <ProjectInquiryForm 
+                        lang={lang}
+                        isOpen={isInquiryOpen} 
+                        onClose={() => setIsInquiryOpen(false)} 
+                    />
+                    </Suspense>
                 </div> 
 
                 <div className="relative z-50">
-                    {/* Pastikan MusicPlayer menerima props show jika fiturnya mau jalan */}
-                    <MusicPlayer theme={theme} show={showMusicPlayer} /> 
-
                     <Suspense fallback={null}>  
                         <CameraOverlay 
                             isActive={isCameraActive} 
@@ -515,10 +540,28 @@ const PortfolioContent = () => {
                             onClose={() => setIsShareOpen(false)} 
                         />
                     
+                    <AnimatePresence>
+                        {showPlayer && (
+                        <MusicPlayerWidget 
+                        onClose={() => setShowPlayer(false)}
+                        theme={theme}
+                        />
+
+                        )}
+                    </AnimatePresence>
+
                     <BottomDock 
-                            onMenuClick={() => setIsSidebarMenuOpen(true)} 
-                            onShareClick={() => setIsShareOpen(true)}
-                         />
+                    // 1. Tambahkan ini agar tombol Menu bisa buka Sidebar
+                    onMenuClick={() => setIsSidebarMenuOpen(true)} 
+
+                    // 2. Props yang sudah kamu buat
+                    isPlaying={isPlayerOpen}
+                    onMusicClick={() => {
+                        setIsSidebarMenuOpen(false); // Tutup menu jika musik dibuka
+                        setShowPlayer(true);
+                        setIsPlayerOpen(true);
+                    }}
+                    />
                 </div>
             </div>
         </>

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@formspree/react": "^3.0.0",
     "@giscus/react": "^3.1.0",
     "@motionone/utils": "^10.18.0",
     "@tailwindcss/vite": "^4.0.9",
@@ -34,7 +35,8 @@
     "react-router-dom": "^7.11.0",
     "react-tilt": "^1.0.2",
     "react-type-animation": "^3.2.0",
-    "recharts": "^3.7.0"
+    "recharts": "^3.7.0",
+    "remixicon-react": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

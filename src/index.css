@@ -57,11 +57,11 @@
 /* DESKTOP CONFIG (> 768px) */
 @media (min-width: 768px) {
     :root {
-        --dock-item-size: 40px;
+        --dock-item-size: 48px;
         --dock-action-size: 60px;
         --dock-gap: 24px;
-        --dock-padding: 16px 32px;
-        --dock-bottom: 40px;        
+        --dock-padding: 8px 24px;
+        --dock-bottom: 30px;        
     }
 }
 

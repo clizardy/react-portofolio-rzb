@@ -1,76 +1,102 @@
-import toast from 'react-hot-toast';
+import React, { useState } from 'react';
+import { FaPhoneAlt, FaBriefcase, FaFolderOpen, FaMusic, FaChevronDown } from 'react-icons/fa';
+import JobNotesModal from './JobNotesModal'; 
 
-const BottomDock = ({ onMenuClick, onShareClick }) => {
+const BottomDock = ({ onMenuClick, onShareClick, isPlaying, onMusicClick }) => {
+  const [showJobs, setShowJobs] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
-  // --- SCROLL HANDLER ---
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      toast.error(`Section ${id} not found!`);
-    }
+  const scrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="dock-container">
-      <nav className="glass-dock">
+    <>
+      <JobNotesModal isOpen={showJobs} onClose={() => setShowJobs(false)} />
+
+      {/* WRAPPER UTAMA: Mengontrol animasi naik/turun */}
+      <div 
+        className={`fixed left-0 right-0 bottom-0 z-[9999] flex flex-col items-center justify-end pb-4 transition-transform duration-500 ease-in-out pointer-events-none ${
+          isMinimized ? 'translate-y-[calc(100%-40px)]' : 'translate-y-0'
+        }`}
+      >
         
-        {/* 1. PROFILE (Ganti dari Home) */}
+        {/* TOMBOL TOGGLE (SHOW/HIDE) */}
+        {/* pointer-events-auto agar bisa diklik meskipun wrapper pointer-events-none */}
         <button 
-          className="dock-item" 
-          onClick={() => scrollToSection('about')} 
-          aria-label="Go to Profile"
+          onClick={() => setIsMinimized(!isMinimized)}
+          className="pointer-events-auto mb-3 md:p-1.5 p-3 rounded-full text-white/80 hover:text-white hover:bg-white/20 hover:scale-110 transition-all cursor-pointer z-50"
+          title={isMinimized ? "Show Dock" : "Hide Dock"}
         >
-          {/* Icon User/Profile */}
-          <i className="ri-user-smile-line"></i>
-          <span className="dock-label">Profile</span>
+          <FaChevronDown 
+            className={`text-sm transition-transform duration-500 ${isMinimized ? 'rotate-180' : 'rotate-0'}`} 
+          />
         </button>
 
-        {/* 2. PROJECTS (Tetap) */}
-        <button 
-          className="dock-item" 
-          onClick={() => scrollToSection('projects')}
-          aria-label="View Projects"
-        >
-          <i className="ri-stack-line"></i>
-          <span className="dock-label">Work</span>
-        </button>
+        {/* CONTAINER DOCK */}
+        {/* PENTING: !relative dan !transform-none untuk mematikan posisi fixed bawaan CSS */}
+        <div className="dock-container !relative !fixed-none !inset-auto !transform-none pointer-events-auto">
+          <div className="glass-dock px-4">
 
-        {/* 3. MENU / SIDEBAR (CENTER - Ganti dari Telegram) */}
-        <div className="dock-item main-action">
-          <button 
-            onClick={onMenuClick} // Trigger buka Sidebar
-            className="action-btn"
-            aria-label="Open Full Menu"
-          >
-            {/* Icon Menu Burger / Titik 3 */}
-            <i className="ri-menu-4-line"></i>
-          </button>
+            {/* --- Tombol Contact --- */}
+            <button onClick={() => scrollTo('contact')} className="dock-item group">
+              <FaPhoneAlt />
+              <span className="dock-label">Contact</span>
+            </button>
+
+            {/* --- Tombol Musik --- */}
+            <button 
+              onClick={onMusicClick} 
+              className={`dock-item group relative transition-colors cursor-pointer ${isPlaying ? 'text-green-400' : ''}`}
+            >
+              {isPlaying ? (
+                  <div className="relative">
+                      <FaMusic className="animate-spin-slow" />
+                      <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      </span>
+                  </div>
+              ) : (
+                  <FaMusic />
+              )}
+              <span className="dock-label">Music</span>
+            </button>
+
+            {/* --- Tombol Menu (Main Action) --- */}
+            <div className="dock-item main-action">
+              <button onClick={onMenuClick} className="action-btn cursor-pointer">
+                <i className="ri-menu-4-line text-xl"></i>
+                <span className="dock-label font-bold text-amber-400">Menu</span>
+              </button>
+            </div>
+
+            {/* --- Tombol Work OS --- */}
+            <button 
+              onClick={() => setShowJobs(true)} 
+              className="dock-item group relative cursor-pointer"
+            >
+              <div className="relative">
+                <FaBriefcase className="text-amber-400 text-2xl drop-shadow-[0_0_8px_rgba(251,191,36,0.5)] transition-all group-hover:scale-110" />
+                <span className="absolute -top-0 -right-0.5 flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500 border border-black/30"></span>
+                </span>
+              </div>
+              <span className="dock-label font-bold text-amber-400">Work OS</span>
+            </button>
+
+            {/* --- Tombol Projects --- */}
+            <button onClick={() => scrollTo('projects')} className="dock-item group">
+              <FaFolderOpen />
+              <span className="dock-label">Projects</span>
+            </button>
+
+          </div>
         </div>
-
-        {/* 4. SERVICES (Ganti dari Email) */}
-        <button 
-          className="dock-item" 
-          onClick={() => scrollToSection('services')}
-          aria-label="Services"
-        >
-          <i className="ri-service-line"></i>
-          <span className="dock-label">Service</span>
-        </button>
-
-        {/* 5. SHARE (New Feature) */}
-        <button 
-          className="dock-item" 
-          onClick={onShareClick}
-          aria-label="Share Site"
-        >
-          <i className="ri-share-forward-line"></i>
-          <span className="dock-label">Share</span>
-        </button>
-
-      </nav>
-    </div>
+      </div>
+    </>
   );
 };
 

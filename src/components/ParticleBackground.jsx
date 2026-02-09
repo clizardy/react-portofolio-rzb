@@ -2,11 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 
 const ParticleBackground = ({ theme }) => {
   const canvasRef = useRef(null);
-  // State untuk mengecek apakah canvas terlihat di layar (untuk performa)
   const [isVisible, setIsVisible] = useState(true);
 
-  // --- 1. SETUP INTERSECTION OBSERVER ---
-  // Tujuannya: Mematikan animasi saat user scroll ke bawah agar CPU hemat
+  // --- 1. SETUP OBSERVER (Performa) ---
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -24,9 +22,8 @@ const ParticleBackground = ({ theme }) => {
     };
   }, []);
 
-  // --- 2. LOGIC CANVAS & ANIMASI ---
+  // --- 2. LOGIC CANVAS ---
   useEffect(() => {
-    // Jika tidak terlihat di layar, JANGAN jalankan script berat ini
     if (!isVisible) return;
 
     const canvas = canvasRef.current;
@@ -34,21 +31,18 @@ const ParticleBackground = ({ theme }) => {
     let animationFrameId;
     let particles = [];
 
-    
-
-    // --- KONFIGURASI WARNA ---
+    // Warna Partikel: Amber (Light) / Cyan (Dark)
     const isLight = theme === 'light';
     const colorRGB = isLight ? '245, 158, 11' : '103, 232, 249'; 
     
-    // --- KONFIGURASI PARTIKEL ---
-    const particleCount = 30; // Jumlah partikel
+    const particleCount = 12; // Jumlah partikel
     const connectionDistance = 150; 
     const mouseDistance = 180; 
 
     let mouse = { x: null, y: null };
-    let canvasWidth, canvasHeight;
+    let canvasWidth = window.innerWidth;
+    let canvasHeight = window.innerHeight;
 
-    // Fungsi Resize (High DPI / Retina Support)
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       canvasWidth = window.innerWidth;
@@ -64,7 +58,6 @@ const ParticleBackground = ({ theme }) => {
       initParticles();
     };
 
-    // Event Listeners
     const onMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -78,13 +71,12 @@ const ParticleBackground = ({ theme }) => {
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseleave', onMouseLeave);
 
-    // Class Particle
     class Particle {
       constructor() {
         this.x = Math.random() * canvasWidth;
         this.y = Math.random() * canvasHeight;
-        this.vx = (Math.random() - 0.5) * 1.2;
-        this.vy = (Math.random() - 0.5) * 1.2;
+        this.vx = (Math.random() - 0.5) * 1.0; // Kecepatan gerak
+        this.vy = (Math.random() - 0.5) * 1.0;
         this.size = Math.random() * 1.5 + 1;
       }
 
@@ -112,7 +104,7 @@ const ParticleBackground = ({ theme }) => {
       }
 
       draw() {
-        ctx.fillStyle = `rgba(${colorRGB}, 0.7)`; 
+        ctx.fillStyle = `rgba(${colorRGB}, 0.6)`; 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -126,11 +118,9 @@ const ParticleBackground = ({ theme }) => {
         }
     }
 
-    // Inisialisasi awal
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // --- ANIMATION LOOP UTAMA ---
     const animate = () => {
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       
@@ -138,7 +128,6 @@ const ParticleBackground = ({ theme }) => {
         particles[i].update();
         particles[i].draw();
 
-        // Loop Nested untuk Garis Koneksi
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
@@ -156,27 +145,23 @@ const ParticleBackground = ({ theme }) => {
         }
       }
       
-      // Request frame berikutnya (Looping)
       animationFrameId = requestAnimationFrame(animate);
     };
     
-    // Jalankan animasi
     animate();
 
-    // Cleanup Function (Saat component unmount / theme berubah / hilang dari layar)
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseleave', onMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [theme, isVisible]); // Dependency array
+  }, [theme, isVisible]);
 
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[0]"
-      // Hint browser untuk optimasi rendering
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[20]" 
       style={{ willChange: 'transform' }} 
     />
   );

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Palette, Check, RefreshCcw, Pipette } from 'lucide-react';
+import { Palette, RefreshCcw, Pipette, X } from 'lucide-react';
 
 const ThemeBuilder = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
-  // Daftar preset warna neon yang cocok dengan tema dark
+  const [activeColor, setActiveColor] = useState(() => localStorage.getItem('user-accent-hex') || null);
+
   const presets = [
     { name: 'Cyan', color: '6, 182, 212', hex: '#06b6d4' },
     { name: 'Purple', color: '168, 85, 247', hex: '#a855f7' },
@@ -15,52 +15,31 @@ const ThemeBuilder = () => {
     { name: 'Blue', color: '59, 130, 246', hex: '#3b82f6' },
   ];
 
-  // State untuk menyimpan warna aktif. Jika tidak ada di local storage, default null (artinya pakai CSS default)
-  const [activeColor, setActiveColor] = useState(() => {
-    return localStorage.getItem('user-accent-hex') || null; 
-  });
-
-  // Load warna saat refresh agar tidak reset
   useEffect(() => {
     const savedRgb = localStorage.getItem('user-accent-rgb');
-    const savedHex = localStorage.getItem('user-accent-hex');
-    
-    if (savedRgb && savedHex) {
-      document.documentElement.style.setProperty('--accent-color', savedRgb);
-      document.documentElement.style.setProperty('--accent-glow', `rgba(${savedRgb}, 0.5)`);
-      setActiveColor(savedHex);
-    }
+    if (savedRgb) updateCssVariables(savedRgb);
   }, []);
 
-  // FUNGSI UPDATE TEMA (CUSTOM)
+  const updateCssVariables = (rgb) => {
+    document.documentElement.style.setProperty('--accent-color', rgb);
+    document.documentElement.style.setProperty('--accent-glow', `rgba(${rgb}, 0.5)`);
+  };
+
   const updateTheme = (rgbString, hex) => {
-    // Menyuntikkan style inline ke <html> untuk override CSS default
-    document.documentElement.style.setProperty('--accent-color', rgbString);
-    document.documentElement.style.setProperty('--accent-glow', `rgba(${rgbString}, 0.5)`);
-    
+    updateCssVariables(rgbString);
     setActiveColor(hex);
     localStorage.setItem('user-accent-rgb', rgbString);
     localStorage.setItem('user-accent-hex', hex);
   };
 
-  // FUNGSI RESET KE DEFAULT (BARU)
   const resetTheme = () => {
-    // Hapus style inline agar kembali mengikuti CSS variable default
     document.documentElement.style.removeProperty('--accent-color');
     document.documentElement.style.removeProperty('--accent-glow');
-    
-    // Hapus data dari local storage
     localStorage.removeItem('user-accent-rgb');
     localStorage.removeItem('user-accent-hex');
-    
-    // Reset state lokal
-    setActiveColor(null); 
-    
-    // Opsional: Reload halaman untuk memastikan semua komponen refresh bersih
-    // window.location.reload(); 
+    setActiveColor(null);
   };
 
-  // Helper konversi Hex ke RGB untuk Custom Picker
   const hexToRgb = (hex) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -68,96 +47,120 @@ const ThemeBuilder = () => {
     return `${r}, ${g}, ${b}`;
   };
 
+  // --- ANIMASI ADAPTIF ---
+  const panelVariants = {
+    hidden: { 
+      opacity: 0, 
+      scale: 0.8, 
+      x: window.innerWidth < 768 ? 0 : -20, // Geser ke kiri di desktop
+      y: window.innerWidth < 768 ? 20 : 0   // Geser ke atas di mobile
+    },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      x: 0, 
+      y: 0,
+      transition: { type: "spring", damping: 20, staggerChildren: 0.05 }
+    },
+    exit: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: { opacity: 1, scale: 1 }
+  };
+
   return (
-    <div className="fixed bottom-20 left-6 z-[9999]">
+    <div className="fixed bottom-6 left-5 z-[200] flex flex-col items-start md:items-center">
+      
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, x: -20 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.9, x: -20 }}
-            className="mb-4 p-5 rounded-3xl bg-black/80 backdrop-blur-2xl border border-white/10 shadow-2xl w-72"
+            variants={panelVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={`
+              mb-4 flex items-center bg-[#0f0f11]/10 backdrop-blur-sm border border-white/10 shadow-sm
+              flex-row px-4 py-2 gap-3 rounded-full 
+              md:flex-col md:px-0 md:py-4 md:w-14 md:rounded-[2rem] md:mb-6
+            `}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xs font-bold tracking-widest text-white/70 flex items-center gap-2">
-                <Palette size={14} className="text-accent" /> Custom Accent
-              </h3>
-              
-              {/* Tombol Reset */}
-              <button 
-                onClick={resetTheme}
-                className="text-white/90 hover:text-white transition-colors flex items-center gap-1 text-[10px] uppercase tracking-wider"
-                title="Reset to Default Theme"
-              >
-                <RefreshCcw size={12} /> Reset
-              </button>
-            </div>
+            {/* Reset Button */}
+            <motion.button
+              variants={itemVariants}
+              onClick={resetTheme}
+              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+            >
+              <RefreshCcw size={14} />
+            </motion.button>
 
-            {/* Grid Preset */}
-            <div className="grid grid-cols-4 gap-3 mb-6">
+            {/* Divider (Mobile: Vertical line, Desktop: Horizontal line) */}
+            <div className="w-[1px] h-6 bg-white/10 md:w-6 md:h-[1px]" />
+
+            {/* Color Presets */}
+            <div className="flex flex-row md:flex-col gap-3">
               {presets.map((p) => (
-                <button
+                <motion.button
                   key={p.name}
+                  variants={itemVariants}
                   onClick={() => updateTheme(p.color, p.hex)}
-                  className="relative w-full aspect-square rounded-full border-2 border-white/5 shadow-inner transition-transform active:scale-90"
-                  style={{ backgroundColor: p.hex }}
-                  title={p.name}
+                  className="relative w-7 h-7 md:w-8 md:h-8 rounded-full transition-transform active:scale-90 group"
                 >
-                  {activeColor === p.hex && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full">
-                      <Check size={14} className="text-white" />
-                    </div>
-                  )}
-                </button>
+                  <div 
+                    className="absolute inset-0 rounded-full border border-white/10 transition-all duration-300"
+                    style={{ 
+                      backgroundColor: p.hex,
+                      boxShadow: activeColor === p.hex ? `0 0 12px ${p.hex}` : 'none',
+                      transform: activeColor === p.hex ? 'scale(1)' : 'scale(0.75)'
+                    }} 
+                  />
+                  <div className="absolute inset-0 rounded-full border border-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </motion.button>
               ))}
-              
-              {/* Custom Color Picker Button */}
-              <div className="relative w-full aspect-square rounded-full border-2 border-dashed border-white/20 flex items-center justify-center group overflow-hidden" title="Pick Custom Color">
-                <Pipette size={14} className="text-white/40 group-hover:text-white" />
-                <input 
-                  type="color" 
-                  value={activeColor || '#ffffff'}
-                  onChange={(e) => updateTheme(hexToRgb(e.target.value), e.target.value)}
-                  className="absolute inset-0 opacity-0 cursor-pointer scale-150"
-                />
-              </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-              <div className="flex justify-between items-center text-[10px] text-white/50 mb-2">
-                <span>Active Theme</span>
-                <span className="font-mono text-white/80">
-                  {activeColor ? activeColor.toUpperCase() : 'DEFAULT'}
-                </span>
-              </div>
-              <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
-                <motion.div 
-                   className="h-full bg-accent" 
-                   initial={{ width: 0 }}
-                   animate={{ width: '100%' }}
-                   // Jika activeColor null (Default), biarkan CSS bg-accent menangani warnanya
-                   style={{ backgroundColor: activeColor || undefined }}
-                />
-              </div>
-            </div>
+            <div className="w-[1px] h-6 bg-white/10 md:w-6 md:h-[1px]" />
+
+            {/* Custom Picker */}
+            <motion.div variants={itemVariants} className="relative w-8 h-8 rounded-full border border-dashed border-white/20 flex items-center justify-center group overflow-hidden">
+              <Pipette size={14} className="text-white/40 group-hover:text-white" />
+              <input 
+                type="color" 
+                value={activeColor || '#ffffff'}
+                onChange={(e) => updateTheme(hexToRgb(e.target.value), e.target.value)}
+                className="absolute inset-0 opacity-0 cursor-pointer scale-150"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <button
+      {/* --- TRIGGER BUTTON --- */}
+      <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xl group"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#0f0f11] border border-white/10 shadow-xl z-50 overflow-hidden group"
       >
-        <Palette 
-          size={24} 
-          className="group-hover:rotate-12 transition-transform" 
-          // Jika Default, gunakan warna dari class 'text-accent' (lewat CSS)
-          // Jika Custom, gunakan inline style
-          style={{ color: activeColor || undefined }}
-          // Tambahkan class text-accent sebagai fallback default
-          {...(!activeColor ? { className: "text-accent group-hover:rotate-12 transition-transform" } : {})}
+        <div 
+          className="absolute inset-0 blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
+          style={{ backgroundColor: activeColor || 'var(--accent-color)' }}
         />
-      </button>
+        
+        <div className="relative z-10">
+           {isOpen ? (
+             <X size={20} className="text-white/70" />
+           ) : (
+             <Palette 
+               size={22} 
+               style={{ color: activeColor || undefined }} 
+               className={!activeColor ? "text-accent" : ""} 
+             />
+           )}
+        </div>
+      </motion.button>
+
     </div>
   );
 };

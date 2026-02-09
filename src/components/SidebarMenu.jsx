@@ -11,6 +11,7 @@ import {
 import { FaL, FaXTwitter } from "react-icons/fa6"; 
 import { toast } from "react-hot-toast";
 import OklchGradientText from "../components/OklchGradientText";
+import ProjectInquiryForm from "./ProjectInquiryForm";
 
 const SITE_URL = window.location.href;
 
@@ -34,7 +35,7 @@ const MENU_ITEMS = [
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
-const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, onClose, setIsOpen }) => {
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobNotes, isOpen, onClose, setIsOpen }) => {
   const [showQR, setShowQR] = useState(false);
 
   // --- SECRET TRIGGER STATE ---
@@ -156,7 +157,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, o
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 dark:bg-black/40 z-[998] backdrop-blur-[2px]"
+              className="fixed inset-0 bg-black/60 dark:bg-black/40 z-[20] backdrop-blur-[2px]"
             />
 
             {/* SIDEBAR CONTAINER UTAMA */}
@@ -317,8 +318,8 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, o
                 <div className="mt-2 flex-shrink-0"> 
                     <button
                         onClick={() => {
-                            setIsOpen(false); 
                             onOpenFaq();
+                            setIsOpen(false);
                         }}
                         className="w-full flex items-center justify-center gap-3 p-3 rounded-2xl bg-teal-700/80 dark:bg-teal-500/10 text-white dark:text-teal-400 hover:bg-teal-500 hover:text-white transition-all group border border-teal-200 dark:border-teal-500/20"
                     >
@@ -330,7 +331,37 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, o
                 </div>
 
               </div> 
-              {/* End Scrollable Area */}
+              {/* TOMBOL INQUIRY (FORM KOMPLEKS) - Warna Emas/Amber agar Premium */}
+    <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() => {
+            onOpenInquiry(); // Fungsi untuk membuka modal formulir project
+            setIsOpen(false);
+        }}
+        className="
+            relative overflow-hidden group
+            w-full flex items-center justify-center gap-3
+            bg-gradient-to-r from-amber-500 to-orange-600 
+            text-white font-black py-4 rounded-2xl
+            shadow-[0_10px_20px_rgba(245,158,11,0.3)]
+            dark:shadow-[0_10px_20px_rgba(245,158,11,0.1)]
+            transition-all duration-300
+        "
+    >
+        {/* Efek Kilauan (Glint) */}
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] shadow-inner" />
+        
+        <FaBriefcase className="text-lg group-hover:rotate-12 transition-transform" />
+        <div className="flex flex-col items-start leading-none">
+            <span className="text-[13px] uppercase tracking-tighter">
+                {lang === 'id' ? "Mulai Proyek" : "Start a Project"}
+            </span>
+            <span className="text-[9px] opacity-80 font-normal italic">
+                {lang === 'id' ? "Dapatkan Estimasi Harga" : "Get Custom Quote"}
+            </span>
+        </div>
+    </motion.button>
               
               {/* MODAL QR CODE */}
               <AnimatePresence>
@@ -405,7 +436,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenJobNotes, isOpen, o
                 </p>
                 <div className="flex flex-wrap justify-center md:gap-1.5 gap-2.5">
                     <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-700 dark:text-green-400" />
-                    <SocialBtn icon={<FaTelegram />} href="https://t.me/ronald_rzb" color="text-blue-400 dark:text-blue-300" />
+                    <SocialBtn icon={<FaTelegram />} href="https://t.me/ronald_rzb" color="text-blue-400 dark:text-blue-500" />
                     <SocialBtn icon={<FaInstagram />} href="https://www.instagram.com/ronald_rzb/" color="text-pink-500" />
                     <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600 dark:text-blue-500" />
                     <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />

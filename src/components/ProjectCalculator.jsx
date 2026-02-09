@@ -4,7 +4,6 @@ import {
     FaCalculator, FaWhatsapp, FaCheck, FaChevronUp, FaChevronDown,
     FaGlobe, FaFilm, FaVideo, FaCamera, FaPalette, FaMusic, FaTimes
 } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 // --- DATABASE HARGA ---
 const PRICING_CONFIG = {
@@ -80,9 +79,9 @@ const PRICING_CONFIG = {
     unit: "Jam",
     pricePerUnit: 350000,
     addons: [
-      { id: 'singer', label: 'Penyanyi', price: 650000 },
+      { id: 'singer', label: 'Vocalis', price: 650000 },
       { id: 'sound', label: 'Sound System', price: 1700000 },
-      { id: 'mc', label: 'MC Acara', price: 500000 },
+      { id: 'mc', label: 'Master of Ceremony', price: 500000 },
       { id: 'transport', label: 'Luar Kota', price: 300000 },
     ]
   }
@@ -94,14 +93,12 @@ const TIMELINE_MULTIPLIER = {
   urgent: { label: 'Kilat (+100%)', val: 2.0 }, 
 };
 
-const ProjectCalculator = () => {
+const ProjectCalculator = ( {onClose} ) => {
   const [service, setService] = useState('web'); 
   const [quantity, setQuantity] = useState(1); 
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [timeline, setTimeline] = useState('normal');
   const [total, setTotal] = useState(0);
-  
-  // Mobile State: Show Receipt Breakdown
   const [showMobileReceipt, setShowMobileReceipt] = useState(false);
 
   // --- HITUNG TOTAL ---
@@ -181,6 +178,18 @@ const ProjectCalculator = () => {
       
       {/* Background Ambience */}
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#050505] to-[#050505] -z-10"></div>
+
+      {/* --- TOMBOL CLOSE UTAMA --- */}
+      <motion.button 
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.1, rotate: 90 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={onClose}
+        className="fixed top-6 right-6 z-[100] p-3 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-all shadow-xl cursor-pointer"
+      >
+        <FaTimes size={20} />
+      </motion.button>
 
       <div className="container mx-auto max-w-6xl">
         
