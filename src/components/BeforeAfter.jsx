@@ -54,7 +54,7 @@ const BeforeAfter = ({
   return (
     <div 
       ref={containerRef}
-      className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[500px] overflow-hidden rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800 cursor-col-resize select-none group"
+      className="relative w-full max-w-4xl mx-auto h-[300px] md:h-[500px] overflow-hidden rounded-2xl shadow-2xl border border-neutral-200 dark:border-white cursor-col-resize select-none group"
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
       onClick={handleMove} // Biar diklik langsung pindah

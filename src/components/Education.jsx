@@ -1,148 +1,371 @@
-import { EXPERIENCES } from "../constants"; 
-import { motion } from "framer-motion";
-import OklchGradientText from "../components/OklchGradientText";
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  FaHome, FaCode, FaGamepad, 
+  FaSearch, FaMoon, FaSun, FaCopy, 
+  FaGithub, FaLinkedin, FaSpotify, 
+  FaFileDownload, FaGlobe, FaCodeBranch,
+  FaCalculator, FaPalette, FaFingerprint, FaClock, FaGoogle
+} from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import CV from '../assets/CV.pdf';
 
-const Education = ({ lang }) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.4,
-        delayChildren: 0.2
-      }
-    }
+const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const SOCIAL_LINKS = {
+    github: 'https://github.com/clizardy',
+    linkedin: 'https://linkedin.com/in/ronald-zuni-bachtiar-a52990345/',
+    instagram: 'https://instagram.com/ronald_rzb',
+    spotify: 'https://open.spotify.com/user/31no4b5xpzclgwvuesdkow7nl4ne?si=640a695380964edb',
+    repo: 'https://github.com/clizardy/react-portofolio-rzb',
+    cv: CV
   };
 
-  const itemVariants = {
-    hidden: { 
-      y: 50, 
-      opacity: 0,
-      scale: 0.95 
+  // --- BASE COMMANDS ---
+  const baseCommands = [
+    { 
+      id: 'home', 
+      label: lang === 'id' ? 'Ke Beranda' : 'Go to Home', 
+      icon: <FaHome />, 
+      group: 'Navigation',
+      action: () => navigate('/') 
     },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      scale: 1,
-      transition: { 
-        duration: 0.8, 
-        ease: "easeOut" 
+    { 
+      id: 'projects', 
+      label: lang === 'id' ? 'Lihat Proyek' : 'View Projects', 
+      icon: <FaCode />, 
+      group: 'Navigation',
+      action: () => { navigate('/'); setTimeout(() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }), 100); } 
+    },
+    { 
+      id: 'game', 
+      label: lang === 'id' ? 'Main Game 404 (Gabut?)' : 'Play 404 Game', 
+      icon: <FaGamepad className="text-cyan-400"/>, 
+      group: 'Navigation',
+      action: () => navigate('/404-zone') 
+    },
+
+    // ... System & Utility ...
+    { 
+      id: 'theme', 
+      label: theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode', 
+      icon: theme === 'dark' ? <FaSun className="text-yellow-400"/> : <FaMoon className="text-purple-400"/>, 
+      group: 'System',
+      shortcut: 'T',
+      // PERBAIKAN DISINI: Hapus toast(), hanya jalankan fungsi
+      action: () => {
+        toggleTheme(); 
       }
+    },
+    { 
+      id: 'lang', 
+      label: lang === 'id' ? 'Ganti ke Bahasa Inggris' : 'Switch to Bahasa Indonesia', 
+      icon: <FaGlobe className="text-green-400"/>, 
+      group: 'System',
+      shortcut: 'L',
+      // PERBAIKAN DISINI: Hapus toast(), hanya jalankan fungsi
+      action: () => {
+        toggleLanguage();
+      }
+    },
+    { 
+      id: 'cv', 
+      label: lang === 'id' ? 'Unduh CV / Resume' : 'Download CV / Resume', 
+      icon: <FaFileDownload className="text-blue-400"/>, 
+      group: 'Utility',
+      action: () => {
+        window.open(SOCIAL_LINKS.cv, '_blank');
+        toast.success('Opening CV...');
+      }
+    },
+    { 
+      id: 'copy', 
+      label: lang === 'id' ? 'Salin Email' : 'Copy Email Address', 
+      icon: <FaCopy />, 
+      group: 'Utility',
+      action: () => {
+        navigator.clipboard.writeText('ronaldzunibachtiar@gmail.com');
+        toast.success('Email copied!');
+      }
+    },
+
+    // ... Socials ...
+    { 
+      id: 'github', 
+      label: 'Open GitHub Profile', 
+      icon: <FaGithub />, 
+      group: 'Socials',
+      action: () => window.open(SOCIAL_LINKS.github, '_blank')
+    },
+    { 
+      id: 'linkedin', 
+      label: 'Open LinkedIn Profile', 
+      icon: <FaLinkedin className="text-blue-500"/>, 
+      group: 'Socials',
+      action: () => window.open(SOCIAL_LINKS.linkedin, '_blank')
+    },
+    { 
+      id: 'spotify', 
+      label: 'Open Spotify Playlist', 
+      icon: <FaSpotify className="text-green-500"/>, 
+      group: 'Socials',
+      action: () => window.open(SOCIAL_LINKS.spotify, '_blank')
+    },
+    { 
+      id: 'source', 
+      label: 'View Source Code', 
+      icon: <FaCodeBranch className="text-orange-400"/>, 
+      group: 'Dev',
+      action: () => window.open(SOCIAL_LINKS.repo, '_blank')
+    },
+
+    // ... Dev Tools ...
+    {
+      id: 'uuid',
+      label: 'Generate UUID v4',
+      icon: <FaFingerprint className="text-rose-400"/>,
+      group: 'Dev Tools',
+      action: () => {
+        const uuid = crypto.randomUUID();
+        navigator.clipboard.writeText(uuid);
+        toast.success(`UUID Copied: ${uuid.slice(0,8)}...`);
+      }
+    },
+    {
+      id: 'timestamp',
+      label: 'Get Current Timestamp (ISO)',
+      icon: <FaClock className="text-amber-400"/>,
+      group: 'Dev Tools',
+      action: () => {
+        const time = new Date().toISOString();
+        navigator.clipboard.writeText(time);
+        toast.success('Timestamp copied!');
+      }
+    },
+    {
+      id: 'color-cyan',
+      label: 'Copy Brand Color: Cyan (#06b6d4)',
+      icon: <FaPalette className="text-accent"/>,
+      group: 'Design',
+      action: () => { navigator.clipboard.writeText('#06b6d4'); toast.success('Copied Cyan!'); }
+    },
+    {
+      id: 'color-violet',
+      label: 'Copy Brand Color: Violet (#8b5cf6)',
+      icon: <FaPalette className="text-violet-500"/>,
+      group: 'Design',
+      action: () => { navigator.clipboard.writeText('#8b5cf6'); toast.success('Copied Violet!'); }
     }
-  };
+  ];
+
+  // --- FILTERING LOGIC (Calculator & Google) ---
+  const filteredCommands = useMemo(() => {
+    let results = baseCommands.filter(cmd => 
+      cmd.label.toLowerCase().includes(query.toLowerCase()) || 
+      cmd.group.toLowerCase().includes(query.toLowerCase())
+    );
+
+    const mathRegex = /^[\d\s\+\-\*\/\(\)\.]+$/;
+    if (query.trim().length > 0 && mathRegex.test(query)) {
+      try {
+        // eslint-disable-next-line no-new-func
+        const result = new Function('return ' + query)();
+        if (result !== undefined && !isNaN(result)) {
+          results.unshift({
+            id: 'calculator',
+            label: `= ${result}`,
+            icon: <FaCalculator className="text-green-400" />,
+            group: 'Calculator',
+            action: () => {
+              navigator.clipboard.writeText(result.toString());
+              toast.success('Result copied to clipboard!');
+            }
+          });
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    if (results.length === 0 && query.trim().length > 0) {
+        results.push({
+            id: 'google-search',
+            label: `Search Google for "${query}"`,
+            icon: <FaGoogle className="text-red-400" />,
+            group: 'Web',
+            action: () => window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank')
+        });
+    }
+
+    return results;
+  }, [query, lang, theme, baseCommands]); // Ditambahkan baseCommands ke dependency
+
+  // --- KEYBOARD HANDLER ---
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
+        setQuery('');
+        setSelectedIndex(0);
+      }
+
+      if (!isOpen && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        if (e.key.toLowerCase() === 't') {
+           e.preventDefault();
+           toggleTheme();
+           // PERBAIKAN: Hapus toast disini
+        }
+        if (e.key.toLowerCase() === 'l') {
+           e.preventDefault();
+           toggleLanguage();
+           // PERBAIKAN: Hapus toast disini
+        }
+      }
+
+      if (isOpen) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev + 1) % filteredCommands.length);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev - 1 + filteredCommands.length) % filteredCommands.length);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (filteredCommands[selectedIndex]) {
+            filteredCommands[selectedIndex].action();
+            setIsOpen(false);
+          }
+        } else if (e.key === 'Escape') {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    const handleMobileOpen = () => {
+      setIsOpen(true);
+      setQuery('');
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('openCommandPalette', handleMobileOpen); 
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('openCommandPalette', handleMobileOpen);
+    };
+  }, [isOpen, selectedIndex, filteredCommands, toggleTheme, toggleLanguage]);
+  
+  // Scroll Lock
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isOpen]);
+
+  useEffect(() => setSelectedIndex(0), [query]);
 
   return (
-    <div id="education">
-        
-        {/* --- HEADER SECTION --- */}
-        <motion.div
-            initial={{ opacity: 0, y: -30 }} 
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.0 }}
-            className="my-16 text-center relative z-10"
-        >
-            <h2 className="text-4xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 mb-4">
-                <OklchGradientText>{lang === 'id' ? "Pendidikan" : "Education"}</OklchGradientText>
-            </h2>
-            <p className="text-slate-700 dark:text-slate-300 italic max-w-xl mx-auto">
-                {lang === 'id' 
-                 ? "Jejak akademis dan pembelajaran yang membentuk fondasi keahlian saya." 
-                 : "Academic path and learning milestones that form the foundation of my expertise."}
-            </p>
-        </motion.div>
-        
-        {/* --- TIMELINE CONTAINER --- */}
-        <div className="max-w-7xl mx-auto px-4 relative z-10"> 
-            
-            <motion.div 
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-4"
-            >
-                {EXPERIENCES.map((experience, index) => (
-                    <motion.div 
-                        key={index}
-                        variants={itemVariants}
-                        className="relative flex flex-col group"
-                    >
-                        {/* === GARIS VERTIKAL (MOBILE ONLY) === */}
-                        {/* Garis putus-putus vertikal untuk menghubungkan item atas ke bawah di HP */}
-                        {index !== EXPERIENCES.length - 1 && (
-                            <div className="absolute left-1/2 top-24 bottom-[-3rem] w-0.5 bg-gradient-to-b from-amber-500/50 via-amber-500/20 to-transparent dark:from-cyan-500/50 dark:via-cyan-500/20 lg:hidden -translate-x-1/2 z-0"></div>
-                        )}
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-[10vh] px-4 font-sans">
+          
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="absolute inset-0 bg-neutral-950/60 dark:bg-neutral-950/50 backdrop-blur-sm"
+          />
 
-                        {/* === BAGIAN ATAS: MARKER === */}
-                        <div className="flex flex-col items-center mb-0 relative z-10">
-                           
-                             {/* Tahun Badge */}
-                             <span className="mb-4 px-4 py-1.5 rounded-full bg-white dark:bg-slate-950/20 text-amber-600 dark:text-cyan-300 font-mono font-bold text-xs md:text-sm border border-amber-400 dark:border-neutral-300 shadow-sm relative z-20">
-                                {experience.year?.[lang] || experience.year}
-                            </span>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="relative w-full max-w-xl bg-neutral-900/80 dark:bg-black/50 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+          >
+            {/* Input Search */}
+            <div className="flex items-center px-5 py-4 border-b border-white/10">
+              <FaSearch className="text-neutral-400 mr-3 text-lg" />
+              <input 
+                autoFocus
+                type="text"
+                placeholder={lang === 'id' ? "Ketik perintah, matematika, atau search..." : "Type command, math, or search..."}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full bg-transparent text-white placeholder-neutral-500 outline-none text-lg"
+              />
+              <div className="text-xs text-neutral-400 bg-white/5 px-2 py-1 rounded border border-white/10 font-mono shadow-sm">
+                ESC
+              </div>
+            </div>
 
-                            {/* Area Garis & Logo */}
-                            <div className="relative w-full flex items-center justify-center h-20">
-                                
-                                {/* GARIS HORIZONTAL (DESKTOP ONLY - FIXED) */}
-                                {/* PERBAIKAN: Saya pindahkan 'hidden lg:block' ke depan agar prioritasnya jelas */}
-                                <div className={`hidden lg:block absolute h-[3px] top-1/2 left-1/2 w-full bg-gradient-to-r from-amber-500 to-amber-300/50 dark:from-cyan-500 dark:to-cyan-900/50 -translate-y-1/2 z-0 ${index === EXPERIENCES.length - 1 ? 'lg:hidden' : ''}`}></div>
-                                
-                                {/* LOGO CONTAINER */}
-                                <div className="relative z-10 w-20 h-20 p-1.5 rounded-full bg-white dark:bg-neutral-800 border-4 border-amber-500 dark:border-cyan-500 shadow-xl group-hover:scale-110 transition-transform duration-500 ease-out">
-                                    {experience.image ? (
-                                        <img decoding="async" loading="lazy" 
-                                            src={experience.image} 
-                                            alt="School Logo" 
-                                            className="w-full h-full object-cover rounded-full bg-white"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full bg-amber-200 dark:bg-cyan-900 rounded-full flex items-center justify-center">
-                                            <span className="text-2xl">🎓</span>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+            {/* List Commands */}
+            <div className="max-h-[350px] overflow-y-auto py-2 scrollbar-hide overscroll-contain" data-lenis-prevent>
+              {filteredCommands.length > 0 ? (
+                filteredCommands.map((cmd, index) => (
+                  <div
+                    key={cmd.id}
+                    onClick={() => { cmd.action(); setIsOpen(false); }}
+                    onMouseEnter={() => setSelectedIndex(index)}
+                    className={`flex items-center justify-between px-5 py-3 cursor-pointer transition-all border-l-4 ${
+                      index === selectedIndex 
+                        ? 'bg-white/10 border-cyan-500' 
+                        : 'border-transparent hover:bg-white/5'
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-cyan-500/20 text-cyan-400' : 'bg-white/5 text-neutral-400'}`}>
+                        {cmd.icon}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className={`font-medium ${index === selectedIndex ? 'text-white' : 'text-neutral-300'}`}>
+                          {cmd.label}
+                        </span>
+                        <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-bold">
+                            {cmd.group}
+                        </span>
+                      </div>
+                    </div>
+                    {cmd.shortcut && (
+                      <span className="text-xs text-neutral-500 font-mono bg-white/5 px-2 py-1 rounded hidden sm:inline-block border border-white/10">
+                        {cmd.shortcut}
+                      </span>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="px-4 py-12 text-center text-neutral-500">
+                  <p>No commands found for "{query}"</p>
+                </div>
+              )}
+            </div>
 
-                        {/* === BAGIAN BAWAH: KARTU DETAIL === */}
-                        <div className="mt-6 lg:mt-8 pt-8 px-6 pb-6 h-full rounded-3xl bg-white/50 dark:bg-slate-950/70 backdrop-blur-sm border border-black/15 dark:border-white/20 hover:border-amber-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 shadow-sm hover:shadow-xl group-hover:-translate-y-1 relative z-10">
-                            
-                            {/* Panah dekorasi */}
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-amber-500 dark:bg-cyan-400 border-t border-l border-neutral-200 dark:border-neutral-800 rotate-45"></div>
-                            
-                            {/* Role & Company */}
-                            <h3 className="text-lg md:text-xl font-bold text-neutral-900 dark:text-white mb-1 text-center lg:text-left">
-                                {experience.role?.[lang] || experience.role}
-                            </h3>
-                            <p className="text-sm md:text-base font-bold text-amber-600 dark:text-cyan-400 mb-4 text-center lg:text-left">
-                                {experience.company?.[lang] || experience.company}
-                            </p>
-                            
-                            {/* Deskripsi */}
-                            <p className="mb-5 text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed text-justify">
-                                {experience.description?.[lang] || experience.description || ""}
-                            </p>
-                            
-                            {/* Tags */}
-                            <div className="flex flex-wrap justify-center lg:justify-start gap-2">
-                                {experience.technologies && experience.technologies.map((tech, index) => (
-                                    <span 
-                                        key={index} 
-                                        className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-md bg-neutral-100 dark:bg-cyan-900/40 text-neutral-600 dark:text-cyan-100 border border-neutral-200 dark:border-cyan-800"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
+            {/* Footer */}
+            <div className="bg-black/40 px-5 py-3 border-t border-white/5 flex justify-between items-center text-[8px] md:text-[10px] text-neutral-400 font-mono">
+              <div className="flex gap-3">
+                <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1 rounded">↑</kbd><kbd className="bg-white/10 px-1 rounded">↓</kbd>nav</span>
+                <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1 rounded">↵</kbd>select</span>
+              </div>
+              <div className="flex items-center gap-1">
+                 <span className="text-accent">◆</span> 
+                 {/^[\d\s\+\-\*\/\(\)\.]+$/.test(query) && query.length > 0 ? (
+                    <span className="text-green-400 animate-pulse">Calc Mode Active</span>
+                 ) : (
+                    <span>Pro Mode</span>
+                 )}
+              </div>
+            </div>
+
+          </motion.div>
         </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 };
 
-export default Education;
+export default CommandPalette;

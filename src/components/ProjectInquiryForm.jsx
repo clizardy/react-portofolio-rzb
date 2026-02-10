@@ -37,7 +37,7 @@ const SERVICES_DATA = {
     addons: ['Master Source File', 'Unlimited Revision', '3D Product Mockup', 'Brand Guidelines'] 
   },
   music: { 
-    label: { id: "Audio Production", en: "Audio Production" }, 
+    label: { id: "Produksi Musik", en: "Music Production" }, 
     icon: <FaMusic />, 
     desc: { id: "Musik & Suara", en: "Music & Sound" },
     addons: ['Vocalist / Sessionist', 'Professional Sound Set', 'Master of Ceremony', 'Out of Town Service'] 
@@ -153,9 +153,17 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto custom-scrollbar">
-        {/* Backdrop Gelap & Blur */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-[#050a14]/90 backdrop-blur-3xl" />
+      <div className="fixed inset-0 z-[9000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto custom-scrollbar">
+        
+        {/* --- PERBAIKAN 1: BACKDROP BLUR EKSTREM --- */}
+        <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            onClick={onClose} 
+            // Opasitas dinaikkan jadi 95%, Blur dinaikkan jadi 350px
+            className="fixed inset-0 bg-[#050a14]/95 backdrop-blur-[350px]" 
+        />
 
         {/* Container Modal Utama */}
         <motion.div 
@@ -170,7 +178,7 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
           <div className="absolute -bottom-[20%] -right-[20%] w-[50%] h-[50%] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none mix-blend-screen" />
 
           {/* Tombol Close X */}
-          <button onClick={onClose} className="absolute top-6 right-6 p-2.5 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all z-50 group">
+          <button onClick={onClose} className="absolute top-5 right-5 md:top-6 md:right-6 p-2 md:p-2.5 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/40 transition-all z-50 group">
             <X size={18} className="group-hover:rotate-90 transition-transform duration-300" />
           </button>
 
@@ -180,8 +188,8 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
           ) : (
             // --- TAMPILAN FORMULIR ---
             <div className="relative z-10">
-              {/* Header & Progress Bar */}
-              <div className="px-8 pt-8 pb-6 md:px-10 md:pt-10">
+              {/* Header & Progress Bar (Padding Mobile Dikecilkan) */}
+              <div className="px-6 pt-6 pb-4 md:px-10 md:pt-10 md:pb-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2.5">
                     <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-sun to-orange-500 flex items-center justify-center text-white shadow-lg shadow-sun/30">
@@ -189,7 +197,7 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
                     </div>
                     <span className="text-sm font-bold text-white/90 tracking-wider uppercase">Step {step} / 3</span>
                   </div>
-                  <span className="text-xs font-medium text-white/50">{Math.round((step / 3) * 100)}% Completed</span>
+                  <span className="text-xs font-medium italic text-white/50">{Math.round((step / 3) * 100)}% Completed</span>
                 </div>
                 {/* Glowing Progress Bar */}
                 <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden p-[1px]">
@@ -203,8 +211,8 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
                 </div>
               </div>
 
-              {/* Form Content Area */}
-              <div className="px-8 md:px-10 pb-8 min-h-[400px]">
+              {/* Form Content Area (Padding Mobile Dikecilkan) */}
+              <div className="px-6 md:px-10 pb-6 md:pb-8 min-h-[400px]">
                 <form onSubmit={handleSubmit}>
                   <AnimatePresence mode="wait">
                     {step === 1 && <StepOne key="step1" content={content} lang={lang} formData={formData} setFormData={setFormData} />}
@@ -212,10 +220,10 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
                     {step === 3 && <StepThree key="step3" content={content} formData={formData} setFormData={setFormData} />}
                   </AnimatePresence>
 
-                  {/* Navigation Buttons */}
-                  <div className="mt-12 pt-6 border-t border-white/10 flex items-center justify-between">
+                  {/* Navigation Buttons (Margin Mobile Dikecilkan) */}
+                  <div className="mt-8 pt-4 md:mt-12 md:pt-6 border-t border-white/10 flex items-center justify-between">
                     {step > 1 ? (
-                      <button type="button" onClick={() => setStep(step - 1)} className="group flex items-center gap-2 px-4 py-3 text-white/60 hover:text-white font-semibold transition-all rounded-xl hover:bg-white/5">
+                      <button type="button" onClick={() => setStep(step - 1)} className="group flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-3 text-sm md:text-base text-white/60 hover:text-white font-semibold transition-all rounded-xl hover:bg-white/5">
                         <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> {content.btn_back}
                       </button>
                     ) : <div />}
@@ -227,7 +235,7 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
                           if (step === 1 && !formData.serviceKey) return toast.error(lang === 'id' ? "Pilih layanan utama dulu" : "Select a main service first", { icon: '⚠️' });
                           setStep(step + 1);
                         }}
-                        className="group relative overflow-hidden px-8 py-3.5 bg-white text-black rounded-xl font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
+                        className="group relative overflow-hidden px-6 py-3 md:px-8 md:py-3.5 bg-white text-black rounded-xl font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.15)] text-sm md:text-base"
                       >
                         <span className="relative z-10">{content.btn_next}</span> <ChevronRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                         <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_1s_infinite] z-0" />
@@ -236,7 +244,7 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="group px-10 py-3.5 bg-gradient-to-r from-sun to-orange-600 text-white rounded-xl font-bold flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-[0_10px_40px_rgba(245,158,11,0.4)] disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="group px-8 py-3 md:px-10 md:py-3.5 bg-gradient-to-r from-sun to-orange-600 text-white rounded-xl font-bold flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-[0_10px_40px_rgba(245,158,11,0.4)] disabled:opacity-70 disabled:cursor-not-allowed text-sm md:text-base"
                       >
                         {isSubmitting ? "Sending..." : content.btn_send} <Send size={18} className={`relative z-10 ${!isSubmitting ? 'group-hover:rotate-45 group-hover:translate-x-1 transition-all' : 'animate-pulse'}`} />
                       </button>
@@ -254,31 +262,37 @@ const ProjectInquiryForm = ({ isOpen, onClose, lang }) => {
 
 // ================= KOMPONEN STEP-BY-STEP =================
 
-// STEP 1: PEMILIHAN JASA UTAMA
+// STEP 1: PEMILIHAN JASA UTAMA (PERBAIKAN COMPACT MOBILE)
 const StepOne = ({ content, lang, formData, setFormData }) => (
-  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-8">
+  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-6 md:space-y-8">
     <div>
-      <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">{content.title1}</h2>
-      <p className="text-white/60 text-lg leading-relaxed">{content.subTitle1}</p>
+      <h2 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 tracking-tight">{content.title1}</h2>
+      <p className="text-white/60 text-sm md:text-lg leading-relaxed">{content.subTitle1}</p>
     </div>
-    <div className="grid grid-cols-2 gap-4 md:gap-5">
+    {/* Grid gap lebih kecil di mobile */}
+    <div className="grid grid-cols-2 gap-3 md:gap-5">
       {Object.entries(SERVICES_DATA).map(([key, value]) => {
         const isSelected = formData.serviceKey === key;
         return (
           <button
             key={key} type="button"
             onClick={() => setFormData({ ...formData, serviceKey: key, selectedAddons: [] })}
-            className={`relative p-6 rounded-3xl border-2 text-left transition-all duration-300 group overflow-hidden
+            // Padding lebih kecil di mobile (p-4 vs md:p-6)
+            className={`relative p-4 md:p-6 rounded-3xl border-2 text-left transition-all duration-300 group overflow-hidden
               ${isSelected 
                 ? 'border-sun bg-sun/10 shadow-[0_0_40px_rgba(245,158,11,0.2)] scale-[1.02]' 
                 : 'border-white/5 bg-white/5 hover:border-white/20 hover:bg-white/10'}`}
           >
             {isSelected && <div className="absolute inset-0 bg-gradient-to-br from-sun/20 to-transparent opacity-50" />}
-            <div className={`relative z-10 mb-4 h-14 w-14 rounded-2xl flex items-center justify-center text-3xl transition-colors duration-300 shadow-lg ${isSelected ? 'bg-sun text-white shadow-sun/40' : 'bg-white/10 text-white/50 group-hover:bg-white/20 group-hover:text-white'}`}>
+            
+            {/* Icon lebih kecil di mobile */}
+            <div className={`relative z-10 mb-3 h-10 w-10 text-xl md:mb-4 md:h-14 md:w-14 md:text-3xl rounded-2xl flex items-center justify-center transition-colors duration-300 shadow-lg ${isSelected ? 'bg-sun text-white shadow-sun/40' : 'bg-white/10 text-white/50 group-hover:bg-white/20 group-hover:text-white'}`}>
               {value.icon}
             </div>
-            <h4 className={`relative z-10 font-bold text-lg md:text-xl mb-1 transition-colors ${isSelected ? 'text-white' : 'text-white/80 group-hover:text-white'}`}>{value.label[lang]}</h4>
-            <p className={`relative z-10 text-xs md:text-sm transition-colors ${isSelected ? 'text-sun' : 'text-white/40 group-hover:text-white/60'}`}>{value.desc[lang]}</p>
+            
+            {/* Font size lebih kecil di mobile */}
+            <h4 className={`relative z-10 font-bold text-base md:text-xl mb-0.5 md:mb-1 transition-colors ${isSelected ? 'text-white' : 'text-white/80 group-hover:text-white'}`}>{value.label[lang]}</h4>
+            <p className={`relative z-10 text-[10px] md:text-sm transition-colors leading-tight ${isSelected ? 'text-sun' : 'text-white/40 group-hover:text-white/60'}`}>{value.desc[lang]}</p>
           </button>
         )
       })}
@@ -291,31 +305,31 @@ const StepTwo = ({ content, lang, formData, setFormData, toggleAddon }) => {
     const activeService = SERVICES_DATA[formData.serviceKey];
     
     return (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-8">
+    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-6 md:space-y-8">
       <div>
-        <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight flex items-center gap-3">
-            <span className="text-sun">{activeService?.icon}</span> {content.title2}
+        <h2 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 tracking-tight flex items-center gap-2 md:gap-3">
+            <span className="text-sun text-2xl md:text-4xl">{activeService?.icon}</span> {content.title2}
         </h2>
-        <p className="text-white/60 text-lg leading-relaxed">{content.subTitle2}</p>
+        <p className="text-white/60 text-sm md:text-lg leading-relaxed">{content.subTitle2}</p>
       </div>
 
       {/* Add-ons Section (Interactive Pills) */}
-      <div className="space-y-4 p-6 rounded-3xl bg-white/5 border border-white/10">
-        <label className="flex items-center gap-2 text-sm font-bold text-sun uppercase tracking-widest mb-4">
+      <div className="space-y-4 p-5 md:p-6 rounded-3xl bg-white/5 border border-white/10">
+        <label className="flex items-center gap-2 text-xs md:text-sm font-bold text-sun uppercase tracking-widest mb-4">
             <Layers size={16} /> {content.lbl_addons}
         </label>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 md:gap-3">
           {activeService?.addons.map(addon => {
             const isSelected = formData.selectedAddons.includes(addon);
             return (
               <button
                 key={addon} type="button"
                 onClick={() => toggleAddon(addon)}
-                className={`group relative pl-4 pr-5 py-2.5 rounded-full border-2 text-sm font-bold transition-all duration-300 flex items-center gap-2 overflow-hidden
+                className={`group relative pl-3 pr-4 py-2 md:pl-4 md:pr-5 md:py-2.5 rounded-full border-2 text-xs md:text-sm font-bold transition-all duration-300 flex items-center gap-2 overflow-hidden
                   ${isSelected ? 'bg-white text-black border-white scale-105 shadow-lg shadow-white/20' : 'bg-white/5 text-white/60 border-white/10 hover:border-white/40 hover:text-white hover:bg-white/10'}`}
               >
-                <span className={`flex items-center justify-center h-5 w-5 rounded-full transition-all ${isSelected ? 'bg-black text-white rotate-45' : 'bg-white/10 text-white/40 group-hover:bg-white/20'}`}>
-                    <Plus size={12} strokeWidth={3} />
+                <span className={`flex items-center justify-center h-4 w-4 md:h-5 md:w-5 rounded-full transition-all ${isSelected ? 'bg-black text-white rotate-45' : 'bg-white/10 text-white/40 group-hover:bg-white/20'}`}>
+                    <Plus size={10} md:size={12} strokeWidth={3} />
                 </span>
                 {addon}
               </button>
@@ -325,7 +339,7 @@ const StepTwo = ({ content, lang, formData, setFormData, toggleAddon }) => {
       </div>
 
       {/* Budget & Timeline Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <CustomSelect 
             label={content.lbl_budget} value={formData.budget} 
             onChange={(e) => setFormData({...formData, budget: e.target.value})}
@@ -340,11 +354,11 @@ const StepTwo = ({ content, lang, formData, setFormData, toggleAddon }) => {
 
       {/* Details Textarea */}
       <div className="space-y-3">
-        <label className="text-sm font-bold text-white/80 ml-2">{content.lbl_details}</label>
+        <label className="text-xs md:text-sm font-bold text-white/80 ml-2">{content.lbl_details}</label>
         <textarea
             value={formData.details} onChange={(e) => setFormData({...formData, details: e.target.value})}
             placeholder={content.ph_details}
-            className="w-full min-h-[120px] bg-white/5 border-2 border-white/10 rounded-2xl p-5 text-white placeholder-white/30 outline-none focus:border-sun/50 focus:bg-white/10 focus:shadow-[0_0_30px_rgba(245,158,11,0.1)] transition-all resize-none"
+            className="w-full min-h-[100px] md:min-h-[120px] bg-white/5 border-2 border-white/10 rounded-2xl p-4 md:p-5 text-sm md:text-base text-white placeholder-white/30 outline-none focus:border-sun/50 focus:bg-white/10 focus:shadow-[0_0_30px_rgba(245,158,11,0.1)] transition-all resize-none"
         />
       </div>
     </motion.div>
@@ -353,12 +367,12 @@ const StepTwo = ({ content, lang, formData, setFormData, toggleAddon }) => {
 
 // STEP 3: KONTAK
 const StepThree = ({ content, formData, setFormData }) => (
-  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-8">
+  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="space-y-6 md:space-y-8">
     <div>
-      <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">{content.title3}</h2>
-      <p className="text-white/60 text-lg leading-relaxed">{content.subTitle3}</p>
+      <h2 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 tracking-tight">{content.title3}</h2>
+      <p className="text-white/60 text-sm md:text-lg leading-relaxed">{content.subTitle3}</p>
     </div>
-    <div className="grid gap-6">
+    <div className="grid gap-4 md:gap-6">
         <CustomInput label="Nama Lengkap" type="text" value={formData.name} required placeholder={content.ph_name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
         <CustomInput label="Email Bisnis" type="email" value={formData.email} required placeholder={content.ph_email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
         <CustomInput label="Perusahaan" type="text" value={formData.company} placeholder={content.ph_company} onChange={(e) => setFormData({...formData, company: e.target.value})} />
@@ -368,13 +382,13 @@ const StepThree = ({ content, formData, setFormData }) => (
 
 // TAMPILAN SUKSES
 const SuccessView = ({ content, onClose }) => (
-    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="p-12 md:p-16 text-center flex flex-col items-center justify-center h-full min-h-[500px]">
-        <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", damping: 15, delay: 0.1 }} className="h-28 w-28 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-full flex items-center justify-center text-white shadow-2xl shadow-green-500/30 mb-8">
-            <CheckCircle size={64} strokeWidth={3} />
+    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="p-8 md:p-16 text-center flex flex-col items-center justify-center h-full min-h-[400px] md:min-h-[500px]">
+        <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", damping: 15, delay: 0.1 }} className="h-20 w-20 md:h-28 md:w-28 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-full flex items-center justify-center text-white shadow-2xl shadow-green-500/30 mb-6 md:mb-8">
+            <CheckCircle size={48} md:size={64} strokeWidth={3} />
         </motion.div>
-        <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{content.success_title}</h2>
-        <p className="text-white/60 text-lg leading-relaxed max-w-md mb-10">{content.success_desc}</p>
-        <button onClick={onClose} className="px-10 py-4 rounded-xl border-2 border-white/20 text-white font-bold hover:bg-white hover:text-black transition-all tracking-wider uppercase text-sm">
+        <h2 className="text-2xl md:text-4xl font-black text-white mb-3 md:mb-4">{content.success_title}</h2>
+        <p className="text-white/60 text-sm md:text-lg leading-relaxed max-w-md mb-8 md:mb-10">{content.success_desc}</p>
+        <button onClick={onClose} className="px-8 py-3 md:px-10 md:py-4 rounded-xl border-2 border-white/20 text-white font-bold hover:bg-white hover:text-black transition-all tracking-wider uppercase text-xs md:text-sm">
             {content.btn_close}
         </button>
     </motion.div>
@@ -383,20 +397,20 @@ const SuccessView = ({ content, onClose }) => (
 // --- KOMPONEN UI Kustom (Input & Select) ---
 const CustomInput = ({ label, ...props }) => (
     <div className="space-y-2">
-        {props.required && <label className="text-sm font-bold text-white/80 ml-2">{label} <span className="text-sun">*</span></label>}
-        <input {...props} className="w-full bg-white/5 border-2 border-white/10 rounded-2xl p-5 text-white placeholder-white/30 outline-none focus:border-sun/50 focus:bg-white/10 focus:shadow-[0_0_30px_rgba(245,158,11,0.1)] transition-all" />
+        {props.required && <label className="text-xs md:text-sm font-bold text-white/80 ml-2">{label} <span className="text-sun">*</span></label>}
+        <input {...props} className="w-full bg-white/5 border-2 border-white/10 rounded-2xl p-4 md:p-5 text-sm md:text-base text-white placeholder-white/30 outline-none focus:border-sun/50 focus:bg-white/10 focus:shadow-[0_0_30px_rgba(245,158,11,0.1)] transition-all" />
     </div>
 );
 
 const CustomSelect = ({ label, options, ...props }) => (
     <div className="space-y-2">
-        <label className="text-sm font-bold text-white/80 ml-2">{label}</label>
+        <label className="text-xs md:text-sm font-bold text-white/80 ml-2">{label}</label>
         <div className="relative">
-            <select {...props} className="w-full appearance-none bg-white/5 border-2 border-white/10 rounded-2xl p-5 pr-12 text-white outline-none focus:border-sun/50 focus:bg-white/10 transition-all cursor-pointer">
+            <select {...props} className="w-full appearance-none bg-white/5 border-2 border-white/10 rounded-2xl p-4 md:p-5 pr-10 md:pr-12 text-sm md:text-base text-white outline-none focus:border-sun/50 focus:bg-white/10 transition-all cursor-pointer">
                 <option value="" className="bg-[#0a0a0a] text-white/50">Pilih Opsi...</option>
                 {options.map(opt => <option key={opt} value={opt} className="bg-[#0a0a0a] text-white py-2">{opt}</option>)}
             </select>
-            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white/40"><ChevronRight size={20} className="rotate-90" /></div>
+            <div className="absolute right-4 md:right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white/40"><ChevronRight size={16} md:size={20} className="rotate-90" /></div>
         </div>
     </div>
 );

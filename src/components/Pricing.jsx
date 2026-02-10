@@ -139,7 +139,7 @@ const PRICING_DATA = {
   ],
   music: [
     {
-      title: { en: "Mixing", id: "Mixing Audio" },
+      title: { en: "Music Production", id: "Produksi Musik" },
       price: "500k",
       desc: { en: "Balancing tracks for clarity and punch.", id: "Menyeimbangkan track agar jernih dan nendang." },
       features: [

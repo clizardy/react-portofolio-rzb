@@ -25,7 +25,7 @@ export const EXPERIENCES = [
     year: { en: "2018 - 2021", id: "2018 - 2021" }, 
     image: junior,
     role: { en: "Student", id: "Pelajar" },
-    company: { en: "Junior High School 2 Magelang City", id: "SMP Negeri 2 Kota Magelang" },
+    company: { en: "Junior High School 2 Magelang", id: "SMP Negeri 2 Magelang" },
     description: { 
       en: "Actively explored various fields, ranging from music performance with keyboards to introduction to robotics using Arduino. Built strong administrative and presentation skills through Microsoft applications.", 
       id: "Secara aktif mengeksplorasi berbagai bidang, mulai dari pertunjukan musik dengan keyboard hingga pengenalan robotika menggunakan Arduino. Membangun keterampilan administrasi dan presentasi yang kuat melalui aplikasi Microsoft."
@@ -36,10 +36,10 @@ export const EXPERIENCES = [
     year: { en: "2021 - 2024", id: "2021 - 2024" }, 
     image: senior,
     role: { en: "Science Department", id: "Jurusan IPA" },
-    company: { en: "Senior High School 3 Magelang City", id: "SMA Negeri 3 Kota Magelang" },
+    company: { en: "Senior High School 3 Magelang", id: "SMA Negeri 3 Magelang" },
     description: { 
-      en: "I learned about many things from the world of music, but I also upgrade my videography and photography skils.", 
-      id: "Saya belajar banyak hal dari dunia musik, tetapi saya juga meningkatkan keterampilan videografi dan fotografi saya." 
+      en: "I delved deeper into the world of music like choir, actively participated in a band, and eagerly joined various competitions while starting to learn my videography and photography skills.", 
+      id: "Saya lebih mendalami dunia musik dari banyak hal seperti paduan suara, aktif dalam grup band, gencar mengikuti berbagai lomba sembari memulai belajar keterampilan videografi dan fotografi saya." 
     },
     technologies: ["Mirrorless", "Guitar", "Adobe Lightroom", "Canva", "Filmora"],
   },
@@ -49,8 +49,8 @@ export const EXPERIENCES = [
     role: { en: "Information Technology", id: "Teknologi Informasi" },
     company: { en: "Tidar University", id: "Universitas Tidar" },
     description: { 
-      en: "I am learning to become a good programmer / developer from the basics, and also upgrade my skils before.", 
-      id: "Saya sedang belajar menjadi programmer/pengembang yang baik dari dasar-dasarnya, dan juga meningkatkan keterampilan saya sebelumnya."
+      en: "I am learning to become a good programmer/developer from the basics, and also upgrade my skils before. Beside that I also learn many things to improve my mindset to be better than before.", 
+      id: "Saya sedang belajar menjadi programmer/pengembang yang baik dari dasar-dasarnya, dan juga meningkatkan keterampilan saya sebelumnya. Disamping itu saya juga belajar banyak hal untuk memperbaiki pola pikir saya agar lebih baik lagi dari sebelumnya."
     },
     technologies: ["Adobe Premier Pro", "Adobe Photoshop", "Davinci Resolve", "Bass", "Drum"],
   },

@@ -139,7 +139,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                     perspective={1000}
                 > 
                     <div 
-                        className={`relative group w-full rounded-lg overflow-hidden cursor-pointer bg-neutral-900 border border-neutral-800 ${videoID ? 'aspect-video' : ''}`} 
+                        className={`relative group w-full rounded-lg overflow-hidden cursor-pointer bg-neutral-900 border border-${isHovered ? 'white' : 'black'} ${videoID ? 'aspect-video' : ''}`} 
                         onClick={handleCardClick}
                     >
                         <img 
@@ -269,7 +269,7 @@ const Projects = ({ lang }) => {
   }, [activeCategory]);
 
 return (
-    <div id="projects" className="border-b border-neutral-800 mt-6 dark:border-neutral-200 relative">
+    <div id="projects" className="border-b border-black mt-6 dark:border-white relative">
       <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-5 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
@@ -391,7 +391,7 @@ return (
                     animate={{ scale: 1, opacity: 1 }} 
                     exit={{ scale: 0.8, opacity: 0 }} 
                     transition={{ type: "spring", damping: 25, stiffness: 300 }} 
-                    className="w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-neutral-800"
+                    className="w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <iframe 

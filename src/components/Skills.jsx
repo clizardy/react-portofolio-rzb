@@ -120,19 +120,15 @@ const Skills = ({ lang }) => {
   const [selectedSkill, setSelectedSkill] = useState(SKILLS_LIST[0]);
 
   return (
-    <div id="skills" className="relative py-10 md:py-20 border-b border-neutral-800 dark:border-neutral-200 overflow-visible">
+    <div id="skills" className="relative py-10 md:py-14 border-b border-black dark:border-white overflow-visible">
         
         {/* Ambient Light */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-500/10 dark:bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
         <div className="container mx-auto px-6 md:px-12 z-10 relative">
 
-            {/* --- LAYOUT UTAMA: FLEX/GRID UNTUK DESKTOP --- */}
-            {/* Mobile: Flex-col (Atas Bawah) | Desktop: Grid 2 Kolom (Kiri Kanan) */}
             <div className="flex flex-col md:grid md:grid-cols-12 md:gap-12 md:items-center">
 
-                {/* --- BAGIAN KIRI (JUDUL & DESKRIPSI) --- */}
-                {/* Desktop: Ambil 5 Kolom */}
                 <div className="md:col-span-5 flex flex-col items-center md:items-start text-center md:text-left mb-10 md:mb-0">
                     
                     {/* Header */}

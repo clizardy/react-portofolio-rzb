@@ -103,7 +103,7 @@ const TestimonialCard = ({ review, index, lang }) => {
         className={`
           h-full relative p-6 rounded-3xl border transition-all duration-300 cursor-pointer group flex flex-col
           ${isOpen 
-            ? 'bg-neutral-900/80 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
+            ? 'bg-black/10 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
             : 'bg-white/5 border-white/10 hover:border-cyan-500/30 hover:bg-white/10'}
         `}
       >
@@ -126,14 +126,14 @@ const TestimonialCard = ({ review, index, lang }) => {
              {displayImage ? (
                  <img src={displayImage} alt={review.name} className="w-full h-full object-cover" />
              ) : (
-                 <div className="w-full h-full bg-neutral-800 flex items-center justify-center text-neutral-500">
+                 <div className="w-full h-full bg-black flex items-center justify-center text-neutral-500">
                      <FaUserCircle className="text-3xl" />
                  </div>
              )}
           </div>
 
           <div className="flex-1 overflow-hidden">
-            <h4 className="font-bold text-base text-white truncate capitalize">
+            <h4 className="font-bold text-base dark:text-white text-black truncate capitalize">
               {review.name}
             </h4>
             <p className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 truncate">
@@ -145,7 +145,7 @@ const TestimonialCard = ({ review, index, lang }) => {
             </div>
           </div>
           
-          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} className="text-neutral-500 text-xs">
+          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} className="text-white/70 text-xs">
             <FaChevronDown />
           </motion.div>
         </div>
@@ -154,7 +154,7 @@ const TestimonialCard = ({ review, index, lang }) => {
         <div className="relative z-10">
             {/* Preview */}
             {!isOpen && (
-                <p className="text-neutral-400 text-xs line-clamp-2 italic">
+                <p className="dark:text-white/70 text-black/60 text-xs line-clamp-2 italic">
                     "{displayMessage}"
                 </p>
             )}
@@ -168,12 +168,12 @@ const TestimonialCard = ({ review, index, lang }) => {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-3 border-t border-white/10 mt-3">
-                      <p className="text-neutral-200 text-sm leading-relaxed italic">
+                  <div className="pt-3 border-t dark:border-white/40 border-black/30 mt-3">
+                      <p className="dark:text-white text-black text-sm leading-relaxed">
                         "{displayMessage}"
                       </p>
-                      <p className="text-[10px] text-neutral-600 mt-4 text-right font-mono">
-                        {displayDate}
+                      <p className="text-[10px] dark:text-white/50 text-black/50 md:mt-0 mt-2 text-right font-mono">
+                        #{displayDate}
                       </p>
                   </div>
                 </motion.div>
@@ -214,14 +214,14 @@ const Testimonials = ({ lang }) => {
   const allTestimonials = [...firebaseReviews, ...STATIC_TESTIMONIALS];
 
   return (
-    <div id="testimonials" className="py-20 relative">
+    <div id="testimonials" className="py-10 relative">
       
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mb-12 text-center"
+        className="text-center"
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-2">
             <OklchGradientText>{lang === 'id' ? "Apa Kata Mereka?" : "Client Stories"}</OklchGradientText>

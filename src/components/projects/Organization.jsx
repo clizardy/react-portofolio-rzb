@@ -89,14 +89,14 @@ const OrgHeader = ({ icon, title, colorClass, gradientLine }) => {
 
 const Organization = ({ lang }) => {
   return (
-    <div id="organization" className="border-b border-neutral-800 dark:border-neutral-200">
+    <div id="organization" className="border-b border-black dark:border-white">
       
       {/* JUDUL UTAMA */}
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -50 }}
         transition={{ duration: 0.5 }}
-        className="mt-20 mb-4 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
+        className="mt-10 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Pengalaman Organisasi" : "Organization Experience"}</OklchGradientText>
       </motion.h2>
 
@@ -110,7 +110,7 @@ const Organization = ({ lang }) => {
       
       <div className="">
         {SISPALA_DATA.map((org, index) => (
-          <div className="mb-20 flex flex-wrap lg:justify-start items-center" key={index}>
+          <div className="md:mb-5 mb-10 flex flex-wrap lg:justify-start items-center" key={index}>
             <motion.div 
               whileInView={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: -50 }}
@@ -178,7 +178,7 @@ const Organization = ({ lang }) => {
 
       <div className="">
         {NEW_ORG_DATA.map((qc, index) => (
-          <div className="mb-20 flex flex-wrap lg:justify-start items-center" key={index}>
+          <div className="mb-10 flex flex-wrap lg:justify-start items-center" key={index}>
             <motion.div 
               whileInView={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: -50 }}

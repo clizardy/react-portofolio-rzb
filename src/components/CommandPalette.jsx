@@ -2,13 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaHome, FaUser, FaCode, FaEnvelope, FaGamepad, 
+  FaHome, FaCode, FaGamepad, 
   FaSearch, FaMoon, FaSun, FaCopy, 
-  FaGithub, FaLinkedin, FaInstagram, FaSpotify, 
+  FaGithub, FaLinkedin, FaSpotify, 
   FaFileDownload, FaGlobe, FaCodeBranch,
-  FaCalculator, FaPalette, FaFingerprint, FaClock, FaGoogle // Import Icon Baru
+  FaCalculator, FaPalette, FaFingerprint, FaClock, FaGoogle
 } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import toast from 'react-hot-toast'; // Kita tetap butuh fungsi toast()
 import CV from '../assets/CV.pdf';
 
 const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
@@ -26,7 +26,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     cv: CV
   };
 
-  // --- 1. BASE COMMANDS (YANG LAMA TETAP ADA) ---
+  // --- BASE COMMANDS ---
   const baseCommands = [
     // ... Navigation ...
     { 
@@ -52,15 +52,15 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     },
 
     // ... System & Utility ...
-{ 
+    { 
       id: 'theme', 
       label: theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode', 
       icon: theme === 'dark' ? <FaSun className="text-yellow-400"/> : <FaMoon className="text-purple-400"/>, 
       group: 'System',
       shortcut: 'T',
       action: () => {
-        toggleTheme(); // 1. Jalankan fungsi asli
-        toast('Theme toggled!', { icon: '🎨' }); // 2. Munculkan Toast
+        toggleTheme(); 
+        toast('Theme toggled!', { icon: '🎨' }); // Notifikasi muncul 1x via App.jsx
       }
     },
     { 
@@ -70,8 +70,8 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
       group: 'System',
       shortcut: 'L',
       action: () => {
-        toggleLanguage(); // 1. Jalankan fungsi asli
-        toast('Language switched!', { icon: '🌐' }); // 2. Munculkan Toast
+        toggleLanguage();
+        toast('Language switched!', { icon: '🌐' });
       }
     },
     { 
@@ -125,7 +125,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
       action: () => window.open(SOCIAL_LINKS.repo, '_blank')
     },
 
-    // --- 2. NEW: COMPLEX DEVELOPER TOOLS (TAMBAHAN BARU) ---
+    // ... Dev Tools ...
     {
       id: 'uuid',
       label: 'Generate UUID v4',
@@ -164,22 +164,20 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     }
   ];
 
-  // --- 3. COMPLEX FILTERING LOGIC ---
+  // --- FILTERING LOGIC ---
   const filteredCommands = useMemo(() => {
     let results = baseCommands.filter(cmd => 
       cmd.label.toLowerCase().includes(query.toLowerCase()) || 
       cmd.group.toLowerCase().includes(query.toLowerCase())
     );
 
-    // LOGIC 1: CALCULATOR MODE
-    // Cek apakah query isinya angka/matematika (misal: "12 * 5")
+    // Calculator Logic
     const mathRegex = /^[\d\s\+\-\*\/\(\)\.]+$/;
     if (query.trim().length > 0 && mathRegex.test(query)) {
       try {
         // eslint-disable-next-line no-new-func
         const result = new Function('return ' + query)();
         if (result !== undefined && !isNaN(result)) {
-          // Inject hasil kalkulasi ke paling atas list
           results.unshift({
             id: 'calculator',
             label: `= ${result}`,
@@ -191,13 +189,10 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
             }
           });
         }
-      } catch (e) {
-        // Ignore invalid math
-      }
+      } catch (e) { /* ignore */ }
     }
 
-    // LOGIC 2: FALLBACK TO GOOGLE
-    // Kalau gak ada hasil sama sekali, tawarkan search Google
+    // Google Search Fallback
     if (results.length === 0 && query.trim().length > 0) {
         results.push({
             id: 'google-search',
@@ -209,10 +204,9 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     }
 
     return results;
-  }, [query, lang, theme]); // Re-run kalau query/lang/theme berubah
+  }, [query, lang, theme]);
 
-
-  // --- KEYBOARD HANDLER (TIDAK BERUBAH) ---
+  // --- KEYBOARD HANDLER ---
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -266,9 +260,9 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('openCommandPalette', handleMobileOpen);
     };
-  }, [isOpen, selectedIndex, filteredCommands]);
+  }, [isOpen, selectedIndex, filteredCommands, toggleTheme, toggleLanguage]);
   
-  // Scroll Lock Fix
+  // Scroll Lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -278,7 +272,6 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  // Reset index kalau query berubah
   useEffect(() => setSelectedIndex(0), [query]);
 
   return (
@@ -363,7 +356,7 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
               )}
             </div>
 
-            {/* Footer Baru */}
+            {/* Footer */}
             <div className="bg-black/40 px-5 py-3 border-t border-white/5 flex justify-between items-center text-[8px] md:text-[10px] text-neutral-400 font-mono">
               <div className="flex gap-3">
                 <span className="flex items-center gap-1">
@@ -378,7 +371,6 @@ const CommandPalette = ({ theme, toggleTheme, lang, toggleLanguage }) => {
               </div>
               <div className="flex items-center gap-1">
                  <span className="text-accent">◆</span> 
-                 {/* Logic Kalkulator Indikator */}
                  {/^[\d\s\+\-\*\/\(\)\.]+$/.test(query) && query.length > 0 ? (
                     <span className="text-green-400 animate-pulse">Calc Mode Active</span>
                  ) : (

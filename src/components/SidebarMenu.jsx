@@ -156,8 +156,8 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 dark:bg-black/40 z-[20] backdrop-blur-[2px]"
+              onClick={onClose}
+              className="fixed inset-0 bg-black/40 dark:bg-black/40 z-[999] backdrop-blur-sm"
             />
 
             {/* SIDEBAR CONTAINER UTAMA */}
@@ -275,93 +275,98 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
                   </motion.button>
                 ))}
               
-              {/* TOMBOL-TOMBOL EXTRA */}
-              <div className="mt-4 flex-shrink-0">
-                <motion.button
-                    onClick={() => setShowQR(true)}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="w-full flex items-center justify-center gap-2 p-3 rounded-full
-                              border border-dashed border-amber-600 dark:border-cyan-500
-                              text-amber-600 dark:text-cyan-400 font-bold tracking-widest uppercase text-xs
-                              hover:bg-amber-500/10 dark:hover:bg-cyan-500/10 
-                              hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-cyan-500/20
-                              transition-all duration-300 group"
-                >
-                    <FaQrcode className="text-lg group-hover:rotate-12 transition-transform" />
-                    <span>
-                        {lang === 'id' ? "Bagikan Web" : "Share Site"}
-                    </span>
-                </motion.button>
-              </div>
-
-                {/* TOMBOL BOOKING (SPECIAL STYLE) */}
-                <button
-                    onClick={() => {
-                        onOpenBooking(); // Trigger Modal
-                        setIsOpen(false); // Tutup Sidebar
-                    }}
-                    className="
-                        flex-shrink-0 h-12 w-full flex items-center justify-center gap-3
-                        bg-gradient-to-r from-cyan-600 to-blue-600 
-                        hover:from-cyan-500 hover:to-blue-500
-                        text-white font-bold py-4 rounded-full
-                        shadow-lg shadow-cyan-900/20
-                        transition-all duration-300 transform hover:scale-[1.02] mt-2
-                    "
-                >
-                    <FaCalendarAlt className="text-lg" />
-                    <span>{lang === 'id' ? "Jadwalkan Diskusi" : "Book a Call"}</span>
-                </button>
-
-                <div className="mt-2 flex-shrink-0"> 
-                    <button
-                        onClick={() => {
-                            onOpenFaq();
-                            setIsOpen(false);
-                        }}
-                        className="w-full flex items-center justify-center gap-3 p-3 rounded-2xl bg-teal-700/80 dark:bg-teal-500/10 text-white dark:text-teal-400 hover:bg-teal-500 hover:text-white transition-all group border border-teal-200 dark:border-teal-500/20"
-                    >
-                        <FaQuestionCircle className="text-xl group-hover:scale-110 transition-transform" />
-                        <span className="font-bold italic tracking-wide text-sm">
-                            {lang === 'id' ? "Tanya Jawab (FAQ)" : "Help & FAQ"}
-                        </span>
-                    </button>
-                </div>
-
-              </div> 
-              {/* TOMBOL INQUIRY (FORM KOMPLEKS) - Warna Emas/Amber agar Premium */}
-    <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={() => {
-            onOpenInquiry(); // Fungsi untuk membuka modal formulir project
-            setIsOpen(false);
-        }}
-        className="
-            relative overflow-hidden group
-            w-full flex items-center justify-center gap-3
-            bg-gradient-to-r from-amber-500 to-orange-600 
-            text-white font-black py-4 rounded-2xl
-            shadow-[0_10px_20px_rgba(245,158,11,0.3)]
-            dark:shadow-[0_10px_20px_rgba(245,158,11,0.1)]
-            transition-all duration-300
-        "
-    >
-        {/* Efek Kilauan (Glint) */}
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] shadow-inner" />
+{/* --- ACTION GRID (4 Tombol Spesial) --- */}
+<div className="mt-6 px-6 pb-8 flex-shrink-0">
+    
+    <div className="grid grid-cols-2 gap-3">
         
-        <FaBriefcase className="text-lg group-hover:rotate-12 transition-transform" />
-        <div className="flex flex-col items-start leading-none">
-            <span className="text-[13px] uppercase tracking-tighter">
-                {lang === 'id' ? "Mulai Proyek" : "Start a Project"}
+        {/* 1. TOMBOL MULAI PROYEK (Primary - Besar & Menonjol) */}
+        <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+                onOpenInquiry();
+                setIsOpen(false);
+            }}
+            className="col-span-2 relative overflow-hidden group p-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 flex flex-col items-start justify-between min-h-[100px]"
+        >
+            <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 group-hover:scale-125 transition-all duration-500">
+                <FaBriefcase size={60} />
+            </div>
+            
+            <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg mb-2">
+                <FaBriefcase className="text-xl text-white" />
+            </div>
+            
+            <div className="relative z-10 text-left">
+                <h4 className="font-black text-lg leading-tight mb-0.5">
+                    {lang === 'id' ? "Mulai Proyek" : "Start Project"}
+                </h4>
+                <p className="text-[10px] font-medium opacity-80">
+                    {lang === 'id' ? "Dapatkan Estimasi" : "Get Quote"}
+                </p>
+            </div>
+
+            {/* Shimmer Effect */}
+            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-20 pointer-events-none"></div>
+        </motion.button>
+
+        {/* 2. TOMBOL BOOKING CALL */}
+        <button
+            onClick={() => {
+                onOpenBooking();
+                setIsOpen(false);
+            }}
+            className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-blue-500 dark:hover:border-blue-400 transition-all flex flex-col items-start justify-between h-[110px]"
+        >
+            <div className="p-2 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-lg group-hover:scale-110 transition-transform">
+                <FaCalendarAlt />
+            </div>
+            <div className="text-left">
+                <span className="block font-bold text-sm text-neutral-800 dark:text-white leading-tight">
+                    {lang === 'id' ? "Booking" : "Book Call"}
+                </span>
+                <span className="text-[9px] text-black/70 dark:text-white/70 italic">
+                    Via G-Meet
+                </span>
+            </div>
+        </button>
+
+        {/* 3. TOMBOL FAQ */}
+        <button
+            onClick={() => {
+                onOpenFaq();
+                setIsOpen(false);
+            }}
+            className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-teal-500 dark:hover:border-teal-400 transition-all flex flex-col items-start justify-between h-[110px]"
+        >
+            <div className="p-2 bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 rounded-lg group-hover:scale-110 transition-transform">
+                <FaQuestionCircle />
+            </div>
+            <div className="text-left">
+                <span className="block font-bold text-sm text-neutral-800 dark:text-white leading-tight">
+                    FAQ
+                </span>
+                <span className="text-[9px] text-black/70 dark:text-white/70 italic">
+                    {lang === 'id' ? "Pusat Bantuan" : "Help Center"}
+                </span>
+            </div>
+        </button>
+
+        {/* 4. TOMBOL SHARE QR (Full Width di Bawah) */}
+        <button
+            onClick={() => setShowQR(true)}
+            className="col-span-2 group flex items-center justify-center gap-2 p-3 rounded-full border-2 border-dashed border-amber-500/50 dark:border-cyan-400/50 hover:border-amber-500 dark:hover:border-cyan-400 hover:bg-amber-50 dark:hover:bg-cyan-900/20 transition-all text-black dark:text-white hover:text-amber-600 dark:hover:text-cyan-400"
+        >
+            <FaQrcode className="group-hover:rotate-12 transition-transform" />
+            <span className="text-xs font-bold uppercase tracking-widest">
+                {lang === 'id' ? "Bagikan Website" : "Share Website"}
             </span>
-            <span className="text-[9px] opacity-80 font-normal italic">
-                {lang === 'id' ? "Dapatkan Estimasi Harga" : "Get Custom Quote"}
-            </span>
-        </div>
-    </motion.button>
+        </button>
+
+    </div>
+</div>
+              </div>
               
               {/* MODAL QR CODE */}
               <AnimatePresence>

@@ -21,7 +21,7 @@ const GiscusComments = ({ theme }) => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-white/60 dark:bg-neutral-900/60 backdrop-blur-[12px] p-6 md:p-8 rounded-3xl shadow-2xl dark:shadow-neutral-900/30 border border-neutral-200/50 dark:border-neutral-800/50"
+        className="bg-white/60 dark:bg-neutral-900/60 backdrop-blur-[12px] p-6 md:p-8 rounded-3xl shadow-2xl dark:shadow-neutral-900/30 border border-neutral-200/50 dark:border-white/50"
       >
         <Giscus
           id="comments"

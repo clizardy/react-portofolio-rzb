@@ -1,6 +1,6 @@
 import { useState, useEffect, lazy, Suspense, useRef } from "react"; 
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Toaster } from "react-hot-toast"; 
+import { Toaster, toast } from "react-hot-toast"; // Pastikan import toast
 import { AnimatePresence } from "framer-motion"; 
 import Lenis from 'lenis';
 import ReactGA from "react-ga4"; 
@@ -38,7 +38,7 @@ import Dedication from './components/Dedication';
 import Testimonials from './components/projects/Testimonials'; 
 import Contact from './components/Contact';
 import Terminal from "./components/Terminal";
-import Portfolio from "./components/Portfolio";
+import Portfolio from "./components/ServiceShowcase";
 import Pricing from "./components/Pricing";
 import FaqSidebar from "./components/FaqSidebar";
 import Gear from "./components/Gear";
@@ -62,11 +62,11 @@ import ProjectCalculator from "./components/ProjectCalculator";
 import ThemeBuilder from "./components/ThemeBuilder";
 import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
+import { MusicProvider } from "./components/MusicContext";
 
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
-
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
 
 // --- KOMPONEN HALAMAN UTAMA (PORTFOLIO) ---
@@ -82,10 +82,16 @@ const PortfolioContent = () => {
     const [isSidebarMenuOpen, setIsSidebarMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [isPlayerOpen, setIsPlayerOpen] = useState(false);
-
-
-// --- STATE UNTUK MUSIK PLAYER ---
     const [showPlayer, setShowPlayer] = useState(false);
+    const [isProjectCalculatorOpen, setIsProjectCalculatorOpen] = useState(false);
+
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+    const [lang, setLang] = useState("en");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isCameraActive, setIsCameraActive] = useState(false);
+
+    const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
+
     useEffect(() => {
         if (showWelcome) {
             document.body.style.overflow = 'hidden';
@@ -97,14 +103,8 @@ const PortfolioContent = () => {
         }
     }, [showWelcome]);
 
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-    const [lang, setLang] = useState("en");
-    const [isLoading, setIsLoading] = useState(true);
-    const [isCameraActive, setIsCameraActive] = useState(false);
-    const [isCalculatorOpen, setIsCalculatorOpen] = useState(true);
 
-    const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
-
+    // --- SISA LOGIC SAMA SEPERTI SEBELUMNYA ---
     useEffect(() => {
         let isScrolling;
         const handleScroll = () => {
@@ -128,7 +128,6 @@ const PortfolioContent = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    // --- LOGIC TEMA ---
     useEffect(() => {
         const root = window.document.documentElement;
         const metaThemeColor = document.querySelector("meta[name='theme-color']");
@@ -146,7 +145,6 @@ const PortfolioContent = () => {
         }
     }, [theme]);
 
-    // SMOOTH SCROLL
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.0,
@@ -166,9 +164,16 @@ const PortfolioContent = () => {
         return () => lenis.destroy();
     }, [isLoading]); 
 
-    // --- VIEW TRANSITION ---
-    const toggleTheme = (e) => {
+ // --- 2. PERBAIKAN FUNGSI TOGGLE THEME (Toast dipindah ke sini) ---
+        const toggleTheme = (e) => {
         const newTheme = theme === "dark" ? "light" : "dark";
+        
+        // PANGGIL TOAST DISINI (Langsung saat aksi terjadi)
+        toast.success(newTheme === 'dark' ? 'Dark Mode Activated' : 'Light Mode Activated', { 
+            icon: newTheme === 'dark' ? '🌙' : '☀️',
+            id: 'theme-toast' // ID unik mencegah duplikasi
+        });
+
         if (!document.startViewTransition) {
             setTheme(newTheme);
             return;
@@ -184,7 +189,21 @@ const PortfolioContent = () => {
         });
     };
   
-    const toggleLanguage = () => setLang((prevLang) => (prevLang === "en" ? "id" : "en"));
+    // --- 3. PERBAIKAN FUNGSI TOGGLE LANGUAGE (Toast dipindah ke sini) ---
+    const toggleLanguage = () => {
+        setLang((prevLang) => {
+            const newLang = prevLang === "en" ? "id" : "en";
+            
+            // PANGGIL TOAST DISINI
+            toast.success(newLang === 'id' ? 'Bahasa Indonesia' : 'English Language', { 
+                icon: '🌐',
+                id: 'lang-toast' // ID unik mencegah duplikasi
+            });
+            
+            return newLang;
+        });
+    };
+
     const handleLoadComplete = () => setIsLoading(false);
 
     useEffect(() => {
@@ -199,7 +218,6 @@ const PortfolioContent = () => {
                 .bg-cyan-500, .bg-cyan-600 { background-color: rgb(var(--accent-color)) !important; }
                 .border-cyan-500 { border-color: rgb(var(--accent-color)) !important; }
                 
-
                 .group:hover .magic-card-border {
                     border-color: rgba(var(--accent-color), 0.5) !important;
                 }
@@ -237,38 +255,7 @@ const PortfolioContent = () => {
             `}</style>
 
             <ThemeBuilder></ThemeBuilder>
-
-            <Toaster 
-                position="bottom-right"
-                reverseOrder={false}
-                toastOptions={{
-                    duration: 4000,
-                    style: {
-                        background: 'transparent',
-                        boxShadow: 'none',
-                        border: 'none',
-                        padding: 0,
-                    },
-                    className: `
-                        !bg-white/70 dark:!bg-neutral-900/60 
-                        !backdrop-blur-xl 
-                        !border !border-white/20 dark:!border-white/10 
-                        !text-neutral-800 dark:!text-white 
-                        !rounded-full 
-                        !px-6 !py-3 
-                        !shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:!shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] 
-                        !font-medium !text-sm !tracking-wide
-                    `,
-                    success: {
-                        iconTheme: {
-                            primary: '#14b8a6', // Teal
-                            secondary: 'white',
-                        },
-                    },
-                }}
-            />
       
-            {/* 1. PRELOADER */}
             <AnimatePresence mode="wait">
                 {isLoading && <Preloader key="preloader" onComplete={handleLoadComplete} />}
             </AnimatePresence>
@@ -280,7 +267,7 @@ const PortfolioContent = () => {
                 toggleLanguage={toggleLanguage} 
             />
 
-            {/* 2. CONTAINER UTAMA WEBSITE */}
+            {/* CONTAINER UTAMA */}
             <div 
                 className={`antialiased transition-colors duration-300 min-h-screen bg-black 
                 ${theme === 'dark' 
@@ -311,7 +298,7 @@ const PortfolioContent = () => {
                     onOpenJobNotes={() => setIsJobNotesOpen(true)}
                 />
 
-                {/* 3. HERO SECTION WRAPPER (Paper Style) */}
+                {/* HERO SECTION WRAPPER */}
                 <div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 transition-colors duration-500">
                     <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-500">
                         <div className="absolute inset-0 h-full w-full hidden dark:block bg-slate-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
@@ -345,14 +332,19 @@ const PortfolioContent = () => {
                         <Stats />
                     </Suspense>
 
-                    <div className="container mx-auto px-4 md:px-8 pb-8 relative">
+                    <div className="w-full">
                         <Suspense fallback={<div className="text-center py-20">Loading About...</div>}>
-                            <div id="about" className="render-lazy"><About lang={lang}/></div>
+                            <div id="about" className="render-lazy"><About lang={lang} /></div>
                         </Suspense>
+                    </div>
 
+                    <div className="container mx-auto px-4 md:px-8 pb-8 relative">
                         <Suspense fallback={<div className="text-center py-20">Loading Skills...</div>}>
                             <div id="skills"><Skills lang={lang}/></div> 
                         </Suspense>
+                    </div>
+
+                    <div className="w-full">
 
                         <Suspense fallback={<div className="text-center py-20">Loading Education...</div>}>
                             <div id="education" className="render-lazy"><Education lang={lang}/></div>
@@ -373,6 +365,9 @@ const PortfolioContent = () => {
                                 onOpenPricing={() => setIsPricingOpen(true)}
                                 onOpenGear={() => setIsGearOpen(true)}
                                 onOpenWorkflow={() => setIsWorkflowOpen(true)}
+                                onOpenProjectCalculator={() => setIsProjectCalculatorOpen(true)}
+                                onOpenInquiry={() => setIsInquiryOpen(true)}
+                                 onOpenBooking={() => setIsBookingOpen(true)}
                             />
                             </div>
                         </Suspense>
@@ -380,7 +375,11 @@ const PortfolioContent = () => {
             
                     <Suspense fallback={<div className="text-center py-20">Loading Portfolio...</div>}>
                         <div id="portfolio" className="render-lazy w-full overflow-hidden">
-                            <Portfolio lang={lang} />
+                            {/* --- PERBAIKAN: Hubungkan ServiceShowcase dengan Form Inquiry --- */}
+                            <Portfolio 
+                                lang={lang} 
+                                onBook={() => setIsInquiryOpen(true)} 
+                            />
                         </div>
                     </Suspense>
 
@@ -390,19 +389,24 @@ const PortfolioContent = () => {
                         </Suspense>
 
                         <div id="organization"><Organization lang={lang}/></div>
-                        
+                    </div>
+
+
+                <div className="w-full">
                         <Suspense fallback={<div className="text-center py-20">Loading Dedication...</div>}>
                             <div id="dedication"><Dedication lang={lang}/></div>
                         </Suspense>
-
-                        <Suspense fallback={<div className="text-center py-20">Loading Testimonials...</div>}>
+                </div>
+                
+                    <div className="container mx-auto px-4 md:px-8 relative">
+                        <Suspense fallback={<div className="text-center">Loading Testimonials...</div>}>
                             <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
                         </Suspense>
                     </div>
                 </div>
 
                 {/* 4. FOOTER SECTION */}
-                <div className="relative z-10 -mt-20 pb-0 w-full bg-black/80 flex flex-col items-center justify-center bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:24px_24px]">
+                <div className="relative z-10 w-full bg-black/80 flex flex-col items-center justify-center bg-[linear-gradient(to_right,#ffffff10_1px,transparent_2px),linear-gradient(to_bottom,#ffffff10_1px,transparent_2px)] bg-[size:24px_24px]">
                       
                     <div id="contact" className="absolute top-[-80px] left-0 w-full h-10 pointer-events-none"></div>
 
@@ -431,7 +435,7 @@ const PortfolioContent = () => {
                             <div className="lg:col-span-5 flex flex-col gap-6">
                                 <div className="w-full">
                                     <Suspense fallback={<div className="text-center py-20">Loading AI Art...</div>}>
-                                        <MagicCard><AiArtCard /></MagicCard>
+                                            <MagicCard><AiArtCard /></MagicCard>
                                     </Suspense>
                                 </div>
 
@@ -458,62 +462,40 @@ const PortfolioContent = () => {
                     </div>
                 </div>
 
-                <div className="relative z-[100]">
-                    <Suspense fallback={null}>
-                        <Pricing 
-                            lang={lang} 
-                            isOpen={isPricingOpen} 
-                            onClose={() => setIsPricingOpen(false)} 
-                        />
-                    </Suspense>
-
-                    <Suspense fallback={null}>
-                        <JobNotesModal
+                {/* MODALS & OVERLAYS */}
+                {/* Kita pindahkan ke sini agar Z-Indexnya aman */}
+                
+                <AnimatePresence>
+                    {isInquiryOpen && (
+                        <ProjectInquiryForm 
                             lang={lang}
-                            isOpen={isJobNotesOpen}
-                            onClose={() => setIsJobNotesOpen(false)}
-                            /> 
-                    </Suspense>
-
-                    <Suspense fallback={null}>
-                        <Gear 
-                            lang={lang} 
-                            isOpen={isGearOpen} 
-                            onClose={() => setIsGearOpen(false)} 
+                            isOpen={isInquiryOpen} 
+                            onClose={() => setIsInquiryOpen(false)} 
                         />
-                    </Suspense>
+                    )}
+                </AnimatePresence>
 
-                    <Suspense fallback={null}>
-                        <Workflow 
-                            lang={lang} 
-                            isOpen={isWorkflowOpen} 
-                            onClose={() => setIsWorkflowOpen(false)} 
-                        />
-                    </Suspense>
+                <div className="relative z-[100]">
+                    <Suspense fallback={null}><Pricing lang={lang} isOpen={isPricingOpen} onClose={() => setIsPricingOpen(false)} /></Suspense>
+                    <Suspense fallback={null}><JobNotesModal lang={lang} isOpen={isJobNotesOpen} onClose={() => setIsJobNotesOpen(false)}/></Suspense>
+                    <Suspense fallback={null}><Gear lang={lang} isOpen={isGearOpen} onClose={() => setIsGearOpen(false)} /></Suspense>
+                    <Suspense fallback={null}><Workflow lang={lang} isOpen={isWorkflowOpen} onClose={() => setIsWorkflowOpen(false)} /></Suspense>
+                    <Suspense fallback={null}><FaqSidebar lang={lang} isOpen={isFaqOpen} onClose={() => setIsFaqOpen(false)} /></Suspense>
+                    <Suspense fallback={null}><BookingModal lang={lang} isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} /></Suspense>
 
-                    <Suspense fallback={null}>
-                    <FaqSidebar 
-                        lang={lang} 
-                        isOpen={isFaqOpen} 
-                        onClose={() => setIsFaqOpen(false)} 
-                    />
-                    </Suspense>
+                         <AnimatePresence>
+                            {isProjectCalculatorOpen && (
+                                <Suspense fallback={null}>
+                                    <ProjectCalculator 
+                                        lang={lang}
+                                        onClose={() => setIsProjectCalculatorOpen(false)} 
+                                        onOpenInquiry={() => setIsInquiryOpen(true)}
+                                        onOpenBooking={() => setIsBookingOpen(true)}
+                                    />
+                                </Suspense>
+                            )}
+                        </AnimatePresence>
 
-                    <Suspense fallback={null}>
-                    <BookingModal 
-                        lang={lang}
-                        isOpen={isBookingOpen} 
-                        onClose={() => setIsBookingOpen(false)} 
-                    />
-                    </Suspense>
-
-                    <Suspense fallback={null}>
-                    <ProjectInquiryForm 
-                        lang={lang}
-                        isOpen={isInquiryOpen} 
-                        onClose={() => setIsInquiryOpen(false)} 
-                    />
-                    </Suspense>
                 </div> 
 
                 <div className="relative z-50">
@@ -542,13 +524,10 @@ const PortfolioContent = () => {
                     </AnimatePresence>
 
                     <BottomDock 
-                    // 1. Tambahkan ini agar tombol Menu bisa buka Sidebar
                     onMenuClick={() => setIsSidebarMenuOpen(true)} 
-
-                    // 2. Props yang sudah kamu buat
                     isPlaying={isPlayerOpen}
                     onMusicClick={() => {
-                        setIsSidebarMenuOpen(false); // Tutup menu jika musik dibuka
+                        setIsSidebarMenuOpen(false); 
                         setShowPlayer(true);
                         setIsPlayerOpen(true);
                     }}
@@ -562,31 +541,32 @@ const PortfolioContent = () => {
 // --- APP UTAMA DENGAN ROUTING ---
 const App = () => {
     return (
-        <Routes>
-            {/* Route Utama */}
-            <Route path="/" element={<PortfolioContent />} />
-            
-            {/* Route Rahasia Invoice */}
-            <Route path="/invoice" element={<Invoice />} />
-
-            <Route path="/quotation" element={<Quotation />} />
-
-            {/* --- TAMBAHKAN ROUTE TRACKER DISINI --- */}
-            <Route path="/tracker" element={<ProjectTracker />} />
-
-            <Route path="/contract" element={<SimpleContract />} />
-
-            <Route path="/receipt" element={<Receipt />} />
-
-            <Route path="/delivery" element={<ClientDelivery />} />
-
-            <Route path="/review" element={<TestimonialForm />} />
-
-            <Route path="/calculator" element={<ProjectCalculator />} />
-
-            {/* Route 404 */}
-            <Route path="*" element={<NotFound />} />
-        </Routes>
+        <MusicProvider> 
+            <Toaster 
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{
+                    duration: 4000,
+                    style: { background: 'transparent', boxShadow: 'none', border: 'none', padding: 0 },
+                    className: `!bg-white/70 dark:!bg-neutral-900/60 !backdrop-blur-xl !border !border-white/20 dark:!border-white/10 !text-neutral-800 dark:!text-white !rounded-full !px-6 !py-3 !shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:!shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] !font-medium !text-sm !tracking-wide`,
+                    success: { iconTheme: { primary: '#14b8a6', secondary: 'white' } },
+                }}
+            />
+            <Routes>
+                <Route path="/" element={<PortfolioContent />} />
+                <Route path="/camera" element={<Suspense fallback={null}><CameraOverlay isActive={true} onClose={() => window.history.back()} /></Suspense>} />
+                <Route path="/invoice" element={<Invoice />} />
+                <Route path="/quotation" element={<Quotation />} />
+                <Route path="/tracker" element={<ProjectTracker />} />
+                <Route path="/contract" element={<SimpleContract />} />
+                <Route path="/receipt" element={<Receipt />} />
+                <Route path="/delivery" element={<ClientDelivery />} />
+                <Route path="/review" element={<TestimonialForm />} />
+                <Route path="/calculator" element={<ProjectCalculator />} />
+                <Route path="/work-os" element={<JobNotesModal />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </MusicProvider>
     );
 };
 

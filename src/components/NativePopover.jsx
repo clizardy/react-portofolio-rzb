@@ -64,10 +64,10 @@ const NativePopover = ({
       <div
         id={popoverId}
         popover="auto"
-        className="w-[90vw] md:w-[500px] p-0 rounded-3xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-2xl overflow-hidden text-left"
+        className="w-[90vw] md:w-[500px] p-0 rounded-3xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white shadow-2xl overflow-hidden text-left"
       >
         {/* Header Popover */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-white bg-neutral-50 dark:bg-neutral-900/50">
           <h3 className="text-lg font-bold text-neutral-800 dark:text-neutral-100">
             {title}
           </h3>

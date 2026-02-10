@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, FaWhatsapp, FaArrowRight, FaCalculator } from "react-icons/fa";
+import { 
+  FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, 
+  FaWhatsapp, FaArrowRight, FaCalculator, FaBriefcase, FaCalendarAlt 
+} from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
 import { Link } from 'react-router-dom';
 
@@ -31,7 +34,7 @@ const SERVICES_DATA = [
         "Video Editing (Reels/TikTok/YT)",
         "Motion Graphics & VFX",
         "Poster & Feed Design",
-        "Audio Enhancing"
+        "Music Visualizer"
     ],
     color: "from-cyan-500 to-blue-600",
     iconColor: "text-cyan-400"
@@ -41,7 +44,7 @@ const SERVICES_DATA = [
     shortTitle: "Music Prod",
     title: "Music Production & Session Player",
     icon: <FaMusic />,
-    description: "Produksi audio profesional dari aransemen hingga mastering, serta penyediaan talent musik (Gitar/Bass/Vokal) untuk live performance.",
+    description: "Produksi musik profesional dari aransemen hingga mastering, serta penyediaan talent musik (Gitar/Bass/Vokal) untuk live performance.",
     features: [
         "Arrangement & Songwriting",
         "Mixing & Mastering Service",
@@ -68,11 +71,11 @@ const SERVICES_DATA = [
   }
 ];
 
-const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
+// TERIMA PROPS BARU DISINI (onOpenInquiry, onOpenBooking)
+const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInquiry, onOpenBooking }) => {
   const [activeTab, setActiveTab] = useState(SERVICES_DATA[0]);
 
   return (
-    // UBAH 1: py-16 jadi py-10 (Lebih pendek atas bawah)
     <div id="services" className="py-10 bg-indigo-100 dark:bg-slate-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto px-4">
         
@@ -84,7 +87,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
             transition={{ duration: 0.5 }}
             className="text-3xl md:text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 mb-2 text-transparent bg-clip-text bg-gradient-to-r"
           >
-            <OklchGradientText>{lang === 'id' ? "Keahlian & Layanan" : "Expertise & Services"}</OklchGradientText>
+            <OklchGradientText>{lang === 'id' ? "Layanan" : "Services"}</OklchGradientText>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -99,7 +102,6 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
         </div>
 
         {/* --- TABS NAVIGATION --- */}
-        {/* UBAH 2: mb-10 jadi mb-6 (Jarak tombol ke kartu lebih dekat) */}
         <div className="flex flex-wrap md:flex-nowrap justify-center gap-2 md:gap-3 mb-6 overflow-x-auto pb-2 md:pb-0 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {SERVICES_DATA.map((service) => (
             <button
@@ -118,7 +120,6 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
         </div>
 
         {/* --- CONTENT AREA --- */}
-        {/* UBAH 3: min-h dikurangi jadi 350px */}
         <div className="relative min-h-[350px]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -154,6 +155,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
                   ))}
                 </div>
 
+                {/* Tombol Konsultasi WA (Tetap ada sebagai opsi cepat) */}
                 <a 
                    href={`https://wa.me/6281281954366?text=Hii%20Kak,%20saya%20tertarik%20dengan%20layanan%20${encodeURIComponent(activeTab.title)}`}
                    target="_blank"
@@ -161,7 +163,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:scale-105 transition-transform w-fit shadow-lg text-sm"
                 >
                   <FaWhatsapp className="text-lg" />
-                  <span>{lang === 'id' ? "Konsultasi Sekarang" : "Start Consultation"}</span>
+                  <span>{lang === 'id' ? "Konsultasi WA" : "WhatsApp Chat"}</span>
                   <FaArrowRight className="text-xs opacity-70" />
                 </a>
               </div>
@@ -188,95 +190,79 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow }) => {
           </AnimatePresence>
         </div>
 
-        {/* --- TOMBOL AKSI (PREMIUM STYLE) --- */}
-        <div className="mt-4 md:mt-0 w-full flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+        {/* --- AREA TOMBOL AKSI UTAMA (NEW LAYOUT) --- */}
+        <div className="mt-6 flex flex-col gap-4">
+            
+            {/* BARIS 1: TOMBOL EKSPLORASI (Info) */}
+            <div className="flex flex-wrap justify-center gap-3">
+                <button
+                    onClick={onOpenWorkflow}
+                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-indigo-500/30 text-indigo-600 dark:text-indigo-300 font-bold text-xs hover:bg-indigo-500/10 hover:border-indigo-500 transition-all flex items-center gap-2"
+                >
+                    <span>📋</span> {lang === 'id' ? "Alur Kerja" : "Workflow"}
+                </button>
 
-      {/* 1. TOMBOL WORKFLOW (Theme: Indigo/Blue) */}
-        <button
-          onClick={onOpenWorkflow}
-          className="
-            group relative w-full md:w-auto px-6 py-3 rounded-full 
-            bg-white/5 dark:bg-black/20 backdrop-blur-md
-            border border-indigo-500/30 dark:border-indigo-400/30
-            text-indigo-600 dark:text-indigo-300
-            font-bold text-xs tracking-wide
-            overflow-hidden transition-all duration-300
-            hover:border-indigo-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]
-            hover:bg-indigo-500/10
-            flex items-center justify-center gap-3
-          "
-        >
-          <span className="text-lg group-hover:rotate-12 transition-transform duration-300">📋</span>
-          <span>{lang === 'id' ? "Alur Kerja" : "My Workflow"}</span>
-          
-          {/* Efek Kilat Lewat */}
-          <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
-        </button>
-        
-        {/* 2. TOMBOL GEAR (Theme: Amber/Gold) */}
-        <button
-          onClick={onOpenGear}
-          className="
-            group relative w-full md:w-auto px-6 py-3 rounded-full 
-            bg-white/5 dark:bg-black/20 backdrop-blur-md
-            border border-amber-500/30 dark:border-amber-400/30
-            text-amber-600 dark:text-amber-300
-            font-bold text-xs tracking-wide
-            overflow-hidden transition-all duration-300
-            hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)]
-            hover:bg-amber-500/10
-            flex items-center justify-center gap-3
-          "
-        >
-          <span className="text-lg group-hover:rotate-45 transition-transform duration-300">🛠️</span>
-          <span>{lang === 'id' ? "Lihat Gear" : "My Arsenal"}</span>
-        </button>
+                <button
+                    onClick={onOpenGear}
+                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-300 font-bold text-xs hover:bg-amber-500/10 hover:border-amber-500 transition-all flex items-center gap-2"
+                >
+                    <span>🛠️</span> {lang === 'id' ? "Peralatan" : "My Gear"}
+                </button>
 
-        {/* 3. TOMBOL PRICING (Theme: Teal Gradient - CTA UTAMA) */}
-        <button
-          onClick={onOpenPricing}
-          className="
-            group relative w-full md:w-auto px-8 py-3 
-            bg-gradient-to-r from-teal-500 to-cyan-600
-            text-white 
-            rounded-full font-bold text-xs tracking-wider
-            flex items-center justify-center gap-3 
-            shadow-lg shadow-cyan-500/25
-            transition-all duration-300 
-            hover:scale-105 hover:shadow-cyan-500/50 active:scale-95
-          "
-        >
-          <span>{lang === 'id' ? "Lihat Paket & Harga" : "View Packages"}</span>
-          <span className="bg-white/20 rounded-full p-1 group-hover:rotate-45 transition-transform duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-            </svg>
-          </span>
-        </button>
+                <button
+                    onClick={onOpenPricing}
+                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-teal-500/30 text-teal-600 dark:text-teal-300 font-bold text-xs hover:bg-teal-500/10 hover:border-teal-500 transition-all flex items-center gap-2"
+                >
+                    <span>💲</span> {lang === 'id' ? "Paket Harga" : "Pricing"}
+                </button>
+            </div>
 
-        {/* 4. SECTION KALKULATOR (Pemisah Visual) */}
-        <div className="hidden md:block w-px h-8 bg-white mx-2"></div>
-        
-        <div className="flex flex-col md:flex-row items-center gap-3">
-            <span className="text-[10px] text-slate-400 italic hidden md:block">Masih bingung budget?</span>
-            <Link 
-              to="/calculator" 
-              className="
-                group inline-flex items-center gap-2 px-5 py-2.5 rounded-full 
-                bg-[#0f172a] border border-slate-100/40 hover:border-cyan-500/50 
-                text-slate-300 hover:text-white transition-all duration-300
-                text-xs font-bold hover:shadow-[0_0_15px_rgba(6,182,212,0.15)]
-              "
-            >
-              <FaCalculator className="text-accent group-hover:scale-110 transition-transform text-lg" />
-              <span>Coba Estimasi</span>
-            </Link>
-        </div>
+            {/* DIVIDER VISUAL */}
+            <div className="flex items-center justify-center gap-4 opacity-30">
+                <div className="h-px w-12 bg-black dark:bg-white"></div>
+                <div className="text-[10px] uppercase tracking-widest dark:text-white text-black font-bold">Start Now</div>
+                <div className="h-px w-12 bg-black dark:bg-white"></div>
+            </div>
+
+            {/* BARIS 2: TOMBOL KONVERSI (CTA) */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                
+                {/* 1. START PROJECT (Primary Hero Button) */}
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={onOpenInquiry}
+                    className="relative w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-white to-orange-600 text-white font-bold text-sm shadow-lg shadow-orange-500/25 flex items-center justify-center gap-3 overflow-hidden group"
+                >
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 blur-md"></div>
+                    <FaBriefcase className="text-lg" />
+                    <span>{lang === 'id' ? "Mulai Proyek" : "Start Project"}</span>
+                </motion.button>
+
+                {/* 2. BOOKING CALL (Secondary) */}
+                <button
+                    onClick={onOpenBooking}
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-bold text-sm hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                    <FaCalendarAlt />
+                    <span>{lang === 'id' ? "Booking Call" : "Book a Call"}</span>
+                </button>
+
+                {/* 3. CALCULATOR (Tertiary) */}
+                <Link 
+                    to="/calculator" 
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#0f172a] text-slate-300 font-bold text-sm hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-slate-700 hover:border-cyan-500/50 transition-all flex items-center justify-center gap-2"
+                >
+                    <FaCalculator className="text-cyan-400" />
+                    <span>{lang === 'id' ? "Hitung Estimasi?" : "Budget Estimator?"}</span>
+                </Link>
+
+            </div>
 
         </div>
 
-        </div>
       </div>
+    </div>
   );
 };
 

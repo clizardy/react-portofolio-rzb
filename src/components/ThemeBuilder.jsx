@@ -71,7 +71,7 @@ const ThemeBuilder = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-5 z-[200] flex flex-col items-start md:items-center">
+    <div className="fixed bottom-6 left-5 z-[40] flex flex-col items-start md:items-center">
       
       <AnimatePresence>
         {isOpen && (
@@ -141,7 +141,7 @@ const ThemeBuilder = () => {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#0f0f11] border border-white/10 shadow-xl z-50 overflow-hidden group"
+        className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#0f0f11]/30 border border-white/10 shadow-xl z-50 overflow-hidden group"
       >
         <div 
           className="absolute inset-0 blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
