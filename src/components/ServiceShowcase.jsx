@@ -107,7 +107,7 @@ const ServiceShowcase = ({ lang, onBook }) => {
             
             {/* Sub-Header Kecil */}
             <div className="flex items-center justify-between mb-4">
-                <p className="text-black/70 dark:text-white/70 text-[11px] md:text-sm max-w-md">
+                <p className="text-black/70 italic dark:text-white/70 text-[11px] md:text-sm max-w-md">
                     {lang === 'id' 
                      ? "Kombinasi teknologi dan seni untuk menciptakan pengalaman digital yang berdampak." 
                      : "Combining technology and art to create impactful digital experiences."}

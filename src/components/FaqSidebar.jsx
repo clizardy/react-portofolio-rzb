@@ -89,7 +89,7 @@ const FaqSidebar = ({ isOpen, onClose, lang }) => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 left-0 h-full w-[85vw] md:w-[450px] bg-white/80 dark:bg-neutral-950/10 backdrop-blur-2xl border-r border-white/20 dark:border-white/10 shadow-2xl z-[999] overflow-hidden flex flex-col"
+            className="fixed top-0 left-0 h-full w-[85vw] md:w-[450px] bg-white/80 dark:bg-neutral-950/10 backdrop-blur-2xl border-r border-white/20 dark:border-white/10 shadow-2xl z-[99999] overflow-hidden flex flex-col"
           >
             
             {/* Header Sidebar */}

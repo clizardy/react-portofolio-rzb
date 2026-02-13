@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import { RiBillLine, RiBankCardFill } from "react-icons/ri";
 import { toast } from 'react-hot-toast';
+import ImageFade from "./ImageFade";
 
 // --- IMPORT LOGO ---
 import logoImage from '../assets/rzbLogo.png'; 
@@ -162,7 +163,7 @@ const handleDownloadPDF = async () => {
                 <div className="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
                     {/* Kiri: Logo & Brand */}
                     <div className="flex items-center gap-4">
-                        <img 
+                        <ImageFade 
                             src={logoImage} 
                             alt="RZB Logo" 
                             className="w-12 h-12 md:w-14 md:h-14 object-contain brightness-100 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" 

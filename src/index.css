@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* --- 1. BASE VARIABLES & THEME HYBRID --- */
 
 /* DEFAULT LIGHT MODE: Amber/Orange */
@@ -68,10 +69,46 @@
 /* --- 2. GLOBAL STYLES --- */
 html {
   scroll-behavior: smooth;
+  /* Support untuk Firefox */
   scrollbar-width: thin;
   scrollbar-color: var(--sb-thumb) var(--sb-track);
 }
 
+/* === UPGRADE: PREMIUM SCROLLBAR (Chrome, Edge, Safari) === */
+
+/* Lebar & Tinggi Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;  /* Sedikit lebih lebar untuk estetika */
+  height: 12px;
+}
+
+/* Track (Jalur Scrollbar) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparan agar terlihat menyatu dengan body */
+}
+
+/* Thumb (Batang Geser) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--sb-thumb); /* Warna default (abu-abu soft) */
+  border-radius: 20px;       /* Sangat bulat (Pill shape) */
+  border: 3px solid transparent; /* Trik agar terlihat 'mengambang' */
+  background-clip: content-box;  /* Agar warna tidak menimpa border transparan */
+  transition: background-color 0.3s ease; /* Transisi halus saat di-hover */
+}
+
+/* Thumb saat di-Hover (MAGIC HAPPENS HERE) */
+::-webkit-scrollbar-thumb:hover {
+  /* Berubah jadi warna tema (Amber/Cyan) saat disentuh mouse */
+  background-color: rgb(var(--accent-color)); 
+  border: 2px solid transparent; /* Sedikit membesar saat di-hover */
+}
+
+/* Corner (Pojok pertemuan scroll vertikal & horizontal) */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Selection Color (Tetap pertahankan yang lama) */
 ::selection {
   background-color: #f59e0b;
   color: #ffffff;
@@ -95,6 +132,16 @@ img {
   .animate-gradient-xy {
     animation: gradient-xy 3s ease infinite;
     background-size: 200% 200%;
+  }
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+  }
+  
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

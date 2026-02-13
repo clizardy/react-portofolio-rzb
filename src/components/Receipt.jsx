@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import { motion } from 'framer-motion';
 import { FaDownload, FaArrowLeft, FaPrint, FaMedal } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
+import ImageFade from "./ImageFade";
 
 // Import Logo
 import logoImage from '../assets/rzbLogo.png'; 
@@ -119,13 +120,13 @@ const Receipt = () => {
                 
                 {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{backgroundImage: "url('https://www.transparenttextures.com/patterns/arabesque.png')"}}></div>
-                <img src={logoImage} alt="watermark" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 opacity-[0.03] grayscale pointer-events-none" />
+                <ImageFade src={logoImage} alt="watermark" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 opacity-[0.03] grayscale pointer-events-none" />
 
                 {/* 1. HEADER */}
                 <div className="flex flex-col md:flex-row justify-between items-center md:items-start border-b border-[#b8860b]/20 pb-6 mb-6 gap-4">
                     <div className="flex items-center gap-5">
                         {/* FIX: Logo Original (Tanpa Filter) dan Lebih Besar */}
-                        <img src={logoImage} alt="Logo" className="w-10 h-10 md:w-20 md:h-20 object-contain drop-shadow-lg" />
+                        <ImageFade src={logoImage} alt="Logo" className="w-10 h-10 md:w-20 md:h-20 object-contain drop-shadow-lg" />
                         <div className="text-center md:text-left">
                             <h1 className="text-2xl md:text-3xl font-bold text-[#b8860b] uppercase tracking-widest leading-none" style={{ fontFamily: "'Cinzel Decorative', cursive" }}>Kuitansi</h1>
                             <p className="text-[10px] text-[#7a7a7a] font-semibold uppercase tracking-[0.3em] mt-1">Official Payment Receipt</p>

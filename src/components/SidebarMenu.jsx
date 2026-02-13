@@ -12,6 +12,7 @@ import { FaL, FaXTwitter } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import OklchGradientText from "../components/OklchGradientText";
 import ProjectInquiryForm from "./ProjectInquiryForm";
+import ImageFade from "./ImageFade";
 
 const SITE_URL = window.location.href;
 
@@ -157,7 +158,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onClose}
-              className="fixed inset-0 bg-black/40 dark:bg-black/40 z-[999] backdrop-blur-sm"
+              className="fixed inset-0 bg-black/40 dark:bg-black/40 z-[50] backdrop-blur-sm"
             />
 
             {/* SIDEBAR CONTAINER UTAMA */}
@@ -407,7 +408,7 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
 
                               {/* Container QR Code */}
                               <div className="p-4 bg-white rounded-3xl shadow-inner border border-neutral-100">
-                                  <img
+                                  <ImageFade
                                       // GUNAKAN window.location.href AGAR TIDAK ERROR
                                       src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&bgcolor=ffffff&color=000000&margin=0`}
                                       alt="Website QR"

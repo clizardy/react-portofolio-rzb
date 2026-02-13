@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { FaDownload, FaArrowLeft, FaPrint, FaSignature } from 'react-icons/fa';
 import { RiScales3Fill, RiArticleLine } from "react-icons/ri";
 import { toast } from 'react-hot-toast';
+import ImageFade from './ImageFade';
 
 // Import Logo (Pastikan path logo benar)
 import logoImage from '../assets/rzbLogo.png'; 
@@ -95,7 +96,7 @@ const SimpleContract = () => {
         >
             {/* WATERMARK BACKGROUND */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                <img src={logoImage} alt="" className="w-[500px] opacity-[0.03] grayscale blur-sm transform -rotate-12" />
+                <ImageFade src={logoImage} alt="" className="w-[500px] opacity-[0.03] grayscale blur-sm transform -rotate-12" />
             </div>
 
             {/* 1. HEADER KOP SURAT (Modern Blue) */}
@@ -103,7 +104,7 @@ const SimpleContract = () => {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-100/50 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
                 <div className="flex justify-between items-end relative z-10">
                     <div className="flex items-center gap-5">
-                        <img src={logoImage} alt="Logo" className="w-16 h-16 object-contain drop-shadow-sm" />
+                        <ImageFade src={logoImage} alt="Logo" className="w-16 h-16 object-contain drop-shadow-sm" />
                         <div>
                             <h1 className="text-2xl font-black tracking-wide text-indigo-50 uppercase" style={{ fontFamily: "'Merriweather', serif" }}>RZB. Creative Studio</h1>
                             <p className="text-xs text-indigo-200/90 font-medium tracking-wider uppercase">Professional Digital Services • Magelang, ID</p>
@@ -205,7 +206,7 @@ const SimpleContract = () => {
 
             {/* Footer Halaman */}
             <div className="absolute bottom-0 left-0 w-full p-4 border-t border-slate-100 flex justify-between items-center text-[9px] text-slate-400 uppercase tracking-widest font-sans bg-slate-50 px-12">
-                <span className="flex items-center gap-1"><img src={logoImage} className="w-3 grayscale opacity-50"/> Official Document</span>
+                <span className="flex items-center gap-1"><ImageFade src={logoImage} className="w-3 grayscale opacity-50"/> Official Document</span>
                 <span>Generated on {startDate}</span>
             </div>
 

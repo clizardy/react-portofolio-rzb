@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RiDoubleQuotesL } from "react-icons/ri"; 
 import { FaChevronDown, FaStar, FaUserCircle } from "react-icons/fa"; 
 import OklchGradientText from '../OklchGradientText';
+import ImageFade from '../ImageFade';
 
 // --- IMPORT FIREBASE ---
 import { db } from "../../firebase"; 
@@ -45,10 +46,10 @@ const STATIC_TESTIMONIALS = [
     name: "David Hamdani Putranusa, S.Pd.",
     role: "Partner & Guru",
     image: testi3,
-    rating: 5,
+    rating: 4,
     quote: {
-        id: "Saya sangat mengagumi Ronald, terutama sifat pekerja keras dan amanahnya. Dia benar-benar menunjukkan kekuatannya dalam editing profesional.",
-        en: "I admire Ronald so much, especially his hardworking and trustworthy traits. He really shows his strength in professional editing."
+        id: "Saya sangat mengagumi Ronald, terutama sifat pekerja keras dan amanahnya. Dia benar-benar menunjukkan kekuatannya dalam editing profesional. Namun dia masih perlu belajar dalam hal manajemen waktu agar lebih baik lagi kedepannya.",
+        en: "I admire Ronald so much, especially his hardworking and trustworthy traits. He really shows his strength in professional editing. However, he still needs to learn about time management to improve further in the future."
     } 
   },
   {
@@ -124,7 +125,7 @@ const TestimonialCard = ({ review, index, lang }) => {
           {/* Foto Profil */}
           <div className={`w-14 h-14 rounded-full overflow-hidden border-2 transition-all ${isOpen ? 'border-cyan-400 scale-110' : 'border-white/20'}`}>
              {displayImage ? (
-                 <img src={displayImage} alt={review.name} className="w-full h-full object-cover" />
+                 <ImageFade src={displayImage} alt={review.name} className="w-full h-full object-cover" />
              ) : (
                  <div className="w-full h-full bg-black flex items-center justify-center text-neutral-500">
                      <FaUserCircle className="text-3xl" />

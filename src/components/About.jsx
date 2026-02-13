@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { FaGraduationCap, FaCode, FaHiking, FaArrowLeft, FaArrowRight, FaInfoCircle, FaCircle, FaArrowDown, FaTimes, FaBriefcase, FaCalendarTimes, FaCoffee } from "react-icons/fa";
 import { MdIso, MdCamera, MdCenterFocusStrong, MdShutterSpeed, MdDataUsage, MdGridOn } from "react-icons/md"; 
 import exifr from 'exifr'; 
+import HyperText from "./HyperText";
 
 // GANTI DENGAN PATH GAMBAR KAMU
 import aboutImg1 from "../assets/about-me.jpg";
@@ -316,7 +317,7 @@ const About = ({ lang = 'en' }) => {
                     initial={{ width: 0 }} animate={{ width: 48 }} 
                     className={`h-[3px] bg-gradient-to-r ${currentSlide.color}`} 
                 />
-                <h3 className="text-neutral-400 dark:text-neutral-500 font-bold uppercase tracking-[0.3em] text-xs">{t.sectionTitle}</h3>
+                <h3 className="text-black/70 dark:text-white/70 font-bold uppercase tracking-[0.3em] text-xs">{t.sectionTitle}</h3>
               </div>
 
               <div className="min-h-[160px] relative"> 
@@ -329,15 +330,15 @@ const About = ({ lang = 'en' }) => {
                         transition={{ duration: 0.5 }}
                         className="absolute top-0 left-0 w-full"
                     >
-                        <h2 className="text-4xl lg:text-6xl font-black text-neutral-900 dark:text-white mb-4 leading-tight">
-                            {currentSlide.title}<span className={`text-transparent bg-clip-text bg-gradient-to-br ${currentSlide.color}`}>.</span>
+                        <h2 className="text-3xl lg:text-6xl font-black text-black dark:text-white mb-4 leading-tight">
+                            <HyperText text={currentSlide.title} className={`text-transparent bg-clip-text bg-gradient-to-br ${currentSlide.color}`} />
                         </h2>
                         <div className="flex items-center gap-3 mb-6">
-                            <span className={`px-3 py-1 bg-${currentSlide.accent} border border-white/70 rounded-full text-[10px] font-mono text-white uppercase tracking-wider flex items-center gap-2`}>
+                            <span className={`px-3 py-1 bg-${currentSlide.accent} border dark:border-white/70 border-black/30 rounded-full text-[10px] font-mono dark:text-white text-black uppercase tracking-wider flex items-center gap-2`}>
                                 <FaCircle className={`text-[6px] animate-pulse text-amber-500 dark:text-cyan-400`} /> {currentSlide.location}
                             </span>
                         </div>
-                        <p className="text-lg text-neutral-600 dark:text-white/70 leading-relaxed font-light border-l-2 border-neutral-200 dark:border-white/10 pl-6 max-w-xl">
+                        <p className="md:text-lg text-sm text-black/70 dark:text-white/70 italic leading-relaxed font-light border-l-2 border-black/80 dark:border-white/80 pl-6 max-w-xl">
                             {currentSlide.desc[lang] || currentSlide.desc.en}
                         </p>
                     </motion.div>
@@ -346,7 +347,7 @@ const About = ({ lang = 'en' }) => {
             </div>
 
             {/* --- HIRE ME / STATUS CARD (FINAL FIX) --- */}
-            <div className="relative group w-full md:w-fit mt-5 md:mt-0">
+            <div className="relative group w-full md:w-fit mt-16 md:mt-12">
                 {/* Glow Effect */}
                 <div className={`absolute -inset-[1px] bg-gradient-to-r ${currentSlide.color} rounded-2xl opacity-20 dark:opacity-30 blur-sm group-hover:opacity-50 transition-opacity duration-500`}></div>
                 

@@ -10,6 +10,8 @@ import QuoteWidget from "../components/QuoteWidget";
 import RevealText from "./RevealText";
 import MagneticButton from "./MagneticButton";
 import cvFile from "../assets/CV.pdf";
+import ImageFade from "./ImageFade";
+import HyperText from "./HyperText";
 
 const container = (delay) => ({
   hidden: { x: -50, opacity: 0 },
@@ -105,7 +107,9 @@ const Hero = ({ lang, isReady = true }) => {
                   className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
                   aria-label="Ronald Zuni Bachtiar"
                 >
-                  <OklchGradientText>Ronald Zuni Bachtiar</OklchGradientText>
+                  <OklchGradientText>
+                    <HyperText text="Ronald Zuni Bachtiar" />
+                  </OklchGradientText>
                 </motion.h1>
             </RevealText>
 
@@ -228,7 +232,7 @@ const Hero = ({ lang, isReady = true }) => {
               className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-xs lg:max-w-xl lg:p-3 w-full"
             >
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-                  <img decoding="async"
+                  <ImageFade decoding="async"
                   src={profilePic}
                   alt="Ronald Zuni Bachtiar"
                   width="600" 

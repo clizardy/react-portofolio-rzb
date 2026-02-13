@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { db } from '../firebase'; // Pastikan path ini benar
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import ImageFade from './ImageFade';
 
 const TestimonialForm = () => {
   const [rating, setRating] = useState(0);
@@ -131,7 +132,7 @@ const TestimonialForm = () => {
                     <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                     <div className="w-24 h-24 rounded-full bg-white/5 border border-dashed border-white/20 flex items-center justify-center overflow-hidden group-hover:border-pink-500/50 transition-colors">
                         {previewImage ? (
-                            <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
+                            <ImageFade src={previewImage} alt="Preview" className="w-full h-full object-cover" />
                         ) : (
                             <div className="text-center">
                                 <FaCloudUploadAlt className="text-xl text-neutral-500 mx-auto mb-1 group-hover:text-pink-500" />

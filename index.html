@@ -14,21 +14,17 @@
           let isDay;
 
           if (savedMode) {
-            // Jika user pernah setting manual, patuhi itu mutlak!
             isDay = savedMode === 'day';
           } else {
-            // Jika belum ada settingan, baru cek jam (09:00 - 15.00)
             const hour = new Date().getHours();
             isDay = hour >= 9 && hour < 15;
           }
 
           if (isDay) {
             html.classList.remove('dark');
-            // Warna Indigo-100 (Siang)
             if (metaTheme) metaTheme.setAttribute('content', '#e0e7ff'); 
           } else {
             html.classList.add('dark');
-            // Warna Slate-950 (Malam)
             if (metaTheme) metaTheme.setAttribute('content', '#020617');
           }
         } catch (e) {
@@ -43,8 +39,12 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <link rel="icon" type="image/svg+xml" href="/icons.svg" />
-    <link rel="apple-touch-icon" href="/icons.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-192.png" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     
+    <link rel="manifest" href="/manifest.json" />
+
     <title>RZB | Creative Portfolio</title>
 
     <meta name="description" content="Portfolio of Ronald Zuni Bachtiar - A skilled Photographer, Videographer, and IT Education Student. Exploring visual arts and code." />
@@ -57,7 +57,6 @@
     <meta property="og:url" content="https://portfolio-rzb.vercel.app/" /> 
     <meta property="og:title" content="Ronald Zuni Bachtiar | Digital Creator" />
     <meta property="og:description" content="See my journey in Photography, Videography, and Web Development." />
-    
     <meta property="og:image" content="https://portfolio-rzb.vercel.app/og-image.jpg" />
 
     <meta property="twitter:card" content="summary_large_image" />

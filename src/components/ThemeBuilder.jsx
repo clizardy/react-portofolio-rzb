@@ -1,11 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValue, useTransform } from 'framer-motion';
 import { Palette, RefreshCcw, Pipette, X } from 'lucide-react';
 
 const ThemeBuilder = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [activeColor, setActiveColor] = useState(() => localStorage.getItem('user-accent-hex') || null);
+  
+  // --- SCROLL DETECTION (Auto Hide) ---
+  const { scrollY } = useScroll();
+  const lastScrollY = useRef(0);
 
+  useEffect(() => {
+    return scrollY.onChange((latest) => {
+      const currentScroll = latest;
+      // Jika scroll ke bawah > 50px, sembunyikan. Jika scroll ke atas, tampilkan.
+      if (currentScroll > lastScrollY.current && currentScroll > 100) {
+        setIsVisible(false);
+        setIsOpen(false); // Tutup panel juga jika sedang terbuka
+      } else {
+        setIsVisible(true);
+      }
+      lastScrollY.current = currentScroll;
+    });
+  }, [scrollY]);
+
+  // --- THEME LOGIC (Sama seperti sebelumnya) ---
   const presets = [
     { name: 'Cyan', color: '6, 182, 212', hex: '#06b6d4' },
     { name: 'Purple', color: '168, 85, 247', hex: '#a855f7' },
@@ -47,121 +67,105 @@ const ThemeBuilder = () => {
     return `${r}, ${g}, ${b}`;
   };
 
-  // --- ANIMASI ADAPTIF ---
-  const panelVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.8, 
-      x: window.innerWidth < 768 ? 0 : -20, // Geser ke kiri di desktop
-      y: window.innerWidth < 768 ? 20 : 0   // Geser ke atas di mobile
-    },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      x: 0, 
-      y: 0,
-      transition: { type: "spring", damping: 20, staggerChildren: 0.05 }
-    },
-    exit: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: { opacity: 1, scale: 1 }
-  };
+  // --- DRAG CONSTRAINTS (Agar tidak dilempar keluar layar) ---
+  const constraintsRef = useRef(null);
 
   return (
-    <div className="fixed bottom-6 left-5 z-[40] flex flex-col items-start md:items-center">
-      
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={panelVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className={`
-              mb-4 flex items-center bg-[#0f0f11]/10 backdrop-blur-sm border border-white/10 shadow-sm
-              flex-row px-4 py-2 gap-3 rounded-full 
-              md:flex-col md:px-0 md:py-4 md:w-14 md:rounded-[2rem] md:mb-6
-            `}
-          >
-            {/* Reset Button */}
-            <motion.button
-              variants={itemVariants}
-              onClick={resetTheme}
-              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors"
-            >
-              <RefreshCcw size={14} />
-            </motion.button>
+    <>
+      {/* Area pembatas drag (Full Screen invisible) */}
+      <div ref={constraintsRef} className="fixed inset-4 z-[40] pointer-events-none" />
 
-            {/* Divider (Mobile: Vertical line, Desktop: Horizontal line) */}
-            <div className="w-[1px] h-6 bg-white/10 md:w-6 md:h-[1px]" />
-
-            {/* Color Presets */}
-            <div className="flex flex-row md:flex-col gap-3">
-              {presets.map((p) => (
-                <motion.button
-                  key={p.name}
-                  variants={itemVariants}
-                  onClick={() => updateTheme(p.color, p.hex)}
-                  className="relative w-7 h-7 md:w-8 md:h-8 rounded-full transition-transform active:scale-90 group"
-                >
-                  <div 
-                    className="absolute inset-0 rounded-full border border-white/10 transition-all duration-300"
-                    style={{ 
-                      backgroundColor: p.hex,
-                      boxShadow: activeColor === p.hex ? `0 0 12px ${p.hex}` : 'none',
-                      transform: activeColor === p.hex ? 'scale(1)' : 'scale(0.75)'
-                    }} 
-                  />
-                  <div className="absolute inset-0 rounded-full border border-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.button>
-              ))}
-            </div>
-
-            <div className="w-[1px] h-6 bg-white/10 md:w-6 md:h-[1px]" />
-
-            {/* Custom Picker */}
-            <motion.div variants={itemVariants} className="relative w-8 h-8 rounded-full border border-dashed border-white/20 flex items-center justify-center group overflow-hidden">
-              <Pipette size={14} className="text-white/40 group-hover:text-white" />
-              <input 
-                type="color" 
-                value={activeColor || '#ffffff'}
-                onChange={(e) => updateTheme(hexToRgb(e.target.value), e.target.value)}
-                className="absolute inset-0 opacity-0 cursor-pointer scale-150"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* --- TRIGGER BUTTON --- */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#0f0f11]/30 border border-white/10 shadow-xl z-50 overflow-hidden group"
+      <motion.div 
+        drag
+        dragConstraints={constraintsRef}
+        dragElastic={0.1} // Efek karet saat ditarik mentok
+        dragMomentum={false} // Agar tidak meluncur terlalu jauh
+        initial={{ y: 0, opacity: 1 }}
+        animate={{ 
+          y: isVisible ? 0 : 200, // Sembunyi ke bawah layar
+          opacity: isVisible ? 1 : 0 
+        }} 
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="fixed bottom-6 left-6 z-[50] flex flex-col items-center pointer-events-auto touch-none"
       >
-        <div 
-          className="absolute inset-0 blur-xl opacity-30 group-hover:opacity-50 transition-opacity"
-          style={{ backgroundColor: activeColor || 'var(--accent-color)' }}
-        />
         
-        <div className="relative z-10">
-           {isOpen ? (
-             <X size={20} className="text-white/70" />
-           ) : (
-             <Palette 
-               size={22} 
-               style={{ color: activeColor || undefined }} 
-               className={!activeColor ? "text-accent" : ""} 
-             />
-           )}
-        </div>
-      </motion.button>
+        {/* PANEL COLOR PICKER */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 10 }}
+              transition={{ type: "spring", bounce: 0.3 }}
+              className="absolute bottom-16 mb-2 p-2 dark:bg-black/10 bg-white/60 backdrop-blur-xl border border-white/5 rounded-2xl shadow-2xl flex flex-col gap-3 items-center w-12 overflow-hidden"
+            >
+              {/* Reset */}
+              <button onClick={resetTheme} className="w-8 h-8 rounded-full dark:bg-white/5 bg-black/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all" title="Reset Default">
+                <RefreshCcw size={14} />
+              </button>
 
-    </div>
+              <div className="w-6 h-[1px] dark:bg-white/50 bg-black/50" />
+
+              {/* Colors */}
+              {presets.map((p) => (
+                <button
+                  key={p.name}
+                  onClick={() => updateTheme(p.color, p.hex)}
+                  className="relative w-6 h-6 rounded-full transition-transform hover:scale-110 active:scale-95"
+                  style={{ backgroundColor: p.hex }}
+                >
+                  {activeColor === p.hex && (
+                    <motion.div layoutId="activeRing" className="absolute -inset-1 rounded-full border-2 border-white/50" />
+                  )}
+                </button>
+              ))}
+
+              <div className="w-6 h-[1px] dark:bg-white/50 bg-black/50" />
+
+              {/* Custom Picker */}
+              <div className="relative w-8 h-8 rounded-full border dark:border-white/20 border-black/20 flex items-center justify-center overflow-hidden hover:bg-white/5">
+                <Pipette size={14} className="dark:text-white text-black" />
+                <input 
+                  type="color" 
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  onChange={(e) => updateTheme(hexToRgb(e.target.value), e.target.value)}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* TOMBOL UTAMA (TRIGGER) */}
+        <motion.button
+          onClick={() => setIsOpen(!isOpen)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="relative w-12 h-12 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.3)] dark:bg-black/20 bg-white/30 backdrop-blur-md border border-white/15 group overflow-hidden"
+        >
+          {/* Background Glow Effect */}
+          <div 
+            className="absolute inset-0 opacity-40 transition-colors duration-500"
+            style={{ backgroundColor: activeColor || 'var(--accent-color)' }}
+          />
+          
+          <div className="relative z-10 text-white drop-shadow-md">
+            {isOpen ? <X size={20} /> : <Palette size={23} />}
+          </div>
+        </motion.button>
+        
+        {/* Label kecil saat di-drag (Optional UX) */}
+        {!isOpen && (
+          <motion.span 
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            className="absolute -bottom-6 text-[10px] text-white/40 font-medium tracking-wide pointer-events-none"
+          >
+            DRAG ME
+          </motion.span>
+        )}
+
+      </motion.div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaCoffee, FaLightbulb, FaTools, FaCheckDouble } from "react-icons/fa";
 import OklchGradientText from "./OklchGradientText";
+import ImageFade from "./ImageFade";
 
 const WORKFLOW_STEPS = [
   {
@@ -153,7 +154,7 @@ const WorkflowCard = ({ item, index }) => {
                 
                 {/* 1. GAMBAR (KIRI di Genap, KANAN di Ganjil, ATAS di Mobile) */}
                 <div className="w-full md:w-60 h-16 md:h-auto relative overflow-hidden shrink-0">
-                    <img 
+                    <ImageFade 
                         src={item.image} 
                         alt={item.title} 
                         className="w-full md:w-60 h-full object-cover transition-transform duration-700 group-hover:scale-110"

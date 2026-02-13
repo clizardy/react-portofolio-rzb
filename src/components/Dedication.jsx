@@ -121,7 +121,7 @@ const Dedication = ({ lang }) => {
                 onClick={handleMove}
             >
                 {/* 1. GAMBAR AFTER (FULL) */}
-                <img 
+                <img
                     src={parentsGraded} 
                     alt="After" 
                     className="absolute inset-0 w-full h-full object-cover" 
@@ -133,7 +133,7 @@ const Dedication = ({ lang }) => {
                     className="absolute inset-0 overflow-hidden shadow-[5px_0_30px_rgba(0,0,0,0.5)]"
                     style={{ width: `${sliderPosition}%` }}
                 >
-                    <img 
+                    <img
                         src={parentsRaw}
                         alt="Before" 
                         style={{ width: containerRef.current ? containerRef.current.offsetWidth : '100%' }}

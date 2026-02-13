@@ -6,6 +6,7 @@ import {
 } from 'react-icons/fa';
 import { FaXTwitter } from "react-icons/fa6"; // Pastikan install react-icons versi baru
 import toast from 'react-hot-toast';
+import ImageFade from "./ImageFade";
 
 const ShareModal = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState(false);
@@ -155,7 +156,7 @@ const ShareModal = ({ isOpen, onClose }) => {
 
                 {/* QR Box */}
                 <div className="bg-white p-4 rounded-2xl shadow-xl shadow-black/40">
-                    <img 
+                    <ImageFade 
                         src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${siteUrl}&bgcolor=ffffff`}
                         alt="QR Code"
                         className="w-32 h-32 md:w-40 md:h-40 object-contain mix-blend-multiply"

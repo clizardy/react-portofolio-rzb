@@ -8,7 +8,7 @@ import webdev1 from "../assets/webdev1.jpg";
 
 export const HERO_CONTENT = `Hi, I'm Ronald! A tech enthusiast with a creative soul.
 
-Currently studying IT Education at Tidar University, I specialize in crafting high-quality visual and audio content. Whether it's behind a camera, on an instrument, or leading a team, I turn creative vision into reality with efficiency and innovation.`;
+Currently studying IT Education at Tidar University, I specialize in crafting high-quality visual and music content. Whether it's behind a camera, on an instrument, or leading a team, I turn creative vision into reality with efficiency and innovation.`;
 
 export const ABOUT_TEXT = `Freelance Photographer & Videographer
 (2021 - Present)
@@ -30,7 +30,7 @@ export const EXPERIENCES = [
       en: "Actively explored various fields, ranging from music performance with keyboards to introduction to robotics using Arduino. Built strong administrative and presentation skills through Microsoft applications.", 
       id: "Secara aktif mengeksplorasi berbagai bidang, mulai dari pertunjukan musik dengan keyboard hingga pengenalan robotika menggunakan Arduino. Membangun keterampilan administrasi dan presentasi yang kuat melalui aplikasi Microsoft."
     },
-    technologies: ["Drone", "Keyboard", "Microsoft", "Arduino"],
+    technologies: ["Drone", "Keyboard", "Bass", "Microsoft", "Arduino"],
   },
   {
     year: { en: "2021 - 2024", id: "2021 - 2024" }, 
@@ -52,7 +52,7 @@ export const EXPERIENCES = [
       en: "I am learning to become a good programmer/developer from the basics, and also upgrade my skils before. Beside that I also learn many things to improve my mindset to be better than before.", 
       id: "Saya sedang belajar menjadi programmer/pengembang yang baik dari dasar-dasarnya, dan juga meningkatkan keterampilan saya sebelumnya. Disamping itu saya juga belajar banyak hal untuk memperbaiki pola pikir saya agar lebih baik lagi dari sebelumnya."
     },
-    technologies: ["Adobe Premier Pro", "Adobe Photoshop", "Davinci Resolve", "Bass", "Drum"],
+    technologies: ["Adobe Premier Pro", "Adobe Photoshop", "Davinci Resolve", "Drum"],
   },
   // {
   //   year: "2021 - 2022",

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { SiSpotify } from "react-icons/si"; 
 import { motion } from "framer-motion";
+import ImageFade from "./ImageFade";
 
 const SpotifyCard = () => {
   const [data, setData] = useState(null);
@@ -90,7 +91,7 @@ const SpotifyCard = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center gap-4 mt-4">
         <div className="relative w-16 h-16 flex-shrink-0">
-            <img decoding="async" loading="lazy" 
+            <ImageFade decoding="async" loading="lazy" 
                 src={data?.albumImageUrl || defaultImage} 
                 alt="Album" 
                 className={`w-full h-full object-cover rounded-xl shadow-md transition-all duration-500 ${isPlaying ? 'group-hover:scale-105' : 'grayscale opacity-60'}`} 

@@ -242,7 +242,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInqui
                 {/* 2. BOOKING CALL (Secondary) */}
                 <button
                     onClick={onOpenBooking}
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-bold text-sm hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-white dark:border-slate-700 text-slate-700 dark:text-white font-bold text-sm hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all flex items-center justify-center gap-2 shadow-sm"
                 >
                     <FaCalendarAlt />
                     <span>{lang === 'id' ? "Booking Call" : "Book a Call"}</span>
@@ -251,7 +251,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInqui
                 {/* 3. CALCULATOR (Tertiary) */}
                 <Link 
                     to="/calculator" 
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#0f172a] text-slate-300 font-bold text-sm hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-slate-700 hover:border-cyan-500/50 transition-all flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-[#0f172a] text-white/70 font-mono text-sm hover:text-white hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] border border-slate-700 hover:border-cyan-500/50 transition-all flex items-center justify-center gap-2"
                 >
                     <FaCalculator className="text-cyan-400" />
                     <span>{lang === 'id' ? "Hitung Estimasi?" : "Budget Estimator?"}</span>

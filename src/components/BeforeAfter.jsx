@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FaArrowsAltH } from "react-icons/fa"; // Pastikan install react-icons
+import ImageFade from "./ImageFade";
 
 const BeforeAfter = ({ 
   beforeImage, 
@@ -60,7 +61,7 @@ const BeforeAfter = ({
       onClick={handleMove} // Biar diklik langsung pindah
     >
       {/* 1. GAMBAR AFTER (BACKGROUND / BASE) */}
-      <img 
+      <ImageFade 
         src={afterImage} 
         alt="After" 
         className="absolute inset-0 w-full h-full object-cover"
@@ -78,7 +79,7 @@ const BeforeAfter = ({
         className="absolute inset-0 overflow-hidden border-r border-white/50"
         style={{ width: `${sliderPosition}%` }}
       >
-        <img 
+        <ImageFade 
           src={beforeImage} 
           alt="Before" 
           // Penting: Width gambar harus tetep full container biar gak gepeng

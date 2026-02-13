@@ -9,6 +9,7 @@ import {
     FaShieldAlt, FaServer, FaCode, FaCalendarAlt 
 } from "react-icons/fa";
 import { RiLoader4Line, RiMapPin2Line, RiDashboardLine, RiTimeLine } from "react-icons/ri";
+import ImageFade from "./ImageFade";
 
 // --- LOGO IMPORT (Pastikan path logo benar) ---
 import logoImage from '../assets/rzbLogo.png'; 
@@ -109,7 +110,7 @@ const ProjectTracker = () => {
                         {/* Logo & Project Name */}
                         <div className="flex items-start gap-6">
                             <div className="w-16 h-16 md:w-20 md:h-20 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center p-3 shadow-2xl">
-                                <img src={logoImage} alt="Logo" className="w-full h-full object-contain opacity-90" />
+                                <ImageFade src={logoImage} alt="Logo" className="w-full h-full object-contain opacity-90" />
                             </div>
                             <div>
                                 <div className="flex items-center gap-3 mb-2">

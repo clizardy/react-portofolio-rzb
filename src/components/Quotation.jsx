@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { FaDownload, FaWhatsapp, FaArrowLeft, FaGem } from 'react-icons/fa';
 import { RiDoubleQuotesR } from "react-icons/ri";
 import { toast } from 'react-hot-toast';
+import ImageFade from "./ImageFade";
 
 // Import Logo
 import logoImage from '../assets/rzbLogo.png'; 
@@ -107,13 +108,13 @@ const Quotation = () => {
         >
             {/* WATERMARK LOGO */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <img src={logoImage} className="w-[500px] opacity-[0.03] grayscale" alt="watermark" />
+                <ImageFade src={logoImage} className="w-[500px] opacity-[0.03] grayscale" alt="watermark" />
             </div>
 
             {/* 1. HEADER ELEGANT */}
             <div className="p-12 pb-6 flex justify-between bg-amber-500 items-start border-b border-neutral-100">
                 <div className="flex items-center gap-5">
-                    <img src={logoImage} alt="Logo" className="w-16 h-16 object-contain grayscale" />
+                    <ImageFade src={logoImage} alt="Logo" className="w-16 h-16 object-contain grayscale" />
                     <div>
                         <h1 className="text-2xl font-bold tracking-widest text-black uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>RZB. Portfolio</h1>
                         <p className="text-[10px] text-white/80 uppercase tracking-[0.2em] mt-1">Creative & Tech Services</p>

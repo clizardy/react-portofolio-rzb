@@ -7,6 +7,7 @@ import {
     FaGlobe, FaFilm, FaVideo, FaCamera, FaPalette, FaMusic, FaTimes,
     FaBolt, FaBriefcase, FaCalendarAlt, FaArrowRight
 } from 'react-icons/fa';
+import ImageFade from './ImageFade';
 
 // --- DATABASE HARGA & GAMBAR (LINK DIPERBAIKI & STABIL) ---
 const PRICING_CONFIG = {
@@ -283,7 +284,7 @@ const ProjectCalculator = ({ onClose, onOpenInquiry, onOpenBooking }) => {
       {/* Background Image Dynamic */}
       <motion.div key={service} initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} transition={{ duration: 1 }} className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-t from-[#020203] via-[#020203]/90 to-transparent z-10" />
-          <img src={PRICING_CONFIG[service].image} alt="bg" className="w-full h-full object-cover filter blur-sm scale-110" />
+          <ImageFade src={PRICING_CONFIG[service].image} alt="bg" className="w-full h-full object-cover filter blur-sm scale-110" />
       </motion.div>
 
       {/* NAVBAR FIXED HEADER */}
@@ -314,7 +315,7 @@ const ProjectCalculator = ({ onClose, onOpenInquiry, onOpenBooking }) => {
                             const isSelected = service === key;
                             return (
                                 <motion.div key={key} onClick={() => handleServiceChange(key)} whileHover={{ y: -5 }} className={`relative overflow-hidden rounded-2xl cursor-pointer group h-32 md:h-40 border transition-all duration-300 ${isSelected ? 'border-cyan-500 ring-2 ring-cyan-500/20' : 'border-white/10 hover:border-white/30'}`}>
-                                    <div className="absolute inset-0"><img src={PRICING_CONFIG[key].image} alt={key} className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" /><div className={`absolute inset-0 bg-gradient-to-t ${isSelected ? 'from-cyan-900/90 to-transparent' : 'from-black/90 to-black/20'}`} /></div>
+                                    <div className="absolute inset-0"><ImageFade src={PRICING_CONFIG[key].image} alt={key} className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" /><div className={`absolute inset-0 bg-gradient-to-t ${isSelected ? 'from-cyan-900/90 to-transparent' : 'from-black/90 to-black/20'}`} /></div>
                                     <div className="absolute bottom-0 left-0 p-4 w-full"><div className={`text-2xl mb-1 ${isSelected ? 'text-cyan-400' : 'text-white/70'}`}>{PRICING_CONFIG[key].icon}</div><h4 className={`font-bold leading-tight ${isSelected ? 'text-white' : 'text-neutral-300'}`}>{PRICING_CONFIG[key].label}</h4></div>
                                     {isSelected && (<div className="absolute top-3 right-3 text-cyan-400 bg-black/50 rounded-full p-1 backdrop-blur-md"><FaCheck size={10} /></div>)}
                                 </motion.div>

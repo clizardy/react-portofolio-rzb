@@ -115,7 +115,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
             >
                 {isMobile ? (
                     <div className={`relative group w-full rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${videoID ? 'aspect-video' : 'h-auto'}`} onClick={handleCardClick}>
-                        <img 
+                        <img
                             decoding="async" 
                             loading="lazy" 
                             src={thumbnailSrc} 
@@ -142,7 +142,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                         className={`relative group w-full rounded-lg overflow-hidden cursor-pointer bg-neutral-900 border border-${isHovered ? 'white' : 'black'} ${videoID ? 'aspect-video' : ''}`} 
                         onClick={handleCardClick}
                     >
-                        <img 
+                        <img
                             decoding="async" 
                             loading="lazy" 
                             src={thumbnailSrc} 
@@ -280,8 +280,8 @@ return (
             flex items-center gap-1.5 md:gap-2 
             overflow-x-auto py-2 px-2 
             justify-center 
-            bg-white dark:bg-white/5 backdrop-blur-md
-            border border-black/10 dark:border-white/10
+            bg-white dark:bg-black/30 backdrop-blur-md
+            border border-black/10 dark:border-cyan-400/60
             rounded-2xl md:rounded-full shadow-inner
             scrollbar-hide
         ">
@@ -320,7 +320,7 @@ return (
 
       {activeCategory === 'Videography' && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-12">
-            <div className="flex items-center gap-2 bg-amber-50 dark:bg-sky-950 border border-amber-500 dark:border-neutral-300 px-4 py-2 rounded-lg italic text-sm text-neutral-600 dark:text-neutral-400">
+            <div className="flex items-center gap-2 bg-amber-50 dark:bg-sky-950 px-4 py-2 rounded-xl italic text-sm text-black/70 dark:text-white/70">
                 <FaInfoCircle className="text-amber-500 dark:text-accent" />
                 <p>{lang === 'id' ? "Catatan: Lihat video lainnya di " : "Note: Find more videos in "}<a href="#organization" className="font-bold text-amber-600 dark:text-cyan-400 hover:underline">{lang === 'id' ? "Organisasi" : "Organization"}</a>.</p>
             </div>
