@@ -39,8 +39,16 @@ const WelcomeScreen = ({ onEnter, lang }) => {
     })
   };
 
+  // Fungsi Wrapper agar klik hanya jalan kalau loading sudah selesai
+  const handleScreenClick = () => {
+    if (isLoaded && onEnter) {
+        onEnter();
+    }
+  };
+
   return (
     <motion.div
+      onClick={handleScreenClick}
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-neutral-950 text-white overflow-hidden"
       initial={{ opacity: 1 }}
       exit={{ 

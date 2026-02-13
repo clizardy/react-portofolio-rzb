@@ -167,7 +167,7 @@ const Hero = ({ lang, isReady = true }) => {
               </a>
               <a href="#contact">
                   {/* MOBILE: px-4 py-2 text-sm | PC: px-6 py-3 text-base */}
-                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-neutral-400 dark:border-neutral-500 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
+                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-black/70 dark:border-white/70 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
                     {t.btnContact}
                   </MagneticButton>
               </a>

@@ -48,8 +48,8 @@ const LocationWidget = ({ lang }) => {
     return (
         // CONTAINER UTAMA
         // p-3 (sedikit lebih lega)
-        <div className="flex flex-row items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl w-full lg:w-3/4 transition-all duration-300 cursor-default
-            bg-white/40 border border-white/60 shadow-lg backdrop-blur-md hover:bg-white/60
+        <div className="flex flex-row items-center justify-between p-3 md:p-4 rounded-xl md:rounded-2xl w-full lg:w-3/4 h-20 md:h-24 transition-all duration-300 cursor-default
+            bg-white/60 border border-white/60 shadow-lg backdrop-blur-md hover:bg-white/60
             dark:bg-white/5 dark:border-white/10 dark:shadow-lg dark:hover:bg-white/10 group">
             
             {/* === BAGIAN KIRI: ICON & SUHU === */}
@@ -80,7 +80,7 @@ const LocationWidget = ({ lang }) => {
             </div>
 
             {/* GARIS PEMISAH (Sekarang muncul di Mobile juga, tapi tipis) */}
-            <div className="block w-[1px] h-8 md:h-12 bg-neutral-400/30 dark:bg-white/10 mx-2"></div>
+            <div className="block w-[1px] h-8 md:h-12 bg-black/70 dark:bg-white/70 mx-2"></div>
 
             {/* === BAGIAN KANAN: DASHBOARD GRID === */}
             {/* Grid dibuat gap-x-4 supaya kolom kiri & kanan tidak nempel */}

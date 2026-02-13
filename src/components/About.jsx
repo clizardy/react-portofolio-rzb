@@ -91,7 +91,7 @@ const GlassCard = ({ icon, title, sub, det, delay, className = "" }) => (
     className={`group relative p-5 rounded-3xl overflow-hidden transition-all duration-500
     bg-white shadow-sm dark:shadow-none dark:bg-white/[0.03] 
     border border-neutral-200 dark:border-white/5 
-    hover:border-neutral-300 dark:hover:border-white/20
+    hover:border-black/20 dark:hover:border-white/20
     ${className}`}
   >
     <div className="absolute top-0 right-0 p-4 opacity-10 dark:opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 text-neutral-900 dark:text-white text-4xl">
@@ -347,7 +347,7 @@ const About = ({ lang = 'en' }) => {
             </div>
 
             {/* --- HIRE ME / STATUS CARD (FINAL FIX) --- */}
-            <div className="relative group w-full md:w-fit mt-16 md:mt-12">
+            <div className="relative group w-full md:w-fit mt-6 md:mt-12">
                 {/* Glow Effect */}
                 <div className={`absolute -inset-[1px] bg-gradient-to-r ${currentSlide.color} rounded-2xl opacity-20 dark:opacity-30 blur-sm group-hover:opacity-50 transition-opacity duration-500`}></div>
                 
