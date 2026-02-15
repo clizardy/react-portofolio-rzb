@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom"; 
 import { TRANSLATIONS } from "../constants/translations";
 import profilePic from "../assets/ronald-rzb-Profile.jpg";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { TypeAnimation } from 'react-type-animation';
-import { FaDownload } from "react-icons/fa"; 
+import { FaLock, FaTimes, FaBackspace } from "react-icons/fa"; 
 import OklchGradientText from "../components/OklchGradientText";
 import LocationWidget from "../components/LocationWidget";
 import QuoteWidget from "../components/QuoteWidget";
@@ -50,10 +51,17 @@ const ClockWidget = ({ lang }) => {
   );
 };
 
-// --- PERBAIKAN: Terima prop isReady ---
 const Hero = ({ lang, isReady = true }) => {
   const t = TRANSLATIONS[lang ? lang : 'en']?.hero || TRANSLATIONS['en'].hero;
   const [isCustom, setIsCustom] = useState(false);
+  
+  // --- LOGIKA PIN ---
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  
+  const CORRECT_PIN = "1904"; // PIN ANDA
 
   useEffect(() => {
     const checkTheme = () => {
@@ -61,24 +69,65 @@ const Hero = ({ lang, isReady = true }) => {
       setIsCustom(!!savedTheme); 
     };
     checkTheme();
-    // Cek setiap 500ms agar reaktif saat ThemeBuilder diganti
     const interval = setInterval(checkTheme, 500);
     return () => clearInterval(interval);
   }, []);
 
-  const sequenceEn = [
-    'Freelancer', 1000,
-    'Digital Creator', 1000,
-    'Musician', 1000,
-    'Project Manager', 1000
-  ];
+  // --- SCROLL LOCK ---
+  useEffect(() => {
+    if (showPinModal) {
+      document.body.style.overflow = 'hidden'; 
+    } else {
+      document.body.style.overflow = 'unset'; 
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showPinModal]);
 
-  const sequenceId = [
-    'Pekerja Lepas', 1000,
-    'Kreator Digital', 1000,
-    'Musisi', 1000,
-    'Manajer Proyek', 1000
-  ];
+  const handleNumClick = (num) => {
+    if (pin.length < 4 && !isSuccess) {
+      const newPin = pin + num;
+      setPin(newPin);
+      if (newPin.length === 4) validatePin(newPin);
+    }
+  };
+
+  const handleBackspace = () => {
+    if (!isSuccess) {
+        setPin(prev => prev.slice(0, -1));
+        setIsError(false);
+    }
+  };
+
+  const validatePin = (inputPin) => {
+    if (inputPin === CORRECT_PIN) {
+        setIsSuccess(true);
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.href = cvFile;
+            link.download = "Ronald_Zuni_CV.pdf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => {
+                setShowPinModal(false);
+                setPin("");
+                setIsSuccess(false);
+            }, 1000);
+        }, 500);
+    } else {
+        setIsError(true);
+        setTimeout(() => {
+            setPin("");
+            setIsError(false);
+        }, 600);
+    }
+  };
+
+  const sequenceEn = [ 'Freelancer', 1000, 'Digital Creator', 1000, 'Musician', 1000, 'Project Manager', 1000 ];
+  const sequenceId = [ 'Pekerja Lepas', 1000, 'Kreator Digital', 1000, 'Musisi', 1000, 'Manajer Proyek', 1000 ];
 
   return (
     <div>
@@ -87,10 +136,106 @@ const Hero = ({ lang, isReady = true }) => {
           0% { transform: translateX(-150%) skewX(-15deg); }
           100% { transform: translateX(150%) skewX(-15deg); }
         }
-        .group:hover .animate-shine {
+        .animate-shine {
           animation: shine 0.75s ease-in-out;
         }
+        .shake-horizontal {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
       `}</style>
+
+      {/* --- MODAL PIN FIXED (PAKAI PORTAL AGAR PASTI DI ATAS & TENGAH) --- */}
+      {showPinModal && createPortal(
+        <AnimatePresence>
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 backdrop-blur-md p-4 cursor-default"
+                onClick={(e) => {
+                    if(e.target === e.currentTarget) setShowPinModal(false);
+                }}
+            >
+                <motion.div 
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, y: 20 }}
+                    // Tambahkan pointer-events-auto untuk memastikan modal bisa diklik
+                    className="relative bg-[#000000] rounded-[2rem] p-6 w-full max-w-[320px] shadow-2xl overflow-hidden pointer-events-auto"
+                >
+                    {/* Header */}
+                    <div className="flex justify-between items-center mb-8">
+                        <div className="flex items-center gap-2">
+                             <FaLock className="text-amber-500 text-xs" />
+                             <span className="text-[10px] font-bold tracking-[0.2em] text-white/70">Security Access</span>
+                        </div>
+                        <button onClick={() => setShowPinModal(false)} className="text-neutral-500 hover:text-white transition-colors cursor-pointer p-1">
+                            <FaTimes />
+                        </button>
+                    </div>
+
+                    {/* Dots */}
+                    <div className={`flex justify-center gap-4 mb-8 ${isError ? 'shake-horizontal' : ''}`}>
+                        {[0, 1, 2, 3].map((i) => (
+                            <div 
+                                key={i}
+                                className={`w-4 h-4 rounded-full border transition-all duration-300
+                                ${pin.length > i 
+                                    ? (isSuccess ? 'bg-green-500 border-green-500 shadow-[0_0_10px_#22c55e]' : (isError ? 'bg-red-500 border-red-500' : 'bg-white border-white shadow-[0_0_10px_white]')) 
+                                    : 'bg-transparent border-white/50'
+                                }`}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Status Text */}
+                    <div className="h-6 text-center mb-4">
+                        {isError && <span className="text-red-500 text-xs font-mono tracking-widest">ACCESS DENIED</span>}
+                        {isSuccess && <span className="text-green-500 text-xs font-mono tracking-widest">ACCESS GRANTED</span>}
+                        {!isError && !isSuccess && <span className="text-white text-xs font-mono tracking-widest">ENTER 4-DIGIT PIN</span>}
+                    </div>
+
+                    {/* Keypad */}
+                    <div className="grid grid-cols-3 gap-4">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                            <button
+                                key={num}
+                                onClick={() => handleNumClick(num.toString())}
+                                className="h-14 rounded-2xl bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white font-sans text-xl font-bold border border-white/5 cursor-pointer"
+                            >
+                                {num}
+                            </button>
+                        ))}
+                        
+                        <div className="h-14"></div>
+
+                        <button
+                            onClick={() => handleNumClick("0")}
+                            className="h-14 rounded-2xl bg-white/5 hover:bg-white/10 active:scale-95 transition-all text-white font-sans text-xl font-bold border border-white/5 cursor-pointer"
+                        >
+                            0
+                        </button>
+
+                        <button
+                            onClick={handleBackspace}
+                            className="h-14 rounded-2xl bg-transparent hover:bg-red-500/40 active:scale-95 transition-all text-neutral-400 hover:text-red-400 flex items-center justify-center cursor-pointer"
+                        >
+                            <FaBackspace />
+                        </button>
+                    </div>
+
+                    <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_70%)] pointer-events-none" />
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
 
       <div id="hero" className="flex flex-wrap items-center pb-16 md:pb-0">
         
@@ -99,9 +244,8 @@ const Hero = ({ lang, isReady = true }) => {
           <div className="flex flex-col items-center lg:items-start">
             
             <RevealText>
-                {/* LOGIKA: Jika isReady true -> visible, jika false -> hidden */}
                 <motion.h1
-                  variants={container(0)} // Delay 0
+                  variants={container(0)}
                   initial="hidden"
                   animate={isReady ? "visible" : "hidden"} 
                   className="pb-8 text-4xl font-thin tracking-tight lg:mt-16 lg:text-6xl text-neutral-900 dark:text-white"
@@ -113,35 +257,30 @@ const Hero = ({ lang, isReady = true }) => {
                 </motion.h1>
             </RevealText>
 
-<motion.div
-        variants={container(0.2)}
-        initial="hidden"
-        animate={isReady ? "visible" : "hidden"}
-        className="h-16 lg:h-20"
-    >
-        {/* 3. Update className span di bawah ini */}
-        <span 
-            className={`
-                bg-clip-text text-3xl lg:text-4xl tracking-tight text-transparent font-bold
-                
-                ${isCustom 
-                    /* JIKA CUSTOM: Pakai class magic dari index.css */
-                    ? "bg-gradient-accent animate-gradient-xy"
-                    
-                    /* JIKA DEFAULT: Pakai warna asli kamu */
-                    : "bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-cyan-300 dark:via-slate-100 dark:to-blue-400"
-                }
-            `}
-        >
-            <TypeAnimation
-                key={lang} 
-                sequence={lang === 'id' ? sequenceId : sequenceEn}
-                wrapper="span"
-                speed={50}
-                repeat={Infinity}
-            />
-        </span>
-    </motion.div>
+            <motion.div
+                variants={container(0.2)}
+                initial="hidden"
+                animate={isReady ? "visible" : "hidden"}
+                className="h-16 lg:h-20"
+            >
+                <span 
+                    className={`
+                        bg-clip-text text-3xl lg:text-4xl tracking-tight text-transparent font-bold
+                        ${isCustom 
+                            ? "bg-gradient-accent animate-gradient-xy"
+                            : "bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 dark:from-cyan-300 dark:via-slate-100 dark:to-blue-400"
+                        }
+                    `}
+                >
+                    <TypeAnimation
+                        key={lang} 
+                        sequence={lang === 'id' ? sequenceId : sequenceEn}
+                        wrapper="span"
+                        speed={50}
+                        repeat={Infinity}
+                    />
+                </span>
+            </motion.div>
 
             <motion.p
               variants={container(0.4)}
@@ -157,28 +296,31 @@ const Hero = ({ lang, isReady = true }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={isReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-3 lg:gap-6 mt-6 justify-center lg:justify-start items-center"
+              className="flex flex-wrap gap-3 lg:gap-6 mt-6 justify-center lg:justify-start items-center relative z-20"
             >
               <a href="#projects">
-                  {/* MOBILE: px-4 py-2 text-sm | PC: px-6 py-3 text-base */}
-                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)]">
+                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] cursor-pointer">
                     {t.btnPortfolio}
                   </MagneticButton>
               </a>
               <a href="#contact">
-                  {/* MOBILE: px-4 py-2 text-sm | PC: px-6 py-3 text-base */}
-                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-black/70 dark:border-white/70 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10">
+                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-black/70 dark:border-white/70 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10 cursor-pointer">
                     {t.btnContact}
                   </MagneticButton>
               </a>
-              <a href={cvFile} download="Ronald_Zuni_CV.pdf"> 
-                  {/* MOBILE: px-5 py-2 text-sm | PC: px-8 py-3 text-base */}
-                  <MagneticButton className="group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2">
+
+              {/* TOMBOL CV - DIBERI Z-INDEX TINGGI & CURSOR POINTER */}
+              <div 
+                onClick={() => setShowPinModal(true)} 
+                className="relative z-50 cursor-pointer inline-block"
+              >
+                <MagneticButton className="group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2 pointer-events-auto">
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
                     <span>{t.btnCv}</span>
-                    <FaDownload className="transition-transform group-hover:translate-y-1" />
-                  </MagneticButton>
-              </a>
+                    <FaLock className="text-xs opacity-70 group-hover:text-amber-500 transition-colors" /> 
+                </MagneticButton>
+              </div>
+
             </motion.div>
 
             {/* WIDGETS */}
@@ -203,12 +345,10 @@ const Hero = ({ lang, isReady = true }) => {
           </div>
         </div>
         
-
-        {/* BAGIAN KANAN (TETAP SEPERTI SEMULA / NO 3D) */}
+        {/* BAGIAN KANAN */}
         <div className="w-full lg:w-1/2 lg:p-8 mt-16 lg:mt-0">
           <div className="flex justify-center relative group z-10"> 
             
-            {/* Background Glow Berputar */}
             <div className="absolute -inset-1 lg:-inset-2 rounded-3xl z-[-1] blur-2xl opacity-70 group-hover:opacity-100 group-hover:blur-3xl transition-all duration-500 overflow-hidden">
                 <motion.div
                     animate={{ rotate: 360 }}
@@ -226,9 +366,6 @@ const Hero = ({ lang, isReady = true }) => {
               initial={{ x: 50, opacity: 0 }}
               animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
               transition={{ duration: 0.8 }}
-              // PERUBAHAN ADA DI BAWAH INI:
-              // Ganti 'max-w-sm' menjadi 'max-w-xs' (atau max-w-[260px] jika ingin lebih kecil lagi)
-              // 'lg:max-w-xl' tetap ada, jadi PC tidak berubah.
               className="relative rounded-3xl overflow-hidden bg-white/30 dark:bg-neutral-950/60 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-2xl max-w-xs lg:max-w-xl lg:p-3 w-full"
             >
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">

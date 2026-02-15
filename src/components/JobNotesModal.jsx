@@ -26,7 +26,7 @@ import {
 } from "firebase/firestore";
 
 // --- KONFIGURASI KEAMANAN ---
-const CORRECT_PIN = "141704"; // <--- GANTI PIN RAHASIA DI SINI
+const CORRECT_PIN = "141704";
 
 const JobNotesModal = ({ isOpen, onClose }) => {
   // --- STATE SYSTEM ---

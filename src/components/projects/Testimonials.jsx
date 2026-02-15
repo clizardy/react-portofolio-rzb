@@ -104,8 +104,8 @@ const TestimonialCard = ({ review, index, lang }) => {
         className={`
           h-full relative p-6 rounded-3xl border transition-all duration-300 cursor-pointer group flex flex-col
           ${isOpen 
-            ? 'bg-black/10 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
-            : 'bg-white/5 border-white/10 hover:border-cyan-500/30 hover:bg-white/10'}
+            ? 'dark:bg-black/10 bg-white/30 dark:border-cyan-500/50 border-amber-500 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
+            : 'dark:bg-white/5 bg-white/30 border-white/0 hover:border-amber-500 dark:hover:border-cyan-500 hover:bg-white/10'}
         `}
       >
         {/* Ikon Kutipan */}
@@ -123,7 +123,7 @@ const TestimonialCard = ({ review, index, lang }) => {
         {/* BAGIAN PROFILE */}
         <div className="flex items-center gap-4 relative z-10 mb-3">
           {/* Foto Profil */}
-          <div className={`w-14 h-14 rounded-full overflow-hidden border-2 transition-all ${isOpen ? 'border-cyan-400 scale-110' : 'border-white/20'}`}>
+          <div className={`w-14 h-14 rounded-full overflow-hidden border-2 transition-all ${isOpen ? 'border-amber-500 dark:border-cyan-400 scale-110' : 'border-white/20'}`}>
              {displayImage ? (
                  <ImageFade src={displayImage} alt={review.name} className="w-full h-full object-cover" />
              ) : (
@@ -146,7 +146,7 @@ const TestimonialCard = ({ review, index, lang }) => {
             </div>
           </div>
           
-          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} className="text-white/70 text-xs">
+          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} className="dark:text-white text-black text-xs">
             <FaChevronDown />
           </motion.div>
         </div>
@@ -216,6 +216,14 @@ const Testimonials = ({ lang }) => {
 
   return (
     <div id="testimonials" className="py-10 relative">
+{/* Background Glow (Responsive) */}
+<div 
+  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+  w-[300px] h-[850px] blur-[60px]
+  md:w-[1500px] md:h-[500px] md:blur-[100px]
+  bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/5 
+  rounded-full pointer-events-none" 
+/>
       
       {/* Header */}
       <motion.div
@@ -233,7 +241,7 @@ const Testimonials = ({ lang }) => {
       {/* Loading Animation (Hanya muncul jika firebase sedang load awal) */}
       {loading && (
           <div className="flex justify-center py-4 mb-4">
-              <span className="text-xs text-cyan-400 animate-pulse">Syncing latest reviews...</span>
+              <span className="md:text-xs text-[10px] text-cyan-400 italic animate-pulse">Syncing latest reviews...</span>
           </div>
       )}
 

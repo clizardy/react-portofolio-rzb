@@ -176,18 +176,18 @@ const SocialModal = ({ isOpen, onClose }) => {
                   `}
                 >
                   {/* Icon Wrapper */}
-                  <div className="dark:text-white text-black md:group-hover:text-white transition-colors duration-300 mb-3 md:mb-4">
+                  <div className="text-white md:text-black md:dark:text-white md:group-hover:text-white transition-colors duration-300 mb-3 md:mb-4">
                     {item.icon}
                   </div>
                   
                   <div className="flex justify-between items-end">
                     <div>
                       {/* Nama Brand */}
-                      <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider dark:text-white text-black md:group-hover:text-white/80 transition-colors">
+                      <p className="text-[10px] md:text-black md:dark:text-white md:text-xs font-light italic uppercase tracking-wider text-white md:group-hover:text-white/80 transition-colors">
                         {item.name}
                       </p>
                       {/* Username */}
-                      <p className="text-sm md:text-base font-semibold dark:text-cyan-300 text-amber-600 group-hover:text-white truncate max-w-[120px] md:max-w-none">
+                      <p className="text-sm md:text-base md:text-black md:dark:text-white font-semibold text-white group-hover:text-white truncate max-w-[120px] md:max-w-none">
                         {item.username}
                       </p>
                     </div>

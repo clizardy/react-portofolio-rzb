@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode } from "react-icons/fa";
-import { SiAdobelightroom, SiAdobepremierepro } from "react-icons/si";
+import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode, FaPalette } from "react-icons/fa"; // Tambah FaPalette (Opsional jika mau ikon umum)
+import { SiAdobelightroom, SiAdobepremierepro, SiCanva } from "react-icons/si"; // Tambah SiCanva
 import { MdPiano } from "react-icons/md";
 import OklchGradientText from "../components/OklchGradientText";
 
@@ -10,7 +10,7 @@ const SKILLS_LIST = [
     id: "photography",
     icon: <FaCamera />,
     color: "text-cyan-400",
-    bg: "bg-cyan-400", // 👈 Tambahkan ini manual
+    bg: "bg-cyan-400",
     label: { en: "Photography", id: "Fotografi" },
     desc: { en: "Capturing moments with professional gear.", id: "Menangkap momen dengan gear profesional." },
   },
@@ -18,23 +18,31 @@ const SKILLS_LIST = [
     id: "videography",
     icon: <FaVideo />,
     color: "text-red-500",
-    bg: "bg-red-500", // 👈 Tambah
+    bg: "bg-red-500",
     label: { en: "Videography", id: "Videografi" },
     desc: { en: "Cinematic storytelling & motion picture.", id: "Bercerita secara sinematik & gambar bergerak." },
   },
   {
     id: "editing_photo",
     icon: <SiAdobelightroom />,
-    color: "text-blue-500",
-    bg: "bg-blue-500", // 👈 Tambah
+    color: "text-blue-600",
+    bg: "bg-blue-600",
     label: { en: "Photo Editing", id: "Editing Foto" },
     desc: { en: "Advanced retouching via Lightroom.", id: "Retouching tingkat lanjut via Lightroom." },
   },
   {
+    id: "design_grafis",
+    icon: <SiCanva />,
+    color: "text-cyan-400",
+    bg: "bg-cyan-400",
+    label: { en: "Graphic Design", id: "Desain Grafis" },
+    desc: { en: "Creative visual design with Canva.", id: "Desain visual kreatif menggunakan Canva." },
+  },
+  {
     id: "editing_video",
     icon: <SiAdobepremierepro />, 
-    color: "text-purple-500",
-    bg: "bg-purple-500", // 👈 Tambah
+    color: "text-indigo-500",
+    bg: "bg-indigo-500",
     label: { en: "Video Editing", id: "Editing Video" },
     desc: { en: "Visual effects & cutting with Premiere Pro.", id: "Efek visual & cutting dengan Premiere Pro." },
   },
@@ -42,7 +50,7 @@ const SKILLS_LIST = [
     id: "piano",
     icon: <MdPiano />,
     color: "text-teal-400",
-    bg: "bg-teal-400", // 👈 Tambah
+    bg: "bg-teal-400",
     label: { en: "Piano", id: "Piano" },
     desc: { en: "Classical & pop arrangement skills.", id: "Keahlian aransemen klasik & pop." },
   },
@@ -50,7 +58,7 @@ const SKILLS_LIST = [
     id: "guitar",
     icon: <FaGuitar />,
     color: "text-orange-500",
-    bg: "bg-orange-500", // 👈 Tambah
+    bg: "bg-orange-500",
     label: { en: "Guitar", id: "Gitar" },
     desc: { en: "Acoustic & electric session player.", id: "Pemain sesi akustik & elektrik." },
   },
@@ -58,7 +66,7 @@ const SKILLS_LIST = [
     id: "pm",
     icon: <FaClipboardList />,
     color: "text-emerald-400",
-    bg: "bg-emerald-400", // 👈 Tambah
+    bg: "bg-emerald-400",
     label: { en: "Project Manager", id: "Manajer Proyek" },
     desc: { en: "Agile leadership & team coordination.", id: "Kepemimpinan Agile & koordinasi tim." },
   },
@@ -66,7 +74,7 @@ const SKILLS_LIST = [
     id: "webdev",
     icon: <FaLaptopCode />,
     color: "text-indigo-400",
-    bg: "bg-indigo-400", // 👈 Tambah
+    bg: "bg-indigo-400",
     label: { en: "Web Developer", id: "Pengembang Web" },
     desc: { en: "Building responsive & dynamic websites.", id: "Membangun website responsif." },
   },
@@ -90,7 +98,7 @@ const DockIcon = ({ mouseX, skill, selectedSkill, setSelectedSkill }) => {
       ref={ref}
       style={{ width }} 
       className={`
-        relative aspect-square rounded-2xl cursor-pointer z-10 group flex items-center justify-center
+        relative aspect-square rounded-3xl cursor-pointer z-10 group flex items-center justify-center
         transition-colors duration-200
         w-20 h-20 md:w-auto md:h-auto 
         ${isSelected ? "bg-white/20 ring-1 ring-white/50" : "hover:bg-white/10"}
@@ -123,7 +131,7 @@ const Skills = ({ lang }) => {
     <div id="skills" className="relative py-10 md:py-14 border-b border-black dark:border-white overflow-visible">
         
         {/* Ambient Light */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-500/10 dark:bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-500/30 dark:bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
         <div className="container mx-auto px-6 md:px-12 z-10 relative">
 
@@ -157,6 +165,7 @@ const Skills = ({ lang }) => {
                                 <h3 className={`text-3xl md:text-4xl font-bold ${selectedSkill.color} drop-shadow-md`}>
                                     {selectedSkill.label[lang]}
                                 </h3>
+                                {/* Progress Bar Warna Warni */}
                                 <div className="h-1 w-20 bg-neutral-300 dark:bg-neutral-700 rounded-full my-2 md:self-start">
                                     <motion.div 
                                         className={`h-full rounded-full ${selectedSkill.bg}`}
@@ -179,10 +188,17 @@ const Skills = ({ lang }) => {
                         onMouseMove={(e) => mouseX.set(e.pageX)}
                         onMouseLeave={() => mouseX.set(null)}
                         className="
-                            grid grid-cols-4 gap-3 p-3 rounded-3xl w-full max-w-md md:max-w-none
-                            md:flex md:flex-wrap md:justify-center md:gap-4 md:p-8
-                            md:bg-white/85 md:dark:bg-white/5 md:backdrop-blur-2xl md:border md:border-white/10 md:shadow-2xl md:rounded-[2rem]
+                            flex items-center gap-3 p-4
+                            w-full max-w-full
+                            overflow-x-auto pb-6 px-2 snap-x
+                            md:justify-center md:overflow-visible md:flex-wrap md:pb-8
+                            bg-black/5 dark:bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2rem]
+                            scrollbar-hide
                         "
+                        style={{ 
+                            scrollbarWidth: 'none',  /* Firefox */
+                            msOverflowStyle: 'none'  /* IE/Edge */
+                        }}
                     >
                         {SKILLS_LIST.map((skill) => (
                             <DockIcon 

@@ -38,7 +38,7 @@ const Education = ({ lang }) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
             >
-                <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
                     <OklchGradientText>{lang === 'id' ? "Akademik" : "Academics"}</OklchGradientText>
                 </h2>
                 <div className="h-1.5 w-20 bg-gradient-to-r from-amber-500 to-cyan-500 mx-auto rounded-full mb-4 shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>

@@ -270,6 +270,17 @@ const Projects = ({ lang }) => {
 
 return (
     <div id="projects" className="border-b border-black mt-6 dark:border-white relative">
+        
+      {/* --- BACKGROUND GLOW EFFECT (CENTERED) --- */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                   w-[40%] h-[180%] md:w-[700px] md:h-[1900px]
+                   bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
+                   from-indigo-300/20 via-purple-300/10 to-transparent 
+                   dark:from-indigo-800/30 dark:via-purple-900/10 dark:to-transparent
+                   blur-[150px] rounded-full pointer-events-none z-0"
+      ></div>
+      
       <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-5 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>

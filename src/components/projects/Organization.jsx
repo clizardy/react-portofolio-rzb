@@ -90,6 +90,14 @@ const OrgHeader = ({ icon, title, colorClass, gradientLine }) => {
 const Organization = ({ lang }) => {
   return (
     <div id="organization" className="border-b border-black dark:border-white">
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                   w-[50%] h-[500%] md:w-[1500px] md:h-[1000px]
+                   bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
+                   from-indigo-300/20 via-purple-300/10 to-transparent 
+                   dark:from-indigo-800/30 dark:via-purple-900/10 dark:to-transparent
+                   blur-[350px] rounded-full pointer-events-none z-0"
+      ></div>
       
       {/* JUDUL UTAMA */}
       <motion.h2

@@ -70,7 +70,7 @@ const ServiceShowcase = ({ lang, onBook }) => {
     <section id="portfolio" className="relative overflow-hidden">
       
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[400px] bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-[100px] rounded-full pointer-events-none" />
 
       {/* Container Utama */}
       <div className="max-w-[1400px] mx-auto relative z-10 w-full flex flex-col md:flex-row">

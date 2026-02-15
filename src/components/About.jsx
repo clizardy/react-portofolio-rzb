@@ -98,10 +98,10 @@ const GlassCard = ({ icon, title, sub, det, delay, className = "" }) => (
         {icon}
     </div>
     <div className="relative z-10 flex flex-col h-full justify-end">
-        <h4 className="text-[10px] font-bold text-neutral-500 dark:text-white/40 uppercase tracking-widest mb-1">{title}</h4>
+        <h4 className="text-[10px] font-bold text-neutral-500 dark:text-white/40 group-hover:text-black dark:group-hover:text-white uppercase tracking-widest mb-1">{title}</h4>
         <p className="text-lg font-bold text-neutral-800 dark:text-white leading-tight group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">{sub}</p>
         <div className="h-[1px] w-8 bg-neutral-300 dark:bg-white/20 my-2 group-hover:w-full transition-all duration-500"></div>
-        <p className="text-xs text-neutral-500 dark:text-white/50 font-mono">{det}</p>
+        <p className="text-xs text-neutral-500 dark:text-white/50 font-mono group-hover:text-black/75 dark:group-hover:text-white/75">{det}</p>
     </div>
   </motion.div>
 );
@@ -202,7 +202,7 @@ const About = ({ lang = 'en' }) => {
           <div className="lg:col-span-5 relative group perspective-1000">
             <motion.div 
                 className="relative w-full aspect-[3/4] rounded-[2.5rem] overflow-hidden z-20 
-                bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 shadow-2xl cursor-grab active:cursor-grabbing"
+                bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 shadow-lg cursor-grab active:cursor-grabbing"
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
             >
@@ -234,14 +234,14 @@ const About = ({ lang = 'en' }) => {
                             animate={{ y: "0%" }}
                             exit={{ y: "100%" }}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                            className="absolute bottom-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-t border-white/20 p-6 pb-8 rounded-t-3xl h-auto max-h-[40%] overflow-y-auto scrollbar-hide text-white"
+                            className="absolute bottom-0 left-0 right-0 z-50 bg-black/10 backdrop-blur-xl p-6 pb-8 rounded-t-3xl h-auto max-h-[40%] overflow-y-auto scrollbar-hide text-white"
                         >
                             <div className="flex justify-between items-center mb-4 sticky top-0 bg-transparent z-10">
                                 <div className="flex items-center gap-2">
                                     <MdGridOn className={`text-xl text-${currentSlide.accent}`}/>
                                     <h4 className="text-xs font-bold uppercase tracking-widest">{t.exifBtn}</h4>
                                 </div>
-                                <button onClick={toggleInfo} className="p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"><FaTimes /></button>
+                                <button onClick={toggleInfo} className="p-1 rounded-full hover:bg-white/20 transition-colors"><FaTimes /></button>
                             </div>
 
                             {loadingExif ? (
@@ -252,23 +252,35 @@ const About = ({ lang = 'en' }) => {
                             ) : exifData ? (
                                 <div className="space-y-3 font-mono text-xs">
                                     <div className="flex justify-between items-center pb-2 border-b border-white/60">
-                                        <span className="text-white/50 flex items-center gap-2"><MdCamera/> Model</span>
+                                        <span className="text-white/80 flex items-center gap-2"><MdCamera/> Model</span>
                                         <span className="font-bold">{exifData.Model?.replace("ILCE-", "Sony α") || "N/A"}</span>
                                     </div>
-                                    <div className="grid grid-cols-3 gap-2 pt-2 text-center">
-                                        <div className="bg-white/10 p-2 rounded-lg">
-                                            <div className="text-white/50 text-[10px] mb-1">Aperture</div>
-                                            <div className={`font-bold text-${currentSlide.accent}`}>f/{exifData.FNumber || "-"}</div>
-                                        </div>
-                                        <div className="bg-white/10 p-2 rounded-lg">
-                                            <div className="text-white/50 text-[10px] mb-1">Shutter</div>
-                                            <div className="font-bold">{formatExposureTime(exifData.ExposureTime)}</div>
-                                        </div>
-                                        <div className="bg-white/10 p-2 rounded-lg">
-                                            <div className="text-white/50 text-[10px] mb-1">ISO</div>
-                                            <div className="font-bold">{exifData.ISO || "-"}</div>
-                                        </div>
-                                    </div>
+                                  {/* Metadata Grid */}
+                                  <div className="grid grid-cols-3 gap-2 pt-2 text-center">
+                                      {/* Aperture */}
+                                      <div className="bg-white/5 p-2 rounded-2xl border border-white/15">
+                                          <div className="text-white/50 text-[10px] mb-1 flex items-center justify-center gap-1">
+                                              <MdCenterFocusStrong className="text-xs" /> Aperture
+                                          </div>
+                                          <div className={`font-bold text-${currentSlide.accent}`}>f/{exifData.FNumber || "-"}</div>
+                                      </div>
+
+                                      {/* Shutter */}
+                                      <div className="bg-white/5 p-2 rounded-2xl border border-white/15">
+                                          <div className="text-white/50 text-[10px] mb-1 flex items-center justify-center gap-1">
+                                              <MdShutterSpeed className="text-xs" /> Shutter
+                                          </div>
+                                          <div className="font-bold">{formatExposureTime(exifData.ExposureTime)}</div>
+                                      </div>
+
+                                      {/* ISO */}
+                                      <div className="bg-white/5 p-2 rounded-2xl border border-white/15">
+                                          <div className="text-white/50 text-[10px] mb-1 flex items-center justify-center gap-1">
+                                              <MdIso className="text-xs" /> ISO
+                                          </div>
+                                          <div className="font-bold">{exifData.ISO || "-"}</div>
+                                      </div>
+                                  </div>
                                 </div>
                             ) : (
                                 <p className="text-center text-xs text-white/30 italic py-4">No Metadata found.</p>
@@ -348,8 +360,10 @@ const About = ({ lang = 'en' }) => {
 
             {/* --- HIRE ME / STATUS CARD (FINAL FIX) --- */}
             <div className="relative group w-full md:w-fit mt-6 md:mt-12">
-                {/* Glow Effect */}
-                <div className={`absolute -inset-[1px] bg-gradient-to-r ${currentSlide.color} rounded-2xl opacity-20 dark:opacity-30 blur-sm group-hover:opacity-50 transition-opacity duration-500`}></div>
+            {/* Glow Effect */}
+            <div 
+              className={`absolute -inset-[1px] bg-gradient-to-r ${currentSlide.color} rounded-2xl blur-sm transition-opacity duration-500 opacity-100 md:opacity-40 md:dark:opacity-30 group-hover:opacity-100`}
+            ></div>
                 
                 <div className="relative rounded-2xl bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-xl border border-neutral-200 dark:border-white/10 p-2 sm:pr-2 sm:pl-5 flex flex-row items-center justify-between gap-4 shadow-lg transition-colors duration-300">
                     

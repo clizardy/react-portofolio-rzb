@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiMenuAlt3 } from "react-icons/hi"; 
 import { 
-  FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, 
+  FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, FaChalkboardTeacher,
   FaShapes, FaEnvelope, FaImages, FaGraduationCap, FaTelegram,
-  FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle,
-  FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate,
+  FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle, FaArrowRight,
+  FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate, FaLock,
   FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
 } from "react-icons/fa";
-import { FaL, FaXTwitter } from "react-icons/fa6"; 
+import { FaXTwitter } from "react-icons/fa6"; 
 import { toast } from "react-hot-toast";
 import OklchGradientText from "../components/OklchGradientText";
-import ProjectInquiryForm from "./ProjectInquiryForm";
 import ImageFade from "./ImageFade";
 
 const SITE_URL = window.location.href;
@@ -38,6 +36,20 @@ const MENU_ITEMS = [
 
 const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobNotes, isOpen, onClose, setIsOpen }) => {
   const [showQR, setShowQR] = useState(false);
+// 1. Definisikan State & Ref terlebih dahulu
+const [showPinModal, setShowPinModal] = useState(false);
+const [pinInput, setPinInput] = useState("");
+const [isError, setIsError] = useState(false);
+const inputRef = useRef(null);
+
+// 2. Baru kemudian gunakan di dalam useEffect
+useEffect(() => {
+    if (showPinModal) {
+        setTimeout(() => inputRef.current?.focus(), 100);
+    }
+}, [showPinModal]);
+
+  const CORRECT_PIN = "1904"; // Ganti dengan PIN rahasia kamu
 
   // --- SECRET TRIGGER STATE ---
   const [clickCount, setClickCount] = useState(0);
@@ -354,7 +366,30 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
             </div>
         </button>
 
-        {/* 4. TOMBOL SHARE QR (Full Width di Bawah) */}
+        {/* 4. TOMBOL PRESENTASI (Portofolio / Pitch Deck) */}
+            <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowPinModal(true)} // Picu modal PIN
+                className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg transition-all"
+            >
+            <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
+                <FaChalkboardTeacher className="text-lg" />
+            </div>
+            <div className="flex flex-col items-center">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] leading-none mb-0.5">
+                    {lang === 'id' ? "Presentasi Profil" : "Presentation Deck"}
+                </span>
+                <span className="text-[8px] opacity-60 font-medium tracking-[0.1em] italic">
+                    {lang === 'id' ? "Buka Canva / PDF" : "Open Canva / PDF"}
+                </span>
+            </div>
+            <div className="ml-auto md:opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                <FaArrowRight size={10} />
+            </div>
+        </motion.button>
+
+        {/* 5. TOMBOL SHARE QR (Full Width di Bawah) */}
         <button
             onClick={() => setShowQR(true)}
             className="col-span-2 group flex items-center justify-center gap-2 p-3 rounded-full border-2 border-dashed border-amber-500/50 dark:border-cyan-400/50 hover:border-amber-500 dark:hover:border-cyan-400 hover:bg-amber-50 dark:hover:bg-cyan-900/20 transition-all text-black dark:text-white hover:text-amber-600 dark:hover:text-cyan-400"
@@ -435,31 +470,117 @@ const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobN
                   )}
               </AnimatePresence>
 
-              {/* FOOTER */}
-              <div className="flex-shrink-0">
-                <p className="text-xs font-bold mt-2 text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-2 text-center">
-                    {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
-                </p>
-                <div className="flex flex-wrap justify-center md:gap-1.5 gap-2.5">
-                    <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-700 dark:text-green-400" />
-                    <SocialBtn icon={<FaTelegram />} href="https://t.me/ronald_rzb" color="text-blue-400 dark:text-blue-500" />
-                    <SocialBtn icon={<FaInstagram />} href="https://www.instagram.com/ronald_rzb/" color="text-pink-500" />
-                    <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600 dark:text-blue-500" />
-                    <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />
-                    <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
-                </div>
-                <div className="mt-0 p-2 md:p-3 text-center text-[7px] md:text-[9px] text-black/70 dark:text-white/70 font-medium">
-                    <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
-                </div>
-              </div>
+              {/* MODAL PIN ACCESS */}
+                    <AnimatePresence>
+                        {showPinModal && (
+                            <motion.div 
+                                initial={{ opacity: 0 }} 
+                                animate={{ opacity: 1 }} 
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 z-[1100] bg-black/70 backdrop-blur-md flex items-center justify-center p-6"
+                            >
+                                <motion.div 
+                                    initial={{ scale: 0.9, y: 20 }}
+                                    animate={{ 
+                                        scale: 1, 
+                                        y: 0,
+                                        x: isError ? [0, -10, 10, -10, 10, 0] : 0 // Efek goyang jika salah
+                                    }}
+                                    transition={{ duration: 0.4 }}
+                                    className="bg-white dark:bg-black/5 backdrop-blur-sm p-8 rounded-[2.5rem] w-full max-w-sm text-center"
+                                >
+                                    <div className="mb-6">
+                                        <div className="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <FaLock size={24} />
+                                        </div>
+                                        <h3 className="text-xl font-bold dark:text-white">Protected Access</h3>
+                                        <p className="text-[10px] text-neutral-500 mt-1">Masukkan PIN untuk melihat presentasi</p>
+                                    </div>
 
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
-  );
-};
+                                    {/* Input PIN (Bulatan) */}
+                                    <div 
+                                        onClick={() => inputRef.current?.focus()} 
+                                        className="flex justify-center gap-4 mb-8 cursor-pointer"
+                                    >
+                                        {[0, 1, 2, 3].map((i) => (
+                                            <div 
+                                                key={i} 
+                                                className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                                                    pinInput.length > i 
+                                                    ? "bg-amber-500 border-amber-500 scale-125" 
+                                                    : "border-neutral-300 dark:border-neutral-700"
+                                                } ${isError ? "border-red-500 bg-red-500" : ""}`}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    <input 
+                                        ref={inputRef}
+                                        type="tel"
+                                        pattern="\d*" 
+                                        maxLength={4}
+                                        value={pinInput}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (/^\d*$/.test(val)) {
+                                                setPinInput(val);
+                                                if (val.length === 4) {
+                                                    if (val === CORRECT_PIN) {
+                                                        window.open('https://www.canva.com/design/DAGm0Ztg0XY/KelTkmIF0upyxOAgKh53zw/edit?utm_content=DAGm0Ztg0XY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton', '_blank');
+                                                        setShowPinModal(false);
+                                                        setPinInput("");
+                                                    } else {
+                                                        setIsError(true);
+                                                        setTimeout(() => {
+                                                            setIsError(false);
+                                                            setPinInput("");
+                                                        }, 500);
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-text" 
+                                    />
+
+                                    <button 
+                                    onClick={() => { 
+                                        setShowPinModal(false); 
+                                        setPinInput(""); 
+                                    }}
+                                    className="relative z-10 md:text-xs text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-white transition-colors py-2 px-4"
+                                >
+                                    Cancel
+                                </button>
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                                {/* FOOTER */}
+                                <div className="flex-shrink-0">
+                                    <p className="text-xs font-bold mt-2 text-amber-600 dark:text-cyan-400 uppercase tracking-widest mb-2 text-center">
+                                        {lang === 'id' ? "Ikuti Saya" : "Follow Me"}
+                                    </p>
+                                    <div className="flex flex-wrap justify-center md:gap-1.5 gap-2.5">
+                                        <SocialBtn icon={<FaWhatsapp />} href="https://wa.me/6281281954366" color="text-green-700 dark:text-green-400" />
+                                        <SocialBtn icon={<FaTelegram />} href="https://t.me/ronald_rzb" color="text-blue-400 dark:text-blue-500" />
+                                        <SocialBtn icon={<FaInstagram />} href="https://www.instagram.com/ronald_rzb/" color="text-pink-500" />
+                                        <SocialBtn icon={<FaFacebook />} href="https://www.facebook.com/ronald.bachtiar.73" color="text-blue-600 dark:text-blue-500" />
+                                        <SocialBtn icon={<FaTiktok />} href="https://www.tiktok.com/@ronald_rzb" color="text-black dark:text-white" />
+                                        <SocialBtn icon={<FaXTwitter />} href="https://x.com/ronald_rzb" color="text-neutral-700 dark:text-neutral-300" />
+                                    </div>
+                                    <div className="mt-0 p-2 md:p-3 text-center text-[7px] md:text-[9px] text-black/70 dark:text-white/70 font-medium">
+                                        <p>&copy; 2025 Ronald Zuni Bachtiar.</p>
+                                    </div>
+                                </div>
+
+                                </motion.div>
+                            </>
+                            )}
+                        </AnimatePresence>
+                        </>
+                    );
+                    };
 
 const SocialBtn = ({ icon, href, color }) => (
     <a href={href} target="_blank" rel="noreferrer" className={`${color} hover:scale-110 hover:bg-white dark:hover:bg-white/10 shadow-md transition-all duration-300 text-lg md:text-2xl p-2 rounded-full`}>

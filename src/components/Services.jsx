@@ -75,9 +75,20 @@ const SERVICES_DATA = [
 const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInquiry, onOpenBooking }) => {
   const [activeTab, setActiveTab] = useState(SERVICES_DATA[0]);
 
-  return (
-    <div id="services" className="py-10 bg-indigo-100 dark:bg-slate-950 transition-colors duration-500">
-      <div className="max-w-6xl mx-auto px-4">
+return (
+    <div id="services" className="relative py-5 bg-transparent transition-colors duration-500 overflow-hidden">
+      
+      {/* --- BACKGROUND GLOW EFFECT (CENTERED) --- */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                   w-[200%] h-[100%] md:w-[1500px] md:h-[500px]
+                   bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
+                   from-indigo-300/20 via-purple-300/10 to-transparent 
+                   dark:from-indigo-800/30 dark:via-purple-900/10 dark:to-transparent
+                   blur-[150px] rounded-full pointer-events-none z-0"
+      ></div>
+
+      <div className="relative max-w-6xl mx-auto px-4 z-10">
         
         {/* HEADER SECTION */}
         <div className="text-center mb-6">

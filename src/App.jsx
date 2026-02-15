@@ -359,7 +359,9 @@ const PortfolioContent = () => {
                         <Suspense fallback={<div className="text-center py-20">Loading Projects...</div>}>
                             <div id="projects"><Projects lang={lang}/></div>
                         </Suspense>
+                        </div>
 
+                        <div className="w-full">
                         <Suspense fallback={<div className="text-center py-20">Loading Services...</div>}>
                             <div id="services" className="render-lazy"><Services lang={lang}
                                 onOpenPricing={() => setIsPricingOpen(true)}
