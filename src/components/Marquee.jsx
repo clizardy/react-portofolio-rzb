@@ -49,13 +49,13 @@ const Marquee = () => {
   });
 
   return (
-    <div className="w-full py-8 bg-indigo-100/50 dark:bg-neutral-950/30 border-y border-black/10 dark:border-white/10 overflow-hidden relative z-20">
+    <div className="w-full py-6 md:py-8 bg-indigo-200/40 dark:bg-black/30  overflow-hidden relative z-20">
       <div className="flex whitespace-nowrap overflow-hidden">
         <motion.div className="flex gap-6" style={{ x }}>
           {Array.from({ length: 4 }).map((_, i) => (
             <span 
               key={i}
-              className="text-4xl lg:text-6xl font-extrabold font-sans uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
+              className="text-4xl lg:text-6xl mb-1 font-extrabold font-sans uppercase text-transparent bg-clip-text bg-gradient-to-r from-neutral-600 to-neutral-900 dark:from-neutral-200 dark:to-neutral-500 tracking-tighter"
             >
               {MARQUEE_TEXT}
             </span>

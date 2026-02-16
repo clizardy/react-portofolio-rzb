@@ -4,6 +4,7 @@ import OklchGradientText from "./OklchGradientText";
 import { FaArrowDown } from "react-icons/fa6";
 import { TypeAnimation } from 'react-type-animation';
 import TechStackWidget from "./TechStackWidget";
+import DynamicGreeting from "./DynamicGreeting";
 
 import bgDesktop from "../assets/welcome-desktop.webp"; 
 import bgMobile from "../assets/welcome-mobile.webp";   
@@ -67,7 +68,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
             transition={{ duration: 8, ease: "easeOut" }} 
             src={bgMobile} 
             alt="Background Mobile"
-            className="w-full h-full object-cover opacity-60" 
+            className="w-full h-full object-cover opacity-80" 
           />
       </div>
 
@@ -84,7 +85,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
       </div>
 
       {/* 3. OVERLAY GELAP */}
-      <div className="absolute inset-0 z-[-1] bg-gradient-to-b from-white/20 via-black/55 to-black/95" />
+      <div className="absolute inset-0 z-[-1] bg-gradient-to-b from-white/40 via-black/55 to-black/85" />
       
       {/* HEADER: TECH STACK ICONS */}
         <motion.div 
@@ -97,6 +98,10 @@ const WelcomeScreen = ({ onEnter, lang }) => {
                 <TechStackWidget lang={lang} />
             </div>
       </motion.div>
+
+            <div className="mt-2 md:mt-4 absolute top-16 md:top-20 left-0 w-full flex justify-center z-50 transform scale-75 md:scale-100">
+        <DynamicGreeting lang={lang} />
+      </div>
 
 
       {/* KONTEN UTAMA */}
@@ -134,7 +139,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
           custom={0.5} variants={textVariants} initial="hidden" animate="visible"
           className="text-white/50 tracking-[0.3em] text-[6px] md:text-sm uppercase mb-4"
         >
-          Portfolio &bull; 2026
+          Portfolio &bull; 2025
         </motion.p>
         
         {/* NAMA BESAR */}

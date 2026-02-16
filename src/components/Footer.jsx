@@ -84,7 +84,7 @@ const Footer = ({ lang }) => {
               <ImageFade decoding="async" loading="lazy" 
                   src={profileImg} 
                   alt="Ronald Zuni Bachtiar" 
-                  className="w-12 h-12 rounded-full object-cover border-2 border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:scale-110 transition-transform duration-300"
+                  className="w-12 h-12 rounded-full object-cover border-x-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:scale-110 transition-transform duration-300"
               />
               <div className="flex flex-col items-start">
                 <h3 className="text-xl md:text-2xl font-bold text-white tracking-wide leading-none">

@@ -49,7 +49,7 @@ useEffect(() => {
     }
 }, [showPinModal]);
 
-  const CORRECT_PIN = "1904"; // Ganti dengan PIN rahasia kamu
+  const CORRECT_PIN = "1904";
 
   // --- SECRET TRIGGER STATE ---
   const [clickCount, setClickCount] = useState(0);
@@ -183,8 +183,7 @@ useEffect(() => {
                 fixed top-0 right-0 h-[100dvh] w-80 
                 bg-indigo-100
                 dark:bg-slate-950/50 
-                backdrop-blur-xl 
-                border-l border-white/20 dark:border-white/5 
+                backdrop-blur-xl
                 shadow-2xl z-[999] flex flex-col overflow-hidden
               "
               // Pastikan sidebar ini sendiri tidak ikut ke-lock scroll-nya
@@ -208,7 +207,7 @@ useEffect(() => {
                                 e.stopPropagation(); // Mencegah trigger secret click saat klik sinyal
                                 setShowNetInfo(!showNetInfo);
                             }}
-                            className={`p-1.5 rounded-lg transition-all duration-300 ${showNetInfo ? 'bg-neutral-200 dark:bg-cyan-500/20' : 'hover:bg-neutral-100 dark:hover:bg-neutral-900'}`}
+                            className={`p-1.5 rounded-full transition-all duration-300 ${showNetInfo ? 'bg-amber-500/5 dark:bg-cyan-500/5' : 'hover:bg-black/10 dark:hover:bg-white/10'}`}
                         >
                             <FaSignal className={`${statusColor} ${networkInfo.online ? "animate-pulse" : ""}`} />
                         </button>
@@ -228,9 +227,9 @@ useEffect(() => {
                             initial={{ height: 0, opacity: 0, marginTop: 0 }}
                             animate={{ height: "auto", opacity: 1, marginTop: 8 }}
                             exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                            className="overflow-hidden rounded-xl 
-                                    bg-neutral-50 border border-neutral-200 shadow-inner
-                                    dark:bg-black/50 dark:border-cyan-400/80"
+                            className="overflow-hidden rounded-2xl 
+                                    bg-white border border-amber-500/70 shadow-inner
+                                    dark:bg-black/20 dark:border-cyan-400/50"
                         >
                             <div className="p-4 space-y-3 text-xs font-mono">
                                 <div className="flex items-center justify-between">
@@ -242,15 +241,15 @@ useEffect(() => {
                                     </span>
                                 </div>
                                 
-                                <div className="w-full h-[1px] bg-neutral-200 dark:bg-white/10"></div>
+                                <div className="w-full h-[1px] bg-amber-500/20 dark:bg-cyan-400/20"></div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-neutral-500 dark:text-slate-500 flex items-center gap-1"><FaWifi/> Speed</span>
+                                        <span className="text-black dark:text-white italic flex items-center gap-1"><FaWifi/> Speed</span>
                                         <span className="text-cyan-700 dark:text-cyan-300 font-bold">{networkInfo.downlink}</span>
                                     </div>
                                     <div className="flex flex-col gap-1 text-right">
-                                        <span className="text-neutral-500 dark:text-slate-500 flex items-center justify-end gap-1"><FaNetworkWired/> Ping</span>
+                                        <span className="text-black dark:text-white italic flex items-center justify-end gap-1"><FaNetworkWired/> Ping</span>
                                         <span className={`font-bold ${isHighLatency 
                                             ? "text-rose-600 dark:text-rose-500" 
                                             : "text-emerald-600 dark:text-emerald-400 dark:drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"}`

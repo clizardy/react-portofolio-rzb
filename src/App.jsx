@@ -63,6 +63,7 @@ import ThemeBuilder from "./components/ThemeBuilder";
 import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
 import { MusicProvider } from "./components/MusicContext";
+import DroneGame from "./components/DroneGame";
 
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 
@@ -278,8 +279,6 @@ const PortfolioContent = () => {
                     transition: 'opacity 0.5s ease-in-out'
                 }}
             >
-                <ParticleBackground theme={theme} />
-        
                 <AnimatePresence mode="wait">
                     {showWelcome && (<WelcomeScreen onEnter={() => setShowWelcome(false)} lang={lang} />)}
                 </AnimatePresence>
@@ -298,15 +297,19 @@ const PortfolioContent = () => {
                     onOpenJobNotes={() => setIsJobNotesOpen(true)}
                 />
 
-                {/* HERO SECTION WRAPPER */}
-                <div className="relative z-10 transform-gpu bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 transition-colors duration-500">
-                    <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-500">
-                        <div className="absolute inset-0 h-full w-full hidden dark:block bg-slate-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
-                        <div className="absolute inset-0 h-full w-full block dark:hidden bg-indigo-100 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
-                    </div>
+{/* HERO SECTION WRAPPER */}
+<div className="relative z-0 bg-neutral-100 dark:bg-sky-950 shadow-2xl overflow-hidden pb-28 md:pb-40 transition-colors duration-500">
+    
+    {/* 1. BACKGROUND GRADIENTS (Layer Paling Bawah) */}
+    <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-500">
+        <div className="absolute inset-0 h-full w-full hidden dark:block bg-slate-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.2),rgba(255,255,255,0))]"></div>
+        <div className="absolute inset-0 h-full w-full block dark:hidden bg-indigo-100 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.8),rgba(255,255,255,0))]"></div>
+    </div>
 
-                    {/* NAVBAR & HERO */}
-                    <div id="hero" className="container mx-auto px-4 md:px-8 relative z-10">
+    <ParticleBackground theme={theme} />
+
+    <div className="relative z-10"> 
+        <div id="hero" className="container mx-auto px-4 md:px-8">
                         <Navbar 
                             toggleTheme={toggleTheme} 
                             theme={theme} 
@@ -405,6 +408,7 @@ const PortfolioContent = () => {
                             <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
                         </Suspense>
                     </div>
+                </div>
                 </div>
 
                 {/* 4. FOOTER SECTION */}
@@ -544,6 +548,7 @@ const PortfolioContent = () => {
 const App = () => {
     return (
         <MusicProvider> 
+            <DroneGame />
             <Toaster 
                 position="bottom-right"
                 reverseOrder={false}

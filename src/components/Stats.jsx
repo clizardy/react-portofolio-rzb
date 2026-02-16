@@ -5,16 +5,18 @@ import OklchGradientText from "./OklchGradientText";
 import ClientFeedback from "./ClientFeedback";
 
 // --- IMPORT FIREBASE ---
-import { db } from "../firebase"; // Pastikan path-nya benar sesuai lokasi file firebase.js
+import { db } from "../firebase"; 
 import { doc, onSnapshot, updateDoc, increment } from "firebase/firestore";
 
-// --- DATA CARD TEMPLATE (Nilai value dikosongkan dulu, nanti diisi dari Firebase) ---
+// --- KONFIGURASI ANGKA AWAL ---
+const PAST_PROJECTS = 50; // <--- INI KUNCINYA: Project lama yang tidak tercatat di DB
+
 const STATS_TEMPLATE = [
   {
     id: 1,
-    key: "years", // Kunci identifikasi manual
+    key: "years",
     label: "Years Experience",
-    value: 6, // Ini hardcode gapapa karena jarang berubah
+    value: 6,
     suffix: "+",
     icon: <FaCalendarAlt />,
     color: "from-blue-400 to-cyan-400",
@@ -23,9 +25,9 @@ const STATS_TEMPLATE = [
   },
   {
     id: 2,
-    key: "projects", // Kunci identifikasi (harus sama dengan nama field di firebase)
+    key: "projects",
     label: "Projects Completed",
-    value: 0, // Nanti diambil dari DB
+    value: 50, // <--- INI KUNCINYA: Kita mulai dari 50 karena ada proyek lama yang tidak tercatat di DB
     suffix: "+",
     icon: <FaProjectDiagram />,
     color: "from-purple-400 to-pink-400",
@@ -36,7 +38,7 @@ const STATS_TEMPLATE = [
     id: 3,
     key: "awards",
     label: "Awards Won",
-    value: 12, // Hardcode
+    value: 12,
     suffix: "",
     icon: <FaTrophy />,
     color: "from-amber-400 to-orange-400",
@@ -47,7 +49,7 @@ const STATS_TEMPLATE = [
     id: 4,
     key: "satisfaction",
     label: "Satisfaction Rate",
-    value: 100, // Nanti dihitung (totalScore / reviews)
+    value: 98, // <--- INI KUNCINYA: Kita mulai dari 98% karena ada review lama yang tidak tercatat di DB
     suffix: "%",
     icon: <FaSmile />,
     color: "from-emerald-400 to-teal-400",
@@ -56,7 +58,7 @@ const STATS_TEMPLATE = [
   },
 ];
 
-// --- KOMPONEN COUNTER (TETAP SAMA) ---
+// --- KOMPONEN COUNTER ---
 const Counter = ({ value, suffix }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -69,7 +71,7 @@ const Counter = ({ value, suffix }) => {
       const duration = 2000;
       if (end === 0) { setCount(0); return; }
       
-      setCount(0); // Reset animasi jika value berubah
+      setCount(0);
       
       const incrementTime = Math.abs(Math.floor(duration / end));
       const timer = setInterval(() => {
@@ -84,7 +86,7 @@ const Counter = ({ value, suffix }) => {
   return <span ref={ref}>{count}{suffix}</span>;
 };
 
-// --- KOMPONEN KARTU (TETAP SAMA) ---
+// --- KOMPONEN KARTU ---
 const StatCard = ({ stat, index, onClick }) => {
     return (
         <motion.div
@@ -141,37 +143,45 @@ const StatCard = ({ stat, index, onClick }) => {
     );
 }
 
-// --- MAIN COMPONENT (LOGIKA BACKEND DISINI) ---
+// --- MAIN COMPONENT ---
 const Stats = () => {
   const [statsData, setStatsData] = useState(STATS_TEMPLATE);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 1. AMBIL DATA DARI FIREBASE (REAL-TIME LISTENER)
+// --- BAGIAN TENGAH (LOGIKA PROGRAM) ---
   useEffect(() => {
-    // Konek ke dokumen: collection "contents", doc "stats"
     const statsDocRef = doc(db, "contents", "stats");
 
-    // onSnapshot: Fungsi ini jalan sendiri setiap kali data di server berubah
     const unsubscribe = onSnapshot(statsDocRef, (docSnap) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
             
-            // Hitung Rata-rata Persen
-            // Rumus: Total Skor / Jumlah Review
+            // --- PERBAIKAN DISINI ---
+            // Kita paksa ubah tipe data jadi Number agar bisa dijumlah
+            // Jika data.projects kosong/error, kita anggap 0
+            const projectsFromDB = Number(data.projects) || 0; 
+            
+            // Rumus: 50 (Modal Awal) + Data Baru dari Firebase
+            const totalProjects = 50 + projectsFromDB; 
+
+            // Hitung Kepuasan
             const calculatedRate = data.reviews > 0 
                 ? Math.round(data.totalScore / data.reviews) 
                 : 100;
 
-            // Update State Tampilan
+            console.log("Total Proyek:", totalProjects); // Cek di Console browser (F12)
+
             setStatsData(prevStats => prevStats.map(stat => {
-                if (stat.key === "projects") return { ...stat, value: data.projects };
+                // Kunci perubahannya ada di baris bawah ini:
+                if (stat.key === "projects") return { ...stat, value: totalProjects };
+                
                 if (stat.key === "satisfaction") return { ...stat, value: calculatedRate };
                 return stat;
             }));
         }
     });
 
-    return () => unsubscribe(); // Cleanup listener saat pindah halaman
+    return () => unsubscribe();
   }, []);
 
   const handleCardClick = (id) => {
@@ -183,18 +193,12 @@ const Stats = () => {
       const statsDocRef = doc(db, "contents", "stats");
 
       try {
-          // Update data di server (Backend Magic!)
-          // increment(x): Fitur Firebase untuk nambah angka tanpa perlu baca data lama dulu (Aman dari bentrok)
           await updateDoc(statsDocRef, {
-              reviews: increment(1), // Jumlah review + 1
-              projects: increment(1), // Project + 1 (Asumsi review = project kelar)
-              totalScore: increment(reviewData.satisfactionScore) // Tambah total skor
+              reviews: increment(1),
+              projects: increment(1), // Ini hanya nambah 1 di DB (misal 0 jadi 1)
+              totalScore: increment(reviewData.satisfactionScore)
           });
-
-          // Kita tidak perlu update state manual disini (setStatsData)
-          // Karena 'onSnapshot' di useEffect di atas akan otomatis mendeteksi perubahan server
-          // dan mengupdate tampilan website kamu. Canggih kan?
-
+          // Tampilan UI akan otomatis berubah jadi 51 karena listener di useEffect
       } catch (error) {
           console.error("Error updating rating:", error);
           alert("Gagal mengirim rating. Cek koneksi internet.");

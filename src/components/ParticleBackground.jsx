@@ -43,6 +43,7 @@ const ParticleBackground = ({ theme }) => {
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
 
+// Pastikan resizeCanvas memanggil initParticles agar update saat layar di-resize
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       canvasWidth = window.innerWidth;
@@ -55,7 +56,9 @@ const ParticleBackground = ({ theme }) => {
       canvas.height = canvasHeight * dpr;
 
       ctx.scale(dpr, dpr);
-      initParticles();
+      
+      // Re-init partikel dengan jumlah baru sesuai ukuran layar
+      initParticles(); 
     };
 
     const onMouseMove = (e) => {
@@ -75,7 +78,7 @@ const ParticleBackground = ({ theme }) => {
       constructor() {
         this.x = Math.random() * canvasWidth;
         this.y = Math.random() * canvasHeight;
-        this.vx = (Math.random() - 0.5) * 1.0; // Kecepatan gerak
+        this.vx = (Math.random() - 0.5) * 0.8; // Kecepatan gerak
         this.vy = (Math.random() - 0.5) * 1.0;
         this.size = Math.random() * 1.5 + 1;
       }
@@ -113,7 +116,8 @@ const ParticleBackground = ({ theme }) => {
 
     const initParticles = () => {
         particles = [];
-        for (let i = 0; i < particleCount; i++) {
+        const responsiveCount = canvasWidth < 768 ? 7 : 30;
+        for (let i = 0; i < responsiveCount; i++) {
           particles.push(new Particle());
         }
     }
@@ -161,7 +165,7 @@ const ParticleBackground = ({ theme }) => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[20]" 
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[1]" 
       style={{ willChange: 'transform' }} 
     />
   );

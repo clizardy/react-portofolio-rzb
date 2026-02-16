@@ -67,7 +67,7 @@ const handleSubmit = () => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-md bg-black/10 border border-white/10 rounded-2xl p-6 shadow-2xl shadow-cyan-500/10 overflow-hidden z-50"
+            className="relative w-full max-w-md bg-black/10 border border-white/70 rounded-2xl p-6 shadow-2xl shadow-cyan-500/10 overflow-hidden z-50"
           >
              {/* Hiasan Glow Atas */}
              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
@@ -75,7 +75,7 @@ const handleSubmit = () => {
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-white tracking-wide">
-                Rate My Service
+                Rate My Service😊
               </h3>
               <button 
                 onClick={onClose} 
@@ -118,7 +118,7 @@ const handleSubmit = () => {
                         key={hover || rating}
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-cyan-400 text-sm font-mono tracking-widest uppercase"
+                        className="text-cyan-400 text-sm font-sans tracking-widest uppercase"
                     >
                         {labels[hover || rating]}
                     </motion.span>
@@ -149,13 +149,13 @@ const handleSubmit = () => {
             whileTap={{ scale: 0.98 }}
             onClick={handleSubmit}
             disabled={rating === 0 || !name.trim()} 
-            className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold tracking-wider transition-all
+            className={`w-full py-3 rounded-lg flex gap-2 items-center justify-center font-semibold tracking-wider transition-all
                 ${rating > 0 && name.trim() 
                     ? "bg-cyan-600 hover:bg-cyan-500 text-white shadow-[0_0_20px_rgba(8,145,178,0.4)] cursor-pointer" 
                     : "bg-neutral-800 text-neutral-500 cursor-not-allowed"}
             `}
             >
-            <IoSend /> Submit Review
+            <IoSend className="bg-white rounded-full w-6 h-6 p-1.5"/> Submit Review
             </motion.button>
 
           </motion.div>
