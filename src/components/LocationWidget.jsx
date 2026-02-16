@@ -15,7 +15,7 @@ import { FaMapMarkerAlt, FaEye } from "react-icons/fa";
 const LocationWidget = ({ lang = "id" }) => {
   const [weather, setWeather] = useState(null);
 
-  const API_KEY = "YOUR_API_KEY_HERE";
+  const API_KEY = "d94106934e3c5032bc8d0a0095a9ae17";
   const CITY = "Magelang";
 
   useEffect(() => {

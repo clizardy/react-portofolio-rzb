@@ -76,30 +76,47 @@ const JobNotesModal = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  // --- REALTIME SYNC (Hanya jalan jika sudah Unlocked) ---
-  useEffect(() => {
-    if (isOpen && isUnlocked) {
-        const savedDraft = JSON.parse(localStorage.getItem("rzb_current_draft"));
-        if(savedDraft) setFormData(savedDraft);
+// 1. EFFECT UNTUK JAM (Agar selalu jalan & tidak terganggu logic lain)
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
 
-        const q = query(collection(db, "projects"), orderBy("id", "desc"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const fetchedJobs = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setDbJobs(fetchedJobs);
-        }, (error) => {
-            console.error("Error fetching projects:", error);
-            toast.error("Gagal sync data project.");
-        });
+    // 2. EFFECT UNTUK DATA FIREBASE & TOAST MESSAGES
+    useEffect(() => {
+        if (isOpen && isUnlocked) {
+            // --- PESAN SAMBUTAN ---
+            toast.success("Silahkan input data client", {
+                id: "welcome-input", // ID agar tidak duplikat jika render ulang
+                icon: "📝"
+            });
 
-        return () => unsubscribe();
-    }
-    
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, [isOpen, isUnlocked]);
+            // Ambil Draft dari LocalStorage
+            const savedDraft = JSON.parse(localStorage.getItem("rzb_current_draft"));
+            if(savedDraft) setFormData(savedDraft);
+
+            // Fetch Data dari Firebase
+            const q = query(collection(db, "projects"), orderBy("id", "desc"));
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                const fetchedJobs = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setDbJobs(fetchedJobs);
+            }, (error) => {
+                console.error("Client Data Fetch Error:", error);
+            });
+
+            // --- CLEANUP FUNCTION (Dijalankan saat modal CLOSE atau LOCKED) ---
+            return () => {
+                unsubscribe();
+                toast("Membatalkan input data client", {
+                    icon: "🚫",
+                    id: "cancel-input"
+                });
+            };
+        }
+    }, [isOpen, isUnlocked]);
 
   // Auto Save Draft
   useEffect(() => {

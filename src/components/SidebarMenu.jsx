@@ -64,6 +64,24 @@ useEffect(() => {
     type: "..."
   });
 
+    // --- 🔥 UNIFIED SCROLL LOCKING ---
+    useEffect(() => {
+        const html = document.documentElement;
+        const body = document.body;
+
+        if (isOpen) {
+        html.style.overflow = 'hidden';
+        body.style.overflow = 'hidden';
+        } else {
+        html.style.overflow = '';
+        body.style.overflow = '';
+        }
+        return () => {
+        html.style.overflow = '';
+        body.style.overflow = '';
+        };
+    }, [isOpen]);
+
   // --- LOGIC SECRET CLICK ---
   const handleSecretClick = () => {
     setClickCount((prev) => prev + 1);
@@ -78,17 +96,19 @@ useEffect(() => {
         toast("Admin Mode: Job Notes Accessed", { icon: '🔐' });
         onOpenJobNotes();
         setClickCount(0); // Reset
-        setIsOpen(false); // Tutup sidebar biar fokus ke notes
+        onClose(false); // Tutup sidebar biar fokus ke notes
     }
   };
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false); 
+        onClose(false); // Tutup sidebar dulu
+        setTimeout(() => {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150); 
     }
-  };
+};
 
   useEffect(() => {
     const openSidebarHandler = () => { if(setIsOpen) setIsOpen(true); };
@@ -298,7 +318,7 @@ useEffect(() => {
             whileTap={{ scale: 0.98 }}
             onClick={() => {
                 onOpenInquiry();
-                setIsOpen(false);
+                onClose(false);
             }}
             className="col-span-2 relative overflow-hidden group p-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 flex flex-col items-start justify-between min-h-[100px]"
         >
@@ -327,7 +347,7 @@ useEffect(() => {
         <button
             onClick={() => {
                 onOpenBooking();
-                setIsOpen(false);
+                onClose(false);
             }}
             className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-blue-500 dark:hover:border-blue-400 transition-all flex flex-col items-start justify-between h-[110px]"
         >
@@ -348,7 +368,7 @@ useEffect(() => {
         <button
             onClick={() => {
                 onOpenFaq();
-                setIsOpen(false);
+                onClose(false);
             }}
             className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-teal-500 dark:hover:border-teal-400 transition-all flex flex-col items-start justify-between h-[110px]"
         >

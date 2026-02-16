@@ -89,7 +89,7 @@ const ServiceShowcase = ({ lang, onBook }) => {
                     // LOGIKA ROTASI:
                     // Mobile: Horizontal biasa
                     // Desktop: -rotate-90 (tegak lurus), whitespace-nowrap (satu baris)
-                    className="text-4xl md:text-7xl font-black tracking-tighter md:italic md:-rotate-90 md:whitespace-nowrap uppercase"
+                    className="text-4xl md:text-7xl font-black tracking-tighter md:italic mb-0 md:-rotate-90 md:whitespace-nowrap uppercase"
                 >
                     <span className="text-white"></span>
                     <OklchGradientText>
