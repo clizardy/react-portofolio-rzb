@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, FaChalkboardTeacher,
-  FaShapes, FaEnvelope, FaImages, FaGraduationCap, FaTelegram,
+  FaShapes, FaEnvelope, FaImages, FaGraduationCap, FaTelegram, FaEye,
   FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle, FaArrowRight,
   FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate, FaLock,
   FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
@@ -26,11 +26,11 @@ const MENU_ITEMS = [
   { id: "certificates", label: { en: "Certificates", id: "Sertifikat" }, icon: <FaCertificate /> },
   { id: "projects", label: { en: "Projects", id: "Proyek" }, icon: <FaBriefcase /> },
   { id: "services", label: { en: "Services", id: "Layanan" }, icon: <FaLaptopCode /> },
-  { id: "portfolio", label: { en: "Portfolio", id: "Portofolio" }, icon: <FaLayerGroup /> },
   { id: "timeline", label: { en: "Journey", id: "Perjalanan" }, icon: <FaHistoryIcon /> },
   { id: "organization", label: { en: "Organization", id: "Organisasi" }, icon: <FaImages /> },
   { id: "dedication", label: { en: "Motivation", id: "Motivasi" }, icon: <FaHeart /> }, 
-  { id: "testimonials", label: { en: "Testimonials", id: "Testimoni" }, icon: <FaCommentDots /> }, 
+  { id: "testimonials", label: { en: "Testimonials", id: "Testimoni" }, icon: <FaCommentDots /> },
+  { id: "glimpse", label: { en: "Glimpse of Me", id: "Sekilas Tentang Saya" }, icon: <FaEye /> },
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
@@ -64,22 +64,23 @@ useEffect(() => {
     type: "..."
   });
 
-    // --- 🔥 UNIFIED SCROLL LOCKING ---
     useEffect(() => {
-        const html = document.documentElement;
-        const body = document.body;
+    const body = document.body;
+    const html = document.documentElement;
 
-        if (isOpen) {
-        html.style.overflow = 'hidden';
+    if (isOpen) {
         body.style.overflow = 'hidden';
-        } else {
-        html.style.overflow = '';
+        html.style.overflow = 'hidden'; // Tambahkan ini jika ingin lock total di mobile
+    } else {
         body.style.overflow = '';
-        }
-        return () => {
         html.style.overflow = '';
+    }
+
+    // Cleanup function: Sangat penting agar saat pindah halaman/komponen hilang, scroll kembali normal
+    return () => {
         body.style.overflow = '';
-        };
+        html.style.overflow = '';
+    };
     }, [isOpen]);
 
   // --- LOGIC SECRET CLICK ---
@@ -101,13 +102,16 @@ useEffect(() => {
   };
 
   const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-        onClose(false); // Tutup sidebar dulu
-        setTimeout(() => {
-            element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 150); 
-    }
+  const element = document.getElementById(id);
+  if (element) {
+    onClose(); // Panggil fungsi close untuk merubah state isOpen jadi false
+    
+    // Beri jeda sedikit lebih lama (misal 300ms) agar state isOpen selesai diproses
+    // dan body.style.overflow sudah kembali kosong ('')
+    setTimeout(() => {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 300); 
+  }
 };
 
   useEffect(() => {

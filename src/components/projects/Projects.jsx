@@ -195,13 +195,13 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                     </span>
                 </div>
                 
-                <p className="mb-4 text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+                <p className="mb-4 text-neutral-700 dark:text-neutral-300 text-md leading-relaxed text-justify">
                     {typeof project.description === 'object' ? project.description[lang] : project.description}
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-6">
                     {project.technologies.map((tech, idx) => (
-                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[12px] text-[10px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
+                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[11px] text-[6px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
                     ))}
                 </div>
 
@@ -285,49 +285,57 @@ return (
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
 
-      {/* --- KATEGORI FILTER DENGAN SCROLL FIX --- */}
-      <div className="w-full max-w-3xl mx-auto mb-10 px-4">
-        <div className="
-            flex items-center gap-1.5 md:gap-2 
-            overflow-x-auto py-2 px-2 
-            justify-center 
-            bg-white dark:bg-black/30 backdrop-blur-md
-            border border-black/10 dark:border-cyan-400/60
-            rounded-2xl md:rounded-full shadow-inner
-            scrollbar-hide
-        ">
-            {CATEGORIES.map((cat) => {
+            {/* --- KATEGORI FILTER PREMIUM (GLASSMORPHISM) --- */}
+            <div className="w-full max-w-4xl mx-auto mb-12 px-4 relative z-10">
+            <div className="
+                flex items-center gap-2 
+                overflow-x-auto py-2 px-2 
+                justify-start md:justify-center 
+                bg-white/40 dark:bg-black/40 backdrop-blur-xl
+                border border-white/20 dark:border-white/60
+                rounded-full 
+                shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]
+                scrollbar-hide
+            ">
+                {CATEGORIES.map((cat) => {
                 const isActive = activeCategory === cat;
                 return (
                     <button 
-                        key={cat} 
-                        // 👇 GANTI onClick JADI PANGGIL FUNGSI DI ATAS
-                        onClick={() => setActiveCategory(cat)} 
-                        className={`
-                            relative px-5 py-2.5 rounded-xl md:rounded-full 
-                            md:text-[16px] text-[10px] font-bold whitespace-nowrap transition-all duration-300
-                            shrink-0 outline-none select-none
-                            ${isActive 
-                                ? "text-white shadow-lg scale-100" 
-                                : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5"
-                            }
-                        `}
+                    key={cat} 
+                    onClick={() => setActiveCategory(cat)} 
+                    className={`
+                        relative px-6 py-2 md:py-2.5 rounded-full 
+                        text-[13px] md:text-[15px] font-medium tracking-wide
+                        transition-all duration-500 ease-out
+                        shrink-0 outline-none select-none
+                        ${isActive 
+                        ? "text-white" 
+                        : "text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white"
+                        }
+                    `}
                     >
-                        {isActive && (
-                            <motion.div 
-                                layoutId="activeCategoryBg"
-                                className="absolute inset-0 bg-neutral-900 dark:bg-cyan-600 rounded-xl md:rounded-full z-[-1]"
-                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                            />
-                        )}
-                        <span className="relative z-10">
-                            {CATEGORY_TRANSLATIONS[cat][lang]}
-                        </span>
+                    {/* Efek Hover Tipis */}
+                    {!isActive && (
+                        <div className="absolute inset-0 rounded-xl md:rounded-full bg-white/0 hover:bg-white/50 dark:hover:bg-white/5 transition-colors duration-300" />
+                    )}
+
+                    {/* Indikator Aktif dengan Gradient Premium */}
+                    {isActive && (
+                        <motion.div 
+                        layoutId="activeCategoryBg"
+                        className="absolute inset-0 bg-gradient-to-r from-neutral-900 to-neutral-800 dark:from-cyan-500 dark:to-blue-600 shadow-[0_4px_15px_rgba(0,0,0,0.2)] dark:shadow-[0_4px_20px_rgba(6,182,212,0.3)] rounded-xl md:rounded-full z-0"
+                        transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+                        />
+                    )}
+                    
+                    <span className="relative z-10">
+                        {CATEGORY_TRANSLATIONS[cat][lang]}
+                    </span>
                     </button>
                 );
-            })}
-        </div>
-      </div>
+                })}
+            </div>
+            </div>
 
       {activeCategory === 'Videography' && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-12">

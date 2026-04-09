@@ -181,7 +181,7 @@ const Dedication = ({ lang }) => {
                 {/* Di Mobile: Flex-row di bawah, ukuran lebih kecil */}
                 <motion.div 
                     style={{ opacity: toolsOpacity, scale: toolsScale }}
-                    className="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex flex-row gap-2 md:gap-3 z-30 pointer-events-none"
+                    className="absolute bottom-4 right-4 md:bottom-6 md:right-6 flex flex-row gap-2 md:gap-3 z-30 pointer-events-none opacity-10"
                 >
                     <FloatingIcon icon={<SiAdobephotoshop />} color="text-[#31A8FF]" bg="bg-[#001E36]/90" border="border-[#31A8FF]/30" delay={0} />
                     <FloatingIcon icon={<SiAdobelightroom />} color="text-[#31A8FF]" bg="bg-[#001E36]/90" border="border-[#31A8FF]/30" delay={0.2} />

@@ -5,7 +5,6 @@ import profileImg from "../assets/ronald-rzb-Profile.jpg";
 import OklchGradientText from "../components/OklchGradientText";
 import NativePopover from "../components/NativePopover";
 import AnchorTooltip from "../components/AnchorTooltip";
-import ImageFade from "./ImageFade";
 
 const Footer = ({ lang }) => {
 
@@ -81,7 +80,7 @@ const Footer = ({ lang }) => {
         {/* === BAGIAN KIRI: FOTO & NAMA === */}
         <div className="text-center lg:text-left w-full lg:w-1/3 lg:order-1">
           <div className="flex items-center justify-center lg:justify-start gap-4 mb-3">
-              <ImageFade decoding="async" loading="lazy" 
+              <img decoding="async" loading="lazy" 
                   src={profileImg} 
                   alt="Ronald Zuni Bachtiar" 
                   className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:scale-110 transition-transform duration-300"

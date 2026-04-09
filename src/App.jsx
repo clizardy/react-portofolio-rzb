@@ -64,6 +64,7 @@ import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
 import { MusicProvider } from "./components/MusicContext";
 import DroneGame from "./components/DroneGame";
+import GlimpseOfMe from "./components/GlimpseofMe";
 
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 
@@ -146,24 +147,32 @@ const PortfolioContent = () => {
         }
     }, [theme]);
 
-    useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.0,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smooth: true,
-            touchMultiplier: 2,
-        });
-        
-        if (isLoading) lenis.stop();
-        else lenis.start();
+    // Di dalam App.jsx (PortfolioContent)
+useEffect(() => {
+    const lenis = new Lenis({
+        duration: 1.0,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true,
+        touchMultiplier: 2,
+    });
+    
+    // --- TAMBAHKAN BARIS INI ---
+    window.lenis = lenis; 
+    
+    if (isLoading) lenis.stop();
+    else lenis.start();
 
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+    function raf(time) {
+        lenis.raf(time);
         requestAnimationFrame(raf);
-        return () => lenis.destroy();
-    }, [isLoading]); 
+    }
+    requestAnimationFrame(raf);
+    
+    return () => {
+        lenis.destroy();
+        delete window.lenis; // Bersihkan saat unmount
+    };
+}, [isLoading]);
 
  // --- 2. PERBAIKAN FUNGSI TOGGLE THEME (Toast dipindah ke sini) ---
         const toggleTheme = (e) => {
@@ -408,7 +417,13 @@ const PortfolioContent = () => {
                             <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
                         </Suspense>
                     </div>
-                </div>
+
+                    <div className="w-full">
+                        <Suspense fallback={<div className="text-center py-20">Loading Glimpse of Me...</div>}>
+                            <div id="glimpse"><GlimpseOfMe lang={lang}/></div>
+                        </Suspense>
+                    </div>
+                    </div>
                 </div>
 
                 {/* 4. FOOTER SECTION */}

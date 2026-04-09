@@ -118,8 +118,7 @@ const DroneGame = () => {
   // --- LOOPING ENGINE (FIXED) ---
   useEffect(() => {
     if (!flightData) {
-        // Jika tidak ada drone, spawn dalam 0.5 - 2 detik
-        const delay = Math.random() * 11500 + 500; 
+        const delay = Math.random() * 22500 + 500; 
         timerRef.current = setTimeout(spawnDrone, delay);
     }
     return () => clearTimeout(timerRef.current);

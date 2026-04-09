@@ -31,8 +31,8 @@ const SISPALA_DATA = [
         id: "Ketua Organisasi"
     },
     description: {
-        en: "Designed the concept for new member induction, combining formal organizational ceremonies with 'team bonding' sessions in a coastal environment. Focused on character building and solidarity.",
-        id: "Merancang konsep acara pelantikan anggota baru yang menggabungkan upacara formal organisasi dengan sesi 'team bonding' di lingkungan pesisir. Fokus pada pembangunan karakter dan solidaritas."
+        en: "This new member inauguration event is designed as a momentum for organizational revival after the pandemic, combining a formal and solemn ceremony with a team-bonding session in a coastal setting. The inauguration process reinforces commitment through the reading of the organization’s vision and mission, the oath-taking, and the symbolic pinning of attributes, while collaborative and reflective activities by the beach aim to build character, leadership, and solidarity. This blend of ceremonial formality and meaningful togetherness is expected to mark the beginning of renewed spirit and collective commitment to reactivate the organization in an active and principled manner.",
+        id: "Acara pelantikan anggota baru ini dirancang sebagai momentum kebangkitan organisasi pascapandemi dengan memadukan upacara formal yang khidmat dan sesi 'team bonding' di lingkungan pesisir. Prosesi pelantikan menegaskan komitmen melalui pembacaan visi-misi, ikrar, dan penyematan atribut, sementara aktivitas kolaboratif dan reflektif di pantai bertujuan membangun karakter, kepemimpinan, serta solidaritas. Perpaduan seremonial dan kebersamaan ini diharapkan menjadi titik awal lahirnya semangat baru dan komitmen kolektif untuk menghidupkan kembali organisasi secara aktif dan berintegritas."
     },
     videoUrl: "https://www.youtube.com/embed/SrFbGi4ULqk",
     skills: ["Event Organizer", "Public Speaking", "Team Building", "Conflict Resolution"]
@@ -166,7 +166,7 @@ const Organization = ({ lang }) => {
                 {org.skills.map((skill, index) => (
                   <span 
                     key={index} 
-                    className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 px-3 py-1 text-xs font-bold tracking-wide text-emerald-800 dark:text-emerald-200 uppercase"
+                    className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 px-4 py-1.5 md:text-[10px] text-[7px] font-bold tracking-wide text-emerald-800 dark:text-emerald-200 uppercase"
                   >
                     {skill}
                   </span>
@@ -235,7 +235,7 @@ const Organization = ({ lang }) => {
                 {qc.skills.map((skill, index) => (
                   <span 
                     key={index} 
-                    className="rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700 px-3 py-1 text-xs font-bold tracking-wide text-indigo-800 dark:text-indigo-200 uppercase"
+                    className="rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700 px-4 py-1.5 md:text-[10px] text-[7px] font-bold tracking-wide text-indigo-800 dark:text-indigo-200 uppercase"
                   >
                     {skill}
                   </span>

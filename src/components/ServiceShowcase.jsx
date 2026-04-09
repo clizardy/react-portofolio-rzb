@@ -22,11 +22,11 @@ const ServiceShowcase = ({ lang, onBook }) => {
       color: "from-blue-500 to-cyan-400",
       desc: { en: "React & Next.js Expert", id: "Ahli React & Next.js" },
       bgContent: (
-        <div className="absolute inset-0 bg-slate-900 flex items-center justify-center overflow-hidden font-mono text-[10px] text-green-400 opacity-30">
-          <pre>{`const dev = {\n  skill: "React",\n  level: 100\n};`}</pre>
-        </div>
-      )
-    },
+        <div className="absolute inset-0 bg-slate-900 flex items-center justify-center overflow-hidden font-mono text-[10px] text-green-400 opacity-80 md:opacity-30">
+      <pre>{`const dev = {\n  skill: "React",\n  level: 100\n};`}</pre>
+    </div>
+  )
+},
     {
       id: "video",
       title: "Videography",
@@ -61,13 +61,14 @@ const ServiceShowcase = ({ lang, onBook }) => {
       color: "from-amber-500 to-yellow-400",
       desc: { en: "Professional Shots", id: "Foto Profesional" },
       bgContent: (
-         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700"></div>
-      )
-    }
+     // Ubah grayscale-0 (mobile) dan md:grayscale (desktop)
+     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-60 md:opacity-40 grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700"></div>
+  )
+}
   ];
 
   return (
-    <section id="portfolio" className="relative overflow-hidden">
+    <section className="relative overflow-hidden">
       
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[400px] bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-[100px] rounded-full pointer-events-none" />
@@ -76,7 +77,6 @@ const ServiceShowcase = ({ lang, onBook }) => {
       <div className="max-w-[1400px] mx-auto relative z-10 w-full flex flex-col md:flex-row">
         
         {/* --- KOLOM KIRI (JUDUL VERTIKAL) --- */}
-        {/* Di Desktop: Lebar tetap, border kanan, teks diputar */}
         <div className="relative md:w-[140px] flex-shrink-0 flex md:flex-col items-center justify-center md:border-r border-white/10 py-10 md:py-0 mb-8 md:mb-0">
             
             {/* Wrapper Teks */}
@@ -86,10 +86,7 @@ const ServiceShowcase = ({ lang, onBook }) => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    // LOGIKA ROTASI:
-                    // Mobile: Horizontal biasa
-                    // Desktop: -rotate-90 (tegak lurus), whitespace-nowrap (satu baris)
-                    className="text-4xl md:text-7xl font-black tracking-tighter md:italic mb-0 md:-rotate-90 md:whitespace-nowrap uppercase"
+                    className="text-4xl md:text-7xl font-black tracking-tighter md:italic md:-rotate-90 md:whitespace-nowrap uppercase"
                 >
                     <span className="text-white"></span>
                     <OklchGradientText>
@@ -181,21 +178,27 @@ const BentoCard = ({ item, className, activeId, setActiveId, lang, isSmall, onCl
       onMouseLeave={() => setActiveId(null)}
       onClick={onClick}
       whileTap={{ scale: 0.98 }}
-      className={`relative rounded-[2rem] overflow-hidden cursor-pointer group border border-white/5 dark:bg-black/30 bg-white/30 ${className}`}
+      className={`relative rounded-[2rem] overflow-hidden cursor-pointer group border border-white/10 dark:bg-black/30 bg-white/30 ${className}`}
     >
-      {/* Background Content */}
-      <div className={`absolute inset-0 transition-all duration-700 ease-out ${isActive ? 'scale-105 opacity-100' : 'scale-100 opacity-40'}`}>
+      {/* Background Content - Dibuat terang di mobile (opacity-100), redup di desktop (md:opacity-40) */}
+      <div className={`absolute inset-0 transition-all duration-700 ease-out 
+        opacity-100 md:opacity-40 
+        ${isActive ? 'md:scale-105 md:opacity-100' : 'scale-100'}`}>
         {item.bgContent}
       </div>
 
-      {/* Gradient Overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-t ${item.color} opacity-0 group-hover:opacity-60 transition-opacity duration-500 mix-blend-soft-light`} />
+      {/* Gradient Overlay - Muncul tipis di mobile agar teks terbaca, sangat kuat saat hover di desktop */}
+      <div className={`absolute inset-0 bg-gradient-to-t ${item.color} opacity-20 md:opacity-0 md:group-hover:opacity-60 transition-opacity duration-500 mix-blend-soft-light`} />
+      
+      {/* Base Shadow - Selalu ada untuk readability teks */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/90" />
       
       {/* Content Text */}
       <div className="absolute inset-0 p-5 md:p-7 flex flex-col justify-end z-20 pointer-events-none">
         
-        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-lg md:text-xl text-white mb-3 md:mb-4 transition-all duration-500 ${isActive ? '-translate-y-2 bg-white/20' : ''}`}>
+        {/* Icon Container - Selalu 'hidup' di mobile */}
+        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-lg md:text-xl text-white mb-3 md:mb-4 transition-all duration-500 
+          ${isActive ? '-translate-y-2 md:bg-white/30' : ''}`}>
           {item.icon}
         </div>
 
@@ -203,16 +206,17 @@ const BentoCard = ({ item, className, activeId, setActiveId, lang, isSmall, onCl
           {item.title}
         </h3>
         
+        {/* Deskripsi - Tetap menggunakan toggle isActive agar tidak memenuhi layar mobile sekaligus */}
         <div className={`overflow-hidden transition-all duration-500 ${isActive ? 'max-h-20 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
              <p className="text-white/80 text-xs md:text-sm">
                 {item.desc[lang]}
             </p>
         </div>
 
-        <div className={`absolute top-5 right-5 md:top-6 md:right-6 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white transform transition-all duration-500 ${isActive ? 'bg-white/20 text-black rotate-0 border-transparent' : '-rotate-45'}`}>
+        <div className={`absolute top-5 right-5 md:top-6 md:right-6 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white transform transition-all duration-500 
+          ${isActive ? 'bg-white/25 rotate-0' : 'md:-rotate-45'}`}>
            <FaArrowRight size={12} />
         </div>
-
       </div>
     </motion.div>
   );

@@ -20,17 +20,22 @@ const BackToTop = ({ theme }) => {
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
+  // Di dalam BackToTop.jsx
   const scrollToTop = () => {
-    setIsLaunching(true); // 1. Aktifkan animasi terbang
-    
-    // 2. Scroll ke atas
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+      setIsLaunching(true); 
+      
+      // 1. Hapus hash (#nama-komponen) dari URL agar browser tidak menarik layar ke bawah
+      window.history.replaceState(null, "", window.location.pathname);
 
-    // Reset state setelah animasi selesai (opsional, jaga-jaga)
-    setTimeout(() => setIsLaunching(false), 1000);
+      // 2. Gunakan Lenis untuk scroll ke atas jika tersedia (mencegah bentrok animasi)
+      if (window.lenis) {
+          window.lenis.scrollTo(0, { duration: 1.2 }); 
+      } else {
+          // Fallback jika Lenis gagal dimuat
+          window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      setTimeout(() => setIsLaunching(false), 1000);
   };
 
   // --- VARIAN ANIMASI PARENT (TOMBOL KERTAS) ---

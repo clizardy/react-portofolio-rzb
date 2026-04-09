@@ -21,9 +21,6 @@ const BottomDock = ({ onMenuClick, onShareClick, isPlaying, onMusicClick }) => {
           isMinimized ? 'translate-y-[calc(100%-40px)]' : 'translate-y-0'
         }`}
       >
-        
-        {/* TOMBOL TOGGLE (SHOW/HIDE) */}
-        {/* pointer-events-auto agar bisa diklik meskipun wrapper pointer-events-none */}
         <button 
           onClick={() => setIsMinimized(!isMinimized)}
           className="pointer-events-auto mb-3 md:p-1.5 p-3 rounded-full text-white/80 hover:text-white hover:bg-white/20 hover:scale-110 transition-all cursor-pointer z-50"

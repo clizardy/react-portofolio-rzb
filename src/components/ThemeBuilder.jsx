@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValue, useTransform } from 'framer-motion';
-import { Palette, RefreshCcw, Pipette, X } from 'lucide-react';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { Palette, RefreshCcw, Pipette, X, MousePointer2, Sun, Moon } from 'lucide-react';
 
 const ThemeBuilder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeColor, setActiveColor] = useState(() => localStorage.getItem('user-accent-hex') || null);
   
+  // --- NEW FEATURES STATE ---
+  const [isMouseDisabled, setIsMouseDisabled] = useState(() => localStorage.getItem('disable-custom-mouse') === 'true');
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+
   // --- SCROLL DETECTION (Auto Hide) ---
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
@@ -14,10 +18,9 @@ const ThemeBuilder = () => {
   useEffect(() => {
     return scrollY.onChange((latest) => {
       const currentScroll = latest;
-      // Jika scroll ke bawah > 50px, sembunyikan. Jika scroll ke atas, tampilkan.
       if (currentScroll > lastScrollY.current && currentScroll > 100) {
         setIsVisible(false);
-        setIsOpen(false); // Tutup panel juga jika sedang terbuka
+        setIsOpen(false);
       } else {
         setIsVisible(true);
       }
@@ -25,7 +28,29 @@ const ThemeBuilder = () => {
     });
   }, [scrollY]);
 
-  // --- THEME LOGIC (Sama seperti sebelumnya) ---
+  // --- SYSTEM LOGIC (Mouse & Theme) ---
+  useEffect(() => {
+    // Custom Mouse Toggle Logic
+    if (isMouseDisabled) {
+      document.body.classList.add('hide-custom-cursor');
+      localStorage.setItem('disable-custom-mouse', 'true');
+    } else {
+      document.body.classList.remove('hide-custom-cursor');
+      localStorage.setItem('disable-custom-mouse', 'false');
+    }
+  }, [isMouseDisabled]);
+
+  const toggleDarkMode = () => {
+    const newDark = !isDark;
+    setIsDark(newDark);
+    if (newDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  // --- THEME LOGIC ---
   const presets = [
     { name: 'Cyan', color: '6, 182, 212', hex: '#06b6d4' },
     { name: 'Purple', color: '168, 85, 247', hex: '#a855f7' },
@@ -67,29 +92,26 @@ const ThemeBuilder = () => {
     return `${r}, ${g}, ${b}`;
   };
 
-  // --- DRAG CONSTRAINTS (Agar tidak dilempar keluar layar) ---
   const constraintsRef = useRef(null);
 
   return (
     <>
-      {/* Area pembatas drag (Full Screen invisible) */}
       <div ref={constraintsRef} className="fixed inset-4 z-[40] pointer-events-none" />
 
       <motion.div 
         drag
         dragConstraints={constraintsRef}
-        dragElastic={0.1} // Efek karet saat ditarik mentok
-        dragMomentum={false} // Agar tidak meluncur terlalu jauh
+        dragElastic={0.1}
+        dragMomentum={false}
         initial={{ y: 0, opacity: 1 }}
         animate={{ 
-          y: isVisible ? 0 : 200, // Sembunyi ke bawah layar
+          y: isVisible ? 0 : 200, 
           opacity: isVisible ? 1 : 0 
         }} 
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className="fixed bottom-6 left-6 z-[50] flex flex-col items-center pointer-events-auto touch-none"
       >
         
-        {/* PANEL COLOR PICKER */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -97,14 +119,34 @@ const ThemeBuilder = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 10 }}
               transition={{ type: "spring", bounce: 0.3 }}
-              className="absolute bottom-16 mb-2 p-2 dark:bg-black/10 bg-white/60 backdrop-blur-xl border border-white/5 rounded-2xl shadow-2xl flex flex-col gap-3 items-center w-12 overflow-hidden"
+              className="absolute bottom-16 p-2 dark:bg-black/40 bg-white/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col gap-3 items-center w-12 overflow-hidden"
             >
               {/* Reset */}
-              <button onClick={resetTheme} className="w-8 h-8 rounded-full dark:bg-white/5 bg-black/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all" title="Reset Default">
+              <button onClick={resetTheme} className="w-8 h-8 rounded-full dark:bg-white/5 bg-black/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all" title="Reset Colors">
                 <RefreshCcw size={14} />
               </button>
 
-              <div className="w-6 h-[1px] dark:bg-white/50 bg-black/50" />
+              <div className="w-6 h-[1px] dark:bg-white/20 bg-black/10" />
+
+              {/* TOGGLE MOUSE */}
+              <button 
+                onClick={() => setIsMouseDisabled(!isMouseDisabled)} 
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isMouseDisabled ? 'bg-red-500/20 text-red-500' : 'dark:bg-white/5 bg-black/5 text-white/50'}`}
+                title={isMouseDisabled ? "Enable Custom Mouse" : "Disable Custom Mouse"}
+              >
+                <MousePointer2 size={14} strokeWidth={isMouseDisabled ? 3 : 2} />
+              </button>
+
+              {/* TOGGLE DARK MODE */}
+              <button 
+                onClick={toggleDarkMode} 
+                className="w-8 h-8 rounded-full dark:bg-white/5 bg-black/5 hover:bg-white/10 flex items-center justify-center dark:text-yellow-400 text-purple-600 transition-all"
+                title="Toggle Dark/Light"
+              >
+                {isDark ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
+
+              <div className="w-6 h-[1px] dark:bg-white/20 bg-black/10" />
 
               {/* Colors */}
               {presets.map((p) => (
@@ -120,7 +162,7 @@ const ThemeBuilder = () => {
                 </button>
               ))}
 
-              <div className="w-6 h-[1px] dark:bg-white/50 bg-black/50" />
+              <div className="w-6 h-[1px] dark:bg-white/20 bg-black/10" />
 
               {/* Custom Picker */}
               <div className="relative w-8 h-8 rounded-full border dark:border-white/20 border-black/20 flex items-center justify-center overflow-hidden hover:bg-white/5">
@@ -142,7 +184,6 @@ const ThemeBuilder = () => {
           whileTap={{ scale: 0.9 }}
           className="relative w-12 h-12 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.3)] dark:bg-black/20 bg-white/30 backdrop-blur-md border border-white/15 group overflow-hidden"
         >
-          {/* Background Glow Effect */}
           <div 
             className="absolute inset-0 opacity-40 transition-colors duration-500"
             style={{ backgroundColor: activeColor || 'var(--accent-color)' }}
@@ -153,14 +194,13 @@ const ThemeBuilder = () => {
           </div>
         </motion.button>
         
-        {/* Label kecil saat di-drag (Optional UX) */}
         {!isOpen && (
           <motion.span 
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}
-            className="absolute -bottom-6 text-[10px] text-white/40 font-medium tracking-wide pointer-events-none"
+            className="absolute -bottom-6 text-[10px] text-white/40 font-medium tracking-wide pointer-events-none whitespace-nowrap"
           >
-            DRAG ME
+            THEME & SYSTEM
           </motion.span>
         )}
 

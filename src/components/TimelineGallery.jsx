@@ -10,9 +10,9 @@ const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
   let year = "2024";
   let desc = `Moment #${id}`;
 
-  if (id <= 20) { year = "2006 - 2018"; desc = "# Masa Kecil"; }
-  else if (id <= 50) { year = "2018 - 2021"; desc = "# Masa SMP"; }
-  else if (id <= 80) { year = "2021 - 2024"; desc = "# Masa SMA"; }
+  if (id <= 20) { year = "2006 - 2018"; desc = "# Childhood"; }
+  else if (id <= 50) { year = "2018 - 2021"; desc = "# JHS Era"; }
+  else if (id <= 80) { year = "2021 - 2024"; desc = "# SHS Era"; }
   else { year = "2024 - Now"; desc = "# Professional Life"; }
 
   return {
@@ -26,6 +26,7 @@ const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
 const TimelineGallery = ({ lang }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [visibleCount, setVisibleCount] = useState(30);
+  const [isActivated, setIsActivated] = useState(false);
 
   const currentImages = useMemo(() => {
     return ALL_IMAGES.slice(0, visibleCount);

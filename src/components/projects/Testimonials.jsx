@@ -83,8 +83,8 @@ const TestimonialCard = ({ review, index, lang }) => {
   // Static pakai 'image' & 'quote[lang]', Firebase pakai 'photoUrl' & 'message'
   const displayImage = review.photoUrl || review.image;
   const displayMessage = review.message || (review.quote ? review.quote[lang] : "");
-  const displayDate = review.createdAt?.seconds 
-    ? new Date(review.createdAt.seconds * 1000).toLocaleDateString() 
+  const displayDate = review.createdAt?.seconds
+    ? new Date(review.createdAt.seconds * 1000).toLocaleDateString()
     : "Featured"; // Tanggal untuk static
 
   return (
@@ -173,7 +173,7 @@ const TestimonialCard = ({ review, index, lang }) => {
                       <p className="dark:text-white text-black text-sm leading-relaxed">
                         "{displayMessage}"
                       </p>
-                      <p className="text-[10px] dark:text-white/50 text-black/50 md:mt-0 mt-2 text-right font-mono">
+                      <p className="text-[10px] dark:text-white/50 italic text-black/50 md:mt-0 mt-2 text-right font-mono">
                         #{displayDate}
                       </p>
                   </div>

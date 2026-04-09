@@ -202,27 +202,27 @@ return (
         </div>
 
         {/* --- AREA TOMBOL AKSI UTAMA (NEW LAYOUT) --- */}
-        <div className="mt-6 flex flex-col gap-4">
+        <div className="md:mt-0 mt-6 flex flex-col gap-4">
             
             {/* BARIS 1: TOMBOL EKSPLORASI (Info) */}
             <div className="flex flex-wrap justify-center gap-3">
                 <button
                     onClick={onOpenWorkflow}
-                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-indigo-500/30 text-indigo-600 dark:text-indigo-300 font-bold text-xs hover:bg-indigo-500/10 hover:border-indigo-500 transition-all flex items-center gap-2"
+                    className="group px-4 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-indigo-500/30 text-indigo-600 dark:text-indigo-300 font-bold text-xs hover:bg-indigo-500/10 hover:border-indigo-500 transition-all flex items-center gap-1"
                 >
                     <span>📋</span> {lang === 'id' ? "Alur Kerja" : "Workflow"}
                 </button>
 
                 <button
                     onClick={onOpenGear}
-                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-300 font-bold text-xs hover:bg-amber-500/10 hover:border-amber-500 transition-all flex items-center gap-2"
+                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-amber-500/30 text-amber-600 dark:text-amber-300 font-bold text-xs hover:bg-amber-500/10 hover:border-amber-500 transition-all flex items-center gap-1"
                 >
                     <span>🛠️</span> {lang === 'id' ? "Peralatan" : "My Gear"}
                 </button>
 
                 <button
                     onClick={onOpenPricing}
-                    className="group px-5 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-teal-500/30 text-teal-600 dark:text-teal-300 font-bold text-xs hover:bg-teal-500/10 hover:border-teal-500 transition-all flex items-center gap-2"
+                    className="group px-4 py-2.5 rounded-full bg-white/5 dark:bg-black/20 backdrop-blur-md border border-teal-500/30 text-teal-600 dark:text-teal-300 font-bold text-xs hover:bg-teal-500/10 hover:border-teal-500 transition-all flex items-center"
                 >
                     <span>💲</span> {lang === 'id' ? "Paket Harga" : "Pricing"}
                 </button>

@@ -22,8 +22,6 @@ const MusicPlayerWidget = ({ onClose }) => {
   }, [progress, current]);
 
   const formatTime = (percent) => {
-    // Estimasi durasi (hardcode 3:30 atau ambil dari audio ref jika mau kompleks)
-    // Disini kita simulasi tampilan waktu berdasarkan persentase
     const totalSeconds = 210; // misal lagu rata2 3.5 menit
     const currentSeconds = (percent / 100) * totalSeconds;
     const m = Math.floor(currentSeconds / 60);

@@ -61,7 +61,7 @@ const Hero = ({ lang, isReady = true }) => {
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
-  const CORRECT_PIN = "1904"; // PIN ANDA
+  const CORRECT_PIN = "1904";
 
   useEffect(() => {
     const checkTheme = () => {
