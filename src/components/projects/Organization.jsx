@@ -98,6 +98,52 @@ const Organization = ({ lang }) => {
                    dark:from-indigo-800/30 dark:via-purple-900/10 dark:to-transparent
                    blur-[350px] rounded-full pointer-events-none z-0"
       ></div>
+
+            {/* === DECORATION LEFT (MOUNTAIN COMPASS) === */}
+      <motion.div
+        animate={{ y: [0, -15, 0], rotate: [0, 2, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="
+          absolute 
+          center 
+          right-0 md:right-44
+          w-24 h-24 md:w-32 md:h-32 
+          opacity-20 md:opacity-30 
+          pointer-events-none 
+          z-[1]
+          text-emerald-500
+        "
+      >
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" />
+          <line x1="50" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="2" />
+          <path d="M20 70 L40 40 L60 70 Z" stroke="currentColor" strokeWidth="2" />
+          <path d="M40 70 L55 50 L70 70 Z" stroke="currentColor" strokeWidth="2" />
+        </svg>
+      </motion.div>
+
+      {/* === DECORATION RIGHT (MUSIC WAVE) === */}
+      <motion.div
+        animate={{ y: [0, 20, 0], scale: [1, 1.05, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="
+          absolute 
+          bottom-7 md:bottom-60 
+          right-2 md:right-0 
+          w-24 h-24 md:w-32 md:h-32 
+          opacity-20 md:opacity-30 
+          pointer-events-none 
+          z-[1]
+          text-indigo-400
+        "
+      >
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M10 50 Q 25 20, 40 50 T 70 50 T 100 50" stroke="currentColor" strokeWidth="2"/>
+          <circle cx="20" cy="50" r="2" fill="currentColor" />
+          <circle cx="50" cy="50" r="2" fill="currentColor" />
+          <circle cx="80" cy="50" r="2" fill="currentColor" />
+        </svg>
+      </motion.div>
       
       {/* JUDUL UTAMA */}
       <motion.h2

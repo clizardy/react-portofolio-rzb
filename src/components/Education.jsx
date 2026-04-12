@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { EXPERIENCES } from "../constants"; 
 import { motion, useInView } from "framer-motion";
 import OklchGradientText from "../components/OklchGradientText";
-import { FaCalendarAlt, FaBuilding, FaChevronRight } from "react-icons/fa";
+import { FaCalendarAlt, FaBuilding, FaChevronRight, FaGraduationCap, FaUniversity, FaAward } from "react-icons/fa";
 
 const Education = ({ lang }) => {
   const ref = useRef(null);
@@ -38,7 +38,8 @@ const Education = ({ lang }) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
             >
-                <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight flex justify-center items-center gap-3 md:gap-4">
+                    <FaGraduationCap className="text-amber-500 dark:text-cyan-400 text-3xl md:text-4xl drop-shadow-md" />
                     <OklchGradientText>{lang === 'id' ? "Akademik" : "Academics"}</OklchGradientText>
                 </h2>
                 <div className="h-1.5 w-20 bg-gradient-to-r from-amber-500 to-cyan-500 mx-auto rounded-full mb-4 shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>

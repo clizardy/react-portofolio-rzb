@@ -88,6 +88,20 @@ const Dedication = ({ lang }) => {
   return (
     <div id="dedication" className="relative border-b dark:border-cyan-500 border-amber-500 pb-4 overflow-hidden">
 
+        {/* === DECORATION: FLOATING POLAROID (MEMORY VIBE) === */}
+        <motion.div
+        animate={{ y: [0, -12, 0], rotate: [-2, 2, -2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-10 left-4 md:left-64 w-20 md:w-28 h-24 md:h-32 bg-white dark:bg-neutral-200 rounded-md shadow-lg p-1 opacity-40 md:opacity-60 -z-10"
+        >
+        <div className="w-full h-3/4 bg-neutral-300 rounded-sm overflow-hidden">
+            <img src={parentsRaw} alt="memory" className="w-full h-full object-cover grayscale" />
+        </div>
+        <div className="h-1/4 flex items-center justify-center text-[6px] md:text-[8px] font-mono text-black">
+            MEMORY
+        </div>
+        </motion.div>
+
       <motion.h2
         whileInView={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: -30 }}

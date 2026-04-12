@@ -5,7 +5,7 @@ const GlimpseOfMe = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   
   // TODO: Ganti dengan ID Video YouTube kamu
-  const youtubeId = "xcDb3zOf03I";
+  const youtubeId = "X-EK60rmcQs";
 
   // Data untuk partikel "Glow in the dark"
   const glowDots = [
@@ -199,7 +199,7 @@ const GlimpseOfMe = () => {
                   
                   {/* Teks Minimalis */}
                   <span className="mt-8 text-[11px] md:text-xs text-white font-medium italic tracking-[0.4em] opacity-0 group-hover/play:opacity-100 transition-all duration-500 translate-y-2 group-hover/play:translate-y-0 shadow-black drop-shadow-md">
-                    On Progress Nggih Mas Mba..
+                    Sementara Ini Dulu Ya, Nanti Kalau Udah Jadi Aku Update Lagi Koo
                   </span>
                 </div>
               </div>

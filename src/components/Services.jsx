@@ -76,7 +76,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInqui
   const [activeTab, setActiveTab] = useState(SERVICES_DATA[0]);
 
 return (
-    <div id="services" className="relative py-5 bg-transparent transition-colors duration-500 overflow-hidden">
+    <div id="services" className="relative isolate py-5 bg-transparent transition-colors duration-500 overflow-hidden">
       
       {/* --- BACKGROUND GLOW EFFECT (CENTERED) --- */}
       <div 
@@ -87,6 +87,33 @@ return (
                    dark:from-indigo-800/30 dark:via-purple-900/10 dark:to-transparent
                    blur-[150px] rounded-full pointer-events-none z-0"
       ></div>
+
+      {/* === FLOATING SERVICE ORBS === */}
+<motion.div
+  animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
+  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+  className="absolute top-20 left-4 md:left-20 w-16 h-16 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20 blur-2xl pointer-events-none z-[1]"
+/>
+
+<motion.div
+  animate={{ y: [0, 25, 0], x: [0, -10, 0] }}
+  transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+  className="absolute bottom-32 right-4 md:right-20 w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 blur-2xl pointer-events-none z-[1]"
+/>
+
+{/* === GRID LIGHT EFFECT === */}
+<div className="absolute inset-0 opacity-[0.07] pointer-events-none z-0 
+  [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] 
+  [background-size:40px_40px]" />
+
+  {/* === FLOATING ICON (SUBTLE) === */}
+<motion.div
+  animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+  transition={{ duration: 8, repeat: Infinity }}
+  className="absolute top-1/3 right-[10%] text-cyan-400/20 text-4xl md:text-6xl pointer-events-none z-[1]"
+>
+  <FaCamera />
+</motion.div>
 
       <div className="relative max-w-6xl mx-auto px-4 z-10">
         

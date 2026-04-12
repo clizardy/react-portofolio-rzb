@@ -90,7 +90,7 @@ const TimelineGallery = ({ lang }) => {
   }, [selectedImage]);
 
   return (
-    <div id="timeline" className="overflow-hidden relative">
+    <div id="timeline" className="overflow-hidden relative isolate">
       
       {/* CSS MANUAL (PASTI JALAN DI PC & HP) */}
       <style>{`
@@ -131,6 +131,23 @@ const TimelineGallery = ({ lang }) => {
             opacity: 1 !important;
         }
       `}</style>
+
+      {/* === FLOATING MEMORY FRAMES === */}
+        <motion.div
+        animate={{ y: [0, -20, 0], rotate: [0, 2, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-20 left-4 md:left-60 w-20 h-28 md:w-28 md:h-36 pointer-events-none -z-10"
+        >
+        <div className="w-full h-full border border-white/20 rounded-lg backdrop-blur-sm bg-white/5 shadow-xl rotate-[-6deg]" />
+        </motion.div>
+
+        <motion.div
+        animate={{ y: [0, 25, 0], rotate: [0, -3, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-20 right-4 md:right-5 w-24 h-32 md:w-32 md:h-40 pointer-events-none -z-10"
+        >
+        <div className="w-full h-full border border-cyan-400/30 rounded-lg backdrop-blur-sm bg-cyan-500/5 shadow-xl rotate-[8deg]" />
+        </motion.div>
 
       {/* HEADER */}
       <div className="text-center mb-12 px-4">

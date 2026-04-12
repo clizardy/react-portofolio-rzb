@@ -139,7 +139,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
           custom={0.5} variants={textVariants} initial="hidden" animate="visible"
           className="text-white/50 tracking-[0.3em] text-[6px] md:text-sm uppercase mb-4"
         >
-          Portfolio &bull; 2025
+          Portfolio | 2025
         </motion.p>
         
         {/* NAMA BESAR */}
@@ -163,7 +163,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
             />
         </motion.div>
 
-                {/* Percentage Text */}
+        {/* Percentage Text */}
         <motion.span 
             className="mt-1 text-[4px] md:text-[8px] font-mono dark:text-cyan-400/80 text-amber-400/80 tracking-widest"
             animate={{ opacity: [0.3, 1, 0.3] }}
@@ -177,7 +177,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
           custom={1.3} variants={textVariants} initial="hidden" animate="visible"
           className="text-white font-sans tracking-widest text-[7px] md:text-sm mt-2 font-light uppercase opacity-80"
         >
-          Professional | Digital Creator | Musician
+          Professional &bull; Digital Creator &bull; Musician
         </motion.p>
 
       </div>

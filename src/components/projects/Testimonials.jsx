@@ -224,6 +224,39 @@ const Testimonials = ({ lang }) => {
   bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/5 
   rounded-full pointer-events-none" 
 />
+    {/* ================= DECORATIONS: TESTIMONIAL AMBIENT ================= */}
+
+    {/* 1. Floating Chat Bubble (Kiri Atas) */}
+    <motion.div
+      animate={{ y: [0, -12, 0], rotate: [0, 2, 0] }}
+      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute top-10 left-4 md:left-20 w-20 h-16 opacity-20 dark:opacity-10 pointer-events-none -z-10 text-black dark:text-white"
+    >
+      <svg viewBox="0 0 100 70" fill="none">
+        <rect x="5" y="5" width="90" height="50" rx="12" stroke="currentColor" strokeWidth="2"/>
+        <path d="M30 55 L20 65 L45 55" stroke="currentColor" strokeWidth="2"/>
+      </svg>
+    </motion.div>
+
+    {/* 2. Emoji Floating (Kanan Bawah) */}
+    <motion.div
+      animate={{ y: [0, 10, 0], scale: [1, 1.05, 1] }}
+      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute bottom-10 right-6 md:right-16 text-2xl md:text-3xl opacity-40 dark:opacity-30 pointer-events-none -z-10"
+    >
+      💬✨
+    </motion.div>
+
+    {/* 3. Typing Indicator (Chat Style) */}
+    <motion.div
+      animate={{ opacity: [0.2, 0.6, 0.2] }}
+      transition={{ duration: 2, repeat: Infinity }}
+      className="absolute bottom-1/3 left-1/2 -translate-x-1/2 flex gap-1 opacity-20 dark:opacity-10 pointer-events-none -z-10"
+    >
+      <span className="w-1.5 h-1.5 bg-black dark:bg-white rounded-full"></span>
+      <span className="w-1.5 h-1.5 bg-black dark:bg-white rounded-full"></span>
+      <span className="w-1.5 h-1.5 bg-black dark:bg-white rounded-full"></span>
+    </motion.div>
       
       {/* Header */}
       <motion.div

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"; // <--- 1. IMPORT INI WAJIB
 import Tilt from 'react-parallax-tilt'; 
 import { PROJECTS } from "../../constants"; 
 import { motion, AnimatePresence } from "framer-motion";
-import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay } from "react-icons/fa"; 
+import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay, FaProjectDiagram, FaTag, FaAlignLeft, FaTools } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
 import { toast } from "react-hot-toast";
 import OklchGradientText from "../OklchGradientText"; 
@@ -187,21 +187,34 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 )}
             </div>
 
+            {/* --- BAGIAN INFORMASI YANG TELAH DIDEKORASI --- */}
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-4xl lg:w-3/4 lg:pl-16 mt-6 lg:mt-0">
-                <div className="flex items-center justify-between mb-2">
-                    <h6 className="font-bold text-xl text-neutral-900 dark:text-white">{project.title}</h6>
-                    <span className="text-[8px] md:text-[10px] font-mono italic tracking-widest bg-black dark:bg-white text-white dark:text-black border px-2 py-1 rounded-full">
-                        #{CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
+                <div className="flex items-center justify-between mb-3">
+                    {/* Icon untuk Title */}
+                    <h6 className="font-bold text-xl text-black dark:text-white flex items-center gap-2">
+                        <FaProjectDiagram className="text-amber-600 dark:text-cyan-500 text-lg hidden md:block" />
+                        {project.title}
+                    </h6>
+                    {/* Icon untuk Category */}
+                    <span className="flex items-center gap-1 text-[8px] md:text-[10px] font-mono italic tracking-widest bg-black dark:bg-white text-white dark:text-black border px-2 py-1 rounded-full">
+                        <FaTag className="text-[8px] md:text-[10px]" />
+                        {CATEGORY_TRANSLATIONS[project.category] ? CATEGORY_TRANSLATIONS[project.category][lang] : project.category}
                     </span>
                 </div>
                 
-                <p className="mb-4 text-neutral-700 dark:text-neutral-300 text-md leading-relaxed text-justify">
-                    {typeof project.description === 'object' ? project.description[lang] : project.description}
-                </p>
+                {/* Icon untuk Description */}
+                <div className="flex items-start gap-2.5 mb-4">
+                    <FaAlignLeft className="text-black dark:text-white mt-1.5 text-sm shrink-0" />
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
+                        {typeof project.description === 'object' ? project.description[lang] : project.description}
+                    </p>
+                </div>
                 
-                <div className="flex flex-wrap gap-2 mb-6">
+                {/* Icon untuk Technologies */}
+                <div className="flex flex-wrap items-center gap-2 mb-6">
+                    <FaTools className="text-black dark:text-white text-sm shrink-0 mr-1" />
                     {project.technologies.map((tech, idx) => (
-                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[11px] text-[6px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
+                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[11px] text-[8px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
                     ))}
                 </div>
 
