@@ -109,6 +109,8 @@ const TiltCard = ({ item }) => {
 
 return (
     <motion.div
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -116,7 +118,7 @@ return (
       // UPDATE: Height dikurangi dari 400px jadi 350px karena layout lebih ringkas
       className="relative h-[230px] w-[300px] md:w-[400px] rounded-[2.5rem] bg-white dark:bg-neutral-900/30 backdrop-blur-md border border-white/20 dark:border-white/10 p-5 flex flex-col justify-between group overflow-hidden shrink-0"
     >
-      <div className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br ${item.color} blur-3xl opacity-20 group-hover:opacity-50 transition-opacity duration-500`} />
+      <div className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br ${item.color} blur-3xl opacity-50 group-hover:opacity-90 transition-opacity duration-500`} />
       
       <div style={{ transform: "translateZ(50px)" }} className="relative z-10 mt-2">
         
@@ -158,7 +160,10 @@ const Certificates = ({ lang }) => {
 
   return (
     // 1. TINGGI: Wajib min 150vh biar sticky-nya jalan. Kalau 50vh dia gak akan nempel.
-    <section ref={targetRef} className="relative h-[45vh] md:h-[40vh] bg-indigo-100 dark:bg-slate-950">
+    <section 
+  ref={targetRef} 
+  className="relative h-[45vh] md:h-[40vh] bg-indigo-100 dark:bg-slate-950 overflow-hidden"
+>
       
       {/* 2. POSISI: Ganti 'items-center' jadi 'items-start'.
             Tambah 'pt-24' (padding top) biar kontennya naik ke atas, gak di tengah layar.
@@ -183,6 +188,31 @@ const Certificates = ({ lang }) => {
                     <TiltCard key={item.id} item={item} />
                 ))}
             </motion.div>
+        </div>
+
+  {/* 🌈 BACKGROUND GRADIENT */}
+  <div className="absolute inset-0 bg-gradient-to-br from-indigo-200/40 via-transparent to-purple-200/30 dark:from-indigo-900/20 dark:to-purple-900/20" />
+
+  {/* 🟣 FLOATING BLOBS */}
+  <motion.div
+    animate={{ y: [0, 40, 0], x: [0, 30, 0] }}
+    transition={{ duration: 12, repeat: Infinity }}
+    className="absolute top-20 left-10 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl"
+  />
+  <motion.div
+    animate={{ y: [0, -30, 0], x: [0, -20, 0] }}
+    transition={{ duration: 10, repeat: Infinity }}
+    className="absolute bottom-10 right-10 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl"
+  />
+
+  {/* ✨ GLOW FOLLOW SCROLL */}
+  <motion.div
+    style={{ x }}
+    className="absolute top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-pink-400/20 to-indigo-400/20 blur-[120px] rounded-full"
+  />
+
+  {/* MAIN CONTENT */}
+  <div className="sticky top-0 flex h-screen items-start pt-10 md:pt-12 overflow-hidden">
 
         </div>
       </div>

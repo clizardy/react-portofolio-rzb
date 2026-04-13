@@ -102,7 +102,8 @@ const TestimonialCard = ({ review, index, lang }) => {
         transition={{ duration: 0.4, delay: index * 0.1 }}
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          h-full relative p-6 rounded-3xl border transition-all duration-300 cursor-pointer group flex flex-col
+          hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] h-full relative p-6 rounded-3xl border transition-all duration-300 cursor-pointer group flex flex-col
           ${isOpen 
             ? 'dark:bg-black/10 bg-white/30 dark:border-cyan-500/50 border-amber-500 shadow-[0_0_30px_rgba(6,182,212,0.1)]' 
             : 'dark:bg-white/5 bg-white/30 border-white/0 hover:border-amber-500 dark:hover:border-cyan-500 hover:bg-white/10'}

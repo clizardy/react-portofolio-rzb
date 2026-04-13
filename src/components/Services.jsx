@@ -145,10 +145,11 @@ return (
             <button
               key={service.id}
               onClick={() => setActiveTab(service)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap border ${
+              className={`hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap border ${
                 activeTab.id === service.id
-                  ? "bg-slate-800 dark:bg-cyan-600 text-white border-transparent shadow-lg shadow-cyan-500/20 transform scale-105"
-                  : "bg-white dark:bg-black text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-amber-200 dark:hover:bg-slate-700"
+                  ? "bg-slate-800 dark:bg-black dark:border-cyan-300 border-amber-500 text-white border-transparent shadow-lg shadow-cyan-500/20 transform scale-105"
+                  : "bg-white dark:bg-black text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-white dark:hover:bg-slate-900"
               }`}
             >
               <span className="text-base">{service.icon}</span>

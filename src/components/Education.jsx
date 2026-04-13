@@ -26,6 +26,18 @@ const Education = ({ lang }) => {
 
   return (
     <section id="education" className="relative py-0 mb-8 overflow-hidden">
+
+<motion.div
+  animate={{ y: [0, 60, 0], x: [0, 40, 0] }}
+  transition={{ duration: 18, repeat: Infinity }}
+  className="absolute top-32 left-[-100px] w-[300px] h-[150px] bg-purple-500/20 rounded-full blur-[120px]"
+/>
+
+<motion.div
+  animate={{ y: [0, -40, 0], x: [0, -30, 0] }}
+  transition={{ duration: 15, repeat: Infinity }}
+  className="absolute bottom-[130px] right-[-100px] w-[250px] h-[250px] bg-cyan-400/20 rounded-full blur-[120px]"
+/>
         
         {/* Background Ambience */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[500px] bg-gradient-to-r from-amber-500/5 via-purple-500/5 to-cyan-500/5 blur-[100px] -z-10 pointer-events-none rounded-full"></div>

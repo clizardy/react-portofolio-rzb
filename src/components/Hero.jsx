@@ -56,7 +56,7 @@ const Hero = ({ lang, isReady = true }) => {
   const [isCustom, setIsCustom] = useState(false);
   
   // --- LOGIKA PIN ---
-  const [showPinModal, setShowPinModal] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(false); 
   const [pin, setPin] = useState("");
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -150,6 +150,22 @@ const Hero = ({ lang, isReady = true }) => {
         }
       `}</style>
 
+      <motion.div
+  animate={{ y: [0, 80, 0], x: [0, 60, 0] }}
+  transition={{ duration: 20, repeat: Infinity }}
+  className="absolute top-[-100px] left-[-100px] md:w-[500px] md:h-[500px] w-[300px] h-[300px] bg-purple-500/15 rounded-full blur-[140px]"
+/>
+
+<motion.div
+  animate={{ y: [0, -60, 0], x: [0, -40, 0] }}
+  transition={{ duration: 18, repeat: Infinity }}
+  className="absolute top[-200px] right-[-350px] md:w-[500px] md:h-[500px] w-[200px] h-[200px] bg-cyan-400/50 rounded-full blur-[140px]"
+/>
+
+<div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+  <div className="w-full h-full bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] md:bg-[size:60px_60px] bg-[size:50px_50px]" />
+</div>
+
       {/* --- MODAL PIN FIXED (PAKAI PORTAL AGAR PASTI DI ATAS & TENGAH) --- */}
       {showPinModal && createPortal(
         <AnimatePresence>
@@ -238,6 +254,8 @@ const Hero = ({ lang, isReady = true }) => {
       )}
 
       <div id="hero" className="flex flex-wrap items-center pb-16 md:pb-0">
+
+        
         
         {/* BAGIAN KIRI */}
         <div className="w-full lg:w-1/2">
@@ -299,12 +317,14 @@ const Hero = ({ lang, isReady = true }) => {
               className="flex flex-wrap gap-3 lg:gap-6 mt-6 justify-center lg:justify-start items-center relative z-20"
             >
               <a href="#projects">
-                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] cursor-pointer">
+                  <MagneticButton className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-gradient-to-r from-amber-300 to-orange-600 dark:from-cyan-500 dark:to-blue-600 text-white font-sans font-bold shadow-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] cursor-pointer">
                     {t.btnPortfolio}
                   </MagneticButton>
               </a>
               <a href="#contact">
-                  <MagneticButton className="px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-black/70 dark:border-white/70 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10 cursor-pointer">
+                  <MagneticButton className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] px-4 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full border border-black/70 dark:border-white/70 text-neutral-700 dark:text-neutral-300 font-bold font-sans hover:border-cyan-600 dark:hover:border-cyan-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/10 cursor-pointer">
                     {t.btnContact}
                   </MagneticButton>
               </a>
@@ -314,7 +334,8 @@ const Hero = ({ lang, isReady = true }) => {
                 onClick={() => setShowPinModal(true)} 
                 className="relative z-50 cursor-pointer inline-block"
               >
-                <MagneticButton className="group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2 pointer-events-auto">
+                <MagneticButton className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2 pointer-events-auto">
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
                     <span>{t.btnCv}</span>
                     <FaLock className="text-xs opacity-70 group-hover:text-amber-500 transition-colors" /> 
@@ -361,7 +382,9 @@ const Hero = ({ lang, isReady = true }) => {
             </div>
             
             <div className="absolute inset-1 rounded-3xl z-[-2] blur-xl bg-gradient-to-tr from-amber-100 via-orange-300 to-amber-500 dark:from-cyan-900 dark:via-blue-800 dark:to-purple-900 opacity-40"></div>
-
+<div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+  <div className="absolute top-0 left-[-100%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent rotate-12 animate-[shine_3s_linear_infinite]" />
+</div>
             <motion.div
               initial={{ x: 50, opacity: 0 }}
               animate={isReady ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
@@ -381,7 +404,7 @@ const Hero = ({ lang, isReady = true }) => {
 
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
                                   bg-transparent border border-white/0 
-                                  px-4 shadow-lg min-w-[120px]">
+                                  px-4 shadow-sm min-w-[120px]">
                       <ClockWidget lang={lang} />
                   </div>
 

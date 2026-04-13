@@ -43,11 +43,18 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
       <SocialModal isOpen={showSocials} onClose={() => setShowSocials(false)} />
       {showMatrix && <MatrixRain onClose={() => setShowMatrix(false)} />}
 
-      <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
+      <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4 
+relative z-50
+backdrop-blur-xl bg-white/30 dark:bg-black/30
+border-b border-white/20 dark:border-white/10
+shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
           
           {/* --- BAGIAN KIRI: LOGO --- */}
           <div className="flex flex-shrink-0 items-center gap-4">
               <img decoding="async" loading="lazy" 
+              whileHover={{ scale: 1.15, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+
                   // EVENT CLICK SUDAH BENAR
                   onClick={() => setClickCount(prev => prev + 1)}
                   
@@ -92,7 +99,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
 
           {/* Tombol Hint Ctrl + K */}
           <div 
-            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-mono cursor-pointer transition
+            className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] hidden md:flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-mono cursor-pointer transition
               text-black hover:bg-neutral-200
               dark:text-white dark:hover:bg-neutral-800"
             onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'ctrlKey': true}))}
@@ -104,7 +112,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
               {/* Tombol Bahasa */}
               <button 
                   onClick={toggleLanguage} 
-                  className="flex items-center justify-center rounded-full w-10 h-10 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
+                  className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center justify-center rounded-full w-10 h-10 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
               >
                   <span className="text-xs md:text-sm font-bold text-black dark:text-white">
                       {t.langCode}
@@ -114,7 +123,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
               {/* Tombol Tema */}
               <button 
                   onClick={(e) => toggleTheme(e)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full border border-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors focus:outline-none"
+                  className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center justify-center w-10 h-10 rounded-full border border-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors focus:outline-none"
               >
                   {theme === "dark" ? (
                       <FiSun className="text-amber-400 text-xl" /> 
@@ -128,7 +138,8 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
               {/* Tombol Follow */}
               <button
                   onClick={() => setShowSocials(true)} // Trigger Modal Disini
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500 dark:border-cyan-300/60 hover:bg-amber-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
+                  className="hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500 dark:border-cyan-300/60 hover:bg-amber-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group"
               >
                   <span className="text-xs font-bold tracking-wide uppercase group-hover:text-amber-600 dark:group-hover:text-cyan-400">
                       {t.follow}
