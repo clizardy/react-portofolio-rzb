@@ -64,26 +64,51 @@ useEffect(() => {
     type: "..."
   });
 
-    useEffect(() => {
-    const body = document.body;
-    const html = document.documentElement;
+useEffect(() => {
+  const body = document.body;
+  const html = document.documentElement;
 
-    if (isOpen) {
-        body.style.overflow = 'hidden';
-        html.style.overflow = 'hidden'; // Tambahkan ini jika ingin lock total di mobile
-    } else {
-        body.style.overflow = '';
-        html.style.overflow = '';
+  if (isOpen) {
+    // Simpan posisi scroll sekarang (biar ga lompat di mobile)
+    const scrollY = window.scrollY;
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    html.style.overflow = "hidden";
+  } else {
+    // Ambil posisi scroll sebelumnya
+    const scrollY = body.style.top;
+
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+
+    html.style.overflow = "auto";
+
+    // Kembalikan posisi scroll
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY || "0") * -1);
     }
+  }
 
-    // Cleanup function: Sangat penting agar saat pindah halaman/komponen hilang, scroll kembali normal
-    return () => {
-        body.style.overflow = '';
-        html.style.overflow = '';
-    };
-    }, [isOpen]);
+  return () => {
+    // Cleanup biar ga nyangkut
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+    html.style.overflow = "auto";
+  };
+}, [isOpen]);
 
-  // --- LOGIC SECRET CLICK ---
+// --- LOGIC SECRET CLICK ---
   const handleSecretClick = () => {
     setClickCount((prev) => prev + 1);
     
@@ -94,7 +119,12 @@ useEffect(() => {
 
     // Jika sudah klik ke-3 (0, 1, 2) -> Buka Notes
     if (clickCount >= 2) {
-        toast("Admin Mode: Job Notes Accessed", { icon: '🔐' });
+        // Menambahkan properti duration (dalam milidetik)
+        toast("Admin Mode: Job Notes Accessed", { 
+            icon: '🔐',
+            duration: 3000, 
+        });
+        
         onOpenJobNotes();
         setClickCount(0); // Reset
         onClose(false); // Tutup sidebar biar fokus ke notes
@@ -181,10 +211,12 @@ useEffect(() => {
   const statusColor = networkInfo.online 
       ? "text-emerald-600 dark:text-emerald-400 dark:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" 
       : "text-red-600 dark:text-red-500";
+  const networkGlow = networkInfo.online
+  ? "shadow-[0_0_40px_rgba(34,211,238,0.15)]"
+  : "shadow-[0_0_40px_rgba(239,68,68,0.15)]";
 
   return (
     <>
-
       <AnimatePresence>
         {isOpen && (
           <>
@@ -213,6 +245,31 @@ useEffect(() => {
               // Pastikan sidebar ini sendiri tidak ikut ke-lock scroll-nya
               style={{ maxHeight: '100dvh' }} 
             >
+                {/* --- ENERGY EDGE --- */}
+<div className="absolute left-0 top-0 h-full w-[3px] overflow-hidden">
+
+  {/* base line */}
+  <div className="absolute inset-0 bg-gradient-to-b 
+    from-transparent via-amber-500 to-transparent
+    dark:via-cyan-400"
+  />
+
+  {/* moving light */}
+  <motion.div
+    animate={{ y: ["-100%", "100%"] }}
+    transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+    className="absolute w-full h-1/3 bg-white/60 blur-sm"
+  />
+</div>
+
+{/* --- SCANNER LINE --- */}
+<motion.div
+  animate={{ y: ["0%", "100%", "0%"] }}
+  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+  className="absolute left-0 w-full h-[2px] 
+    bg-gradient-to-r from-transparent via-amber-500 to-transparent
+    dark:via-cyan-400 opacity-20 blur-sm pointer-events-none"
+/>
               
               {/* --- HEADER --- */}
               <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-700 dark:border-neutral-300">

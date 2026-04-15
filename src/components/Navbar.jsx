@@ -43,11 +43,7 @@ const Navbar = ({ toggleTheme, theme, toggleLanguage, lang, onOpenCamera }) => {
       <SocialModal isOpen={showSocials} onClose={() => setShowSocials(false)} />
       {showMatrix && <MatrixRain onClose={() => setShowMatrix(false)} />}
 
-      <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4 
-relative z-50
-backdrop-blur-xl bg-white/30 dark:bg-black/30
-border-b border-white/20 dark:border-white/10
-shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+      <nav className="mb-20 flex items-center justify-between py-6 flex-wrap gap-4">
           
           {/* --- BAGIAN KIRI: LOGO --- */}
           <div className="flex flex-shrink-0 items-center gap-4">

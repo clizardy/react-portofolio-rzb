@@ -283,6 +283,48 @@ const Projects = ({ lang }) => {
 
 return (
     <div id="projects" className="border-b border-black mt-6 dark:border-white relative">
+
+        {/* --- ADVANCED SIDE DECORATION --- */}
+<div className="absolute left-60 top-0 h-full w-10 flex items-center justify-center">
+
+  {/* Background Glow */}
+  <div className="absolute w-20 h-[100%] bg-gradient-to-b 
+    from-amber-400/20 via-orange-400/10 to-transparent
+    dark:from-cyan-400/20 dark:via-blue-500/10
+    blur-2xl opacity-20"
+  />
+
+  {/* Animated Line */}
+  <motion.div
+    initial={{ height: "0%" }}
+    whileInView={{ height: "100%" }}
+    transition={{ duration: 1.2, ease: "easeOut" }}
+    className="relative w-[2px] h-full overflow-hidden"
+  >
+    <div className="absolute inset-0 bg-gradient-to-b 
+      from-transparent via-amber-500 to-transparent
+      dark:via-cyan-400 opacity-70"
+    />
+
+    {/* Moving highlight */}
+    <motion.div
+      animate={{ y: ["-100%", "100%"] }}
+      transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+      className="absolute w-full h-1/3 bg-white/60 blur-sm opacity-70"
+    />
+  </motion.div>
+
+  {/* Floating Orb */}
+  <motion.div
+    animate={{ y: [0, 20, 0], scale: [1, 1.2, 1] }}
+    transition={{ repeat: Infinity, duration: 3 }}
+    className="absolute top-6 w-3 h-3 rounded-full 
+      bg-amber-400 dark:bg-cyan-200
+      shadow-[0_0_20px_rgba(251,191,36,0.9)] 
+      dark:shadow-[0_0_25px_rgba(34,211,238,0.9)]"
+  />
+
+</div>
         
       {/* --- BACKGROUND GLOW EFFECT (CENTERED) --- */}
       <div 

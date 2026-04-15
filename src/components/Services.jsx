@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FaCamera, FaPenNib, FaMusic, FaClipboardList, FaCheckCircle, 
-  FaWhatsapp, FaArrowRight, FaCalculator, FaBriefcase, FaCalendarAlt 
+  FaWhatsapp, FaArrowRight, FaCalculator, FaBriefcase, FaCalendarAlt, FaPenNib as FaPenNibSolid 
 } from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
 import { Link } from 'react-router-dom';
@@ -76,7 +76,7 @@ const Services = ({ lang, onOpenPricing, onOpenGear, onOpenWorkflow, onOpenInqui
   const [activeTab, setActiveTab] = useState(SERVICES_DATA[0]);
 
 return (
-    <div id="services" className="relative isolate py-5 bg-transparent transition-colors duration-500 overflow-hidden">
+    <div id="services" className="relative isolate py-5 bg-indigo-100 dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
       
       {/* --- BACKGROUND GLOW EFFECT (CENTERED) --- */}
       <div 
@@ -102,9 +102,9 @@ return (
 />
 
 {/* === GRID LIGHT EFFECT === */}
-<div className="absolute inset-0 opacity-[0.07] pointer-events-none z-0 
-  [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] 
-  [background-size:40px_40px]" />
+<div className="absolute inset-0 opacity-[0.1] pointer-events-none z-0 
+  dark:[background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-image:linear-gradient(to_right,black_1px,transparent_1px),linear-gradient(to_bottom,black_1px,transparent_1px)]
+  [background-size:60px_60px]" />
 
   {/* === FLOATING ICON (SUBTLE) === */}
 <motion.div
@@ -113,6 +113,30 @@ return (
   className="absolute top-1/3 right-[10%] text-cyan-400/20 text-4xl md:text-6xl pointer-events-none z-[1]"
 >
   <FaCamera />
+</motion.div>
+
+<motion.div
+  animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
+  transition={{ duration: 10, repeat: Infinity }}
+  className="absolute bottom-1/3 left-[15%] text-amber-500/20 text-4xl md:text-6xl pointer-events-none z-[1]"
+>
+  <FaPenNib />
+</motion.div>
+
+<motion.div
+  animate={{ y: [0, -10, 0], rotate: [0, 10, 0] }}
+  transition={{ duration: 12, repeat: Infinity }}
+  className="absolute top-1/4 left-[7%] text-purple-400/20 text-4xl md:text-6xl pointer-events-none z-[1]"
+>
+  <FaMusic />
+</motion.div>
+
+<motion.div
+  animate={{ y: [0, 15, 0], rotate: [0, -10, 0] }}
+  transition={{ duration: 14, repeat: Infinity }}
+  className="absolute bottom-1/5 right-[5%] text-blue-400/20 text-4xl md:text-6xl pointer-events-none z-[1]"
+>
+  <FaClipboardList />
 </motion.div>
 
       <div className="relative max-w-6xl mx-auto px-4 z-10">
