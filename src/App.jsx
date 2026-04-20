@@ -92,18 +92,61 @@ const PortfolioContent = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isCameraActive, setIsCameraActive] = useState(false);
 
+    useEffect(() => {
+    const shouldLockScroll = 
+        isSidebarMenuOpen || 
+        isBookingOpen || 
+        isInquiryOpen || 
+        isPricingOpen || 
+        isFaqOpen || 
+        isJobNotesOpen || 
+        isGearOpen || 
+        isWorkflowOpen;
+
+    if (shouldLockScroll) {
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+
+        if (window.lenis) window.lenis.stop(); // 🔥 stop lenis
+    } else {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+
+        if (window.lenis) window.lenis.start(); // 🔥 start lagi
+    }
+
+    return () => {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        if (window.lenis) window.lenis.start();
+    };
+}, [
+    isSidebarMenuOpen,
+    isBookingOpen,
+    isInquiryOpen,
+    isPricingOpen,
+    isFaqOpen,
+    isJobNotesOpen,
+    isGearOpen,
+    isWorkflowOpen
+]);
+
     const GA_MEASUREMENT_ID = "G-N4E8H7CL0G"; 
 
     useEffect(() => {
-        if (showWelcome) {
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden'; 
-            window.scrollTo(0, 0);
-        } else {
-            document.body.style.overflow = 'auto';
-            document.documentElement.style.overflow = 'auto';
-        }
-    }, [showWelcome]);
+    if (showWelcome) {
+        document.body.style.overflow = 'hidden';
+        if (window.lenis) window.lenis.stop();
+    } else {
+        document.body.style.overflow = '';
+        if (window.lenis) window.lenis.start();
+    }
+
+    return () => {
+        document.body.style.overflow = '';
+        if (window.lenis) window.lenis.start();
+    };
+}, [showWelcome]);
 
 
     // --- SISA LOGIC SAMA SEPERTI SEBELUMNYA ---

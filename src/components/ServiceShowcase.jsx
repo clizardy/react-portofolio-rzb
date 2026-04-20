@@ -68,7 +68,7 @@ const ServiceShowcase = ({ lang, onBook }) => {
   ];
 
   return (
-    <section className="relative overflow-hidden py-20">
+    <section className="bg-indigo-100 dark:bg-slate-950 relative overflow-hidden py-20">
 
       {/* BACKGROUND GLOW */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -99,10 +99,9 @@ const ServiceShowcase = ({ lang, onBook }) => {
                 transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
                 className="absolute top-0 left-0 w-1/3 h-full bg-white/20 blur-md"
               />
-
-              <span className="relative z-10 text-lg font-bold tracking-wide flex items-center gap-3">
+              <OklchGradientText className="relative z-10 text-lg font-bold tracking-wide flex items-center gap-3">
                 🚀 {lang === "id" ? "Lihat Keahlian" : "Explore Expertise"}
-              </span>
+              </OklchGradientText>
             </motion.button>
           </motion.div>
         )}

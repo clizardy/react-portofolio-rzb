@@ -164,13 +164,13 @@ return (
         </div>
 
         {/* --- TABS NAVIGATION --- */}
-        <div className="flex flex-wrap md:flex-nowrap justify-center gap-2 md:gap-3 mb-6 overflow-x-auto pb-2 md:pb-0 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="flex flex-wrap md:flex-nowrap justify-center gap-5 md:gap-3 mb-6 overflow-x-auto pb-2 md:pb-0 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {SERVICES_DATA.map((service) => (
             <button
               key={service.id}
               onClick={() => setActiveTab(service)}
               className={`hover:shadow-[0_0_15px_rgba(255,200,0,0.9)] 
-dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center gap-2 px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap border ${
+dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] flex items-center gap-2 px-4 py-2 mt-4 mb-2 md:mb-4 rounded-full text-xs md:text-sm font-bold transition-all whitespace-nowrap ${
                 activeTab.id === service.id
                   ? "bg-slate-800 dark:bg-black dark:border-cyan-300 border-amber-500 text-white border-transparent shadow-lg shadow-cyan-500/20 transform scale-105"
                   : "bg-white dark:bg-black text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-400 hover:bg-white dark:hover:bg-slate-900"

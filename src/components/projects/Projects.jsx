@@ -282,10 +282,11 @@ const Projects = ({ lang }) => {
   }, [activeCategory]);
 
 return (
-    <div id="projects" className="border-b border-black mt-6 dark:border-white relative">
+    <div id="projects" className="relative">
 
-        {/* --- ADVANCED SIDE DECORATION --- */}
-<div className="absolute left-60 top-0 h-full w-10 flex items-center justify-center">
+{/* --- ADVANCED SIDE DECORATION --- */}
+{/* Menambahkan 'hidden lg:flex' agar hanya muncul di layar desktop (min-width: 1024px) */}
+<div className="hidden lg:flex absolute left-60 top-0 h-full w-10 items-center justify-center">
 
   {/* Background Glow */}
   <div className="absolute w-20 h-[100%] bg-gradient-to-b 

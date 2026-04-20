@@ -69,42 +69,54 @@ useEffect(() => {
   const html = document.documentElement;
 
   if (isOpen) {
-    // Simpan posisi scroll sekarang (biar ga lompat di mobile)
+    // 🔥 Simpan posisi scroll
     const scrollY = window.scrollY;
 
+    // Simpan ke data attribute biar aman
+    body.dataset.scrollY = scrollY;
+
+    // Lock scroll (iOS friendly)
     body.style.position = "fixed";
     body.style.top = `-${scrollY}px`;
     body.style.left = "0";
     body.style.right = "0";
     body.style.width = "100%";
 
+    // Hindari scroll di html
     html.style.overflow = "hidden";
   } else {
-    // Ambil posisi scroll sebelumnya
-    const scrollY = body.style.top;
+    // 🔥 Ambil posisi scroll lama
+    const savedScrollY = body.dataset.scrollY;
 
+    // Reset style
     body.style.position = "";
     body.style.top = "";
     body.style.left = "";
     body.style.right = "";
     body.style.width = "";
 
-    html.style.overflow = "auto";
+    html.style.overflow = "";
 
-    // Kembalikan posisi scroll
-    if (scrollY) {
-      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    // 🔥 Restore scroll
+    if (savedScrollY) {
+      window.scrollTo(0, parseInt(savedScrollY, 10));
     }
+
+    // Hapus dataset
+    delete body.dataset.scrollY;
   }
 
   return () => {
-    // Cleanup biar ga nyangkut
+    // 🔥 Cleanup HARD RESET (anti nyangkut)
     body.style.position = "";
     body.style.top = "";
     body.style.left = "";
     body.style.right = "";
     body.style.width = "";
-    html.style.overflow = "auto";
+
+    html.style.overflow = "";
+
+    delete body.dataset.scrollY;
   };
 }, [isOpen]);
 
@@ -158,19 +170,6 @@ useEffect(() => {
         window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  // --- 🔥 FIX SCROLL LOCKING ---
-  // Saat sidebar terbuka, kunci scroll body website
-  useEffect(() => {
-    if (isOpen) {
-        document.body.style.overflow = 'hidden'; // Kunci scroll
-    } else {
-        document.body.style.overflow = ''; // Lepas kunci
-    }
-    
-    // Cleanup saat unmount
-    return () => { document.body.style.overflow = ''; };
-  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
