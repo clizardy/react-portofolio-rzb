@@ -47,6 +47,7 @@ export default async function handler(req, res) {
   const nowPlayingResponse = await fetch(NOW_PLAYING_ENDPOINT, {
     headers: { Authorization: `Bearer ${access_token}` },
   });
+  console.log("Status Now Playing:", nowPlayingResponse.status);
 
   // Jika ada lagu yang sedang main (Status 200 dan isi tidak kosong)
   if (nowPlayingResponse.status === 200) {
@@ -77,6 +78,8 @@ export default async function handler(req, res) {
   const recentlyPlayedResponse = await fetch(RECENTLY_PLAYED_ENDPOINT, {
     headers: { Authorization: `Bearer ${access_token}` },
   });
+
+  console.log("Status Recently Played:", recentlyPlayedResponse.status);
 
   if (recentlyPlayedResponse.status === 200) {
       const data = await recentlyPlayedResponse.json();

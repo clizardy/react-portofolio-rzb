@@ -64,12 +64,18 @@ import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
 import { MusicProvider } from "./components/MusicContext";
 import DroneGame from "./components/DroneGame";
-import GlimpseOfMe from "./components/GlimpseOfMe";
-
+import GlimpseOfMe from "./components/GlimpseofMe";
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
+import LifeArchivePipeline from "./components/LifeArchivePipeline";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
+const StopMotionScene = lazy(() => import("./components/StopMotionScene"));
+// Gunakan path relatif dari App.jsx ke folder gambar di src
+// Sesuai dengan nama file kamu: memories (1).webp sampai memories (100).webp
+const stopMotionImages = Array.from({ length: 100 }, (_, index) => ({
+  url: `/assets/timeline/memories (${index + 1}).webp`
+}));
 
 // --- KOMPONEN HALAMAN UTAMA (PORTFOLIO) ---
 const PortfolioContent = () => {
@@ -80,6 +86,7 @@ const PortfolioContent = () => {
     const [isInquiryOpen, setIsInquiryOpen] = useState(false);
     const [isPricingOpen, setIsPricingOpen] = useState(false);
     const [isFaqOpen, setIsFaqOpen] = useState(false);
+    const [isLifeArchiveOpen, setIsLifeArchiveOpen] = useState(false);
     const [isJobNotesOpen, setIsJobNotesOpen] = useState(false);
     const [isSidebarMenuOpen, setIsSidebarMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -101,7 +108,8 @@ const PortfolioContent = () => {
         isFaqOpen || 
         isJobNotesOpen || 
         isGearOpen || 
-        isWorkflowOpen;
+        isWorkflowOpen ||
+        isLifeArchiveOpen;
 
     if (shouldLockScroll) {
         document.body.style.overflow = 'hidden';
@@ -147,6 +155,7 @@ const PortfolioContent = () => {
         if (window.lenis) window.lenis.start();
     };
 }, [showWelcome]);
+
 
 
     // --- SISA LOGIC SAMA SEPERTI SEBELUMNYA ---
@@ -347,6 +356,7 @@ useEffect(() => {
                     onOpenBooking={() => setIsBookingOpen(true)}
                     onOpenInquiry={() => setIsInquiryOpen(true)}
                     onOpenJobNotes={() => setIsJobNotesOpen(true)}
+                    onOpenLifeArchive={() => setIsLifeArchiveOpen(true)}
                 />
 
 {/* HERO SECTION WRAPPER */}
@@ -443,6 +453,20 @@ useEffect(() => {
                     <div className="container mx-auto px-4 md:px-8 relative">
                         <Suspense fallback={<div className="text-center py-20">Loading Gallery...</div>}>
                             <div id="timeline" className="render-lazy"><TimelineGallery lang={lang} /></div>
+                        </Suspense>
+                        {/* BAGIAN STOP MOTION - SEKARANG OTOMATIS */}
+                        <Suspense fallback={<div className="h-[400px] bg-neutral-900/50 animate-pulse rounded-2xl flex items-center justify-center text-white/20">Preparing Scene...</div>}>
+                            {stopMotionImages.length > 0 ? (
+                            <StopMotionScene 
+                                lang={lang} 
+                                images={stopMotionImages} 
+                                overlayText={lang === 'id' ? "Kenangan" : "Memories"} 
+                            />
+                            ) : (
+                            <div className="h-20 flex items-center justify-center text-white/20 italic">
+                                No images found in gallery folder.
+                            </div>
+                            )}
                         </Suspense>
 
                         <div id="organization"><Organization lang={lang}/></div>
@@ -546,6 +570,7 @@ useEffect(() => {
                     <Suspense fallback={null}><Workflow lang={lang} isOpen={isWorkflowOpen} onClose={() => setIsWorkflowOpen(false)} /></Suspense>
                     <Suspense fallback={null}><FaqSidebar lang={lang} isOpen={isFaqOpen} onClose={() => setIsFaqOpen(false)} /></Suspense>
                     <Suspense fallback={null}><BookingModal lang={lang} isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} /></Suspense>
+                    <Suspense fallback={null}><LifeArchivePipeline lang={lang} isOpen={isLifeArchiveOpen} onClose={() => setIsLifeArchiveOpen(false)} /></Suspense>
 
                          <AnimatePresence>
                             {isProjectCalculatorOpen && (

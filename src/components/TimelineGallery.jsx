@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaDownload, FaShareAlt, FaArrowDown } from "react-icons/fa";
 import OklchGradientText from "../components/OklchGradientText";
 
+const imageModules = import.meta.glob("../assets/timeline/*.webp", { eager: true });
 // --- 1. DATA GAMBAR ---
 const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
   const id = index + 1;
@@ -17,7 +18,7 @@ const ALL_IMAGES = Array.from({ length: 100 }, (_, index) => {
 
   return {
     id: id,
-    url: `/assets/timeline/memories (${id}).webp`, 
+    url: `assets/timeline/memories (${id}).webp`, 
     year: year,
     desc: desc
   };

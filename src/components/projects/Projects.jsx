@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay, FaProjectDiagram, FaTag, FaAlignLeft, FaTools } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
 import { toast } from "react-hot-toast";
+import { Icon } from "@iconify/react";  
 import OklchGradientText from "../OklchGradientText"; 
 
 // --- FUNGSI PEMBANTU ---
@@ -203,7 +204,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 </div>
                 
                 {/* Icon untuk Description */}
-                <div className="flex items-start gap-2.5 mb-4">
+                <div className="flex items-start gap-2.5 md:text-[14px] text-xs mb-4">
                     <FaAlignLeft className="text-black dark:text-white mt-1.5 text-sm shrink-0" />
                     <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-justify">
                         {typeof project.description === 'object' ? project.description[lang] : project.description}
@@ -220,8 +221,8 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
 
                 <div className="flex items-center gap-4">
                     {project.link && (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
-                            {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-xs" />
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 md:px-4 md:py-2 px-3 py-1 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-[8px] transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
+                            {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-[9px]" />
                         </a>
                     )}
 
@@ -229,18 +230,37 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                         onClick={handleLike}
                         className={`group flex items-center gap-2 transition-all duration-300 outline-none ${isLiked ? "text-red-500 dark:text-red-400 drop-shadow-[0_0_10px_rgba(239,68,68,0.6)] scale-105" : "text-neutral-900 dark:text-neutral-100 hover:text-red-500 dark:hover:text-red-400 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"}`}
                     >
-                        <motion.div whileTap={{ scale: 1.5 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="relative">
-                            {isLiked ? <FaHeart className="text-xl" /> : <FaRegHeart className="text-xl" />}
-                        </motion.div>
-                        <span className={`font-mono font-bold text-sm pt-0.5 ${isLiked ? "text-neutral-900 dark:text-white" : ""}`}>
-                            {likes}
-                        </span>
-                    </button>
+                        <motion.div animate={isLiked ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.3 }}>
+                    <Icon icon={isLiked ? "solar:heart-bold" : "solar:heart-linear"} className="text-xl" />
+                    </motion.div>
+                    <span className="font-mono font-bold text-xs md:text-sm">{likes}</span>
+                </button>
 
                     <button onClick={handleShare} className="text-black/80 dark:text-white/90 hover:text-accent transition-colors p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full" title="Share Project">
                         <FaShareAlt className="text-lg" />
                     </button>
-                </div>
+
+                {/* Right Side: Date & Metadata - Gaya Minimalis & Clean */}
+                <div className="ml-auto flex items-center gap-4">
+                <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-2 text-black dark:text-white">
+                    <Icon icon="solar:calendar-date-outline" className="text-sm" />
+                    <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em]">
+                        {project.date}
+                    </span>
+                    </div>
+                    {/* Progress Indicator Sederhana (Opsional) */}
+                    <div className="w-16 h-[2px] bg-white dark:bg-black rounded-full overflow-hidden">
+                    <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "100%" }}
+                        transition={{ duration: 2, delay: 0.5 }}
+                        className="h-full bg-amber-500 dark:bg-cyan-500" 
+                    />
+                    </div>
+                    </div>
+                    </div>
+                </div>  
             </motion.div>
         </motion.div>
     );
@@ -348,7 +368,7 @@ return (
                 overflow-x-auto py-2 px-2 
                 justify-start md:justify-center 
                 bg-white/40 dark:bg-black/40 backdrop-blur-xl
-                border border-white/20 dark:border-white/60
+                border dark:border-white/70
                 rounded-full 
                 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]
                 scrollbar-hide
@@ -484,6 +504,13 @@ return (
           </AnimatePresence>,
           document.body
       )}
+      {/* Info Note */}
+                <div className="flex justify-center gap-2 text-xs text-black dark:text-white">
+                    <FaInfoCircle className="text-amber-500 dark:text-cyan-400" />
+                    {lang === 'id'
+                        ? "Masih banyak proyek lain yang belum saya update atau posting di sini. Nantikan update berikutnya!"
+                        : "There are many other projects I haven’t updated or posted yet. Stay tuned for more updates!"}
+                </div>
     </div>
   )
 }

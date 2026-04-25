@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode, FaPalette } from "react-icons/fa"; // Tambah FaPalette (Opsional jika mau ikon umum)
-import { SiAdobelightroom, SiAdobepremierepro, SiCanva } from "react-icons/si"; // Tambah SiCanva
+import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode, FaPalette } from "react-icons/fa";
+import { SiAdobelightroom, SiAdobepremierepro, SiCanva } from "react-icons/si";
 import { MdPiano } from "react-icons/md";
 import OklchGradientText from "../components/OklchGradientText";
 
@@ -101,7 +101,7 @@ const DockIcon = ({ mouseX, skill, selectedSkill, setSelectedSkill }) => {
         relative aspect-square rounded-3xl cursor-pointer z-10 group flex items-center justify-center
         transition-colors duration-200
         w-20 h-20 md:w-auto md:h-auto 
-        ${isSelected ? "bg-white/20 ring-1 ring-white/50" : "hover:bg-white/10"}
+        ${isSelected ? "bg-white/5 ring-1 ring-white/70" : "hover:bg-white/15"}
       `}
       onClick={() => setSelectedSkill(skill)}
       onMouseEnter={() => setSelectedSkill(skill)}

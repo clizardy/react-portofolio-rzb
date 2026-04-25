@@ -84,6 +84,7 @@ export const PROJECTS = [
     },
     technologies: ["School Branding", "Candid Photography", "Adobe Lightroom"],
     category: "Photography",
+    date: "July, 2023",
   },
   {
     title: "OSAKA - SMP Negeri 1 Kalasan",
@@ -94,6 +95,7 @@ export const PROJECTS = [
     },
     technologies: ["Organization Profile", "Group Direction", "Retouching"],
     category: "Photography",
+    date: "April, 2025",
   },
   {
     title: "Himpunan Mahasiswa Matematika - Universitas Tidar",
@@ -104,6 +106,7 @@ export const PROJECTS = [
     },
     technologies: ["Cinematic Profile", "Video Editing", "Creative Direction"],
     category: "Photography",
+    date: "June, 2025",
   },
   {
   title: "School Introduction Video - SMA Negeri 3 Magelang City",
@@ -115,7 +118,8 @@ export const PROJECTS = [
   },
   technologies: ["Premiere Pro", "Color Grading", "Sound Design"],
   category: "Videography",
-  video: "https://www.youtube.com/watch?v=bKtpOXQkEtI", 
+  video: "https://www.youtube.com/watch?v=bKtpOXQkEtI",
+  date: "October, 2022",
   },
   {
     title: "Music Video Cover - Ayo Rukun",
@@ -128,6 +132,7 @@ export const PROJECTS = [
     technologies: ["Music Video", "Cinematography", "Premiere Pro"],
     category: "Videography",
     video: "https://www.youtube.com/watch?v=KZHisrAFylk", 
+    date: "November, 2024",
   },
   {
     title: "E-Commerce Website",
@@ -139,6 +144,7 @@ export const PROJECTS = [
     technologies: ["React", "Node.js"],
     category: "Web Dev",
     link: "https://muhammad-farchan.vercel.app",
+    date: "January, 2026",
   },
 ];
 

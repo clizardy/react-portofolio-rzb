@@ -12,6 +12,7 @@ import bgMobile from "../assets/welcome-mobile.webp";
 const WelcomeScreen = ({ onEnter, lang }) => {
   const [progress, setProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [screenClickCount, setScreenClickCount] = useState(0);
 
   // Simulasi Loading
   useEffect(() => {
@@ -40,12 +41,25 @@ const WelcomeScreen = ({ onEnter, lang }) => {
     })
   };
 
-  // Fungsi Wrapper agar klik hanya jalan kalau loading sudah selesai
-  const handleScreenClick = () => {
-    if (isLoaded && onEnter) {
-        onEnter();
+// Handler untuk klik di luar tombol (Background)
+const handleScreenClick = () => {
+  if (isLoaded && onEnter) {
+    if (screenClickCount >= 1) {
+      onEnter(); // Masuk jika ini adalah klik kedua
+    } else {
+      setScreenClickCount((prev) => prev + 1); // Hitung klik pertama
+      // Opsional: Tambahkan feedback visual atau toast kecil di sini
     }
-  };
+  }
+};
+
+// Handler khusus tombol Enter Site
+const handleButtonClick = (e) => {
+  e.stopPropagation(); // PENTING: Agar klik tombol tidak dianggap klik layar
+  if (isLoaded && onEnter) {
+    onEnter();
+  }
+};
 
   return (
     <motion.div
@@ -209,7 +223,7 @@ const WelcomeScreen = ({ onEnter, lang }) => {
 
                 {/* 2. MAIN BUTTON */}
                 <button
-                    onClick={onEnter}
+                    onClick={handleButtonClick}
                     // PERUBAHAN UKURAN DI SINI:
                     // Mobile: w-52 (lebih pendek), px-4 py-2.5 (lebih ramping)
                     // PC (md): w-80 (tetap lebar), px-6 py-4 (tetap besar)

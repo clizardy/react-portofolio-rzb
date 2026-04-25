@@ -188,7 +188,7 @@ const Hero = ({ lang, isReady = true }) => {
                     {/* Header */}
                     <div className="flex justify-between items-center mb-8">
                         <div className="flex items-center gap-2">
-                             <FaLock className="text-amber-500 text-xs" />
+                             <FaLock className="text-amber-500 dark:text-cyan-400 text-xs" />
                              <span className="text-[10px] font-bold tracking-[0.2em] text-white/70">Security Access</span>
                         </div>
                         <button onClick={() => setShowPinModal(false)} className="text-neutral-500 hover:text-white transition-colors cursor-pointer p-1">
@@ -338,7 +338,6 @@ dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] px-4 py-2 text-[12px] lg:px-8 lg:
 dark:hover:shadow-[0_0_15px_rgba(0,200,255,1)] group relative px-5 py-2 text-[12px] lg:px-8 lg:py-3 lg:text-base rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-bold font-sans overflow-hidden hover:shadow-xl flex items-center gap-2 pointer-events-auto">
                     <div className="animate-shine absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%]" />
                     <span>{t.btnCv}</span>
-                    <FaLock className="text-xs opacity-70 group-hover:text-amber-500 transition-colors" /> 
                 </MagneticButton>
               </div>
 

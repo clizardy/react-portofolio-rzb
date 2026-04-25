@@ -34,7 +34,7 @@ const MENU_ITEMS = [
   { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
 ];
 
-const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobNotes, isOpen, onClose, setIsOpen }) => {
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobNotes, onOpenLifeArchive, isOpen, onClose, setIsOpen }) => {
   const [showQR, setShowQR] = useState(false);
 // 1. Definisikan State & Ref terlebih dahulu
 const [showPinModal, setShowPinModal] = useState(false);
@@ -142,6 +142,9 @@ useEffect(() => {
         onClose(false); // Tutup sidebar biar fokus ke notes
     }
   };
+
+  const [pinTarget, setPinTarget] = useState(null);
+// "presentation" | "lifeArchive"
 
   const scrollToSection = (id) => {
   const element = document.getElementById(id);
@@ -449,7 +452,10 @@ useEffect(() => {
             <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setShowPinModal(true)} // Picu modal PIN
+                onClick={() => {
+                setPinTarget("presentation");
+                setShowPinModal(true);
+                }}
                 className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg transition-all"
             >
             <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
@@ -465,6 +471,31 @@ useEffect(() => {
             </div>
             <div className="ml-auto md:opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
                 <FaArrowRight size={10} />
+            </div>
+        </motion.button>
+
+        <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+            setPinTarget("lifeArchive");
+            setShowPinModal(true);
+            }}
+            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-black dark:bg-stone-900 text-white shadow-lg transition-all"
+        >
+            <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
+                <FaHistoryIcon className="text-lg" />
+            </div>
+            <div className="flex flex-col items-center">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] leading-none mb-0.5">
+                    {lang === 'id' ? "Lembar Pengalaman" : "Experience Sheet"}
+                </span>
+                <span className="text-[8px] opacity-60 font-medium tracking-[0.1em] italic">
+                    {lang === 'id' ? "Privat" : "Private"}
+                </span>
+            </div>
+            <div className="ml-auto md:opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                <FaLock size={10} />
             </div>
         </motion.button>
 
@@ -605,7 +636,12 @@ useEffect(() => {
                                                 setPinInput(val);
                                                 if (val.length === 4) {
                                                     if (val === CORRECT_PIN) {
-                                                        window.open('https://www.canva.com/design/DAGm0Ztg0XY/KelTkmIF0upyxOAgKh53zw/edit?utm_content=DAGm0Ztg0XY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton', '_blank');
+                                                        if (pinTarget === "presentation") {
+                                                            window.open('https://www.canva.com/design/DAGm0Ztg0XY/KelTkmIF0upyxOAgKh53zw/edit', '_blank');
+                                                        }
+                                                        if (pinTarget === "lifeArchive") {
+                                                            onOpenLifeArchive(); // 🔥 buka komponen kamu
+                                                        }
                                                         setShowPinModal(false);
                                                         setPinInput("");
                                                     } else {
