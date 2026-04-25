@@ -64,7 +64,7 @@ import BottomDock from "./components/BottomDock";
 import ShareModal from "./components/ShareModal";
 import { MusicProvider } from "./components/MusicContext";
 import DroneGame from "./components/DroneGame";
-import GlimpseOfMe from "./components/GlimpseofMe";
+import GlimpseOfMe from "./components/GlimpseOfMe";
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 import LifeArchivePipeline from "./components/LifeArchivePipeline";
 
