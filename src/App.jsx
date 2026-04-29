@@ -108,12 +108,11 @@ const PortfolioContent = () => {
         isFaqOpen || 
         isJobNotesOpen || 
         isGearOpen || 
-        isWorkflowOpen ||
-        isLifeArchiveOpen;
+        isWorkflowOpen;
 
     if (shouldLockScroll) {
         document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.style.overflow = '';
 
         if (window.lenis) window.lenis.stop(); // 🔥 stop lenis
     } else {
