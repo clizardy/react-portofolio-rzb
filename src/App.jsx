@@ -111,16 +111,9 @@ const PortfolioContent = () => {
         isWorkflowOpen;
 
     if (shouldLockScroll) {
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = '';
+    document.body.style.overflow = 'hidden';
 
-        if (window.lenis) window.lenis.stop(); // 🔥 stop lenis
-    } else {
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-
-        if (window.lenis) window.lenis.start(); // 🔥 start lagi
-    }
+}
 
     return () => {
         document.body.style.overflow = '';

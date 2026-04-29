@@ -481,7 +481,7 @@ useEffect(() => {
             setPinTarget("lifeArchive");
             setShowPinModal(true);
             }}
-            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-black dark:bg-stone-900 text-white shadow-lg transition-all"
+            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-frost-glow dark:bg-indigo-800 text-white shadow-lg transition-all"
         >
             <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
                 <FaHistoryIcon className="text-lg" />

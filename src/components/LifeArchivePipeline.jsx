@@ -19,64 +19,88 @@ import {
 
 const LIFE_DATA = [
   {
-    id: 1, year: "2015", age: "9 y.o", title: "Curious Beginning", subtitle: "The Spark of Imagination",
-    description: "Awal mula rasa ingin tahu yang tak terbatas terhadap dunia visual dan teknologi. Suka membongkar mainan, menggambar di buku tulis, dan mulai terpesona oleh layar kaca.",
-    skills: ["Drawing", "Curiosity", "Basic Logic"], icon: <FaChild />,
+    id: 1, year: "2015", age: "9 y.o", 
+    title: "The First Competition", subtitle: "Keberanian Tampil Beda",
+    description: "Momen pertama kali menyadari bahwa hidup adalah sebuah panggung kompetisi yang menyenangkan. Meraih juara dalam lomba MTQ memberikan rasa percaya diri awal, sementara mengekspresikan imajinasi melalui lomba menggambar di tong sampah menjadi titik awal keberanian untuk tampil beda dan kreatif.",
+    skills: ["Public Speaking", "Creative Drawing", "Competitive Spirit"], 
+    icon: <FaChild />,
   },
   {
-    id: 2, year: "2016", age: "10 y.o", title: "First Digital Exposure", subtitle: "Hello, World!",
-    description: "Pertemuan pertama dengan komputer keluarga. Mulai menguasai MS Paint dan game sederhana yang secara tidak sadar melatih koordinasi mata dan tangan.",
-    skills: ["Computer Basics", "Web Surfing", "Typing"], icon: <FaLaptop />,
+    id: 2, year: "2016", age: "10 y.o", 
+    title: "Leadership Seeds", subtitle: "Langkah Awal Kepemimpinan",
+    description: "Ketertarikan mendalam pada kegiatan Pramuka membawa saya menjuarai Pesta Siaga. Di fase inilah benih-benih kepemimpinan mulai tumbuh secara natural saat dipercaya mengemban tanggung jawab sebagai Ketua Barung, memimpin dan mengoordinasikan teman-teman sebaya.",
+    skills: ["Leadership", "Team Coordination", "Scouting"], 
+    icon: <FaLaptop />,
   },
   {
-    id: 3, year: "2017", age: "11 y.o", title: "Visual Experiment", subtitle: "Framing the World",
-    description: "Meminjam kamera ponsel orang tua untuk memotret hal-hal random di sekitar rumah. Mulai membuat video stop-motion sederhana menggunakan mainan.",
-    skills: ["Mobile Photography", "Stop-Motion", "Observation"], icon: <FaCamera />,
+    id: 3, year: "2017", age: "11 y.o", 
+    title: "Intellectual Awakening", subtitle: "Gerbang Informasi & Prestasi",
+    description: "Sebuah lompatan personal: memiliki smartphone untuk pertama kalinya yang membuka gerbang informasi seluas-luasnya. Selain eksplorasi digital, masa ini juga diisi dengan keaktifan sebagai Dokter Kecil dan partisipasi dalam Lomba Cerdas Cermat (LCC), menyeimbangkan dunia maya dan nyata.",
+    skills: ["Digital Literacy", "General Knowledge", "Health Awareness"], 
+    icon: <FaCamera />,
   },
   {
-    id: 4, year: "2018", age: "12 y.o", title: "Creative Growth", subtitle: "The Editing Discovery",
-    description: "Masa transisi di mana mengedit video menjadi hobi baru. Menggunakan software editing gratisan untuk membuat montase tugas sekolah.",
-    skills: ["Basic Video Editing", "Audio Syncing", "Storytelling"], icon: <FaVideo />,
+    id: 4, year: "2018", age: "12 y.o", 
+    title: "Expanding Horizons", subtitle: "Membuka Mata Dunia",
+    description: "Tahun yang penuh kehangatan berkat bimbingan wali kelas favorit, Pak Panggah. Pengalaman mengikuti Study Tour menjadi momen krusial yang membuka mata dan pikiran saya terhadap luasnya dunia luar, memicu rasa ingin tahu yang lebih besar untuk terus bereksplorasi.",
+    skills: ["Social Adaptability", "Observation", "Curiosity"], 
+    icon: <FaVideo />,
   },
   {
-    id: 5, year: "2019", age: "13 y.o", title: "Digital Identity Forming", subtitle: "Finding the Aesthetic",
-    description: "Memasuki dunia media sosial dengan lebih sadar. Mulai mendesain visual sendiri, mengedit foto dengan VSCO/Lightroom.",
-    skills: ["Photo Retouching", "Social Media", "Basic Code"], icon: <FaPaintBrush />,
+    id: 5, year: "2019", age: "13 y.o", 
+    title: "Passion for Science", subtitle: "Eksplorasi & Mentoring",
+    description: "Fase transformatif di mana saya benar-benar jatuh cinta pada dunia Sains (IPA). Kehadiran figur-figur guru yang sangat suportif tidak hanya membimbing secara akademis, tetapi juga membentuk karakter dan memotivasi saya untuk menggali potensi diri lebih dalam lagi.",
+    skills: ["Analytical Thinking", "Science (IPA)", "Active Listening"], 
+    icon: <FaPaintBrush />,
   },
   {
-    id: 6, year: "2020", age: "14 y.o", title: "Learning Phase Explosion", subtitle: "The Pandemic Catalyst",
-    description: "Era pandemi yang memaksa diam di rumah justru menjadi masa keemasan untuk belajar. Menghabiskan ribuan jam menonton tutorial YouTube.",
-    skills: ["Adobe Creative", "Self-Taught", "UI/UX Intro"], icon: <FaRocket />,
+    id: 6, year: "2020", age: "14 y.o", 
+    title: "Peak Activity & The Shift", subtitle: "Prestasi di Tengah Transisi",
+    description: "Puncak keaktifan masa sekolah dengan berbagai pencapaian luar biasa dari ekstrakurikuler, bahkan hingga mewakili sekolah berlomba ke luar kota. Namun di tengah euforia tersebut, pandemi melanda, memaksa saya beradaptasi cepat dengan perubahan drastis dalam cara hidup dan belajar.",
+    skills: ["Extracurricular Excellence", "Adaptability", "Resilience"], 
+    icon: <FaRocket />,
   },
   {
-    id: 7, year: "2021", age: "15 y.o", title: "Competitive Era", subtitle: "Testing the Limits",
-    description: "Mulai berani keluar kandang dengan mengikuti berbagai kompetisi desain dan video tingkat sekolah. Merasakan pertama kali tekanan deadline.",
-    skills: ["Time Management", "Design Thinking", "Public Speaking"], icon: <FaBrain />,
+    id: 7, year: "2021", age: "15 y.o", 
+    title: "The Creative Challenge", subtitle: "Memasuki Arena Industri",
+    description: "Momen keberanian untuk 'keluar kandang' dan unjuk gigi dalam berbagai kompetisi desain serta video tingkat sekolah. Di fase inilah saya merasakan simulasi industri yang sebenarnya: beradu ide kreatif, dan belajar mengelola tekanan tenggat waktu (deadline) untuk pertama kalinya.",
+    skills: ["Design Thinking", "Video Production", "Time Management"], 
+    icon: <FaBrain />,
   },
   {
-    id: 8, year: "2022", age: "16 y.o", title: "Skill Expansion", subtitle: "The Workflow Upgrade",
-    description: "Membangun setup kerja pertama yang proper. Menguasai workflow profesional menggunakan Figma dan Premiere Pro.",
-    skills: ["Figma", "Video Production", "Teamwork"], icon: <FaBriefcase />,
+    id: 8, year: "2022", age: "16 y.o", 
+    title: "Meaningful Connection", subtitle: "Perspektif Baru Kehidupan",
+    description: "Sebuah titik balik emosional dan personal. Saya dipertemukan dengan sosok figur 'sahabat' sejati yang kehadirannya memberikan dampak masif, membuka perspektif baru, dan secara fundamental mengubah cara saya memandang kehidupan serta arah masa depan.",
+    skills: ["Empathy", "Interpersonal Comm", "Emotional Intelligence"], 
+    icon: <FaBriefcase />,
   },
   {
-    id: 9, year: "2023", age: "17 y.o", title: "Portfolio Building", subtitle: "Showcasing the Value",
-    description: "Fokus utama bergeser pada personal branding. Membangun website portfolio sendiri, menata feed Instagram/Behance secara profesional.",
-    skills: ["Web Development", "Personal Branding", "Freelance"], icon: <FaGlobe />,
+    id: 9, year: "2023", age: "17 y.o", 
+    title: "Identity & Branding", subtitle: "Membangun Portofolio Profesional",
+    description: "Fokus utama bergeser tajam ke arah personal branding. Mengkapitalisasi keahlian yang telah diasah, saya mulai membangun website portofolio sendiri secara independen dan mengurasi *feed* Instagram serta Behance agar merepresentasikan identitas saya secara profesional.",
+    skills: ["Web Development", "Personal Branding", "Visual Curation"], 
+    icon: <FaGlobe />,
   },
   {
-    id: 10, year: "2024", age: "18 y.o", title: "Professional Entry", subtitle: "The Real Industry",
-    description: "Transisi dari hobiis menjadi praktisi profesional. Terjun ke industri digital kreator dengan fokus mendalam pada UI/UX.",
-    skills: ["Advanced UI/UX", "Client Pitching", "Strategy"], icon: <FaCode />,
+    id: 10, year: "2024", age: "18 y.o", 
+    title: "Industry Integration", subtitle: "Melebur dengan Dunia Kreatif",
+    description: "Menyentuh fase puncak sebagai seorang 'pelajar', di mana batasan antara sekolah dan pekerjaan mulai melebur. Semakin banyak tawaran *project* nyata yang berdatangan, menguji kapasitas diri sekaligus mengobarkan semangat untuk berkarier serius di industri kreatif.",
+    skills: ["Project Execution", "Creative Strategy", "Client Relations"], 
+    icon: <FaCode />,
   },
   {
-    id: 11, year: "2025", age: "19 y.o", title: "Financial Awareness", subtitle: "Monetizing the Craft",
-    description: "Memahami pentingnya cashflow, pajak, membuat kontrak kerja, dan melakukan reinvestasi ke alat produksi.",
-    skills: ["Negotiation", "Financial Planning", "Business"], icon: <FaWallet />,
+    id: 11, year: "2025", age: "19 y.o", 
+    title: "Trial, Error & Resilience", subtitle: "Pelajaran dari Kegagalan",
+    description: "Tahun yang mengajarkan realita pahit kehidupan. Berbagai inisiatif usaha yang saya rintis menemui kegagalan, membawa saya terlarut dalam fase kesedihan selama beberapa saat. Namun, momen kejatuhan inilah yang memberikan pelajaran paling berharga tentang mentalitas dan ketahanan diri.",
+    skills: ["Risk Management", "Resilience", "Self-Reflection"], 
+    icon: <FaWallet />,
   },
   {
-    id: 12, year: "2026", age: "20 y.o", title: "Current Evolution", subtitle: "Systematizing the Future",
-    description: "Fase saat ini di mana semuanya tentang skalabilitas dan membangun sistem, mendelegasikan tugas, dan memetakan arah karir.",
-    skills: ["Systems Thinking", "Leadership", "Career Mapping"], icon: <FaGraduationCap />,
+    id: 12, year: "2026", age: "20 y.o", 
+    title: "Systematized Future", subtitle: "Pondasi Finansial & Berkelanjutan",
+    description: "Fase kebangkitan dan kedewasaan. Menyadari urgensi Manajemen Finansial, saya berkomitmen penuh untuk membuka lembaran baru. Fokus saat ini adalah membangun sistem kehidupan yang mengedepankan produktivitas yang berkelanjutan, terarah, dan memiliki peta jalan karier yang jelas.",
+    skills: ["Financial Management", "Systems Thinking", "Strategic Planning"], 
+    icon: <FaGraduationCap />,
     isCurrent: true, progress: 85
   }
 ];
@@ -218,19 +242,19 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-32 md:mb-48 relative"
+            className="text-center mb-8 md:mb-20 relative"
           >
-            <h1 className="text-6xl md:text-[8rem] font-serif italic mb-6 leading-none tracking-tight">
+            <h1 className="text-5xl md:text-[6rem] font-serif italic mb-6 leading-none tracking-tight">
               Life <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-400 to-amber-600 dark:from-cyan-300 dark:to-cyan-500">Archive.</span>
             </h1>
-            <p className="text-xs md:text-sm tracking-[0.4em] md:tracking-[0.8em] text-white/40 uppercase font-light ml-2">
-              Age 9 — Present Journey
+            <p className="text-[8px] md:text-sm tracking-[0.4em] md:tracking-[0.8em] text-white/40 uppercase font-light ml-2">
+              Experience Timeline & Personal Growth Journey
             </p>
-            <div className="w-px h-24 md:h-32 bg-gradient-to-b from-amber-500/50 dark:from-cyan-400/50 to-transparent mx-auto mt-12" />
+            <div className="w-px h-24 md:h-32 bg-gradient-to-b from-amber-500/50 dark:from-cyan-400/50 to-transparent mx-auto mt-10" />
           </motion.div>
 
           {/* TIMELINE CONTAINER */}
-          <div className="relative flex flex-col gap-24 md:gap-40">
+          <div className="relative flex flex-col gap-10 md:gap-20">
             
             {/* BACKGROUND STATIC LINE */}
             <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 md:-translate-x-1/2 rounded-full" />
@@ -294,7 +318,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
                         {/* Internal Glow Effect */}
                         <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] -z-10 transition-opacity duration-500 ${isActive ? 'opacity-100 bg-amber-500/20' : 'opacity-0 bg-transparent'}`} />
 
-                        <div className="flex items-center gap-3 text-[10px] md:text-xs text-amber-400/90 dark:text-cyan-400/90 mb-5 font-mono tracking-widest uppercase">
+                        <div className="flex items-center gap-3 text-[8px] md:text-xs text-amber-400/90 dark:text-cyan-400/90 mb-5 font-mono tracking-widest uppercase">
                           <span className="bg-amber-500/10 dark:bg-cyan-400/10 px-3 py-1 rounded-full border border-amber-500/20 dark:border-cyan-400/20">{item.age}</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
                           <span className="text-white/60">{item.subtitle}</span>
