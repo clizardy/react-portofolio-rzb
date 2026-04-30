@@ -600,11 +600,11 @@ useEffect(() => {
                                     className="bg-white dark:bg-black/5 backdrop-blur-sm p-8 rounded-[2.5rem] w-full max-w-sm text-center"
                                 >
                                     <div className="mb-6">
-                                        <div className="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <div className="w-16 h-16 bg-amber-500/10 dark:bg-cyan-500/10 text-amber-500 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
                                             <FaLock size={24} />
                                         </div>
                                         <h3 className="text-xl font-bold dark:text-white">Protected Access</h3>
-                                        <p className="text-[10px] text-neutral-500 mt-1">Masukkan PIN untuk melihat presentasi</p>
+                                        <p className="text-[10px] text-neutral-500 mt-1">Masukkan PIN untuk melihat timeline</p>
                                     </div>
 
                                     {/* Input PIN (Bulatan) */}
@@ -617,7 +617,7 @@ useEffect(() => {
                                                 key={i} 
                                                 className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
                                                     pinInput.length > i 
-                                                    ? "bg-amber-500 border-amber-500 scale-125" 
+                                                    ? "bg-amber-500 border-amber-500 dark:bg-cyan-400 dark:border-cyan-400 scale-125" 
                                                     : "border-neutral-300 dark:border-neutral-700"
                                                 } ${isError ? "border-red-500 bg-red-500" : ""}`}
                                             />
@@ -640,10 +640,11 @@ useEffect(() => {
                                                             window.open('https://www.canva.com/design/DAGm0Ztg0XY/KelTkmIF0upyxOAgKh53zw/edit', '_blank');
                                                         }
                                                         if (pinTarget === "lifeArchive") {
-                                                            onOpenLifeArchive(); // 🔥 buka komponen kamu
+                                                            onOpenLifeArchive();
                                                         }
                                                         setShowPinModal(false);
                                                         setPinInput("");
+                                                        onClose(false);
                                                     } else {
                                                         setIsError(true);
                                                         setTimeout(() => {
@@ -661,6 +662,7 @@ useEffect(() => {
                                     onClick={() => { 
                                         setShowPinModal(false); 
                                         setPinInput(""); 
+                                        onCloseSidebarMenu(false);
                                     }}
                                     className="relative z-10 md:text-xs text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-white transition-colors py-2 px-4"
                                 >

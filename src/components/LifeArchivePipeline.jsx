@@ -188,15 +188,15 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
         </div>
         <button
           onClick={onClose}
-          className="ml-auto pointer-events-auto w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 hover:rotate-90 hover:scale-105 transition-all duration-300 flex items-center justify-center backdrop-blur-md group"
+          className="ml-auto pointer-events-auto w-12 h-12 rounded-full hover:bg-white/20 hover:border-white hover:rotate-90 hover:scale-105 transition-all duration-300 flex items-center justify-center backdrop-blur-md group"
         >
-          <FaTimes className="text-xl text-white/70 group-hover:text-white transition-colors" />
+          <FaTimes className="text-2xl md:text-3xl text-white/70 group-hover:text-white transition-colors" />
         </button>
       </div>
 
       {/* QUICK NAVIGATION - DESKTOP (Right Side) */}
       <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 flex-col items-center gap-3 z-[10000]">
-        <div className="text-[10px] text-white/30 font-mono mb-2 uppercase tracking-widest rotate-90 translate-y-[-40px]">Timeline</div>
+        <div className="text-[10px] text-white font-mono mb-2 uppercase tracking-widest rotate-90 translate-y-[-40px]">Timeline</div>
         {LIFE_DATA.map((item) => (
           <button
             key={`nav-${item.year}`}
@@ -206,7 +206,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
             <span className={`absolute right-6 text-[10px] font-mono tracking-wider transition-all duration-300 ${activeYear === item.year ? 'opacity-100 text-amber-500 dark:text-cyan-400 translate-x-0' : 'opacity-0 text-white/40 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0'}`}>
               {item.year}
             </span>
-            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activeYear === item.year ? 'bg-amber-500 dark:bg-cyan-400 scale-150 shadow-[0_0_10px_rgba(245,158,11,0.6)] dark:shadow-[0_0_10px_rgba(6,182,212,0.6)]' : 'bg-white/20 group-hover:bg-white/60 group-hover:scale-125'}`} />
+            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${activeYear === item.year ? 'bg-amber-500 dark:bg-cyan-400 scale-150 shadow-[0_0_10px_rgba(245,158,11,0.6)] dark:shadow-[0_0_10px_rgba(6,182,212,0.6)]' : 'bg-white/50 group-hover:bg-white group-hover:scale-125'}`} />
           </button>
         ))}
       </div>

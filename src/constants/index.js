@@ -76,6 +76,30 @@ export const EXPERIENCES = [
 
 export const PROJECTS = [
   {
+    title: "Epsilon Project",
+    image: "wait for image import",
+    description: {
+      en: "A pioneering initiative focused on building an integrated automation ecosystem. This project involves developing a digital laboratory environment that bridges hardware and software, designed to streamline complex research workflows and data analysis.",
+      id: "Inisiatif pelopor yang berfokus pada pembangunan ekosistem otomasi terintegrasi. Proyek ini melibatkan pengembangan lingkungan laboratorium digital yang menjembatani perangkat keras dan lunak, dirancang untuk menyederhanakan alur kerja riset yang kompleks dan analisis data."
+    },
+    technologies: ["IoT Integration", "React.js", "Data Visualization", "Automation"],
+    category: "On Going",
+    date: "2026 - PRESENT",
+    instagram: "https://www.instagram.com/epsilonproject.id",
+    link: "https://forms.gle/A6kvCKFDebg43ZQy5",
+  },
+  {
+    title: "English Conversation Class",
+    image: "wait for image import",
+    description: {
+      en: "Founding and managing an interactive learning community aimed at improving public speaking and English fluency. The class utilizes a practical, project-based approach to help students gain confidence in professional and daily communication.",
+      id: "Mendirikan dan mengelola komunitas belajar interaktif yang bertujuan untuk meningkatkan kemampuan berbicara di depan umum dan kefasihan bahasa Inggris. Kelas ini menggunakan pendekatan praktis berbasis proyek untuk membantu siswa mendapatkan kepercayaan diri dalam komunikasi profesional dan harian."
+    },
+    technologies: ["Public Speaking", "Community Lead", "Educational Management"],
+    category: "On Going",
+    date: "2026 - PRESENT",
+  },
+  {
     title: "SD Negeri Rejowinangun Selatan 1",
     image: project1, 
     description: {

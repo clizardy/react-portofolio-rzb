@@ -67,6 +67,7 @@ import DroneGame from "./components/DroneGame";
 import GlimpseOfMe from "./components/GlimpseOfMe";
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 import LifeArchivePipeline from "./components/LifeArchivePipeline";
+import EpsilonToast from "./components/EpsilonToast";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
@@ -93,6 +94,7 @@ const PortfolioContent = () => {
     const [isPlayerOpen, setIsPlayerOpen] = useState(false);
     const [showPlayer, setShowPlayer] = useState(false);
     const [isProjectCalculatorOpen, setIsProjectCalculatorOpen] = useState(false);
+    const [showEpsilonToast, setShowEpsilonToast] = useState(false);
 
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
     const [lang, setLang] = useState("en");
@@ -112,9 +114,7 @@ const PortfolioContent = () => {
 
     if (shouldLockScroll) {
     document.body.style.overflow = 'hidden';
-
 }
-
     return () => {
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
@@ -148,7 +148,20 @@ const PortfolioContent = () => {
     };
 }, [showWelcome]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowEpsilonToast(true);
+        }, 10000);
 
+        const autoClose = setTimeout(() => {
+            setShowEpsilonToast(false);
+        }, 40000);
+
+        return () => {
+            clearTimeout(timer);
+            clearTimeout(autoClose);
+        };
+    }, []);
 
     // --- SISA LOGIC SAMA SEPERTI SEBELUMNYA ---
     useEffect(() => {
@@ -335,6 +348,15 @@ useEffect(() => {
                 <AnimatePresence mode="wait">
                     {showWelcome && (<WelcomeScreen onEnter={() => setShowWelcome(false)} lang={lang} />)}
                 </AnimatePresence>
+
+                {showEpsilonToast && (
+                    <EpsilonToast 
+                        title="EPSILON PROJECT: is calling!"
+                        message="Join the Epsilon Project and be part of an exclusive creative & futuristic Gen-Z community!"
+                        link="https://forms.gle/A6kvCKFDebg43ZQy5" 
+                        onClose={() => setShowEpsilonToast(false)}
+                    />
+                )}
 
                 <Terminal />    
                 <TimeThemeNotification theme={theme} />

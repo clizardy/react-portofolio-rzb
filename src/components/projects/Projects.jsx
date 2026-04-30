@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"; // <--- 1. IMPORT INI WAJIB
 import Tilt from 'react-parallax-tilt'; 
 import { PROJECTS } from "../../constants"; 
 import { motion, AnimatePresence } from "framer-motion";
-import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay, FaProjectDiagram, FaTag, FaAlignLeft, FaTools } from "react-icons/fa"; 
+import { FaExternalLinkAlt, FaInfoCircle, FaSearchPlus, FaTimes, FaHeart, FaRegHeart, FaShareAlt, FaPlay, FaProjectDiagram, FaTag, FaAlignLeft, FaTools, FaInstagram } from "react-icons/fa"; 
 import ReactGA from "react-ga4";
 import { toast } from "react-hot-toast";
 import { Icon } from "@iconify/react";  
@@ -19,6 +19,7 @@ const getYouTubeID = (url) => {
 
 const CATEGORY_TRANSLATIONS = {
   "All": { en: "All", id: "Semua" },
+  "On Going": { en: "On Going", id: "Sedang Berjalan" },
   "Photography": { en: "Photography", id: "Fotografi" },
   "Videography": { en: "Videography", id: "Videografi" },
   "Web Dev": { en: "Web Dev", id: "Web Dev" },
@@ -32,6 +33,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const isProjectOngoing = project.category === "On Going";
     
     // State Video Hover
     const [isHovered, setIsHovered] = useState(false);
@@ -115,7 +117,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 onMouseLeave={() => setIsHovered(false)} 
             >
                 {isMobile ? (
-                    <div className={`relative group w-full rounded-lg overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${videoID ? 'aspect-video' : 'h-auto'}`} onClick={handleCardClick}>
+                    <div className={`relative group w-full rounded-lg overflow-hidden ${isProjectOngoing ? 'ring-2 ring-amber-500/50 dark:ring-cyan-500/50 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : ''} bg-neutral-200 dark:bg-neutral-800 ${videoID ? 'aspect-video' : 'h-auto'}`} onClick={handleCardClick}>
                         <img
                             decoding="async" 
                             loading="lazy" 
@@ -140,7 +142,7 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                     perspective={1000}
                 > 
                     <div 
-                        className={`relative group w-full rounded-lg overflow-hidden cursor-pointer bg-neutral-900 border border-${isHovered ? 'white' : 'black'} ${videoID ? 'aspect-video' : ''}`} 
+                        className={`relative group w-full rounded-lg overflow-hidden cursor-pointer ${isProjectOngoing ? 'ring-2 ring-amber-500/50 dark:ring-cyan-500/50 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : ''} bg-neutral-900 border border-${isHovered ? 'white' : 'black'} ${videoID ? 'aspect-video' : ''}`} 
                         onClick={handleCardClick}
                     >
                         <img
@@ -188,11 +190,21 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 )}
             </div>
 
+                {isProjectOngoing && (
+                <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 bg-white/80 dark:bg-black/60 backdrop-blur-md px-2 py-1 rounded-md border border-yellow-600/30 dark:border-yellow-300/30">
+                <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-2 w-2 md:h-full md:w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 bg-red-500"></span>
+                </span>
+                <span className="text-[5px] md:text-[9px] font-black dark:text-white text-black uppercase tracking-tighter">Live Project</span>
+                </div>
+            )}
+
             {/* --- BAGIAN INFORMASI YANG TELAH DIDEKORASI --- */}
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-4xl lg:w-3/4 lg:pl-16 mt-6 lg:mt-0">
                 <div className="flex items-center justify-between mb-3">
                     {/* Icon untuk Title */}
-                    <h6 className="font-bold text-xl text-black dark:text-white flex items-center gap-2">
+                    <h6 className="font-bold text-lg md:text-2xl text-black dark:text-white flex items-center gap-2">
                         <FaProjectDiagram className="text-amber-600 dark:text-cyan-500 text-lg hidden md:block" />
                         {project.title}
                     </h6>
@@ -215,16 +227,22 @@ const ProjectCard = ({ project, lang, setSelectedImage, setSelectedVideo }) => {
                 <div className="flex flex-wrap items-center gap-2 mb-6">
                     <FaTools className="text-black dark:text-white text-sm shrink-0 mr-1" />
                     {project.technologies.map((tech, idx) => (
-                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[11px] text-[8px] font-sans text-indigo-600 dark:text-neutral-100">{tech}</span>
+                        <span key={idx} className="rounded-full italic border border-indigo-300/80 dark:border-sky-500 px-3 py-1 md:text-[11px] text-[8px] font-sans text-indigo-600 dark:text-white">{tech}</span>
                     ))}
                 </div>
-
+                {/* Tombol untuk Instagram */}
                 <div className="flex items-center gap-4">
-                    {project.link && (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 md:px-4 md:py-2 px-3 py-1 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-[8px] transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
-                            {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-[9px]" />
+                    {project.instagram && (
+                        <a href={project.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 md:px-4 md:py-2 px-3 py-1 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-[8px] transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
+                            {lang === 'id' ? "Lihat" : "View"} <FaInstagram className="text-[11px]" />
                         </a>
                     )}
+                    {/* Tombol untuk Link */}
+                        {project.link && (
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 md:px-4 md:py-2 px-3 py-1 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-[8px] transition-transform hover:scale-105 hover:bg-amber-600 dark:hover:bg-cyan-500 hover:text-white dark:hover:text-white">
+                                {lang === 'id' ? "Lihat Website" : "Visit Site"} <FaExternalLinkAlt className="text-[9px]" />
+                            </a>
+                        )}
 
                     <button 
                         onClick={handleLike}
@@ -357,7 +375,7 @@ return (
                    blur-[150px] rounded-full pointer-events-none z-0"
       ></div>
       
-      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-5 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
+      <motion.h2 whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: -100 }} transition={{ duration: 0.5 }} className="mb-5 mt-7 text-center text-4xl font-bold from-amber-700 to-amber-900 dark:from-cyan-100 dark:to-cyan-500 text-transparent bg-clip-text bg-gradient-to-r">
         <OklchGradientText>{lang === 'id' ? "Proyek" : "Projects"}</OklchGradientText>
       </motion.h2>
 
@@ -375,6 +393,7 @@ return (
             ">
                 {CATEGORIES.map((cat) => {
                 const isActive = activeCategory === cat;
+                const isOngoing = cat === "On Going";
                 return (
                     <button 
                     key={cat} 
@@ -382,29 +401,34 @@ return (
                     className={`
                         relative px-6 py-2 md:py-2.5 rounded-full 
                         text-[13px] md:text-[15px] font-medium tracking-wide
-                        transition-all duration-500 ease-out
-                        shrink-0 outline-none select-none
-                        ${isActive 
-                        ? "text-white" 
-                        : "text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white"
-                        }
+                        transition-all duration-500 ease-out shrink-0 outline-none
+                        ${isActive ? "text-white" : "text-black/80 dark:text-white/80"}
+                        ${isOngoing && !isActive ? "border border-amber-500/25 dark:border-cyan-500/25" : ""} 
                     `}
                     >
-                    {/* Efek Hover Tipis */}
-                    {!isActive && (
-                        <div className="absolute inset-0 rounded-xl md:rounded-full bg-white/0 hover:bg-white/50 dark:hover:bg-white/5 transition-colors duration-300" />
+                    {/* Efek khusus untuk tombol On Going yang tidak aktif */}
+                    {isOngoing && !isActive && (
+                        <span className="absolute -top-0 -right-0 flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 dark:bg-cyan-400"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500 dark:bg-cyan-500"></span>
+                        </span>
                     )}
 
-                    {/* Indikator Aktif dengan Gradient Premium */}
+                    {/* Indikator Aktif Premium */}
                     {isActive && (
                         <motion.div 
                         layoutId="activeCategoryBg"
-                        className="absolute inset-0 bg-gradient-to-r from-neutral-900 to-neutral-800 dark:from-cyan-500 dark:to-blue-600 shadow-[0_4px_15px_rgba(0,0,0,0.2)] dark:shadow-[0_4px_20px_rgba(6,182,212,0.3)] rounded-xl md:rounded-full z-0"
+                        className={`absolute inset-0 rounded-xl md:rounded-full z-0 
+                            ${isOngoing 
+                            ? "bg-gradient-to-r from-amber-500 to-orange-600 shadow-[0_0_20px_rgba(245,158,11,0.4)]" 
+                            : "bg-gradient-to-r from-neutral-900 to-neutral-800 dark:from-cyan-500 dark:to-blue-600 shadow-lg"
+                            }`}
                         transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
                         />
                     )}
                     
-                    <span className="relative z-10">
+                    <span className="relative z-10 flex items-center gap-2">
+                        {isOngoing && <Icon icon="solar:transmission-bold-duotone" className={isActive ? "animate-spin-slow" : ""} />}
                         {CATEGORY_TRANSLATIONS[cat][lang]}
                     </span>
                     </button>
