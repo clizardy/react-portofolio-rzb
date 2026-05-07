@@ -68,6 +68,7 @@ import GlimpseOfMe from "./components/GlimpseOfMe";
 import MusicPlayerWidget from "./components/MusicPlayerWidget";
 import LifeArchivePipeline from "./components/LifeArchivePipeline";
 import EpsilonToast from "./components/EpsilonToast";
+import TikTokLiveBadge from "./components/TikTokLiveBadge";
 
 const CameraOverlay = lazy(() => import("./components/CameraOverlay"));
 const TimelineGallery = lazy(() => import('./components/TimelineGallery'));
@@ -550,6 +551,11 @@ useEffect(() => {
                                     <div className="h-full min-h-[160px]">
                                         <Suspense fallback={<div className="text-center py-20">Loading YouTube...</div>}>
                                             <MagicCard><YouTubeCard /></MagicCard>
+                                        </Suspense>
+                                    </div>
+                                    <div className="h-full min-h-[160px] flex flex-col gap-4 sm:col-span-2">
+                                        <Suspense fallback={<div className="text-center py-20">Loading TikTok...</div>}>
+                                            <MagicCard><TikTokLiveBadge /></MagicCard>
                                         </Suspense>
                                     </div>
                                 </div>

@@ -1,204 +1,330 @@
-import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaTimes, FaWhatsapp, FaInstagram, FaLinkedin, FaGithub, 
-  FaTiktok, FaEnvelope, FaArrowRight, FaTelegramPlane, 
-  FaFacebook, FaDiscord 
-} from 'react-icons/fa';
+import React, { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaTimes,
+  FaWhatsapp,
+  FaInstagram,
+  FaLinkedin,
+  FaGithub,
+  FaTiktok,
+  FaEnvelope,
+  FaArrowRight,
+  FaTelegramPlane,
+  FaFacebook,
+  FaDiscord,
+  FaStar,
+} from "react-icons/fa";
+
 import { FaXTwitter } from "react-icons/fa6";
+import { SiThreads } from "react-icons/si";
 
 const SocialModal = ({ isOpen, onClose }) => {
-  
-  // --- ANTI SCROLL LOGIC ---
+  // LOCK SCROLL
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100vh";
     } else {
-      document.body.style.overflow = 'unset';
-      document.body.style.height = 'auto';
+      document.body.style.overflow = "unset";
+      document.body.style.height = "auto";
     }
+
     return () => {
-      document.body.style.overflow = 'unset';
-      document.body.style.height = 'auto';
+      document.body.style.overflow = "unset";
+      document.body.style.height = "auto";
     };
   }, [isOpen]);
 
-  const socialLinks = [
-    // ROW 1
+  // =========================
+  // PRIORITY SECTION
+  // =========================
+  const featuredLinks = [
     {
       id: "wa",
       name: "WhatsApp",
-      username: "Chat Sekarang",
+      label: "Fast Response",
+      username: "Chat directly with me",
       url: "https://wa.me/6281281954366",
-      icon: <FaWhatsapp className="text-3xl" />,
-      styleClass: "bg-green-600 border-green-500 md:bg-white/5 md:border-white/5 md:hover:bg-green-600 md:hover:border-green-500",
-      span: "col-span-2" 
-    },
-    {
-      id: "tg",
-      name: "Telegram",
-      username: "@ronaldeverywhere",
-      url: "https://t.me/ronaldeverywhere", 
-      icon: <FaTelegramPlane className="text-2xl" />,
-      styleClass: "bg-sky-500 border-sky-400 md:bg-white/5 md:border-white/5 md:hover:bg-sky-500 md:hover:border-sky-400",
-      span: "col-span-1"
-    },
-    {
-      id: "dc",
-      name: "Discord",
-      username: "Join Server", 
-      url: "https://discord.com/users/ronald_rzb", 
-      icon: <FaDiscord className="text-2xl" />,
-      styleClass: "bg-[#5865F2] border-indigo-400 md:bg-white/5 md:border-white/5 md:hover:bg-[#5865F2] md:hover:border-indigo-400",
-      span: "col-span-1"
+      icon: <FaWhatsapp />,
+      gradient:
+        "from-green-500 via-green-400 to-emerald-500",
+      size: "col-span-2 row-span-2",
     },
 
-    // ROW 2
     {
       id: "ig",
       name: "Instagram",
+      label: "Daily Update",
       username: "@ronald_rzb",
-      url: "https://www.instagram.com/ronald_rzb/",
-      icon: <FaInstagram className="text-2xl" />,
-      styleClass: "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 border-pink-500 md:bg-none md:bg-white/5 md:border-white/5 md:hover:bg-gradient-to-tr md:hover:from-yellow-400 md:hover:via-red-500 md:hover:to-purple-500 md:hover:border-pink-500",
-      span: "col-span-1"
+      url: "https://instagram.com/ronald_rzb",
+      icon: <FaInstagram />,
+      gradient:
+        "from-yellow-400 via-pink-500 to-purple-600",
+      size: "col-span-2",
+    },
+
+    {
+      id: "li",
+      name: "LinkedIn",
+      label: "Professional",
+      username: "Career & Networking",
+      url: "https://linkedin.com/in/ronald-zuni-bachtiar-a52990345",
+      icon: <FaLinkedin />,
+      gradient:
+        "from-blue-500 via-sky-500 to-cyan-400",
+      size: "col-span-2",
+    },
+  ];
+
+  // =========================
+  // SECONDARY SECTION
+  // =========================
+  const socialLinks = [
+    {
+      id: "tt",
+      name: "TikTok",
+      username: "@ronald_rzb",
+      url: "https://www.tiktok.com/@ronald_rzb",
+      icon: <FaTiktok />,
     },
     {
-      id: "fb",
-      name: "Facebook",
-      username: "Ronald Bachtiar",
-      url: "https://www.facebook.com/ronald.bachtiar.73",
-      icon: <FaFacebook className="text-2xl" />,
-      styleClass: "bg-blue-600 border-blue-500 md:bg-white/5 md:border-white/5 md:hover:bg-blue-600 md:hover:border-blue-500",
-      span: "col-span-1"
+      id: "threads",
+      name: "Threads",
+      username: "@ronald_rzb",
+      url: "https://www.threads.net/@ronald_rzb",
+      icon: <SiThreads />,
     },
     {
       id: "x",
       name: "X / Twitter",
       username: "@ronald_rzb",
       url: "https://x.com/ronald_rzb",
-      icon: <FaXTwitter className="text-2xl" />,
-      styleClass: "bg-neutral-950 border-neutral-700 md:bg-white/5 md:border-white/5 md:hover:bg-black md:hover:border-neutral-500",
-      span: "col-span-1"
+      icon: <FaXTwitter />,
     },
-    {
-      id: "li",
-      name: "LinkedIn",
-      username: "Connect",
-      url: "https://linkedin.com/in/ronald-zuni-bachtiar-a52990345/",
-      icon: <FaLinkedin className="text-2xl" />,
-      styleClass: "bg-blue-700 border-blue-500 md:bg-white/5 md:border-white/5 md:hover:bg-blue-700 md:hover:border-blue-500",
-      span: "col-span-1"
-    },
-
-    // ROW 3
     {
       id: "gh",
       name: "GitHub",
       username: "@clizardy",
       url: "https://github.com/clizardy",
-      icon: <FaGithub className="text-2xl" />,
-      styleClass: "bg-neutral-800 border-neutral-600 md:bg-white/5 md:border-white/5 md:hover:bg-neutral-800 md:hover:border-neutral-500",
-      span: "col-span-1"
+      icon: <FaGithub />,
     },
     {
-      id: "tt",
-      name: "TikTok",
-      username: "@ronald_rzb",
-      url: "https://www.tiktok.com/@ronald_rzb",
-      icon: <FaTiktok className="text-2xl" />,
-      styleClass: "bg-black border-gray-700 md:bg-white/5 md:border-white/5 md:hover:bg-black md:hover:border-gray-500",
-      span: "col-span-1"
+      id: "tg",
+      name: "Telegram",
+      username: "@ronaldeverywhere",
+      url: "https://t.me/ronaldeverywhere",
+      icon: <FaTelegramPlane />,
+    },
+    {
+      id: "dc",
+      name: "Discord",
+      username: "Join Server",
+      url: "https://discord.com/users/ronald_rzb",
+      icon: <FaDiscord />,
+    },
+    {
+      id: "fb",
+      name: "Facebook",
+      username: "Ronald Bachtiar",
+      url: "https://facebook.com/ronald.bachtiar.73",
+      icon: <FaFacebook />,
     },
     {
       id: "email",
       name: "Email",
       username: "Send Message",
       url: "mailto:ronaldzunibachtiar@gmail.com",
-      icon: <FaEnvelope className="text-2xl" />,
-      styleClass: "bg-orange-600 border-orange-500 md:bg-white/5 md:border-white/5 md:hover:bg-orange-600 md:hover:border-orange-500",
-      span: "col-span-2"
-    }
+      icon: <FaEnvelope />,
+    },
   ];
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 h-[100dvh]">
-          
-          {/* Backdrop */}
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+          {/* BACKDROP */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/70 backdrop-blur-md cursor-pointer"
+            className="absolute inset-0 bg-black/80 backdrop-blur-xl"
           />
 
-          {/* Modal Container: LEBAR di Desktop (max-w-4xl) */}
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 50 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-sm md:max-w-5xl bg-white dark:bg-black border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden z-10"
+          {/* MODAL */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 40 }}
+            transition={{
+              type: "spring",
+              damping: 24,
+              stiffness: 260,
+            }}
+            className="relative z-10 w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a]/95 shadow-[0_20px_80px_rgba(0,0,0,0.6)] backdrop-blur-2xl"
           >
-            {/* Header */}
-            <div className="flex justify-between items-center mb-6 md:mb-8">
+            {/* Decorative Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.15),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.15),transparent_30%)]" />
+
+            {/* HEADER */}
+            <div className="relative flex items-start justify-between border-b border-white/5 p-6 md:p-8">
               <div>
-                <h2 className="text-xl md:text-2xl font-bold dark:text-white text-black">Social Hub</h2>
-                <p className="text-xs md:text-sm dark:text-neutral-400 text-neutral-500">Connect with me everywhere</p>
+                <div className="mb-3 flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-white/40">
+                    Online & Active
+                  </span>
+                </div>
+
+                <h2 className="text-3xl font-black tracking-tight text-white">
+                  Social Universe
+                </h2>
+
+                <p className="mt-2 max-w-md text-sm text-white/50">
+                  Prioritized platforms where I’m most active and responsive.
+                </p>
               </div>
-              <button 
-                onClick={onClose} 
-                className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full dark:bg-white/10 bg-black/5 dark:text-white text-black hover:bg-white/20 transition-all"
+
+              <button
+                onClick={onClose}
+                className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/60 transition-all hover:bg-red-500 hover:text-white"
               >
-                <FaTimes />
+                <FaTimes className="transition-transform group-hover:rotate-90" />
               </button>
             </div>
 
-            {/* BENTO GRID: 2 Cols Mobile -> 4 Cols Desktop */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-h-[70vh] overflow-y-auto pr-1 scrollbar-hide">
-              {socialLinks.map((item) => (
-                <motion.a
-                  key={item.id}
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`
-                    ${item.span} 
-                    relative group flex flex-col justify-between p-4 md:p-5 rounded-2xl 
-                    border 
-                    ${item.styleClass} 
-                    transition-all duration-300 cursor-pointer overflow-hidden
-                    min-h-[100px] md:min-h-[120px]
-                  `}
-                >
-                  {/* Icon Wrapper */}
-                  <div className="text-white md:text-black md:dark:text-white md:group-hover:text-white transition-colors duration-300 mb-3 md:mb-4">
-                    {item.icon}
-                  </div>
-                  
-                  <div className="flex justify-between items-end">
-                    <div>
-                      {/* Nama Brand */}
-                      <p className="text-[10px] md:text-black md:dark:text-white md:text-xs font-light italic uppercase tracking-wider text-white md:group-hover:text-white/80 transition-colors">
-                        {item.name}
-                      </p>
-                      {/* Username */}
-                      <p className="text-sm md:text-base md:text-black md:dark:text-white font-semibold text-white group-hover:text-white truncate max-w-[120px] md:max-w-none">
-                        {item.username}
-                      </p>
-                    </div>
-                    
-                    {/* Arrow Icon */}
-                    <FaArrowRight className="text-white md:opacity-0 md:-translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0 transition-all duration-300 text-sm md:text-lg" />
-                  </div>
-                </motion.a>
-              ))}
-            </div>
+            {/* CONTENT */}
+            <div className="max-h-[78vh] overflow-y-auto p-5 md:p-8 scrollbar-hide">
+              {/* FEATURED SECTION */}
+              <div className="mb-8">
+                <div className="mb-4 flex items-center gap-2">
+                  <FaStar className="text-yellow-400" />
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+                    Priority Platforms
+                  </h3>
+                </div>
 
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  {featuredLinks.map((item) => (
+                    <motion.a
+                      key={item.id}
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      whileHover={{
+                        y: -4,
+                        scale: 1.01,
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`
+                        ${item.size}
+                        group relative overflow-hidden rounded-[2rem]
+                        border border-white/10
+                        bg-white/[0.03]
+                        p-5 md:p-6
+                        min-h-[180px]
+                      `}
+                    >
+                      {/* Gradient Background */}
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-80`}
+                      />
+
+                      {/* Dark Overlay */}
+                      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+
+                      {/* Glow */}
+                      <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/20 blur-3xl transition-all duration-700 group-hover:scale-150" />
+
+                      <div className="relative z-10 flex h-full flex-col justify-between">
+                        {/* TOP */}
+                        <div className="flex items-start justify-between">
+                          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-3xl text-white backdrop-blur-xl">
+                            {item.icon}
+                          </div>
+
+                          <div className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
+                            {item.label}
+                          </div>
+                        </div>
+
+                        {/* BOTTOM */}
+                        <div>
+                          <h4 className="text-2xl font-bold text-white">
+                            {item.name}
+                          </h4>
+
+                          <p className="mt-1 text-sm text-white/70">
+                            {item.username}
+                          </p>
+
+                          <div className="mt-5 flex items-center gap-2 text-sm font-medium text-white">
+                            Open Platform
+                            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </div>
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+
+              {/* SECONDARY SECTION */}
+              <div>
+                <div className="mb-4 flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-cyan-400" />
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+                    Other Platforms
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  {socialLinks.map((item) => (
+                    <motion.a
+                      key={item.id}
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      whileHover={{
+                        y: -3,
+                      }}
+                      whileTap={{ scale: 0.97 }}
+                      className="
+                        group relative overflow-hidden rounded-3xl
+                        border border-white/10
+                        bg-white/[0.03]
+                        p-5
+                        transition-all duration-300
+                        hover:border-white/20
+                        hover:bg-white/[0.05]
+                      "
+                    >
+                      {/* Hover Glow */}
+                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-white/5 via-transparent to-cyan-400/10" />
+
+                      <div className="relative z-10">
+                        <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-2xl text-white transition-all group-hover:scale-110">
+                          {item.icon}
+                        </div>
+
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">
+                          {item.name}
+                        </p>
+
+                        <h4 className="mt-1 text-sm font-semibold text-white">
+                          {item.username}
+                        </h4>
+
+                        <div className="mt-5 flex items-center gap-2 text-xs text-white/50 transition-all group-hover:text-white">
+                          Visit
+                          <FaArrowRight className="text-[10px]" />
+                        </div>
+                      </div>
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       )}

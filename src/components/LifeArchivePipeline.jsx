@@ -17,98 +17,126 @@ import {
   FaArrowUp
 } from "react-icons/fa";
 
+const imageModules = import.meta.glob("../assets/timeline/*.webp", { eager: true });
+
+// Data dengan tambahan properti 'image' untuk setiap foto tahunnya.
+// Silakan ganti URL di properti 'image' dengan URL foto Anda sendiri.
 const LIFE_DATA = [
   {
-    id: 1, year: "2015", age: "9 y.o", 
+    id: 1, year: "2015", age: "9 y.o",
     title: "The First Competition", subtitle: "Keberanian Tampil Beda",
     description: "Momen pertama kali menyadari bahwa hidup adalah sebuah panggung kompetisi yang menyenangkan. Meraih juara dalam lomba MTQ memberikan rasa percaya diri awal, sementara mengekspresikan imajinasi melalui lomba menggambar di tong sampah menjadi titik awal keberanian untuk tampil beda dan kreatif.",
-    skills: ["Public Speaking", "Creative Drawing", "Competitive Spirit"], 
+    skills: ["Public Speaking", "Creative Drawing", "Competitive Spirit"],
     icon: <FaChild />,
+    // Masukkan URL foto masa anak-anak Anda (misalnya: saat MTQ atau menggambar)
+    image: imageModules["../assets/timeline/memories (1).webp"],
   },
   {
-    id: 2, year: "2016", age: "10 y.o", 
+    id: 2, year: "2016", age: "10 y.o",
     title: "Leadership Seeds", subtitle: "Langkah Awal Kepemimpinan",
     description: "Ketertarikan mendalam pada kegiatan Pramuka membawa saya menjuarai Pesta Siaga. Di fase inilah benih-benih kepemimpinan mulai tumbuh secara natural saat dipercaya mengemban tanggung jawab sebagai Ketua Barung, memimpin dan mengoordinasikan teman-teman sebaya.",
-    skills: ["Leadership", "Team Coordination", "Scouting"], 
+    skills: ["Leadership", "Team Coordination", "Scouting"],
     icon: <FaLaptop />,
+    // Masukkan URL foto saat kegiatan Pramuka atau Pesta Siaga
+    image: imageModules["../assets/timeline/memories (2).webp"],
   },
   {
-    id: 3, year: "2017", age: "11 y.o", 
+    id: 3, year: "2017", age: "11 y.o",
     title: "Intellectual Awakening", subtitle: "Gerbang Informasi & Prestasi",
     description: "Sebuah lompatan personal: memiliki smartphone untuk pertama kalinya yang membuka gerbang informasi seluas-luasnya. Selain eksplorasi digital, masa ini juga diisi dengan keaktifan sebagai Dokter Kecil dan partisipasi dalam Lomba Cerdas Cermat (LCC), menyeimbangkan dunia maya dan nyata.",
-    skills: ["Digital Literacy", "General Knowledge", "Health Awareness"], 
+    skills: ["Digital Literacy", "General Knowledge", "Health Awareness"],
     icon: <FaCamera />,
+    // Masukkan URL foto saat memiliki smartphone pertama atau saat lomba cerdas cermat
+    image: imageModules["../assets/timeline/memories (3).webp"],
   },
   {
-    id: 4, year: "2018", age: "12 y.o", 
+    id: 4, year: "2018", age: "12 y.o",
     title: "Expanding Horizons", subtitle: "Membuka Mata Dunia",
     description: "Tahun yang penuh kehangatan berkat bimbingan wali kelas favorit, Pak Panggah. Pengalaman mengikuti Study Tour menjadi momen krusial yang membuka mata dan pikiran saya terhadap luasnya dunia luar, memicu rasa ingin tahu yang lebih besar untuk terus bereksplorasi.",
-    skills: ["Social Adaptability", "Observation", "Curiosity"], 
+    skills: ["Social Adaptability", "Observation", "Curiosity"],
     icon: <FaVideo />,
+    // Masukkan URL foto saat Study Tour atau bersama guru favorit
+    image: imageModules["../assets/timeline/memories (4).webp"],
   },
   {
-    id: 5, year: "2019", age: "13 y.o", 
+    id: 5, year: "2019", age: "13 y.o",
     title: "Passion for Science", subtitle: "Eksplorasi & Mentoring",
     description: "Fase transformatif di mana saya benar-benar jatuh cinta pada dunia Sains (IPA). Kehadiran figur-figur guru yang sangat suportif tidak hanya membimbing secara akademis, tetapi juga membentuk karakter dan memotivasi saya untuk menggali potensi diri lebih dalam lagi.",
-    skills: ["Analytical Thinking", "Science (IPA)", "Active Listening"], 
+    skills: ["Analytical Thinking", "Science (IPA)", "Active Listening"],
     icon: <FaPaintBrush />,
+    // Masukkan URL foto saat di laboratorium sekolah atau kegiatan sains
+    image: imageModules["../assets/timeline/memories (5).webp"],
   },
   {
-    id: 6, year: "2020", age: "14 y.o", 
+    id: 6, year: "2020", age: "14 y.o",
     title: "Peak Activity & The Shift", subtitle: "Prestasi di Tengah Transisi",
     description: "Puncak keaktifan masa sekolah dengan berbagai pencapaian luar biasa dari ekstrakurikuler, bahkan hingga mewakili sekolah berlomba ke luar kota. Namun di tengah euforia tersebut, pandemi melanda, memaksa saya beradaptasi cepat dengan perubahan drastis dalam cara hidup dan belajar.",
-    skills: ["Extracurricular Excellence", "Adaptability", "Resilience"], 
+    skills: ["Extracurricular Excellence", "Adaptability", "Resilience"],
     icon: <FaRocket />,
+    // Masukkan URL foto saat menerima piala ekskul atau foto di rumah saat pandemi
+    image: imageModules["../assets/timeline/memories (6).webp"],
   },
   {
-    id: 7, year: "2021", age: "15 y.o", 
+    id: 7, year: "2021", age: "15 y.o",
     title: "The Creative Challenge", subtitle: "Memasuki Arena Industri",
     description: "Momen keberanian untuk 'keluar kandang' dan unjuk gigi dalam berbagai kompetisi desain serta video tingkat sekolah. Di fase inilah saya merasakan simulasi industri yang sebenarnya: beradu ide kreatif, dan belajar mengelola tekanan tenggat waktu (deadline) untuk pertama kalinya.",
-    skills: ["Design Thinking", "Video Production", "Time Management"], 
+    skills: ["Design Thinking", "Video Production", "Time Management"],
     icon: <FaBrain />,
+    // Masukkan URL foto saat mengerjakan proyek desain atau video dengan laptop
+    image: imageModules["../assets/timeline/memories (7).webp"],
   },
   {
-    id: 8, year: "2022", age: "16 y.o", 
+    id: 8, year: "2022", age: "16 y.o",
     title: "Meaningful Connection", subtitle: "Perspektif Baru Kehidupan",
     description: "Sebuah titik balik emosional dan personal. Saya dipertemukan dengan sosok figur 'sahabat' sejati yang kehadirannya memberikan dampak masif, membuka perspektif baru, dan secara fundamental mengubah cara saya memandang kehidupan serta arah masa depan.",
-    skills: ["Empathy", "Interpersonal Comm", "Emotional Intelligence"], 
+    skills: ["Empathy", "Interpersonal Comm", "Emotional Intelligence"],
     icon: <FaBriefcase />,
+    // Masukkan URL foto bersama sahabat sejati yang berdampak besar
+    image: imageModules["../assets/timeline/memories (8).webp"],
   },
   {
-    id: 9, year: "2023", age: "17 y.o", 
+    id: 9, year: "2023", age: "17 y.o",
     title: "Identity & Branding", subtitle: "Membangun Portofolio Profesional",
     description: "Fokus utama bergeser tajam ke arah personal branding. Mengkapitalisasi keahlian yang telah diasah, saya mulai membangun website portofolio sendiri secara independen dan mengurasi *feed* Instagram serta Behance agar merepresentasikan identitas saya secara profesional.",
-    skills: ["Web Development", "Personal Branding", "Visual Curation"], 
+    skills: ["Web Development", "Personal Branding", "Visual Curation"],
     icon: <FaGlobe />,
+    // Masukkan URL foto saat membangun website portofolio atau saat di depan layar komputer
+    image: imageModules["../assets/timeline/memories (9).webp"],
   },
   {
-    id: 10, year: "2024", age: "18 y.o", 
+    id: 10, year: "2024", age: "18 y.o",
     title: "Industry Integration", subtitle: "Melebur dengan Dunia Kreatif",
     description: "Menyentuh fase puncak sebagai seorang 'pelajar', di mana batasan antara sekolah dan pekerjaan mulai melebur. Semakin banyak tawaran *project* nyata yang berdatangan, menguji kapasitas diri sekaligus mengobarkan semangat untuk berkarier serius di industri kreatif.",
-    skills: ["Project Execution", "Creative Strategy", "Client Relations"], 
+    skills: ["Project Execution", "Creative Strategy", "Client Relations"],
     icon: <FaCode />,
+    // Masukkan URL foto saat mengerjakan proyek klien nyata atau di lingkungan kerja profesional
+    image: imageModules["../assets/timeline/memories (10).webp"],
   },
   {
-    id: 11, year: "2025", age: "19 y.o", 
+    id: 11, year: "2025", age: "19 y.o",
     title: "Trial, Error & Resilience", subtitle: "Pelajaran dari Kegagalan",
     description: "Tahun yang mengajarkan realita pahit kehidupan. Berbagai inisiatif usaha yang saya rintis menemui kegagalan, membawa saya terlarut dalam fase kesedihan selama beberapa saat. Namun, momen kejatuhan inilah yang memberikan pelajaran paling berharga tentang mentalitas dan ketahanan diri.",
-    skills: ["Risk Management", "Resilience", "Self-Reflection"], 
+    skills: ["Risk Management", "Resilience", "Self-Reflection"],
     icon: <FaWallet />,
+    // Masukkan URL foto saat menghadapi kegagalan usaha atau dalam momen refleksi diri
+    image: imageModules["../assets/timeline/memories (11).webp"],
   },
   {
-    id: 12, year: "2026", age: "20 y.o", 
+    id: 12, year: "2026", age: "20 y.o",
     title: "Systematized Future", subtitle: "Pondasi Finansial & Berkelanjutan",
     description: "Fase kebangkitan dan kedewasaan. Menyadari urgensi Manajemen Finansial, saya berkomitmen penuh untuk membuka lembaran baru. Fokus saat ini adalah membangun sistem kehidupan yang mengedepankan produktivitas yang berkelanjutan, terarah, dan memiliki peta jalan karier yang jelas.",
-    skills: ["Financial Management", "Systems Thinking", "Strategic Planning"], 
+    skills: ["Financial Management", "Systems Thinking", "Strategic Planning"],
     icon: <FaGraduationCap />,
-    isCurrent: true, progress: 85
+    // Masukkan URL foto saat merencanakan sistem keuangan atau jalan karier di depan monitor
+    image: imageModules["../assets/timeline/memories (12).webp"],
+    isCurrent: true, progress: 27
   }
 ];
 
 const LifeArchivePipeline = ({ isOpen, onClose }) => {
   const [activeYear, setActiveYear] = useState(LIFE_DATA[0].year);
   const [hoveredId, setHoveredId] = useState(null);
-  
+
   const scrollContainerRef = useRef(null);
   const itemRefs = useRef({});
 
@@ -148,7 +176,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
       const container = scrollContainerRef.current;
       const elementTop = element.offsetTop;
       const offset = container.clientHeight / 2 - element.clientHeight / 2;
-      
+
       container.scrollTo({
         top: elementTop - offset,
         behavior: "smooth"
@@ -165,7 +193,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -230,15 +258,15 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
       </div>
 
       {/* MAIN SCROLLING AREA */}
-      <div 
+      <div
         ref={scrollContainerRef}
-        className="flex-1 w-full overflow-y-auto overflow-x-hidden relative z-10 scroll-smooth custom-scrollbar" 
+        className="flex-1 w-full overflow-y-auto overflow-x-hidden relative z-10 scroll-smooth custom-scrollbar"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="max-w-6xl mx-auto pt-32 pb-48 md:py-40 px-6 sm:px-12 relative">
 
           {/* HEADER */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -255,14 +283,14 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
 
           {/* TIMELINE CONTAINER */}
           <div className="relative flex flex-col gap-10 md:gap-20">
-            
+
             {/* BACKGROUND STATIC LINE */}
             <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 md:-translate-x-1/2 rounded-full" />
-            
+
             {/* DYNAMIC PROGRESS LINE */}
-            <motion.div 
+            <motion.div
               style={{ height: lineHeight }}
-              className="absolute left-6 md:left-1/2 top-0 w-[2px] bg-gradient-to-b from-amber-500 via-amber-400 dark:from-cyan-400 dark:via-cyan-300 to-transparent md:-translate-x-1/2 rounded-full z-0 shadow-[0_0_15px_rgba(245,158,11,0.5)] origin-top" 
+              className="absolute left-6 md:left-1/2 top-0 w-[2px] bg-gradient-to-b from-amber-500 via-amber-400 dark:from-cyan-400 dark:via-cyan-300 to-transparent md:-translate-x-1/2 rounded-full z-0 shadow-[0_0_15px_rgba(245,158,11,0.5)] origin-top"
             />
 
             {LIFE_DATA.map((item, index) => {
@@ -285,7 +313,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
                     transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     className={`relative flex flex-col md:flex-row ${isLeft ? "md:flex-row" : "md:flex-row-reverse"} items-start md:items-center gap-8 md:gap-20`}
                   >
-                    
+
                     {/* TIMELINE NODE (DOT) */}
                     <div className="absolute left-6 md:left-1/2 w-4 md:w-5 h-4 md:h-5 rounded-full bg-[#050505] border-[3px] border-white/20 md:-translate-x-1/2 top-8 md:top-1/2 md:-translate-y-1/2 z-20 transition-all duration-500">
                       <div className={`w-full h-full rounded-full transition-all duration-500 ${isActive || hoveredId === item.id ? 'bg-amber-500 dark:bg-cyan-400 scale-100 shadow-[0_0_20px_rgba(245,158,11,0.8)]' : 'bg-transparent scale-50'}`} />
@@ -308,13 +336,26 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
                     {/* CONTENT CARD */}
                     <div className={`w-full md:w-1/2 pl-16 md:pl-0 z-10`}>
                       <div className={`p-8 md:p-10 rounded-3xl border transition-all duration-500 relative overflow-hidden backdrop-blur-xl group-hover:-translate-y-2
-                        ${isActive 
-                          ? 'bg-white/[0.08] border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]' 
+                        ${isActive
+                          ? 'bg-white/[0.08] border-white/20 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]'
                           : 'bg-white/[0.02] border-white/5 shadow-none'
                         }
                         ${item.isCurrent ? 'ring-1 ring-amber-500/50 dark:ring-cyan-400/50' : ''}`}
                       >
-                        
+
+                        {/* FOTO PERKEMBANGAN DIRI */}
+                        <div className="mb-6 rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] group/img relative">
+                          <img
+                            src={item.image}
+                            alt={`${item.year} Photo`}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                          <div className="absolute bottom-3 left-4 text-xs font-mono text-white/70 bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">
+                            '{item.year.slice(2)} :: {item.age}
+                          </div>
+                        </div>
+
                         {/* Internal Glow Effect */}
                         <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] -z-10 transition-opacity duration-500 ${isActive ? 'opacity-100 bg-amber-500/20' : 'opacity-0 bg-transparent'}`} />
 
@@ -335,8 +376,8 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
                         {/* SKILLS TAGS */}
                         <div className="flex flex-wrap gap-2 md:gap-3 mb-2 md:mb-4">
                           {item.skills.map((skill, i) => (
-                            <span 
-                              key={i} 
+                            <span
+                              key={i}
                               className={`px-3 md:px-4 py-1.5 rounded-full text-[10px] md:text-xs uppercase tracking-widest border transition-all duration-300
                                 ${isActive ? 'bg-white/10 text-white/90 border-white/10' : 'bg-black/30 text-white/50 border-white/5'}`}
                             >
@@ -376,7 +417,7 @@ const LifeArchivePipeline = ({ isOpen, onClose }) => {
           {/* FOOTER */}
           <div className="relative mt-32 md:mt-48 pb-20 flex justify-center">
             <div className="absolute left-6 md:left-1/2 bottom-full w-px h-32 md:h-48 bg-gradient-to-b from-white/10 to-transparent md:-translate-x-1/2 mb-8" />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
