@@ -1,0 +1,661 @@
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  FaTimes, FaHome, FaUser, FaLaptopCode, FaBriefcase, FaChalkboardTeacher,
+  FaShapes, FaEnvelope, FaImages, FaGraduationCap, FaTelegram, FaEye, FaCopy,
+  FaHeart, FaCommentDots, FaLayerGroup, FaQuestionCircle, FaArrowRight,
+  FaInstagram, FaWhatsapp, FaFacebook, FaTiktok, FaCertificate, FaLock,
+  FaSignal, FaWifi, FaNetworkWired, FaGlobe, FaQrcode, FaCalendarAlt
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6"; 
+import { toast } from "react-hot-toast";
+import OklchGradientText from "../components/OklchGradientText";
+import ImageFade from "./ImageFade";
+import PersonalDataVault from "../components/PersonalDataVault";
+
+const SITE_URL = window.location.href;
+
+const FaHistoryIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+);
+
+const MENU_ITEMS = [
+  { id: "hero", label: { en: "Home", id: "Beranda" }, icon: <FaHome /> },
+  { id: "about", label: { en: "About Me", id: "Tentang Saya" }, icon: <FaUser /> },
+  { id: "skills", label: { en: "Skills", id: "Keahlian" }, icon: <FaShapes /> },
+  { id: "education", label: { en: "Education", id: "Pendidikan" }, icon: <FaGraduationCap /> },
+  { id: "certificates", label: { en: "Certificates", id: "Sertifikat" }, icon: <FaCertificate /> },
+  { id: "projects", label: { en: "Projects", id: "Proyek" }, icon: <FaBriefcase /> },
+  { id: "services", label: { en: "Services", id: "Layanan" }, icon: <FaLaptopCode /> },
+  { id: "timeline", label: { en: "Journey", id: "Perjalanan" }, icon: <FaHistoryIcon /> },
+  { id: "organization", label: { en: "Organization", id: "Organisasi" }, icon: <FaImages /> },
+  { id: "dedication", label: { en: "Motivation", id: "Motivasi" }, icon: <FaHeart /> }, 
+  { id: "testimonials", label: { en: "Testimonials", id: "Testimoni" }, icon: <FaCommentDots /> },
+  { id: "glimpse", label: { en: "Glimpse of Me", id: "Sekilas Tentang Saya" }, icon: <FaEye /> },
+  { id: "contact", label: { en: "Contact", id: "Kontak" }, icon: <FaEnvelope /> },
+];
+
+const SidebarMenu = ({ lang, onOpenFaq, onOpenBooking, onOpenInquiry, onOpenJobNotes, onOpenLifeArchive, isOpen, onClose, setIsOpen }) => {
+  const [showQR, setShowQR] = useState(false);
+  
+  // 1. Definisikan State & Ref terlebih dahulu
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [showDataModal, setShowDataModal] = useState(false);
+  const [isPersonalDataOpen, setIsPersonalDataOpen] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [isError, setIsError] = useState(false);
+  const inputRef = useRef(null);
+
+  // 2. Baru kemudian gunakan di dalam useEffect
+  useEffect(() => {
+    console.log("Personal Data =", isPersonalDataOpen);
+}, [isPersonalDataOpen]);
+  useEffect(() => {
+    if (showPinModal) {
+        setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [showPinModal]);
+
+  const CORRECT_PIN = "1904";
+
+  // --- SECRET TRIGGER STATE ---
+  const [clickCount, setClickCount] = useState(0);
+  
+  // --- STATE NETWORK ---
+  const [showNetInfo, setShowNetInfo] = useState(false);
+  const [networkInfo, setNetworkInfo] = useState({
+    online: navigator.onLine,
+    ip: "Scanning...",
+    rtt: "...",
+    downlink: "...",
+    type: "..."
+  });
+
+  useEffect(() => {
+    const body = document.body;
+    const html = document.documentElement;
+
+    if (isOpen) {
+      const scrollY = window.scrollY;
+      body.dataset.scrollY = scrollY;
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+      html.style.overflow = "hidden";
+    } else {
+      const savedScrollY = body.dataset.scrollY;
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      html.style.overflow = "";
+
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY, 10));
+      }
+      delete body.dataset.scrollY;
+    }
+
+    return () => {
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      html.style.overflow = "";
+      delete body.dataset.scrollY;
+    };
+  }, [isOpen]);
+
+  // --- LOGIC SECRET CLICK ---
+  const handleSecretClick = () => {
+    setClickCount((prev) => prev + 1);
+    
+    if (clickCount === 0) {
+        setTimeout(() => setClickCount(0), 1000);
+    }
+
+    if (clickCount >= 2) {
+        toast("Admin Mode: Job Notes Accessed", { 
+            icon: '🔐',
+            duration: 3000, 
+        });
+        
+        onOpenJobNotes();
+        setClickCount(0); 
+        onClose(false); 
+    }
+  };
+
+  const [pinTarget, setPinTarget] = useState(null);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      onClose(); 
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300); 
+    }
+  };
+
+  useEffect(() => {
+    const openSidebarHandler = () => { if(setIsOpen) setIsOpen(true); };
+    window.addEventListener('open-sidebar', openSidebarHandler);
+    
+    const handleResize = () => {
+      if (window.innerWidth > 1024) onClose();
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+        window.removeEventListener('open-sidebar', openSidebarHandler);
+        window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updateStatus = () => setNetworkInfo(prev => ({ ...prev, online: navigator.onLine }));
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+
+    const fetchIP = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        setNetworkInfo(prev => ({ ...prev, ip: data.ip }));
+      } catch {
+        setNetworkInfo(prev => ({ ...prev, ip: "Hidden" }));
+      }
+    };
+    fetchIP();
+
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn) {
+        setNetworkInfo(prev => ({
+            ...prev, 
+            rtt: conn.rtt ? `${conn.rtt}ms` : 'N/A',
+            downlink: conn.downlink ? `${conn.downlink} Mbps` : 'N/A',
+            type: conn.effectiveType ? conn.effectiveType.toUpperCase() : 'WIFI'
+        }));
+    }
+
+    return () => {
+        window.removeEventListener('online', updateStatus);
+        window.removeEventListener('offline', updateStatus);
+    };
+  }, [isOpen]);
+
+  // Logic Warna (Light & Dark)
+  const isHighLatency = parseInt(networkInfo.rtt) > 200;
+  const statusColor = networkInfo.online 
+      ? "text-emerald-600 dark:text-emerald-400 dark:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" 
+      : "text-red-600 dark:text-red-500";
+  const networkGlow = networkInfo.online
+  ? "shadow-[0_0_40px_rgba(34,211,238,0.15)]"
+  : "shadow-[0_0_40px_rgba(239,68,68,0.15)]";
+
+  return (
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* BACKDROP DIMMER */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="fixed inset-0 bg-black/40 dark:bg-black/40 z-[50] backdrop-blur-sm"
+            />
+
+            {/* SIDEBAR CONTAINER UTAMA */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="
+                fixed top-0 right-0 h-[100dvh] w-80 
+                bg-indigo-100
+                dark:bg-slate-950/50 
+                backdrop-blur-xl
+                shadow-2xl z-[999] flex flex-col overflow-hidden
+              "
+              style={{ maxHeight: '100dvh' }} 
+            >
+                {/* --- ENERGY EDGE --- */}
+                <div className="absolute left-0 top-0 h-full w-[3px] overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500 to-transparent dark:via-cyan-400" />
+                  <motion.div
+                    animate={{ y: ["-100%", "100%"] }}
+                    transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+                    className="absolute w-full h-1/3 bg-white/60 blur-sm"
+                  />
+                </div>
+
+                {/* --- SCANNER LINE --- */}
+                <motion.div
+                  animate={{ y: ["0%", "100%", "0%"] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent dark:via-cyan-400 opacity-20 blur-sm pointer-events-none"
+                />
+              
+              {/* --- HEADER --- */}
+              <div className="flex-shrink-0 p-6 pb-2 border-b border-neutral-700 dark:border-neutral-300">
+                <div className="flex items-center justify-between mb-4">
+                    <div 
+                        onClick={handleSecretClick} 
+                        className="flex items-center gap-3 cursor-pointer select-none active:scale-95 transition-transform"
+                    >
+                        <h3 className="text-xl font-bold bg-gradient-to-r bg-clip-text text-transparent">
+                            <OklchGradientText>{lang === 'id' ? "Menu Cepat" : "Quick Access"}</OklchGradientText>
+                        </h3>
+                        
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation(); 
+                                setShowNetInfo(!showNetInfo);
+                            }}
+                            className={`p-1.5 rounded-full transition-all duration-300 ${showNetInfo ? 'bg-amber-500/5 dark:bg-cyan-500/5' : 'hover:bg-black/10 dark:hover:bg-white/10'}`}
+                        >
+                            <FaSignal className={`${statusColor} ${networkInfo.online ? "animate-pulse" : ""}`} />
+                        </button>
+                    </div>
+
+                    <button
+                      onClick={() => onClose()}
+                      className="p-2 rounded-full hover:bg-red-500 hover:text-white text-neutral-500 dark:text-neutral-400 transition-colors"
+                    >
+                      <FaTimes size={20} />
+                    </button>
+                  </div>
+
+                  {/* === NETWORK PANEL === */}
+                  <AnimatePresence>
+                    {showNetInfo && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                            animate={{ height: "auto", opacity: 1, marginTop: 8 }}
+                            exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                            className="overflow-hidden rounded-2xl bg-white border border-amber-500/70 shadow-inner dark:bg-black/20 dark:border-cyan-400/50"
+                        >
+                            <div className="p-4 space-y-3 text-xs font-mono">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-neutral-500 dark:text-slate-400 flex items-center gap-2">
+                                        <FaGlobe className="text-cyan-600 dark:text-accent"/> IP_ADDR
+                                    </span>
+                                    <span className="font-bold tracking-wider text-neutral-800 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
+                                        {networkInfo.ip}
+                                    </span>
+                                </div>
+                                
+                                <div className="w-full h-[1px] bg-amber-500/20 dark:bg-cyan-400/20"></div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-black dark:text-white italic flex items-center gap-1"><FaWifi/> Speed</span>
+                                        <span className="text-cyan-700 dark:text-cyan-300 font-bold">{networkInfo.downlink}</span>
+                                    </div>
+                                    <div className="flex flex-col gap-1 text-right">
+                                        <span className="text-black dark:text-white italic flex items-center justify-end gap-1"><FaNetworkWired/> Ping</span>
+                                        <span className={`font-bold ${isHighLatency ? "text-rose-600 dark:text-rose-500" : "text-emerald-600 dark:text-emerald-400 dark:drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"}`}>
+                                            {networkInfo.rtt}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                  </AnimatePresence>
+              </div>
+
+              {/* LIST MENU (SCROLLABLE & INTERACTIVE) */}
+              <div 
+                  className="flex flex-col gap-1 overflow-y-auto px-6 py-2 custom-scrollbar flex-1 overscroll-contain"
+                  onWheel={(e) => e.stopPropagation()} 
+              >
+                {MENU_ITEMS.map((item, index) => (
+                  <motion.button
+                    key={item.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }} 
+                    onClick={() => scrollToSection(item.id)}
+                    className="flex-shrink-0 flex items-center gap-4 p-3 rounded-xl text-left text-neutral-700 dark:text-neutral-300 hover:bg-amber-100 dark:hover:bg-white/5 hover:text-amber-700 dark:hover:text-cyan-100 transition-all duration-300 group"
+                  >
+                    <span className="text-xl text-amber-600 dark:text-cyan-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] transition-all">
+                        {item.icon}
+                    </span>
+                    <span className="font-medium text-sm">
+                        {item.label[lang]}
+                    </span>
+                  </motion.button>
+                ))}
+              
+                {/* --- ACTION GRID (4 Tombol Spesial) --- */}
+                <div className="mt-6 px-6 pb-8 flex-shrink-0">
+                    <div className="grid grid-cols-2 gap-3">
+                        {/* 1. TOMBOL MULAI PROYEK */}
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                                onOpenInquiry();
+                                onClose(false);
+                            }}
+                            className="col-span-2 relative overflow-hidden group p-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 flex flex-col items-start justify-between min-h-[100px]"
+                        >
+                            <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 group-hover:scale-125 transition-all duration-500">
+                                <FaBriefcase size={60} />
+                            </div>
+                            
+                            <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg mb-2">
+                                <FaBriefcase className="text-xl text-white" />
+                            </div>
+                            
+                            <div className="relative z-10 text-left">
+                                <h4 className="font-black text-lg leading-tight mb-0.5">
+                                    {lang === 'id' ? "Mulai Proyek" : "Start Project"}
+                                </h4>
+                                <p className="text-[10px] font-medium opacity-80">
+                                    {lang === 'id' ? "Dapatkan Estimasi" : "Get Quote"}
+                                </p>
+                            </div>
+                            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-20 pointer-events-none"></div>
+                        </motion.button>
+
+                        {/* 2. TOMBOL BOOKING CALL */}
+                        <button
+                            onClick={() => {
+                                onOpenBooking();
+                                onClose(false);
+                            }}
+                            className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-blue-500 dark:hover:border-blue-400 transition-all flex flex-col items-start justify-between h-[110px]"
+                        >
+                            <div className="p-2 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-lg group-hover:scale-110 transition-transform">
+                                <FaCalendarAlt />
+                            </div>
+                            <div className="text-left">
+                                <span className="block font-bold text-sm text-neutral-800 dark:text-white leading-tight">
+                                    {lang === 'id' ? "Booking" : "Book Call"}
+                                </span>
+                                <span className="text-[9px] text-black/70 dark:text-white/70 italic">
+                                    Via G-Meet
+                                </span>
+                            </div>
+                        </button>
+
+                        {/* 3. TOMBOL FAQ */}
+                        <button
+                            onClick={() => {
+                                onOpenFaq();
+                                onClose(false);
+                            }}
+                            className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-teal-500 dark:hover:border-teal-400 transition-all flex flex-col items-start justify-between h-[110px]"
+                        >
+                            <div className="p-2 bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 rounded-lg group-hover:scale-110 transition-transform">
+                                <FaQuestionCircle />
+                            </div>
+                            <div className="text-left">
+                                <span className="block font-bold text-sm text-neutral-800 dark:text-white leading-tight">
+                                    FAQ
+                                </span>
+                                <span className="text-[9px] text-black/70 dark:text-white/70 italic">
+                                    {lang === 'id' ? "Pusat Bantuan" : "Help Center"}
+                                </span>
+                            </div>
+                        </button>
+
+                        {/* 4. TOMBOL PRESENTASI */}
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                                setPinTarget("presentation");
+                                setShowPinModal(true);
+                            }}
+                            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg transition-all"
+                        >
+                            <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
+                                <FaChalkboardTeacher className="text-lg" />
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] leading-none mb-0.5">
+                                    {lang === 'id' ? "Presentasi Profil" : "Presentation Deck"}
+                                </span>
+                                <span className="text-[8px] opacity-60 font-medium tracking-[0.1em] italic">
+                                    {lang === 'id' ? "Buka Canva / PDF" : "Open Canva / PDF"}
+                                </span>
+                            </div>
+                            <div className="ml-auto md:opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                                <FaArrowRight size={10} />
+                            </div>
+                        </motion.button>
+
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                                setPinTarget("lifeArchive");
+                                setShowPinModal(true);
+                            }}
+                            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-frost-glow dark:bg-indigo-800 text-white shadow-lg transition-all"
+                        >
+                            <div className="flex items-center justify-center w-6 h-6 rounded-full group-hover:rotate-12 transition-transform">
+                                <FaHistoryIcon className="text-lg" />
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] leading-none mb-0.5">
+                                    {lang === 'id' ? "Lembar Pengalaman" : "Experience Sheet"}
+                                </span>
+                                <span className="text-[8px] opacity-60 font-medium tracking-[0.1em] italic">
+                                    {lang === 'id' ? "Privat" : "Private"}
+                                </span>
+                            </div>
+                            <div className="ml-auto md:opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                                <FaLock size={10} />
+                            </div>
+                        </motion.button>
+
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                                setPinTarget("personalData");
+                                setShowPinModal(true);
+                            }}
+                            className="col-span-2 group flex items-center justify-center gap-3 p-3 rounded-full bg-neutral-800 dark:bg-white text-white dark:text-black shadow-lg transition-all"
+                        >
+                            <FaLock className="text-sm" />
+                            <FaUser className="text-lg" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                                {lang === 'id' ? "Data Pribadi" : "Personal Data"}
+                            </span>
+                        </motion.button>
+
+                        {/* 5. TOMBOL SHARE QR */}
+                        <button
+                            onClick={() => setShowQR(true)}
+                            className="col-span-2 group flex items-center justify-center gap-2 p-3 rounded-full border-2 border-dashed border-amber-500/50 dark:border-cyan-400/50 hover:border-amber-500 dark:hover:border-cyan-400 hover:bg-amber-50 dark:hover:bg-cyan-900/20 transition-all text-black dark:text-white hover:text-amber-600 dark:hover:text-cyan-400"
+                        >
+                            <FaQrcode className="group-hover:rotate-12 transition-transform" />
+                            <span className="text-xs font-bold uppercase tracking-widest">
+                                {lang === 'id' ? "Bagikan Website" : "Share Website"}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+              </div>
+              
+              {/* MODAL QR CODE */}
+              <AnimatePresence>
+                  {showQR && (
+                      <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/70 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-[1000]"
+                      >
+                          <motion.div
+                              initial={{ scale: 0.8, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.8, opacity: 0 }}
+                              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                              className="relative bg-neutral-100 dark:bg-neutral-900 p-6 rounded-3xl shadow-2xl flex flex-col items-center gap-4"
+                          >
+                              <button 
+                                  onClick={() => setShowQR(false)}
+                                  className="absolute top-4 right-4 p-2 text-amber-500 hover:text-neutral-900 dark:text-accent dark:hover:text-white transition-colors"
+                              >
+                                  <FaTimes size={20} />
+                              </button>
+
+                              <div className="text-center">
+                                  <h3 className="font-bold font-sans text-xl mb-1 text-neutral-900 dark:text-white">
+                                      {lang === 'id' ? "Tampilan HP" : "Mobile View"}
+                                  </h3>
+                                  <p className="italic font-mono text-[10px] text-amber-500 dark:text-cyan-400">
+                                      {lang === 'id' ? "Scan untuk membuka di HP" : "Scan to open on Mobile"}
+                                  </p>
+                              </div>
+
+                              <div className="p-4 bg-white rounded-3xl shadow-inner border border-neutral-100">
+                                  <ImageFade
+                                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}&bgcolor=ffffff&color=000000&margin=0`}
+                                      alt="Website QR"
+                                      className="w-48 h-48 object-contain"
+                                  />
+                              </div>
+
+                              <div className="flex items-center gap-2 px-2 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 dark:bg-cyan-500/10 dark:border-cyan-500/20">
+                                  <div className="w-1 h-1 rounded-full animate-pulse bg-amber-500 dark:bg-cyan-500"></div>
+                                  <p className="text-[6px] font-mono tracking-wider text-amber-600 dark:text-cyan-400">
+                                      LIVE PREVIEW
+                                  </p>
+                              </div>
+                          </motion.div>
+                      </motion.div>
+                  )}
+              </AnimatePresence>
+
+              {/* MODAL PIN ACCESS */}
+              <AnimatePresence>
+                  {showPinModal && (
+                      <motion.div 
+                          initial={{ opacity: 0 }} 
+                          animate={{ opacity: 1 }} 
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 z-[1100] bg-black/70 backdrop-blur-md flex items-center justify-center p-6"
+                      >
+                          <motion.div 
+                              initial={{ scale: 0.9, y: 20 }}
+                              animate={{ 
+                                  scale: 1, 
+                                  y: 0,
+                                  x: isError ? [0, -10, 10, -10, 10, 0] : 0
+                              }}
+                              transition={{ duration: 0.4 }}
+                              className="bg-white dark:bg-black/5 backdrop-blur-sm p-8 rounded-[2.5rem] w-full max-w-sm text-center"
+                          >
+                              <div className="mb-6">
+                                  <div className="w-16 h-16 bg-amber-500/10 dark:bg-cyan-500/10 text-amber-500 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                      <FaLock size={24} />
+                                  </div>
+                                  <h3 className="text-xl font-bold dark:text-white">Protected Access</h3>
+                                  <p className="text-[10px] text-neutral-500 mt-1">Masukkan PIN untuk melanjutkan</p>
+                              </div>
+
+                              {/* Visualisasi Bulatan PIN */}
+                              <div 
+                                  onClick={() => inputRef.current?.focus()} 
+                                  className="flex justify-center gap-4 mb-8 cursor-pointer"
+                              >
+                                  {[0, 1, 2, 3].map((i) => (
+                                      <div 
+                                          key={i} 
+                                          className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+                                              pinInput.length > i 
+                                              ? "bg-amber-500 border-amber-500 dark:bg-cyan-400 dark:border-cyan-400 scale-125" 
+                                              : "border-neutral-300 dark:border-neutral-700"
+                                          } ${isError ? "border-red-500 bg-red-500" : ""}`}
+                                      />
+                                  ))}
+                              </div>
+
+                              {/* Input PIN Asli (Disembunyikan secara visual) */}
+                              <input 
+                                  ref={inputRef}
+                                  type="tel"
+                                  pattern="\d*" 
+                                  maxLength={4}
+                                  value={pinInput}
+                                  className="opacity-0 absolute -z-10" // Menyembunyikan input asli
+                                  onChange={(e) => {
+                                      const val = e.target.value;
+                                      if (/^\d*$/.test(val)) {
+                                          setPinInput(val);
+                                          if (val.length === 4) {
+                                              if (val === CORRECT_PIN) {
+                                                  // --- LOGIKA JIKA PIN BENAR ---
+                                                  if (pinTarget === "presentation") {
+                                                      window.open('https://www.canva.com/design/DAGm0Ztg0XY/KelTkmIF0upyxOAgKh53zw/edit', '_blank');
+                                                  } else if (pinTarget === "lifeArchive") {
+                                                      if (onOpenLifeArchive) onOpenLifeArchive();
+                                                  } else if (pinTarget === "personalData") {
+                                                      // Membuka modal Personal Data (pastikan state/prop ini dikelola di parent)
+                                                      setIsPersonalDataOpen(true); 
+                                                  }
+                                                  
+                                                  // Reset & Tutup modal PIN
+                                                  setShowPinModal(false);
+                                                  setPinInput("");
+                                                  setIsError(false);
+                                                  onClose(false); 
+
+                                              } else {
+                                                  // --- LOGIKA JIKA PIN SALAH ---
+                                                  setIsError(true);
+                                                  setTimeout(() => {
+                                                      setPinInput("");
+                                                      setIsError(false);
+                                                  }, 500); // Reset input setelah animasi goyang (0.5s)
+                                              }
+                                          }
+                                      }
+                                  }}
+                              />
+                              
+                              {/* Tombol Batal */}
+                              <button 
+                                  onClick={() => {
+                                      setShowPinModal(false);
+                                      setPinInput("");
+                                      setIsError(false);
+                                  }}
+                                  className="mt-4 text-sm font-semibold text-neutral-500 hover:text-red-500 transition-colors"
+                              >
+                                  Batal
+                              </button>
+                          </motion.div>
+                      </motion.div>
+                  )}
+              </AnimatePresence>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      <PersonalDataVault
+    isOpen={isPersonalDataOpen}
+    onClose={() => setIsPersonalDataOpen(false)}
+/>
+    </>
+  );
+};
+
+export default SidebarMenu;
