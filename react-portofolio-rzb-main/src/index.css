@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;0,14..32,500;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* --- 1. BASE VARIABLES & THEME HYBRID --- */
+
+/* DEFAULT LIGHT MODE: Amber/Orange */
+:root {
+  font-family: 'Inter', sans-serif;
+  
+  --sb-track: #f8fafc;
+  --sb-thumb: #cbd5e1;
+  --sb-border: #f8fafc;
+  --sb-hover: #d97706;
+
+  /* --- DYNAMIC ACCENT (DEFAULT LIGHT: AMBER) --- */
+  /* Ini akan di-override oleh JS ThemeBuilder jika user ganti warna */
+  --accent-color: 245, 158, 11; 
+  --accent-glow: rgba(245, 158, 11, 0.5);
+
+  /* --- DOCK CONFIG (LIGHT) --- */
+  --dock-bg: rgba(255, 255, 255, 0.25); 
+  --dock-border: rgba(255, 255, 255, 0.4);
+  --dock-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --dock-text: #475569;
+  --dock-text-hover: #000000;
+  
+  /* MOBILE SIZE */
+  --dock-item-size: 36px;       
+  --dock-action-size: 50px;     
+  --dock-gap: 8px;              
+  --dock-padding: 8px 16px;     
+  --dock-bottom: 30px;          
+}
+
+/* DEFAULT DARK MODE: CYAN */
+.dark {
+  --sb-track: #020617;
+  --sb-thumb: #334155;
+  --sb-border: #020617;
+  --sb-hover: #06b6d4;
+
+  /* --- DYNAMIC ACCENT (DEFAULT DARK: CYAN) --- */
+  --accent-color: 6, 182, 212; 
+  --accent-glow: rgba(6, 182, 212, 0.5);
+
+  /* --- DOCK CONFIG (DARK) --- */
+  --dock-bg: rgba(0, 0, 0, 0.3);
+  --dock-border: rgba(255, 255, 255, 0.08);
+  --dock-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --dock-text: #cbd5e1;
+  --dock-text-hover: #ffffff;
+}
+
+/* DESKTOP CONFIG (> 768px) */
+@media (min-width: 768px) {
+    :root {
+        --dock-item-size: 48px;
+        --dock-action-size: 60px;
+        --dock-gap: 24px;
+        --dock-padding: 8px 24px;
+        --dock-bottom: 30px;        
+    }
+}
+
+/* --- 2. GLOBAL STYLES --- */
+html {
+  scroll-behavior: smooth;
+  /* Support untuk Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+/* === UPGRADE: PREMIUM SCROLLBAR (Chrome, Edge, Safari) === */
+
+/* Lebar & Tinggi Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;  /* Sedikit lebih lebar untuk estetika */
+  height: 12px;
+}
+
+/* Track (Jalur Scrollbar) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparan agar terlihat menyatu dengan body */
+}
+
+/* Thumb (Batang Geser) */
+::-webkit-scrollbar-thumb {
+  background-color: var(--sb-thumb); /* Warna default (abu-abu soft) */
+  border-radius: 20px;       /* Sangat bulat (Pill shape) */
+  border: 3px solid transparent; /* Trik agar terlihat 'mengambang' */
+  background-clip: content-box;  /* Agar warna tidak menimpa border transparan */
+  transition: background-color 0.3s ease; /* Transisi halus saat di-hover */
+}
+
+/* Thumb saat di-Hover (MAGIC HAPPENS HERE) */
+::-webkit-scrollbar-thumb:hover {
+  /* Berubah jadi warna tema (Amber/Cyan) saat disentuh mouse */
+  background-color: rgb(var(--accent-color)); 
+  border: 2px solid transparent; /* Sedikit membesar saat di-hover */
+}
+
+/* Corner (Pojok pertemuan scroll vertikal & horizontal) */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Selection Color (Tetap pertahankan yang lama) */
+::selection {
+  background-color: #f59e0b;
+  color: #ffffff;
+}
+.dark ::selection {
+  background-color: rgb(var(--accent-color)); 
+  color: #ffffff;
+}
+
+img {
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+.is-scrolling, .is-scrolling * {
+  pointer-events: none !important;
+}
+
+/* --- 3. CUSTOM UTILITIES & ANIMATIONS --- */
+@layer utilities {
+  .animate-gradient-xy {
+    animation: gradient-xy 3s ease infinite;
+    background-size: 200% 200%;
+  }
+  .reveal-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+  }
+  
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-xy {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(100%) skewX(-12deg); }
+}
+.animate-shimmer {
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* --- 4. TAILWIND LAYER EXTENSIONS --- */
+@layer base {
+  body {
+    @apply transition-colors duration-700 ease-in-out;
+    @apply bg-slate-50 text-slate-900;
+  }
+  .dark body {
+    background-color: rgb(11, 17, 32); 
+    color: rgb(241, 245, 249);
+  }
+
+  /* --- ACCENT UTILITIES (WAJIB ADA) --- */
+  .text-accent { color: rgb(var(--accent-color)) !important; }
+  .bg-accent { background-color: rgb(var(--accent-color)) !important; }
+  .border-accent { border-color: rgb(var(--accent-color)) !important; }
+  .shadow-accent { box-shadow: 0 0 15px var(--accent-glow) !important; }
+  
+  .from-accent {
+    --tw-gradient-from: rgb(var(--accent-color)) !important;
+    --tw-gradient-to: rgb(var(--accent-color) / 0) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+  .to-accent {
+    --tw-gradient-to: rgb(var(--accent-color)) !important;
+  }
+
+  /* --- CUSTOM GRADIENT GLOWING --- */
+  .bg-gradient-accent {
+    background-image: linear-gradient(
+      to right, 
+      rgb(var(--accent-color)), 
+      #ffffff, 
+      rgb(var(--accent-color))
+    ) !important;
+    background-size: 200% auto !important; 
+  }
+}
+
+/* --- 5. PREMIUM GLASS DOCK --- */
+.dock-container {
+    position: fixed;
+    bottom: var(--dock-bottom);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: auto;
+    pointer-events: none;
+    transition: bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-dock {
+    pointer-events: auto;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    gap: var(--dock-gap); 
+    padding: var(--dock-padding);
+    border-radius: 9999px;
+    background: var(--dock-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--dock-border);
+    box-shadow: var(--dock-shadow);
+    transition: all 0.3s ease;
+}
+
+.dock-item {
+    flex-shrink: 0;
+    width: var(--dock-item-size);
+    height: var(--dock-item-size);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--dock-text);
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1.2); 
+}
+
+.dock-item:hover {
+    background: rgba(125, 125, 125, 0.1); 
+    color: var(--dock-text-hover);
+    transform: translateY(-8px) scale(1.1); 
+}
+
+.dock-item i {
+    font-size: 1.5rem; 
+    transition: color 0.2s;
+}
+
+@media (min-width: 768px) {
+    .dock-item i { font-size: 2rem; }
+}
+
+.dock-label {
+    position: absolute;
+    top: -45px; 
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.dock-item:hover .dock-label {
+    opacity: 1;
+    transform: scale(1);
+    top: -60px; 
+}
+
+.main-action {
+    margin: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Action Button: Mengikuti Warna Accent */
+.action-btn {
+    flex-shrink: 0;
+    width: var(--dock-action-size);
+    height: var(--dock-action-size);
+    
+    background: linear-gradient(135deg, rgb(var(--accent-color)), rgba(var(--accent-color), 0.8));
+    
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    
+    box-shadow: 0 8px 20px var(--accent-glow); 
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(-10px);
+}
+
+body:not(.dark) .action-btn {
+    border: 3px solid rgba(255, 255, 255, 0.6); 
+    box-shadow: 0 8px 25px var(--accent-glow);
+}
+
+.action-btn:hover {
+    transform: translateY(-15px) scale(1.1) rotate(-8deg);
+    box-shadow: 0 15px 35px var(--accent-glow);
+}
+
+@media (min-width: 768px) {
+    .action-btn {
+        font-size: 2.5rem; 
+        transform: translateY(-15px);
+        border-width: 4px;
+    }
+    .main-action { margin: 0 15px; }
+    .action-btn:hover {
+        transform: translateY(-25px) scale(1.1) rotate(-5deg); 
+    }
+}
+
+.action-btn i { margin-top: 2px; }
+
+/* --- GLOBAL SVG OVERRIDE --- */
+/* Paksa semua icon button berubah warna mengikuti tema */
+button svg {
+    color: rgb(var(--accent-color)) !important;
+    transition: color 0.3s ease;
+}
+
+/* PENGECUALIAN: Logo Tech Stack (React, dll) jangan berubah */
+.tech-stack-icon svg {
+    color: initial !important; 
+}
+
+/* Scrollbar Style untuk Tema Terang */
+.custom-scrollbar-light::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar-light::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar-light::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* Scrollbar Style untuk Tema Gelap */
+.custom-scrollbar-dark::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar-dark::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}

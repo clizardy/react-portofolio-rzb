@@ -1,0 +1,179 @@
+import collage from "../assets/collage.jpg";
+import senior from "../assets/senior.jpg";
+import junior from "../assets/junior.jpg";
+import project1 from "../assets/projects/project-1.webp";
+import project2 from "../assets/projects/project-2.webp";
+import project3 from "../assets/projects/project-3.webp";
+import webdev1 from "../assets/webdev1.jpg";
+
+export const HERO_CONTENT = `Hi, I'm Ronald! A tech enthusiast with a creative soul.
+
+Currently studying IT Education at Tidar University, I specialize in crafting high-quality visual and music content. Whether it's behind a camera, on an instrument, or leading a team, I turn creative vision into reality with efficiency and innovation.`;
+
+export const ABOUT_TEXT = `Freelance Photographer & Videographer
+(2021 - Present)
+Produced visual content for clients across various industries, including events, products, and advertising campaigns.
+STIGMAPA's Leader
+(2022 - 2023)
+Led a team in planning, organizing, and executing various organizational activities, improving internal communication and achieving successful event outcomes.
+If you really want to contact me, you can contact on the number bellow!
+Nice to meet you! :)`;
+
+export const EXPERIENCES = [
+
+  {
+    year: { en: "2018 - 2021", id: "2018 - 2021" }, 
+    image: junior,
+    role: { en: "Student", id: "Pelajar" },
+    company: { en: "Junior High School 2 Magelang", id: "SMP Negeri 2 Magelang" },
+    description: { 
+      en: "Actively explored various fields, ranging from music performance with keyboards to introduction to robotics using Arduino. Built strong administrative and presentation skills through Microsoft applications.", 
+      id: "Secara aktif mengeksplorasi berbagai bidang, mulai dari pertunjukan musik dengan keyboard hingga pengenalan robotika menggunakan Arduino. Membangun keterampilan administrasi dan presentasi yang kuat melalui aplikasi Microsoft."
+    },
+    technologies: ["Drone", "Keyboard", "Bass", "Microsoft", "Arduino"],
+  },
+  {
+    year: { en: "2021 - 2024", id: "2021 - 2024" }, 
+    image: senior,
+    role: { en: "Science Department", id: "Jurusan IPA" },
+    company: { en: "Senior High School 3 Magelang", id: "SMA Negeri 3 Magelang" },
+    description: { 
+      en: "I delved deeper into the world of music like choir, actively participated in a band, and eagerly joined various competitions while starting to learn my videography and photography skills.", 
+      id: "Saya lebih mendalami dunia musik dari banyak hal seperti paduan suara, aktif dalam grup band, gencar mengikuti berbagai lomba sembari memulai belajar keterampilan videografi dan fotografi saya." 
+    },
+    technologies: ["Mirrorless", "Guitar", "Adobe Lightroom", "Canva", "Filmora"],
+  },
+  {
+    year: { en: "2024 - Present", id: "2024 - Sekarang" },
+    image: collage,
+    role: { en: "Information Technology", id: "Teknologi Informasi" },
+    company: { en: "Tidar University", id: "Universitas Tidar" },
+    description: { 
+      en: "I am learning to become a good programmer/developer from the basics, and also upgrade my skils before. Beside that I also learn many things to improve my mindset to be better than before.", 
+      id: "Saya sedang belajar menjadi programmer/pengembang yang baik dari dasar-dasarnya, dan juga meningkatkan keterampilan saya sebelumnya. Disamping itu saya juga belajar banyak hal untuk memperbaiki pola pikir saya agar lebih baik lagi dari sebelumnya."
+    },
+    technologies: ["Adobe Premier Pro", "Adobe Photoshop", "Davinci Resolve", "Drum"],
+  },
+  // {
+  //   year: "2021 - 2022",
+  //   role: "Full Stack Developer",
+  //   company: "Facebook",
+  //   description: `Developed and maintained web applications using JavaScript, React.js, and Node.js. Designed and implemented RESTful APIs for data communication. Collaborated with cross-functional teams to deliver high-quality software products on schedule.`,
+  //   technologies: ["Python", "Svelte", "Three.js", "Postgres"],
+  // },
+  // {
+  //   year: "2020 - 2021",
+  //   role: "Software Engineer",
+  //   company: "Paypal",
+  //   description: `Contributed to the development of web applications using JavaScript, React.js, and Node.js. Managed databases and implemented data storage solutions using MongoDB. Worked closely with product managers to prioritize features and enhancements.`,
+  //   technologies: ["Ruby", "Rails", "PHP", "Sqlite"],
+  // },
+];
+
+// Pastikan import gambar sudah benar di bagian atas file
+// import project1 from "../assets/projects/project-1.jpg";
+// dst...
+
+export const PROJECTS = [
+  {
+    title: "Epsilon Project",
+    image: "wait for image import",
+    description: {
+      en: "A pioneering initiative focused on building an integrated automation ecosystem. This project involves developing a digital laboratory environment that bridges hardware and software, designed to streamline complex research workflows and data analysis.",
+      id: "Inisiatif pelopor yang berfokus pada pembangunan ekosistem otomasi terintegrasi. Proyek ini melibatkan pengembangan lingkungan laboratorium digital yang menjembatani perangkat keras dan lunak, dirancang untuk menyederhanakan alur kerja riset yang kompleks dan analisis data."
+    },
+    technologies: ["IoT Integration", "React.js", "Data Visualization", "Automation"],
+    category: "On Going",
+    date: "2026 - PRESENT",
+    instagram: "https://www.instagram.com/epsilonproject.id",
+    link: "https://forms.gle/A6kvCKFDebg43ZQy5",
+  },
+  {
+    title: "English Conversation Class",
+    image: "wait for image import",
+    description: {
+      en: "Founding and managing an interactive learning community aimed at improving public speaking and English fluency. The class utilizes a practical, project-based approach to help students gain confidence in professional and daily communication.",
+      id: "Mendirikan dan mengelola komunitas belajar interaktif yang bertujuan untuk meningkatkan kemampuan berbicara di depan umum dan kefasihan bahasa Inggris. Kelas ini menggunakan pendekatan praktis berbasis proyek untuk membantu siswa mendapatkan kepercayaan diri dalam komunikasi profesional dan harian."
+    },
+    technologies: ["Public Speaking", "Community Lead", "Educational Management"],
+    category: "On Going",
+    date: "2026 - PRESENT",
+  },
+  {
+    title: "SD Negeri Rejowinangun Selatan 1",
+    image: project1, 
+    description: {
+      en: "A comprehensive school branding photoshoot capturing the vibrant and cheerful atmosphere of elementary education. The project focused on documenting daily student activities and facilities for yearbook and promotional purposes.",
+      id: "Sesi foto branding sekolah yang menyeluruh, menangkap suasana ceria dan semangat pendidikan dasar. Proyek ini berfokus pada dokumentasi kegiatan harian siswa dan fasilitas untuk keperluan buku tahunan dan promosi."
+    },
+    technologies: ["School Branding", "Candid Photography", "Adobe Lightroom"],
+    category: "Photography",
+    date: "July, 2023",
+  },
+  {
+    title: "OSAKA - SMP Negeri 1 Kalasan",
+    image: project2,
+    description: {
+      en: "Visualizing the dynamic spirit of student leadership (OSIS). This session highlighted the organizational structure and solidarity of the team through professional group portraits and conceptual poses.",
+      id: "Memvisualisasikan semangat dinamis kepemimpinan siswa (OSIS). Sesi ini menyoroti struktur organisasi dan solidaritas tim melalui potret grup profesional dan pose konseptual."
+    },
+    technologies: ["Organization Profile", "Group Direction", "Retouching"],
+    category: "Photography",
+    date: "April, 2025",
+  },
+  {
+    title: "Himpunan Mahasiswa Matematika - Universitas Tidar",
+    image: project3,
+    description: {
+      en: "Elevating the student association's public image through a cinematic profile video and executive photoshoot. The project aimed to showcase professionalism, vision, and the 'Kabinet' synergy for the new term.",
+      id: "Meningkatkan citra publik himpunan mahasiswa melalui video profil sinematik dan sesi foto eksekutif. Proyek ini bertujuan untuk menampilkan profesionalisme, visi, dan sinergi 'Kabinet' untuk periode baru."
+    },
+    technologies: ["Cinematic Profile", "Video Editing", "Creative Direction"],
+    category: "Photography",
+    date: "June, 2025",
+  },
+  {
+  title: "School Introduction Video - SMA Negeri 3 Magelang City",
+  btsImage: "/assets/timeline/memories (62).webp",
+  image: project1, 
+  description: { 
+    en: "Produced a comprehensive introduction video featuring dynamic camera movements and engaging editing techniques. The project captured the essence of the school's environment, highlighting the balance between discipline and creativity in student activities.", 
+    id: "Memproduksi video pengenalan komprehensif yang menampilkan pergerakan kamera dinamis dan teknik editing yang menarik. Proyek ini menangkap esensi lingkungan sekolah, menyoroti keseimbangan antara kedisiplinan dan kreativitas dalam kegiatan siswa." 
+  },
+  technologies: ["Premiere Pro", "Color Grading", "Sound Design"],
+  category: "Videography",
+  video: "https://www.youtube.com/watch?v=bKtpOXQkEtI",
+  date: "October, 2022",
+  },
+  {
+    title: "Music Video Cover - Ayo Rukun",
+    btsImage: "/assets/timeline/memories (65).webp",
+    image: project1,
+    description: {
+      en: "A creative music video cover of 'Ayo Rukun' produced for SMA Negeri 3 Magelang. This project involved directing, filming, and editing to visualize the message of harmony and togetherness.",
+      id: "Video musik cover kreatif 'Ayo Rukun' yang diproduksi untuk SMA Negeri 3 Magelang. Proyek ini melibatkan penyutradaraan, pengambilan gambar, dan penyuntingan untuk memvisualisasikan pesan kerukunan dan kebersamaan."
+    },
+    technologies: ["Music Video", "Cinematography", "Premiere Pro"],
+    category: "Videography",
+    video: "https://www.youtube.com/watch?v=KZHisrAFylk", 
+    date: "November, 2024",
+  },
+  {
+    title: "E-Commerce Website",
+    image: webdev1,
+    description: {
+      en: "A fully functional e-commerce website designed for seamless shopping experiences.",
+      id: "Website e-commerce yang berfungsi penuh, dirancang untuk pengalaman berbelanja yang mulus."
+    },
+    technologies: ["React", "Node.js"],
+    category: "Web Dev",
+    link: "https://muhammad-farchan.vercel.app",
+    date: "January, 2026",
+  },
+];
+
+export const CONTACT = {
+  address: "Paten Gunung Magelang Regency Central Java ID, 56124",
+  phoneNo: "+62 812-8195-4366 ",
+  email: "ronaldzunibachtiar@gmail.com",
+};
