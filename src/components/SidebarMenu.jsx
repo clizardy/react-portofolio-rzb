@@ -61,7 +61,7 @@ const SidebarMenu = ({
     }
   }, [showPinModal]);
 
-  const CORRECT_PIN = "1904";
+  const CORRECT_PIN = "1406";
 
   // --- SECRET TRIGGER STATE ---
   const [clickCount, setClickCount] = useState(0);
