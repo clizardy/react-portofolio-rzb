@@ -29,7 +29,7 @@ import CommandPalette from "./components/CommandPalette";
 import Hero from './components/Hero';
 import Marquee from "./components/Marquee";
 import About from './components/About';
-import Skills from './components/Skills';
+import Skills from './components/Skills'; 
 import Education from './components/Education';
 import Projects from './components/projects/Projects'; 
 import Services from './components/Services';
@@ -358,7 +358,7 @@ useEffect(() => {
 
                 {showEpsilonToast && (
                     <EpsilonToast 
-                        title="EPSILON PROJECT: is calling!"
+                        title="EPSILON PROJECT: is on the way!"
                         message="Join the Epsilon Project and be part of an exclusive creative & futuristic Gen-Z community!"
                         link="https://forms.gle/A6kvCKFDebg43ZQy5" 
                         onClose={() => setShowEpsilonToast(false)}
@@ -476,6 +476,18 @@ useEffect(() => {
                             </div>
                         </Suspense>
                     </div>
+
+                    <div className="container mx-auto px-4 md:px-8 pb-6 relative">
+                        <Suspense fallback={<div className="text-center py-20">Loading Organization...</div>}>
+                            <div id="organization"><Organization lang={lang}/></div>
+                        </Suspense>
+                        </div>
+
+                    <div className="container mx-auto px-4 md:px-8 relative">
+                        <Suspense fallback={<div className="text-center">Loading Testimonials...</div>}>
+                            <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
+                        </Suspense>
+                    </div>
             
                     <Suspense fallback={<div className="text-center py-20">Loading Portfolio...</div>}>
                         <div id="portfolio" className="render-lazy w-full overflow-hidden">
@@ -505,8 +517,6 @@ useEffect(() => {
                             </div>
                             )}
                         </Suspense>
-
-                        <div id="organization"><Organization lang={lang}/></div>
                     </div>
 
 
@@ -515,12 +525,6 @@ useEffect(() => {
                             <div id="dedication"><Dedication lang={lang}/></div>
                         </Suspense>
                 </div>
-                
-                    <div className="container mx-auto px-4 md:px-8 relative">
-                        <Suspense fallback={<div className="text-center">Loading Testimonials...</div>}>
-                            <div id="testimonials" className="render-lazy"><Testimonials lang={lang}/></div>
-                        </Suspense>
-                    </div>
 
                     <div className="w-full">
                         <Suspense fallback={<div className="text-center py-20">Loading Glimpse of Me...</div>}>

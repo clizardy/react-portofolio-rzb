@@ -23,112 +23,112 @@ const USER_STATUS = "available";
 
 const SLIDES = [
   {
-    src: aboutImg1, // Pastikan ini foto Anda sedang coding / di depan laptop
-    title: "The Tech Enthusiast",
-    bigText: "CODER",
-    location: "My Workspace",
+    src: aboutImg1, // Tema 1: Elegan
+    title: "The Sophisticate",
+    bigText: "ELEGANCE",
+    location: "Exclusive Lounge",
     desc: {
-      en: "Translating logic into interactive reality. I obsess over clean code, performance, and building seamless digital experiences.",
-      id: "Menerjemahkan logika menjadi realitas interaktif. Saya terobsesi dengan kode bersih, performa, dan pengalaman digital yang mulus."
+      en: "Embracing sophistication in every detail. True elegance is not about being noticed, but about being remembered.",
+      id: "Merangkul kemewahan di setiap detail. Keanggunan sejati bukan tentang diperhatikan, tapi dikenang."
+    },
+    color: "from-zinc-700 to-black",
+    accent: "zinc-400"
+  },
+  {
+    src: aboutImg2, // Tema 2: Formal Santai (Smart Casual)
+    title: "The Modern Professional",
+    bigText: "DAPPER",
+    location: "City Cafe",
+    desc: {
+      en: "Striking the perfect balance between professional and approachable. Style that speaks confidence without saying a word.",
+      id: "Menemukan keseimbangan sempurna antara profesional dan santai. Gaya yang memancarkan kepercayaan diri tanpa perlu bersuara."
+    },
+    color: "from-blue-600 to-slate-800",
+    accent: "blue-300"
+  },
+  {
+    src: aboutImg3, // Tema 3: Cool Santai
+    title: "The Effortless",
+    bigText: "GROOVE",
+    location: "Downtown Streets",
+    desc: {
+      en: "Keeping it light and breezy. Life is too short to overcomplicate things—just ride the wave and stay cool.",
+      id: "Menikmati hidup dengan santai. Hidup terlalu singkat untuk dibuat rumit—nikmati saja alurnya dan tetap tenang."
     },
     color: "from-cyan-500 to-blue-600",
-    accent: "cyan-400"
+    accent: "cyan-300"
   },
   {
-    src: aboutImg2, // Pastikan ini foto Anda memegang kamera / sedang memotret
-    title: "The Visual Storyteller",
-    bigText: "ARTIST",
-    location: "Behind The Lens",
+    src: aboutImg4, // Tema 4: Kebebasan
+    title: "The Free Spirit",
+    bigText: "UNBOUND",
+    location: "The Open World",
     desc: {
-      en: "Seeing the world through a cinematic perspective. It's not just about capturing light, but preserving the emotion within the frame.",
-      id: "Melihat dunia melalui perspektif sinematik. Bukan sekadar menangkap cahaya, tapi mengabadikan emosi di dalam bingkai."
+      en: "No rules, no limits. Finding true peace in the vastness of the open world and the wind in my hair.",
+      id: "Tanpa aturan, tanpa batas. Menemukan kedamaian sejati dalam luasnya dunia dan tiupan angin di alam bebas."
     },
-    color: "from-purple-500 to-pink-600",
-    accent: "purple-400"
+    color: "from-emerald-400 to-teal-600",
+    accent: "emerald-300"
   },
   {
-    src: aboutImg3, // Pastikan ini foto portrait diri Anda yang kasual / tersenyum
-    title: "The Life Learner",
-    bigText: "HUMAN",
-    location: "Everywhere I Go",
+    src: aboutImg5, // Tema 5: Santainya Gen Z
+    title: "The New Wave",
+    bigText: "VIBES",
+    location: "Aesthetic Corner",
     desc: {
-      en: "Driven by curiosity and coffee. A relentless dreamer who believes that every day is a new opportunity to grow and create impact.",
-      id: "Didorong oleh rasa ingin tahu dan kopi. Pemimpi yang percaya bahwa setiap hari adalah kesempatan baru untuk tumbuh dan memberi dampak."
+      en: "Just matching energies and romanticizing life. Lowkey living in the moment with good music and great fits.",
+      id: "Hanya menikmati energi positif dan meromantisasi hidup. Menikmati momen dengan musik asik dan gaya santai kekinian."
     },
-    color: "from-amber-500 to-orange-600",
-    accent: "amber-400"
+    color: "from-fuchsia-400 to-purple-600",
+    accent: "fuchsia-300"
   },
   {
-    src: aboutImg4,
-    title: "The Explorer",
-    bigText: "ADVENTURER",
-    location: "Nature & Beyond",
+    src: aboutImg6, // Tema 6: Cool Dingin Banget (Ice Cold/Stoic)
+    title: "The Enigma",
+    bigText: "STOIC",
+    location: "The Shadows",
     desc: {
-      en: "Embracing the unknown and seeking new horizons. I find inspiration in the wild, where every path leads to discovery.",
-      id: "Menyambut yang tidak diketahui dan mencari cakrawala baru. Saya menemukan inspirasi di alam liar, di mana setiap jalan mengarah pada penemuan."
+      en: "Silence is louder than words. A calm demeanor masking an untamed storm within. Stay sharp, stay distant.",
+      id: "Keheningan lebih bising dari kata-kata. Sikap tenang yang menyembunyikan badai di dalam. Tetap tajam, tetap misterius."
     },
-    color: "from-green-500 to-teal-600",
-    accent: "green-400"
+    color: "from-slate-600 to-slate-900",
+    accent: "slate-400"
   },
   {
-    src: aboutImg5,
-    title: "The Music Lover",
-    bigText: "MELONCHOLY",
-    location: "Rhythms of Life",
+    src: aboutImg7, // Tema 7: Rileks (Unwind)
+    title: "The Peaceful Mind",
+    bigText: "UNWIND",
+    location: "Cozy Retreat",
     desc: {
-      en: "Finding solace in melodies and harmonies. Music is my companion, guiding me through the highs and lows of life's journey.",
-      id: "Menemukan ketenangan dalam melodi dan harmoni. Musik adalah teman saya, membimbing saya melalui pasang surut perjalanan hidup."
+      en: "Taking a step back to breathe and appreciate the little things. True wealth is finding comfort in stillness.",
+      id: "Mundur sejenak untuk bernapas dan menghargai hal-hal kecil. Kekayaan sejati adalah menemukan kenyamanan dalam keheningan."
     },
-    color: "from-indigo-500 to-violet-600",
-    accent: "indigo-400"
+    color: "from-orange-400 to-rose-500",
+    accent: "orange-200"
   },
   {
-    src: aboutImg6,
-    title: "The Dreamer",
-    bigText: "VISIONARY",
-    location: "Mind & Imagination",
+    src: aboutImg8, // Tema 8: Serius (Intense/Focused)
+    title: "The Visionary",
+    bigText: "FOCUS",
+    location: "The War Room",
     desc: {
-      en: "A believer in the power of imagination. I dream big, think differently, and strive to turn visions into reality.",
-      id: "Seorang yang percaya pada kekuatan imajinasi. Saya bermimpi besar, berpikir berbeda, dan berusaha mewujudkan visi menjadi kenyataan."
+      en: "Eyes on the prize, mind on the execution. Distractions are minimal when the ambition is absolute.",
+      id: "Mata tertuju pada tujuan, pikiran pada eksekusi. Gangguan tidak berarti ketika ambisi sudah bulat dan tekad sudah kuat."
     },
-    color: "from-pink-500 to-red-600",
-    accent: "pink-400"
+    color: "from-red-600 to-rose-900",
+    accent: "red-400"
   },
   {
-    src: aboutImg7, // Reuse the first image for variety
-    title: "The Tech Enthusiast",
-    bigText: "CODER",
-    location: "My Workspace",
+    src: aboutImg9, // Tema 9: Santai (Casual)
+    title: "The Easygoing",
+    bigText: "CASUAL",
+    location: "Sunday Afternoon",
     desc: {
-      en: "Translating logic into interactive reality. I obsess over clean code, performance, and building seamless digital experiences.",
-      id: "Menerjemahkan logika menjadi realitas interaktif. Saya terobsesi dengan kode bersih, performa, dan pengalaman digital yang mulus."
+      en: "Taking life one day at a time with a smile. No pressure, just enjoying the simple rhythm of everyday life.",
+      id: "Menjalani hidup hari demi hari dengan senyuman. Tanpa tekanan, hanya menikmati ritme sederhana kehidupan sehari-hari."
     },
-    color: "from-cyan-500 to-blue-600",
-    accent: "cyan-400"
-  },
-  {
-    src: aboutImg8, // Reuse the second image for variety
-    title: "The Visual Storyteller",
-    bigText: "ARTIST",
-    location: "Behind The Lens",
-    desc: {
-      en: "Seeing the world through a cinematic perspective. It's not just about capturing light, but preserving the emotion within the frame.",
-      id: "Melihat dunia melalui perspektif sinematik. Bukan sekadar menangkap cahaya, tapi mengabadikan emosi di dalam bingkai."
-    },
-    color: "from-purple-500 to-pink-600",
-    accent: "purple-400"
-  },
-  {
-    src: aboutImg9, // Reuse the third image for variety
-    title: "The Life Learner",
-    bigText: "HUMAN",
-    location: "Everywhere I Go",
-    desc: {
-      en: "Driven by curiosity and coffee. A relentless dreamer who believes that every day is a new opportunity to grow and create impact.",
-      id: "Didorong oleh rasa ingin tahu dan kopi. Pemimpi yang percaya bahwa setiap hari adalah kesempatan baru untuk tumbuh dan memberi dampak."
-    },
-    color: "from-amber-500 to-orange-600",
-    accent: "amber-400"
+    color: "from-yellow-400 to-amber-600",
+    accent: "yellow-300"
   }
 ];
 
@@ -264,7 +264,7 @@ const About = ({ lang = 'en' }) => {
                 exit={{ y: -100, opacity: 0 }}
                 transition={{ duration: 0.8, ease: "circOut" }}
                 style={{ y: yText, opacity: opacityText }}
-                className="text-[24vw] font-black text-black/50 dark:text-white/50 whitespace-nowrap tracking-tighter leading-none font-sans select-none"
+                className="text-[19vw] font-black text-black/50 dark:text-white/50 whitespace-nowrap tracking-tighter leading-none font-sans select-none"
             >
                 {currentSlide.bigText}
             </motion.h2>

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode, FaPalette } from "react-icons/fa";
+import { FaCamera, FaVideo, FaGuitar, FaClipboardList, FaLaptopCode} from "react-icons/fa";
+import { SiAdobepremierepro, SiCodeblocks, SiAdobelightroomclassic } from "react-icons/si";    
 import { MdPiano } from "react-icons/md";
 import OklchGradientText from "../components/OklchGradientText";
 
@@ -23,6 +24,7 @@ const SKILLS_LIST = [
   },
   {
     id: "editing_photo",
+    icon: <SiAdobelightroomclassic />,
     color: "text-blue-600",
     bg: "bg-blue-600",
     label: { en: "Photo Editing", id: "Editing Foto" },
@@ -30,6 +32,7 @@ const SKILLS_LIST = [
   },
   {
     id: "design_grafis",
+    icon: <SiCodeblocks />,
     color: "text-cyan-400",
     bg: "bg-cyan-400",
     label: { en: "Graphic Design", id: "Desain Grafis" },
@@ -37,7 +40,7 @@ const SKILLS_LIST = [
   },
   {
     id: "editing_video",
-//    icon: <SiAdobepremierepro />, 
+    icon: <SiAdobepremierepro />, 
     color: "text-indigo-500",
     bg: "bg-indigo-500",
     label: { en: "Video Editing", id: "Editing Video" },

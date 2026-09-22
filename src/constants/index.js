@@ -162,7 +162,7 @@ export const PROJECTS = [
     date: "November, 2024",
   },
   {
-    title: "E-Commerce Website",
+    title: "E-Commerce Website by-DapurMaede",
     image: webdev1,
     description: {
       en: "A fully functional e-commerce website designed for seamless shopping experiences.",
