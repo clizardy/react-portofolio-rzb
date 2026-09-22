@@ -6,8 +6,8 @@ import { TypeAnimation } from 'react-type-animation';
 import TechStackWidget from "./TechStackWidget";
 import DynamicGreeting from "./DynamicGreeting";
 
-import bgDesktop from "../assets/welcome-desktop.webp"; 
-import bgMobile from "../assets/welcome-mobile.webp";   
+import bgDesktop from "../assets/welcome-desktop.jpg"; 
+import bgMobile from "../assets/welcome-mobile.jpg";   
 
 const WelcomeScreen = ({ onEnter, lang }) => {
   const [progress, setProgress] = useState(0);
@@ -82,7 +82,7 @@ const handleButtonClick = (e) => {
             transition={{ duration: 8, ease: "easeOut" }} 
             src={bgMobile} 
             alt="Background Mobile"
-            className="w-full h-full object-cover opacity-80" 
+            className="w-full h-full object-cover opacity-60" 
           />
       </div>
 
@@ -94,12 +94,12 @@ const handleButtonClick = (e) => {
             transition={{ duration: 10, ease: "easeOut" }} 
             src={bgDesktop} 
             alt="Background Desktop"
-            className="w-full h-full object-cover opacity-60" 
+            className="w-full h-full object-cover opacity-20" 
           />
       </div>
 
       {/* 3. OVERLAY GELAP */}
-      <div className="absolute inset-0 z-[-1] bg-gradient-to-b from-white/40 via-black/55 to-black/85" />
+      <div className="absolute inset-0 z-[-1] bg-gradient-to-b from-black/20 via-black/15 to-white/5" />
       
       {/* HEADER: TECH STACK ICONS */}
         <motion.div 
@@ -227,7 +227,7 @@ const handleButtonClick = (e) => {
                     // PERUBAHAN UKURAN DI SINI:
                     // Mobile: w-52 (lebih pendek), px-4 py-2.5 (lebih ramping)
                     // PC (md): w-80 (tetap lebar), px-6 py-4 (tetap besar)
-                    className="relative z-10 flex items-center justify-between w-44 md:w-96 dark:bg-black/85 bg-white/85 dark:hover:bg-black hover:bg-white transition-colors rounded-full px-4 py-1.5 md:px-6 md:py-2.5 backdrop-blur-xl border border-black/5 dark:border-white/5"
+                    className="relative z-10 flex items-center justify-between w-44 md:w-96 dark:bg-black/80 bg-white/85 dark:hover:bg-black/5 hover:bg-white/5 transition-colors rounded-full px-4 py-1.5 md:px-6 md:py-2.5 backdrop-blur-xl border border-black/5 dark:border-white/5"
                 >
                     
                     {/* Text Area */}
